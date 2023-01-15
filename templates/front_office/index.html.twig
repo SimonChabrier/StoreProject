@@ -7,22 +7,47 @@
 <p>Voici la page d'accueil du site</p>
 
 {% for cat in cats %}
-    <h2><a href="{{ path('app_category_show', {'id': cat.id}) }}">{{ cat.name }}</a></h2>
+    <h2><a href="{{ path('app_category_show', {'id': cat.id}) }}">{{ cat.name|upper }}</a></h2>
     <ul>
         {% for product in cat.products %}
             {% if product.name %}
-                <li> <a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name }}</a></li>
+                <li> <a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name|upper }}</a></li>
+                <ul>
+                    <li>Prix public : <del>{{ product.catalogPrice }} €</del></li>
+                    <li>Prix de vente : {{ product.sellingPrice }} €</li>
+                        {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
+                    <li>Réduction : {{ discount|round(1) }} %</li>
+                        
+                        <ul>
+                            | Commentaires liés à {{ product.name }} |
+                        {% for comment in product.comments %}
+                            {% if comment.text %}
+                                <li>{{ comment.text }}</li>
+                                ---- Autheur : {{ comment.author }}
+                            {% endif %}
+                            {% else %}
+                                <li>Pas de commentaire pour ce produit</li>
+                        {% endfor %}
+                        </ul>
+
+                </ul>
             {% endif %}
             {% else %}
                 <li>Pas de produit dans {{ cat.name }}</li>
         {% endfor %}
         <ul>
         {% for sub in cat.subCategories %}
-        <li><a href="{{ path('app_sub_category_show', {'id': cat.id}) }}">{{ sub.name }}</a></li>
+        <li><h3><a href="{{ path('app_sub_category_show', {'id': cat.id}) }}">{{ sub.name|upper }}</a></h3></li>
             <ul>
             {% for product in sub.products %}
                 {% if product.name %}
-                    <li> <a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name }}</a></li>
+                    <li> <a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name|upper }}</a></li>
+                    <ul>
+                        <li>Prix public : <del>{{ product.catalogPrice }} €</del></li>
+                        <li>Prix de vente : {{ product.sellingPrice }} €</li>
+                            {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
+                        <li>Réduction : {{ discount|round(1) }} %</li> 
+                    </ul>
                 {% endif %}
                 {% else %}
                     <li>Pas de produit dans {{ sub.name }}</li>

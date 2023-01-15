@@ -21,9 +21,23 @@ class ProductCrudController extends AbstractCrudController
             TextField::new('name')
             ->setLabel('Nom')
             ->setRequired(true),
-            AssociationField::new('category')
-            ->setLabel('Catégorie parente')
+            
+            TextField::new('buyPrice')
+            ->setLabel('Prix d\'achat')
             ->setRequired(true),
+            
+            TextField::new('sellingPrice')
+            ->setLabel('Prix de vente')
+            ->setRequired(true),
+            
+            TextField::new('catalogPrice')
+            ->setLabel('Prix catalogue')
+            ->setRequired(true),
+            
+            AssociationField::new('category')
+            ->setLabel('Catégorie')
+            ->setRequired(true),
+            
             AssociationField::new('subCategory')
             ->setLabel('Sous-catégorie')
             ->setRequired(true),

@@ -4,9 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Entity\Product;
-
 use App\Entity\Category;
 use App\Entity\SubCategory;
+use App\Entity\Comment;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Controller\Admin\CategoryCrudController;
@@ -75,8 +76,12 @@ class AdminController extends AbstractDashboardController
         yield MenuItem::section('Admin Navigation');
         yield MenuItem::linkToCrud('Categories', 'fa fa-bars', Category::class);
         yield MenuItem::linkToCrud('Sous Categories', 'fa fa-indent', SubCategory::class);
+       
         yield MenuItem::section('Admin Produits');
         yield MenuItem::linkToCrud('Produits', 'fa fa-tag', Product::class);
+
+        yield MenuItem::section('Admin Commentaires');
+        yield MenuItem::linkToCrud('Commentaires', 'fa fa-comment', Comment::class);
     }
     /**
      * Personalize Admin Css

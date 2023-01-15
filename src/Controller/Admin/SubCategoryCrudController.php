@@ -35,7 +35,7 @@ class SubCategoryCrudController extends AbstractCrudController
             ->setPageTitle('new', 'Créer une nouvelle sous-catégorie')
             ->setPageTitle('edit', 'Editer une sous-catégorie')
             ->setEntityLabelInSingular('Sous categorie')
-            ->setEntityLabelInPlural('Spus categories')
+            ->setEntityLabelInPlural('Sous categories')
             ->setSearchFields(['name', 'listOrder'])
             ->setDefaultSort(['listOrder' => 'ASC'])
             ->setPaginatorPageSize(20)

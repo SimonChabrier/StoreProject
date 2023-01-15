@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello FrontOfficeController!{% endblock %}
+
+{% block body %}
+<h1>Home Page</h1>
+<p>Voici la page d'accueil du site</p>
+
+{% for cat in cats %}
+    <h2><a href="{{ path('app_category_show', {'id': cat.id}) }}">{{ cat.name }}</a></h2>
+    <ul>
+        {% for product in cat.products %}
+            {% if product.name %}
+                <li> <a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name }}</a></li>
+            {% endif %}
+            {% else %}
+                <li>Pas de produit dans {{ cat.name }}</li>
+        {% endfor %}
+        <ul>
+        {% for sub in cat.subCategories %}
+        <li><a href="{{ path('app_sub_category_show', {'id': cat.id}) }}">{{ sub.name }}</a></li>
+            <ul>
+            {% for product in sub.products %}
+                {% if product.name %}
+                    <li> <a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name }}</a></li>
+                {% endif %}
+                {% else %}
+                    <li>Pas de produit dans {{ sub.name }}</li>
+            {% endfor %}
+            </ul>
+        {% endfor %}
+        </ul>
+{% endfor %}
+    </ul>
+{% endblock %}

@@ -18,3 +18,8 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+## DS_Store ##
+.DS_Store
+
+

@@ -1,0 +1,50 @@
+body {
+  background: rgb(0, 0, 0) !important;
+  text-align: left !important;
+  padding: 30px !important;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  color: white !important;
+}
+
+* {
+  box-sizing: border-box !important;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 300;
+  margin: 0;
+  margin-bottom: 30px;
+}
+
+a {
+  color: #cb8431 !important;
+}
+
+ol ul {
+  padding: 0 0 0 10px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+table th, table td {
+  padding: 0.4rem !important;
+  text-align: left;
+  background-color: #dbdada !important;
+  color: black;
+}
+table tr {
+  transition: all 0.2s ease-in;
+}
+table tr:hover {
+  background-color: rgb(39, 39, 39) !important;
+}
+
+tr:nth-child(even) {
+  background-color: rgb(39, 39, 39) !important;
+  color: rgb(255, 255, 255) !important;
+}/*# sourceMappingURL=main.css.map */

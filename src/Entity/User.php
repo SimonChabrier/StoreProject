@@ -72,4 +72,10 @@ class User
 
         return $this;
     }
+
+    // retrun firstName + lastName  
+    public function getFullName(): string
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    } 
 }

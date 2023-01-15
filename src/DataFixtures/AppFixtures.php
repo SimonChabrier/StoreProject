@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\SubCategory;
 use App\Entity\Product;
 use App\Entity\User;
+use App\Entity\Comment;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
@@ -68,12 +69,20 @@ class AppFixtures extends Fixture
         }       
         
         // create 20 products! Bam!
+
+        $products = [];
+
         for ($i = 0; $i < 20; $i++) {
             $product = new Product();
             $product->setName('product '.($i +1));
+            $product->setBuyPrice($faker->numberBetween(80, 1000));
+            $product->setSellingPrice(floor($product->getbuyPrice() + ($product->getbuyPrice() * 0.2)));
+            $product->setCatalogPrice(floor($product->getSellingPrice() + ($product->getbuyPrice() * 0.1)));
             $product->setCategory($cats[rand(0, count($cats) - 1)]);
             $product->setSubCategory($subCats[rand(0, count($subCats) - 1)]);
             
+            $products[] = $product;
+
             $manager->persist($product);
         }
 
@@ -88,6 +97,21 @@ class AppFixtures extends Fixture
             $users[] = $user;
 
             $manager->persist($user);
+        }
+
+        $comments = [];
+
+        // create 30 comments with faker ! Bam!
+        for ($i = 0; $i < 30; $i++) {
+            $comment = new Comment();
+            $comment->setAuthor($users[rand(0, count($users) - 1)]->getFullName());
+            $comment->setEmail($faker->email);
+            $comment->setText($faker->text(rand(50, 200)));
+            $comment->setProduct($products[rand(0, count($products) - 1)]);
+
+            $comments[] = $comment;
+
+            $manager->persist($comment);
         }
 
         $manager->flush();

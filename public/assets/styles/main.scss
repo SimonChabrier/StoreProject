@@ -23,7 +23,6 @@ a {
 
 ol ul {
     padding: 0 0 0 10px;
-
 }
 
 table {
@@ -33,10 +32,10 @@ table {
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     th, td {
-        padding: .4rem!important;
+        padding: 0.4rem !important;
         text-align: left;
-        background-color: #dbdada!important;
-        color: black;
+        background-color: #161616 !important;
+        color: #d6d6d6;
     }
 
     tr {
@@ -53,3 +52,65 @@ tr:nth-child(even) {
     background-color: rgb(39, 39, 39)!important;
     color:rgb(255, 255, 255)!important;
 }
+
+
+/* Sidenav menu */
+.sidenav {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: -250px;
+    background-color: gray;
+    padding-top: 60px;
+    transition: left 0.5s ease;
+  }
+  
+  .sidenav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Sidenav menu links */
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: black!important;
+    display: block;
+    transition:.2s;
+  }
+  
+  .sidenav a:hover {
+    color: whitesmoke;
+    transition: .5s;
+  }
+  
+  /* Active class change left position to 0
+     and display sidebar */
+  .sidenav.active {
+    left: 0;
+  }
+  
+  /* Close btn */
+  .sidenav .close {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+  }
+  
+  .burger-icon span {
+    display: block;
+    width: 35px;
+    height: 5px;
+    background-color: white;
+    margin: 6px 0;
+  }
+
+
+
+
+

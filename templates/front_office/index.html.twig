@@ -1,25 +1,60 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello FrontOfficeController!{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block body %}
 <h1>Home Page</h1>
 <p>Voici la page d'accueil du site</p>
 
-{% for cat in cats %}
-    <h2><a href="{{ path('app_category_show', {'id': cat.id}) }}">{{ cat.name|upper }}</a></h2>
-    <ul>
-        {% for product in cat.products %}
-            {% if product.name %}
+{# add a form number input for search by price  #}
+
+{# <form action="{{ path('app_home') }}" method="post">
+    <label for="price">Rechercher un produit par prix supérieur à</label>
+    <input type="number" name="price" id="price">
+    <button type="submit">Rechercher</button>
+</form> #}
+
+{# add form with no html 5 validate  #}
+
+{{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
+{{ form_end(form) }}
+
+{% if searchResults is defined %}
+    <div style="border:1px solid white; padding:30px; border-radius:20px; margin: 20px 0">
+    Resultat de la recherche : 
+        <ul>
+        {% if searchResults|length > 0 %}
+            {% for product in searchResults %}
                 <li> <a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name|upper }}</a></li>
                 <ul>
                     <li>Prix public : <del>{{ product.catalogPrice }} €</del></li>
                     <li>Prix de vente : {{ product.sellingPrice }} €</li>
                         {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
-                    <li>Réduction : {{ discount|round(1) }} %</li>
-                        
-                        <ul>
-                            | Commentaires liés à {{ product.name }} |
+                    <li>Réduction : {{ discount|round(1) }} %</li>  
+                </ul>
+            {% endfor %}
+        {% else %}
+            <li>Pas de produit trouvé pour la recherche : {{ searchValue }}</li>
+        {% endif %}
+        </ul>
+    </div
+{% endif %}
+
+
+<ul>
+{% for cat in cats %}
+    <h2><a href="{{ path('app_category_show', {'id': cat.id}) }}">{{ cat.name|upper }}</a></h2>
+    <ul>
+        {% for product in cat.products %}
+            {% if product.name %}
+                <li><a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name|upper }}</a></li>
+                <ul>
+                    <li>Prix public : <del>{{ product.catalogPrice }} €</del></li>
+                    <li>Prix de vente : {{ product.sellingPrice }} €</li>
+                        {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
+                    <li>Réduction : {{ discount|round(1) }} %</li>  
+                    <ul>
+                        | Commentaires liés à {{ product.name }} |
                         {% for comment in product.comments %}
                             {% if comment.text %}
                                 <li>{{ comment.text }}</li>
@@ -28,15 +63,19 @@
                             {% else %}
                                 <li>Pas de commentaire pour ce produit</li>
                         {% endfor %}
-                        </ul>
-
+                    </ul>
                 </ul>
             {% endif %}
             {% else %}
+            {% if min is defined and max is defined %} 
+                Pas de produit entre {{ min }} € et {{ max }} €  dans {{ cat.name }}
+                {% else %}
                 <li>Pas de produit dans {{ cat.name }}</li>
+            {% endif %}
         {% endfor %}
-        <ul>
-        {% for sub in cat.subCategories %}
+    </ul>
+    <ul>
+    {% for sub in cat.subCategories %}
         <li><h3><a href="{{ path('app_sub_category_show', {'id': cat.id}) }}">{{ sub.name|upper }}</a></h3></li>
             <ul>
             {% for product in sub.products %}
@@ -50,11 +89,19 @@
                     </ul>
                 {% endif %}
                 {% else %}
-                    <li>Pas de produit dans {{ sub.name }}</li>
+                    {% if min is defined and max is defined %} 
+                Pas de produit entre {{ min }} € et {{ max }} €  dans {{ sub.name }}
+                {% else %}
+                <li>Pas de produit dans {{ sub.name }}</li>
+            {% endif %}
             {% endfor %}
             </ul>
-        {% endfor %}
-        </ul>
-{% endfor %}
+    {% endfor %}
     </ul>
+{% endfor %}
+</ul>
+
+
+
+
 {% endblock %}

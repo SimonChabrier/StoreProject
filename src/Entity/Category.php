@@ -29,7 +29,7 @@ class Category
      * @ORM\ManyToMany(
      *      targetEntity=SubCategory::class, 
      *      mappedBy="categories", 
-     *      fetch="EAGER"
+     *      fetch="EXTRA_LAZY"
      *  )
      * 
      */
@@ -41,7 +41,7 @@ class Category
     private $listOrder = '0000';
 
     /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category")
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category", fetch="EXTRA_LAZY")
      */
     private $products;
 

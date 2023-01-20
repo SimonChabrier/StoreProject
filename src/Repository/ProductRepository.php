@@ -39,6 +39,69 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
+    // find all visible products
+    public function findALlVisibleProdcts(): array
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->select('p')   
+            ->andWhere('p.visibility = 1')
+            ->orderBy('p.id', 'asc');
+            
+        return $qb->getQuery()->getResult();
+    }
+
+    // find all products category and subcategory products where visibility = 1
+    public function test(): array
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('p, c, sc')
+        ->join('p.category', 'c')
+        ->join('c.subCategories', 'sc') 
+        ->where('p.visibility = 1')
+        ->orderBy('c.listOrder + 0', 'ASC')
+        ->addOrderBy('sc.listOrder + 0', 'ASC');
+
+        return $qb->getQuery()->getResult();    
+    }
+
+    // find all products category and subcategory products where visibility = 1 and product.sellingPrice in between $min and $max
+
+    public function findProductsByPriceMinMax($min, $max): array
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('p, c, sc')
+
+        ->join('p.category', 'c')
+        ->join('c.subCategories', 'sc') 
+
+        ->where('p.visibility = 1')
+        ->andWhere('p.sellingPrice BETWEEN :min AND :max')
+
+        ->setParameter('min', $min)
+        ->setParameter('max', $max)
+
+        ->orderBy('c.listOrder + 0', 'ASC')
+        ->addOrderBy('sc.listOrder + 0', 'ASC');
+
+        return $qb->getQuery()->getResult();    
+    }
+
+    public function search($term)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.name LIKE :searchTerm')
+            //->leftJoin('p.category', 'pc')
+            ->setParameter('searchTerm', '%'.$term.'%')
+            ->getQuery()
+            ->execute();
+
+            // note sytaxe pour plus tard :
+            // ->andWhere('p.name LIKE :searchTerm
+            //     OR p.property1 LIKE :searchTerm
+            //     OR p.property2 LIKE :searchTerm')
+    }
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */

@@ -8,7 +8,9 @@
     <li><a href="{{ path('app_category_index') }}">Catégories</a></li>
     <li><a href="{{ path('app_sub_category_index') }}">Sous Catégories</a></li>
     <li><a href="{{ path('app_product_index') }}">Produits</a></li> 
+    <li><a href="{{ path('app_paginate_products', { 'id': 1 }) }}" title="Pagination des produits">Pagination Produits</a></li> 
     <li><a href="{{ path('app_admin') }}">Admin</a></li>
+    
     {# {% if is_granted('IS_AUTHENTICATED_FULLY') %}
     <li><a href="{{ path('app.logout') }}">Déconnexion</a></li>
     {% else %}

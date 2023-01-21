@@ -39,7 +39,11 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
-    // find all visible products
+    /**
+     * Retourne les produits visibles
+     *
+     * @return array
+     */
     public function findALlVisibleProdcts(): array
     {
         $qb = $this->createQueryBuilder('p');
@@ -67,6 +71,13 @@ class ProductRepository extends ServiceEntityRepository
 
     // find all products category and subcategory products where visibility = 1 and product.sellingPrice in between $min and $max
 
+    /**
+     * Retourne les produits en fonction du prix min et max
+     *
+     * @param [type] $min
+     * @param [type] $max
+     * @return array
+     */
     public function findProductsByPriceMinMax($min, $max): array
     {
         $qb = $this->createQueryBuilder('p');
@@ -87,7 +98,14 @@ class ProductRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();    
     }
 
-    public function search($term)
+    /**
+     * Retourne les produits 
+     * en fonction du terme de recherche
+     *
+     * @param [string] $term
+     * @return void
+     */
+    public function search(string $term): array
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.name LIKE :searchTerm')
@@ -100,6 +118,38 @@ class ProductRepository extends ServiceEntityRepository
             // ->andWhere('p.name LIKE :searchTerm
             //     OR p.property1 LIKE :searchTerm
             //     OR p.property2 LIKE :searchTerm')
+    }
+
+    /**
+     * Retroune l'id pour l'ensemble des produits
+     * @return []
+     */
+    public function findAllProductsId(): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('p.id')
+            ->getQuery();
+        
+            return $query->getResult();
+    }
+
+    /**
+     * Retroune l'id et le name pour le nombre de produit
+     * demandé 
+     * @var perpage int 
+     * @var offset int
+     * @return []
+     */
+    public function findPaginateProducts(int $perPage, int $offset): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('p.id, p.name')
+            ->setFirstResult($offset)
+            ->setMaxResults($perPage)
+            ->orderBy('p.id', 'ASC')
+            ->getQuery();
+
+            return $query->getResult();
     }
 
 //    /**

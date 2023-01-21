@@ -81,4 +81,38 @@ class FrontOfficeController extends AbstractController
         ]);
     }
 
+    // make a pagination query systeme with native doctrine query builder and paginator component of symfony 5 
+    // https://symfony.com/doc/current/components/pagination.html
+
+    /**
+     * @Route("/paginate/{id}", name="app_paginate_products", methods={"GET", "POST"})
+     */
+    public function category(CategoryRepository $cr, ProductRepository $pr, Request $request, $id): Response
+   {
+         // use doctrine query offset and limit to paginate
+
+        // set the number of items per page
+        $perPage = 20;
+        // set the offset to 0 if the page is 1 
+        $offset = ($id - 1) * $perPage;
+        // get the total number of items in the database
+        $totalPage = count($pr->findAllProductsId());
+        // get the total number of pages without float
+        $totalPage = ceil($totalPage / $perPage);
+        // get the current page
+        $currentPage = $id;  
+        // get the offset
+        $offset = ($currentPage - 1) * $perPage;
+        // get the results
+        //$results = $pr->findBy([], ['id' => 'ASC'], $perPage, $offset);
+        $results = $pr->findPaginateProducts($perPage, $offset);
+       
+        return $this->render('front_office/category.html.twig', [
+            'products' => $results,
+            'pageCount' => $totalPage,
+            'currentPage' => $currentPage,
+            'perPage' => $perPage,
+        ]);
+   }
+
 }

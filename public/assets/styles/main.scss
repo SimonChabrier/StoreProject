@@ -110,7 +110,43 @@ tr:nth-child(even) {
     margin: 6px 0;
   }
 
+.pagination ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    li {
+        margin: 0 5px;
+        a {
+            text-decoration: none;
+            color: #cb8431;
+            padding: 5px 10px;
+            border: 1px solid #cb8431;
+            border-radius: 5px;
+            transition: .2s;
+            &:hover {
+                background-color: #cb8431;
+                color: white!important;
+            }
+        }
+    }
+}
 
+.active-paginate-link {
+  text-decoration: none;
+  background-color: #818009;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: 0.2s;
+  &:hover {
+      transition: 0.2s;
+      background-color: #cb8431;
+      color: white!important;
+  }
+}
 
 
 

@@ -21,7 +21,7 @@
 
 {# <button type="submit" name="reset"><a href="{{ path('app_home') }}">Reset</a></button> #}
 <form action="{{ path('app_home') }}" method="post">
-<button type="submit" id="reset_submit" name="resetSearch" value="reset" class="btn-primary btn">Reset</button>
+<button type="submit" id="reset_submit" name="resetSearch" value="reset" class="btn btn-info">Reset</button>
 </form> 
     {% if searchResults is not defined or searchResults|length is same as 0 %}
     {% if searchValue is defined and searchValue|length > 0 %}

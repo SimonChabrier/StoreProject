@@ -32,6 +32,7 @@ class FrontOfficeController extends AbstractController
         // return search results
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
+
             // (int) convert $min and max to integer
             return $this->render('front_office/index.html.twig', [
                 'form' => $form->createView(),

@@ -19,7 +19,7 @@
 {{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
 {{ form_end(form) }}
 
-{% if searchResults is defined %}
+{% if searchResults|length > 0 %}
     <div style="border:1px solid white; padding:30px; border-radius:20px; margin: 20px 0">
     Resultat de la recherche : 
         <ul>

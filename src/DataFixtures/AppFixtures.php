@@ -74,7 +74,7 @@ class AppFixtures extends Fixture
 
         $products = [];
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 200; $i++) {
             $product = new Product();
             $product->setName('product '.($i +1));
             $product->setBuyPrice($faker->numberBetween(80, 1000));

@@ -32,8 +32,8 @@ class FrontOfficeController extends AbstractController
             $term = $data['search'];
 
             // valeurs de test si besoin de fixer une valeur par défaut à passer dans les méthodes du repository
-            $min1 = 100;
-            $max1 = 200;
+            //$min1 = 100;
+            //$max1 = 200;
 
             // convert $min and max to integer
             $min = (int) $min;
@@ -43,13 +43,17 @@ class FrontOfficeController extends AbstractController
             //$results = $cr->findCatsAndSubCatsProductsByPriceMinMax($min, $max);
             $results = $cr->chatGPT2($min, $max);
             //$results = $cr->testOpti($min, $max);
-            dump($results);
+            //dump($results);
             // directement sur les produits du repository product c'est la plus rapide car pas de jointure à faire avec les catégories
-            dump($pr->findProductsByPriceMinMax($min, $max));
+            //dump($pr->findProductsByPriceMinMax($min, $max));
             // product repository
             //$products = $pr->findProductsByPriceMinMax($min, $max);
 
-            $searchResults = $pr->search($term);
+            if($term) {
+                $searchResults = $pr->search($term);
+            } else {
+                $searchResults = [];
+            }
             
             // dump('cr' , $results);
             // dump('pr', $products);
@@ -81,13 +85,10 @@ class FrontOfficeController extends AbstractController
         ]);
     }
 
-    // make a pagination query systeme with native doctrine query builder and paginator component of symfony 5 
-    // https://symfony.com/doc/current/components/pagination.html
-
     /**
      * @Route("/paginate/{id}", name="app_paginate_products", methods={"GET", "POST"})
      */
-    public function category(CategoryRepository $cr, ProductRepository $pr, Request $request, $id): Response
+    public function paginateProducts(ProductRepository $pr, Request $request, $id): Response
    {
          // use doctrine query offset and limit to paginate
 
@@ -107,7 +108,7 @@ class FrontOfficeController extends AbstractController
         //$results = $pr->findBy([], ['id' => 'ASC'], $perPage, $offset);
         $results = $pr->findPaginateProducts($perPage, $offset);
        
-        return $this->render('front_office/category.html.twig', [
+        return $this->render('front_office/productPagination.html.twig', [
             'products' => $results,
             'pageCount' => $totalPage,
             'currentPage' => $currentPage,

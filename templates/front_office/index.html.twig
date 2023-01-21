@@ -19,11 +19,24 @@
 {{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
 {{ form_end(form) }}
 
-{% if searchResults|length > 0 %}
+{# <button type="submit" name="reset"><a href="{{ path('app_home') }}">Reset</a></button> #}
+<form action="{{ path('app_home') }}" method="post">
+<button type="submit" id="reset_submit" name="resetSearch" value="reset" class="btn-primary btn">Reset</button>
+</form> 
+    {% if searchResults is not defined or searchResults|length is same as 0 %}
+    {% if searchValue is defined and searchValue|length > 0 %}
+    <div style="border:1px solid white; padding:30px; border-radius:20px; margin: 20px 0">
+        <ol>
+            <li>Pas de produit trouvé pour la recherche : {{ searchValue }}</li>
+        </ol>
+    </div>
+    {% endif %}
+{% endif %}
+
+{% if searchResults is defined and searchResults|length is not same as 0 %}
     <div style="border:1px solid white; padding:30px; border-radius:20px; margin: 20px 0">
     Resultat de la recherche : 
         <ul>
-        {% if searchResults|length > 0 %}
             {% for product in searchResults %}
                 <li> <a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name|upper }}</a></li>
                 <ul>
@@ -33,13 +46,9 @@
                     <li>Réduction : {{ discount|round(1) }} %</li>  
                 </ul>
             {% endfor %}
-        {% else %}
-            <li>Pas de produit trouvé pour la recherche : {{ searchValue }}</li>
-        {% endif %}
         </ul>
     </div
 {% endif %}
-
 
 <ul>
 {% for cat in cats %}
@@ -53,6 +62,12 @@
                     <li>Prix de vente : {{ product.sellingPrice }} €</li>
                         {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
                     <li>Réduction : {{ discount|round(1) }} %</li>  
+                    {% if product.inStockQuantity > 0 %}
+                        <li> 🟢 {{ product.inStockQuantity }} En stock</li>
+                    {% else %}
+                        <li> 🟠 En rupture de stock</li>
+                    {% endif %}
+                    <li>Stock : </li>  
                     <ul>
                         | Commentaires liés à {{ product.name }} |
                         {% for comment in product.comments %}
@@ -86,6 +101,11 @@
                         <li>Prix de vente : {{ product.sellingPrice }} €</li>
                             {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
                         <li>Réduction : {{ discount|round(1) }} %</li> 
+                        {% if product.inStockQuantity > 0 %}
+                        <li> 🟢 {{ product.inStockQuantity }} En stock</li>
+                        {% else %}
+                            <li> 🟠 En rupture de stock</li>
+                        {% endif %}
                     </ul>
                 {% endif %}
                 {% else %}
@@ -100,8 +120,6 @@
     </ul>
 {% endfor %}
 </ul>
-
-
 
 
 {% endblock %}

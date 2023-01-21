@@ -62,8 +62,9 @@ class SearchType extends AbstractType
                             $context->buildViolation('Vous pouvez renseigner un prix maximum pour une recherche plus précise !')
                                 ->atPath('max')
                                 ->addViolation();
+                        } 
                         // Si le prix minimum et le prix maximum ne sont pas renseignés, on leve une violation de contrainte
-                        } elseif ($min === null && $max === null) {
+                        if ($min === null && $max === null) {
                             $context->buildViolation('Vous devez renseigner un prix minimum ou maximum pour une recherche')
                                 ->atPath('min')
                                 ->addViolation();

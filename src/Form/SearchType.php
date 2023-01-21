@@ -27,7 +27,10 @@ class SearchType extends AbstractType
                 'label' => 'Prix minimum',
                 'required' => false,
                 'constraints' => [
-                    new GreaterThanOrEqual(0),
+                    new GreaterThanOrEqual([
+                        'value' => 10,
+                        'message' => 'Le prix minimum doit être supérieur ou égal à {{ compared_value }}',
+                    ]),
                 ],
             ])
             ->add('max', IntegerType::class, [

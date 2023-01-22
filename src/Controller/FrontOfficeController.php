@@ -18,6 +18,7 @@ class FrontOfficeController extends AbstractController
      */
     public function index(CategoryRepository $cr, ProductRepository $pr, Request $request): Response
     {   
+        dump($pr->findOneBy(['id' => '1']));
 
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);

@@ -29,6 +29,7 @@ class Basket
      */
     private $products;
 
+    
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -74,4 +75,5 @@ class Basket
 
         return $this;
     }
+
 }

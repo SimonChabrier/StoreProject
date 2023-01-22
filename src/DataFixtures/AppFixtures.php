@@ -33,6 +33,8 @@ class AppFixtures extends Fixture
         $this->connexion->executeQuery('TRUNCATE TABLE category');
         $this->connexion->executeQuery('TRUNCATE TABLE sub_category');
         $this->connexion->executeQuery('TRUNCATE TABLE product');
+        $this->connexion->executeQuery('TRUNCATE TABLE user');
+        $this->connexion->executeQuery('TRUNCATE TABLE comment');
     }
 
     public function load(ObjectManager $manager): void
@@ -72,14 +74,22 @@ class AppFixtures extends Fixture
 
         $products = [];
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $product = new Product();
             $product->setName('product '.($i +1));
-            $product->setBuyPrice($faker->numberBetween(80, 1000));
-            $product->setSellingPrice(floor($product->getbuyPrice() + ($product->getbuyPrice() * 0.2)));
-            $product->setCatalogPrice(floor($product->getSellingPrice() + ($product->getbuyPrice() * 0.1)));
+            
+            $product->setInStockQuantity(rand(0, 10));
+            $instock = $product->getInStockQuantity();
+            $instock >= 1 ? $product->setInStock(1) : $product->setInStock(0);
+            $instock >= 1 ? $product->setVisibility(1) : $product->setVisibility(0);
+            $product->setBuyPrice($faker->numberBetween(80, 1000) * 0.8);
+            $margin = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7];
+            $product->setSellingPrice(sprintf('%0.2f',  $product->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
+            $product->setCatalogPrice(sprintf('%0.2f', $product->getSellingPrice() * 1.1));
             $product->setCategory($cats[rand(0, count($cats) - 1)]);
             $product->setSubCategory($subCats[rand(0, count($subCats) - 1)]);
+            
+            //$product->setVisibility(0);
             
             $products[] = $product;
 

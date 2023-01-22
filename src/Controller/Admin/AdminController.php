@@ -7,6 +7,8 @@ use App\Entity\Product;
 use App\Entity\Category;
 use App\Entity\SubCategory;
 use App\Entity\Comment;
+use App\Entity\Basket;
+
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -72,6 +74,8 @@ class AdminController extends AbstractDashboardController
         yield MenuItem::linktoRoute('Accueil Site', 'fa fa-home', 'app_home');
         yield MenuItem::section('Admin Utilisateurs');
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
+        yield MenuItem::linkToCrud('Panier', 'fas fa-shopping-cart', Basket::class);
+
 
         yield MenuItem::section('Admin Navigation');
         yield MenuItem::linkToCrud('Categories', 'fa fa-bars', Category::class);
@@ -82,6 +86,8 @@ class AdminController extends AbstractDashboardController
 
         yield MenuItem::section('Admin Commentaires');
         yield MenuItem::linkToCrud('Commentaires', 'fa fa-comment', Comment::class);
+
+
     }
     /**
      * Personalize Admin Css

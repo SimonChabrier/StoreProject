@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -27,6 +28,9 @@ class UserCrudController extends AbstractCrudController
             TextField::new('username')
                 ->setLabel('Nom d\'utilisateur')
                 ->setRequired(true),
+                // TODO voir si affichage du détail du User
+            // AssociationField::new('baskets')
+            //     ->setLabel('Paniers liés'),
         ];
     }
 

@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 
 class ProductCrudController extends AbstractCrudController
 {
@@ -23,16 +24,20 @@ class ProductCrudController extends AbstractCrudController
             ->setRequired(true),
             
             TextField::new('buyPrice')
-            ->setLabel('Prix d\'achat')
+            ->setLabel('Prix d\'achat HT')
             ->setRequired(true),
             
             TextField::new('sellingPrice')
-            ->setLabel('Prix de vente')
+            ->setLabel('Prix de vente TTC')
             ->setRequired(true),
             
             TextField::new('catalogPrice')
             ->setLabel('Prix catalogue')
             ->setRequired(true),
+
+            TextField::new('tauxMarque')
+            ->setLabel('Taux de marque')
+            ->setFormTypeOption('disabled', true),
             
             AssociationField::new('category')
             ->setLabel('Catégorie')
@@ -41,6 +46,11 @@ class ProductCrudController extends AbstractCrudController
             AssociationField::new('subCategory')
             ->setLabel('Sous-catégorie')
             ->setRequired(true),
+
+            BooleanField::new('visibility')
+            ->setLabel('Visible')
+            ->setRequired(true),
+
         ];
     }
 

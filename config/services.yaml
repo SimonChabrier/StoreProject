@@ -22,3 +22,18 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    
+    # pour le formulaire de recherche je déclare un service
+    #App\Form\SearchType:
+        #public: true
+        #arguments:
+            #- "@session"
+            #- "@=controller"
+        # tags:
+        #     - { name: form.type }
+        
+
+
+            
+
+

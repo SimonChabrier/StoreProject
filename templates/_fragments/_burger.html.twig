@@ -1,0 +1,33 @@
+
+<div id="idSidenav" class="sidenav">
+  <a id="closeBtn" href="#" class="close">&times;</a>
+  <ul>
+    <li><a href="{{ path('app_home') }}">Accueil</a></li>
+    <li><a href="{{ path('app_user_index') }}">Users</a></li>
+    <li><a href="{{ path('app_comment_index') }}">Commentaires</a></li>
+    <li><a href="{{ path('app_category_index') }}">Catégories</a></li>
+    <li><a href="{{ path('app_sub_category_index') }}">Sous Catégories</a></li>
+    <li><a href="{{ path('app_product_index') }}">Produits</a></li> 
+    <li><a href="{{ path('app_paginate_products', { 'id': 1 }) }}" title="Pagination des produits">Pagination Produits</a></li> 
+    <li><a href="{{ path('app_admin') }}">Admin</a></li>
+    
+    {# {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <li><a href="{{ path('app.logout') }}">Déconnexion</a></li>
+    {% else %}
+    <li><a href="{{ path('app.login') }}">Connexion</a></li>
+    {% endif %} #}
+  </ul>
+</div>
+
+<a href="#" id="openBtn">
+  <span class="burger-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </span>
+</a>
+
+{# add script bloc #}
+{% block javascripts %} 
+ <script src="/assets/js/burger.js"></script>
+{% endblock %}

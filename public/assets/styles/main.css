@@ -49,6 +49,18 @@ tr:nth-child(even) {
   color: rgb(255, 255, 255) !important;
 }
 
+.main {
+  width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  margin: 30px auto;
+  padding: 0;
+}
+
 /* Sidenav menu */
 .sidenav {
   height: 100%;
@@ -141,4 +153,8 @@ tr:nth-child(even) {
   transition: 0.2s;
   background-color: #cb8431;
   color: white !important;
+}
+
+.invalid-feedback {
+  padding: 7px 0 !important;
 }/*# sourceMappingURL=main.css.map */

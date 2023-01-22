@@ -14,12 +14,32 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 
+
+
 class SearchType extends AbstractType
-{
+{   
+    //private AbstractController $controller;
+    //private $controller;
+
+    // public function __construct(AbstractController $controller)
+    // {
+    //     //$this->controller = new AbstractController();
+    //     $this->controller = $controller;
+    // }
+    
+    // private $session;
+
+    // public function __construct(SessionInterface $session)
+    // {
+    //     $this->session = $session;
+    // }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -65,6 +85,10 @@ class SearchType extends AbstractType
                             $context->buildViolation('Vous pouvez renseigner un prix maximum pour une recherche plus précise !')
                                 ->atPath('max')
                                 ->addViolation();
+                            
+                            // $this->controller->addFlash('info', 'Vous pouvez renseigner un prix maximum pour une recherche plus précise !');
+
+                            //$this->session->getFlashBag()->add('info', 'Vous pouvez renseigner un prix maximum pour une recherche plus précise !');
                         } 
                         // Si le prix minimum et le prix maximum ne sont pas renseignés, on leve une violation de contrainte
                         if ($min === null && $max === null) {

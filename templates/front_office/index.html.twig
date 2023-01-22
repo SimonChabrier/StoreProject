@@ -3,28 +3,20 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-<h1>Home Page</h1>
-<p>Voici la page d'accueil du site</p>
 
-{# add a form number input for search by price  #}
-
-{# <form action="{{ path('app_home') }}" method="post">
-    <label for="price">Rechercher un produit par prix supérieur à</label>
-    <input type="number" name="price" id="price">
-    <button type="submit">Rechercher</button>
-</form> #}
-
-{# add form with no html 5 validate  #}
-
+<div class="container">
 {{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
 {{ form_end(form) }}
 
-{# <button type="submit" name="reset"><a href="{{ path('app_home') }}">Reset</a></button> #}
 <form action="{{ path('app_home') }}" method="post">
 <button type="submit" id="reset_submit" name="resetSearch" value="reset" class="btn btn-info">Reset</button>
 </form> 
+</div>
+
+
     {% if searchResults is not defined or searchResults|length is same as 0 %}
     {% if searchValue is defined and searchValue|length > 0 %}
+<div class="container">
     <div style="border:1px solid white; padding:30px; border-radius:20px; margin: 20px 0">
         <ol>
             <li>Pas de produit trouvé pour la recherche : {{ searchValue }}</li>
@@ -48,8 +40,10 @@
             {% endfor %}
         </ul>
     </div
+</div>
 {% endif %}
 
+<div class="container">
 <ul>
 {% for cat in cats %}
     <h2><a href="{{ path('app_category_show', {'id': cat.id}) }}">{{ cat.name|upper }}</a></h2>
@@ -120,6 +114,5 @@
     </ul>
 {% endfor %}
 </ul>
-
-
+</div>
 {% endblock %}

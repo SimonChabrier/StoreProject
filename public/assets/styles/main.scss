@@ -53,6 +53,17 @@ tr:nth-child(even) {
     color:rgb(255, 255, 255)!important;
 }
 
+.main {
+    width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    margin: 30px auto;
+    padding: 0;
+}
 
 /* Sidenav menu */
 .sidenav {
@@ -146,6 +157,11 @@ tr:nth-child(even) {
       background-color: #cb8431;
       color: white!important;
   }
+}
+
+// form errors messages
+.invalid-feedback {
+    padding: 7px 0!important;
 }
 
 

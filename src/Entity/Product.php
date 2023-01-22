@@ -50,7 +50,7 @@ class Product
     private $sellingPrice;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="product", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="product", fetch="EXTRA_LAZY", cascade={"remove"})
      */
     private $comments;
 
@@ -79,6 +79,17 @@ class Product
      * @ORM\Column(type="string", length=5)
      */
     private $inStockQuantity = 0;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ProductType::class, inversedBy="products", cascade={"persist"}, fetch="EAGER")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $productType;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $productData = [];
 
     public function __construct()
     {
@@ -288,6 +299,31 @@ class Product
     public function setInStockQuantity(string $inStockQuantity): self
     {
         $this->inStockQuantity = $inStockQuantity;
+
+        return $this;
+    }
+
+    public function getProductType(): ?ProductType
+    {
+        return $this->productType;
+    }
+
+    public function setProductType(?ProductType $productType): self
+    {
+        $this->productType = $productType;
+
+        return $this;
+    }
+
+    public function getProductData(): ?array
+    {
+        return $this->productData;
+    }
+
+    public function setProductData(?array $productData): self
+    {   
+
+        $this->productData = $productData;
 
         return $this;
     }

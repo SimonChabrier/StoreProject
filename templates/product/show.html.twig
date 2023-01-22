@@ -3,20 +3,46 @@
 {% block title %}Product{% endblock %}
 
 {% block body %}
-    <h1>Product</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ product.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ product.name }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <h1>{{ product.id }} | {{ product.name|title }}</h1>
+    
+    <hr>
+    - Categorie : <a href="{{ path('app_category_show', { 'id': product.category.id }) }}">{{ product.category|capitalize   }}</a>
+    <br>
+    - Sous-Categorie : <a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}"> {{ product.subCategory|capitalize }}</a>
+
+    <hr>
+    - Propriétés du produit
+    
+    <hr>
+        <ol>
+            <li>Nom : {{ product.name }}</li>
+            <li>Stock : {{ product.inStockQuantity }}</li>
+            <li>Prix : {{ product.sellingPrice }} €</li>
+        </ol>
+
+    <hr>
+    - Attributs liés au produit
+
+    <hr>
+    <ol>
+        <li> - Type : {{ product.productType.name|capitalize }}</li>
+    </ol>
+
+        {% for index, attribute in product.productType.attributes %}   
+        <hr> 
+           - Attribut {{ index + 1 }} lié à {{ product.productType.name|capitalize }} est : {{ attribute.name|capitalize }}
+        
+
+        <ol>
+        {% for index, value in attribute.attributeValues %}  
+        <hr>
+            <li>Valeur {{ index + 1 }} de l'attribut {{ attribute.name|capitalize }} : {{ value.name|capitalize }}</li>
+            {# <li>{{ value.name|capitalize }}</li> #}
+        {% endfor %}
+        </ol>
+    {% endfor %}
+
 
     <a href="{{ path('app_product_index') }}">back to list</a>
 

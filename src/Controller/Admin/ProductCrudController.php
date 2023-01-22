@@ -3,11 +3,16 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Product;
+use Symfony\Component\Form\ChoiceList\ChoiceList;
+use App\Controller\Admin\ProductTypeCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use Symfony\Component\Form\FormTypeInterface;
 
 class ProductCrudController extends AbstractCrudController
 {
@@ -50,6 +55,25 @@ class ProductCrudController extends AbstractCrudController
             BooleanField::new('visibility')
             ->setLabel('Visible')
             ->setRequired(true),
+
+            AssociationField::new('productType')
+            ->setLabel('Types de produits')
+            ->setRequired(true),
+                // use other CrudController to manage the related entities
+                // ->setFormTypeOption('entry_type', ProductTypeCrudController::class),
+
+            // ChoiceField::new('productType')
+            // ->setLabel('Types de produits')
+            // ->setChoices([
+                
+            // ]),
+
+            // CollectionField::new('productAttributes')
+            // ->setLabel('Attributs')
+            // ->setFormTypeOption('by_reference', false)
+            // ->setFormTypeOption('multiple', true)
+            // ->setFormTypeOption('expanded', true)
+    
 
         ];
     }

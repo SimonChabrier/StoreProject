@@ -87,7 +87,7 @@ class Product
     private $productType;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @ORM\Column(type="json", nullable=true)
      */
     private $productData = [];
 
@@ -316,7 +316,8 @@ class Product
     }
 
     public function getProductData(): ?array
-    {
+    {   
+        
         return $this->productData;
     }
 

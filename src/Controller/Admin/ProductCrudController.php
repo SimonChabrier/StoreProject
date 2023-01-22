@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Product;
+use App\Form\ProductDataType;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\ChoiceList\ChoiceList;
 use App\Controller\Admin\ProductTypeCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
@@ -12,7 +14,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use Symfony\Component\Form\FormTypeInterface;
 
 class ProductCrudController extends AbstractCrudController
 {
@@ -68,13 +69,13 @@ class ProductCrudController extends AbstractCrudController
                 
             // ]),
 
-            // CollectionField::new('productAttributes')
-            // ->setLabel('Attributs')
-            // ->setFormTypeOption('by_reference', false)
-            // ->setFormTypeOption('multiple', true)
-            // ->setFormTypeOption('expanded', true)
-    
+            // use ProdctDataType to manage prodcut data (attributes)
+            CollectionField::new('productData')
+            ->setLabel('Données produit')
+            ->setEntryType(ProductDataType::class, [])
+            // set complex form type
 
+            
         ];
     }
 

@@ -51,7 +51,8 @@ class ProductController extends AbstractController
      * @Route("/{id}", name="app_product_show", methods={"GET"})
      */
     public function show(Product $product): Response
-    {
+    {   
+        dump($product);
         return $this->render('product/show.html.twig', [
             'product' => $product,
         ]);

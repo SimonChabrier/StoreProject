@@ -34,6 +34,11 @@ class ProductType
      */
     private $products;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=TypeFamilly::class, inversedBy="types")
+     */
+    private $typeFamilly;
+
     public function __construct()
     {
         $this->attributes = new ArrayCollection();
@@ -121,6 +126,18 @@ class ProductType
                 $product->setProductType(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTypeFamilly(): ?TypeFamilly
+    {
+        return $this->typeFamilly;
+    }
+
+    public function setTypeFamilly(?TypeFamilly $typeFamilly): self
+    {
+        $this->typeFamilly = $typeFamilly;
 
         return $this;
     }

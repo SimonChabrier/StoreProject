@@ -12,19 +12,32 @@
     - Sous-Categorie : <a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}"> {{ product.subCategory|capitalize }}</a>
 
     <hr>
-    - Propriétés du produit
     
+    - Propriétés du produit
     <hr>
         <ol>
             <li>Nom : {{ product.name }}</li>
             <li>Stock : {{ product.inStockQuantity }}</li>
+            <li>Visible : {{ (product.visibility) ? 'Oui' : 'Non' }}</li>
             <li>Prix : {{ product.sellingPrice }} €</li>
         </ol>
 
     <hr>
-    - Attributs liés au produit
 
+    - Liste des caractéristiques du produit
     <hr>
+        <ol>
+        {% for index, data in product.productData %}
+            
+                <li>{{ data.key|capitalize }} : {{ data.value|capitalize }}</li>
+            
+        {% endfor %}
+        </ol>
+    <hr>
+
+    - Attributs liés au produit
+    <hr>
+
     <ol>
         <li> - Type : {{ product.productType.name|capitalize }}</li>
     </ol>
@@ -32,16 +45,27 @@
         {% for index, attribute in product.productType.attributes %}   
         <hr> 
            - Attribut {{ index + 1 }} lié à {{ product.productType.name|capitalize }} est : {{ attribute.name|capitalize }}
+        <hr>
         
-
         <ol>
         {% for index, value in attribute.attributeValues %}  
-        <hr>
             <li>Valeur {{ index + 1 }} de l'attribut {{ attribute.name|capitalize }} : {{ value.name|capitalize }}</li>
-            {# <li>{{ value.name|capitalize }}</li> #}
         {% endfor %}
         </ol>
     {% endfor %}
+
+    <hr>
+
+    - Commentaires liés au produit
+    <hr>
+    {% for index, comment in product.comments %}
+        <ol>
+            <li>Posté par : {{ comment.author }}</li>
+            <li>Commentaire : {{ comment.text }}</li>
+        </ol>
+    {% endfor %}
+
+
 
 
     <a href="{{ path('app_product_index') }}">back to list</a>

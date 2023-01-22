@@ -16,6 +16,7 @@ use App\Entity\ProductAttribute;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Controller\Admin\CategoryCrudController;
+use App\Entity\TypeFamilly;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -87,6 +88,7 @@ class AdminController extends AbstractDashboardController
         yield MenuItem::section('Admin Produits');
         yield MenuItem::linkToCrud('Produits', 'fa fa-tag', Product::class);
 
+        yield MenuItem::linkToCrud('TypeFamily.php', 'fa fa-tag', TypeFamilly::class);
         yield MenuItem::linkToCrud('ProductType.php', 'fa fa-tag', ProductType::class);
         yield MenuItem::linkToCrud('ProductAttribute.php', 'fa fa-tag', ProductAttribute::class);
         yield MenuItem::linkToCrud('AttributeValue.php', 'fa fa-tag', AttributeValue::class);

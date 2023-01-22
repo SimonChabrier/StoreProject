@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ProductAttribute index{% endblock %}
+
+{% block body %}
+    <h1>ProductAttribute index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for product_attribute in product_attributes %}
+            <tr>
+                <td>{{ product_attribute.id }}</td>
+                <td>{{ product_attribute.name }}</td>
+                <td>{{ product_attribute.type }}</td>
+                <td>
+                    <a href="{{ path('app_product_attribute_show', {'id': product_attribute.id}) }}">show</a>
+                    <a href="{{ path('app_product_attribute_edit', {'id': product_attribute.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_product_attribute_new') }}">Create new</a>
+{% endblock %}

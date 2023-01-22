@@ -3,13 +3,16 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Entity\Basket;
+use App\Entity\Comment;
 use App\Entity\Product;
 use App\Entity\Category;
+use App\Entity\ProductType;
+
+
 use App\Entity\SubCategory;
-use App\Entity\Comment;
-use App\Entity\Basket;
-
-
+use App\Entity\AttributeValue;
+use App\Entity\ProductAttribute;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Controller\Admin\CategoryCrudController;
@@ -83,6 +86,10 @@ class AdminController extends AbstractDashboardController
        
         yield MenuItem::section('Admin Produits');
         yield MenuItem::linkToCrud('Produits', 'fa fa-tag', Product::class);
+
+        yield MenuItem::linkToCrud('ProductType.php', 'fa fa-tag', ProductType::class);
+        yield MenuItem::linkToCrud('ProductAttribute.php', 'fa fa-tag', ProductAttribute::class);
+        yield MenuItem::linkToCrud('AttributeValue.php', 'fa fa-tag', AttributeValue::class);
 
         yield MenuItem::section('Admin Commentaires');
         yield MenuItem::linkToCrud('Commentaires', 'fa fa-comment', Comment::class);

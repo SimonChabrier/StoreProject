@@ -4,33 +4,40 @@
 
 {% block body %}
 
-    <h1>{{ product.id }} | {{ product.name|capitalize }}</h1>
+    <h1>{{ product.id }} | {{ product.name|title }}</h1>
     
     <hr>
-    Categorie : <a href="{{ path('app_category_show', { 'id': product.category.id }) }}">{{ product.category|capitalize   }}</a>
+    - Categorie : <a href="{{ path('app_category_show', { 'id': product.category.id }) }}">{{ product.category|capitalize   }}</a>
     <br>
-    Sous-Categorie : <a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}"> {{ product.subCategory|capitalize }}</a>
+    - Sous-Categorie : <a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}"> {{ product.subCategory|capitalize }}</a>
 
     <hr>
-    Propriétés produit
+    - Propriétés du produit
     
     <hr>
-    Nom : {{ product.name }}<br>
-    Stock : {{ product.inStockQuantity }}<br>
-    Prix : {{ product.sellingPrice }} €<br>
+        <ol>
+            <li>Nom : {{ product.name }}</li>
+            <li>Stock : {{ product.inStockQuantity }}</li>
+            <li>Prix : {{ product.sellingPrice }} €</li>
+        </ol>
 
     <hr>
-    Attributs liés au produit
+    - Attributs liés au produit
 
     <hr>
-    Type : {{ product.productType.name|capitalize }}<hr>
+    <ol>
+        <li> - Type : {{ product.productType.name|capitalize }}</li>
+    </ol>
 
-        {% for index, attribute in product.productType.attributes %}    
-           Attribut {{ index + 1 }} lié à {{ product.productType.name|capitalize }} est : {{ attribute.name|capitalize }}
+        {% for index, attribute in product.productType.attributes %}   
+        <hr> 
+           - Attribut {{ index + 1 }} lié à {{ product.productType.name|capitalize }} est : {{ attribute.name|capitalize }}
         
+
         <ol>
         {% for index, value in attribute.attributeValues %}  
-            <hr>Valeur {{ index + 1 }} de l'attribut {{ attribute.name|capitalize }} : {{ value.name|capitalize }}<hr>
+        <hr>
+            <li>Valeur {{ index + 1 }} de l'attribut {{ attribute.name|capitalize }} : {{ value.name|capitalize }}</li>
             {# <li>{{ value.name|capitalize }}</li> #}
         {% endfor %}
         </ol>

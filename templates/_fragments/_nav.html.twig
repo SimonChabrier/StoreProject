@@ -1,0 +1,22 @@
+<nav>
+  <ul>
+    <li><a href="{{ path('app_home') }}">Accueil</a></li>
+    <li class="vertical-bar">|</li>
+    <li><a href="{{ path('app_user_index') }}">Users</a></li>
+    <li class="vertical-bar">|</li>
+    <li><a href="{{ path('app_comment_index') }}">Commentaires</a></li>
+    <li class="vertical-bar">|</li>
+    <li><a href="{{ path('app_category_index') }}">Catégories</a></li>
+    <li class="vertical-bar">|</li>
+    <li><a href="{{ path('app_sub_category_index') }}">Sous Catégories</a></li>
+    <li class="vertical-bar">|</li>
+    <li><a href="{{ path('app_product_index') }}">Produits</a></li> 
+    <li class="vertical-bar">|</li>
+    <li><a href="{{ path('app_admin') }}">Admin</a></li>
+    {# {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <li><a href="{{ path('app.logout') }}">Déconnexion</a></li>
+    {% else %}
+    <li><a href="{{ path('app.login') }}">Connexion</a></li>
+    {% endif %} #}
+  </ul>
+</nav>

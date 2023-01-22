@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+{% block title %}Paginate{% endblock %}
+{% block body %}
+
+
+<ol>
+    {% for product in products %}
+        <li>{{ product.name }}</li>
+    {% endfor %}
+</ol>
+
+{% if pageCount > 1 %}
+        <!-- Pagination -->
+        {# Page quantity to show around current page is 2 or a calculated minimum value #}
+        {% set defaultPageQuantityAround = 2 %}
+        {# Mininum value #}
+        {% set minimumPageQuantityAround = min(currentPage - 1, pageCount - currentPage) %}
+        {# Condition to show the right page numbers before current page: default or minimum value #}
+        {% set conditionBefore = currentPage != 1 and minimumPageQuantityAround <= currentPage - 1 %}
+        {# Condition to show the right page numbers after current page: default or minimum value #}
+        {% set conditionAfter = currentPage != pageCount and minimumPageQuantityAround <= pageCount - currentPage %}
+        {# Define page numbers before, other pages will be replaced by "..." #}
+        {% set PageQuantityAroundBefore = conditionBefore ? defaultPageQuantityAround : minimumPageQuantityAround %}
+        {# Define page numbers after, other pages will be replaced by "..." #}
+        {% set PageQuantityAroundAfter = conditionAfter ? defaultPageQuantityAround : minimumPageQuantityAround %}
+        <div class="pagination">
+            <ul>
+                {# Previous link #}
+                {% if currentPage - 1 != 0 %}
+                <li><a class="st-color-yellow" href="{{ path('app_paginate_products', { 'id': currentPage - 1 }) }}" title="Previous"><span class="uk-margin-small-right" uk-pagination-previous></span> Previous</a></li>
+                {% endif %}
+                {% for i in 1..pageCount %}
+                {# Current page to show #}
+                {% if currentPage == i %}
+                <li class="active-paginate-link">{{ i }}</li>
+        {# Show "..." before current page depending on page numbers to show before #}
+        {# {% elseif (i < currentPage and 1 != i) and (i == currentPage - PageQuantityAroundBefore - 1) %} #}
+        {# <li class="uk-disabled">...</li> #}
+        {# Show "..." after current page depending on page numbers to show after #}
+        {# {% elseif (i > currentPage and pageCount != i) and (i == currentPage + PageQuantityAroundAfter + 1) %} #}
+        {# <li class="uk-disabled">...</li> #}
+        {# Hide pages under current page and before "..." excepted page 1 #}
+                {% elseif (1 != i) and (i < currentPage - PageQuantityAroundBefore - 1) %}
+                <li class="uk-hidden"><a href="{{ path('app_paginate_products', { 'id': i }) }}" title="Page {{ i }}">{{ i }}</a></li>
+                {# Hide pages over current page and after "..." excepted page with number "pageCount" (last) #}
+                {% elseif (pageCount != i) and (i > currentPage + PageQuantityAroundAfter + 1) %}
+                <li class="uk-hidden"><a href="{{ path('app_paginate_products', { 'id': i }) }}" title="Page {{ i }}">{{ i }}</a></li>
+                {# Apply particular style for lowest link corresponding to fisrt page 1, and Highest link corresponding to page total count #}
+                {% elseif i == 1 or i == pageCount %}
+                <li><a class="st-color-blue" href="{{ path('app_paginate_products', { 'id': i }) }}" title="Page {{ i }}">{{ i }}</a></li>
+                {# Normal links which are not concerned by conditions above #}
+                {% else %}
+                <li><a href="{{ path('app_paginate_products', { 'id': i }) }}" title="Page {{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {# Next link #}
+                {% if currentPage + 1 <= pageCount %}
+                <li class="uk-margin-auto-left"><a class="st-color-yellow" href="{{ path('app_paginate_products', { 'id': currentPage + 1 }) }}" title="Next">Next <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+
+
+
+{% endblock %}

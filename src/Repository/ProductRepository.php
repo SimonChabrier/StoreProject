@@ -39,6 +39,119 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Retourne les produits visibles
+     *
+     * @return array
+     */
+    public function findALlVisibleProdcts(): array
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->select('p')   
+            ->andWhere('p.visibility = 1')
+            ->orderBy('p.id', 'asc');
+            
+        return $qb->getQuery()->getResult();
+    }
+
+    // find all products category and subcategory products where visibility = 1
+    public function test(): array
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('p, c, sc')
+        ->join('p.category', 'c')
+        ->join('c.subCategories', 'sc') 
+        ->where('p.visibility = 1')
+        ->orderBy('c.listOrder + 0', 'ASC')
+        ->addOrderBy('sc.listOrder + 0', 'ASC');
+
+        return $qb->getQuery()->getResult();    
+    }
+
+    // find all products category and subcategory products where visibility = 1 and product.sellingPrice in between $min and $max
+
+    /**
+     * Retourne les produits en fonction du prix min et max
+     *
+     * @param [type] $min
+     * @param [type] $max
+     * @return array
+     */
+    public function findProductsByPriceMinMax($min, $max): array
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('p, c, sc')
+
+        ->join('p.category', 'c')
+        ->join('c.subCategories', 'sc') 
+
+        ->where('p.visibility = 1')
+        ->andWhere('p.sellingPrice BETWEEN :min AND :max')
+
+        ->setParameter('min', $min)
+        ->setParameter('max', $max)
+
+        ->orderBy('c.listOrder + 0', 'ASC')
+        ->addOrderBy('sc.listOrder + 0', 'ASC');
+
+        return $qb->getQuery()->getResult();    
+    }
+
+    /**
+     * Retourne les produits 
+     * en fonction du terme de recherche
+     *
+     * @param [string] $term
+     * @return void
+     */
+    public function search(string $term): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.name LIKE :searchTerm')
+            //->leftJoin('p.category', 'pc')
+            ->setParameter('searchTerm', '%'.$term.'%')
+            ->getQuery()
+            ->execute();
+
+            // note sytaxe pour plus tard :
+            // ->andWhere('p.name LIKE :searchTerm
+            //     OR p.property1 LIKE :searchTerm
+            //     OR p.property2 LIKE :searchTerm')
+    }
+
+    /**
+     * Retroune l'id pour l'ensemble des produits
+     * @return []
+     */
+    public function findAllProductsId(): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('p.id')
+            ->getQuery();
+        
+            return $query->getResult();
+    }
+
+    /**
+     * Retroune l'id et le name pour le nombre de produit
+     * demandé 
+     * @var perpage int 
+     * @var offset int
+     * @return []
+     */
+    public function findPaginateProducts(int $perPage, int $offset): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('p.id, p.name')
+            ->setFirstResult($offset)
+            ->setMaxResults($perPage)
+            ->orderBy('p.id', 'ASC')
+            ->getQuery();
+
+            return $query->getResult();
+    }
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */

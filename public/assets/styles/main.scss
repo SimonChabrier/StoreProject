@@ -23,7 +23,6 @@ a {
 
 ol ul {
     padding: 0 0 0 10px;
-
 }
 
 table {
@@ -33,10 +32,10 @@ table {
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     th, td {
-        padding: .4rem!important;
+        padding: 0.4rem !important;
         text-align: left;
-        background-color: #dbdada!important;
-        color: black;
+        background-color: #161616 !important;
+        color: #d6d6d6;
     }
 
     tr {
@@ -53,3 +52,117 @@ tr:nth-child(even) {
     background-color: rgb(39, 39, 39)!important;
     color:rgb(255, 255, 255)!important;
 }
+
+.main {
+    width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    margin: 30px auto;
+    padding: 0;
+}
+
+/* Sidenav menu */
+.sidenav {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: -250px;
+    background-color: gray;
+    padding-top: 60px;
+    transition: left 0.5s ease;
+  }
+  
+  .sidenav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Sidenav menu links */
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: black!important;
+    display: block;
+    transition:.2s;
+  }
+  
+  .sidenav a:hover {
+    color: whitesmoke;
+    transition: .5s;
+  }
+  
+  /* Active class change left position to 0
+     and display sidebar */
+  .sidenav.active {
+    left: 0;
+  }
+  
+  /* Close btn */
+  .sidenav .close {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+  }
+  
+  .burger-icon span {
+    display: block;
+    width: 35px;
+    height: 5px;
+    background-color: white;
+    margin: 6px 0;
+  }
+
+.pagination ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    li {
+        margin: 0 5px;
+        a {
+            text-decoration: none;
+            color: #cb8431;
+            padding: 5px 10px;
+            border: 1px solid #cb8431;
+            border-radius: 5px;
+            transition: .2s;
+            &:hover {
+                background-color: #cb8431;
+                color: white!important;
+            }
+        }
+    }
+}
+
+.active-paginate-link {
+  text-decoration: none;
+  background-color: #818009;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: 0.2s;
+  &:hover {
+      transition: 0.2s;
+      background-color: #cb8431;
+      color: white!important;
+  }
+}
+
+// form errors messages
+.invalid-feedback {
+    padding: 7px 0!important;
+}
+
+
+

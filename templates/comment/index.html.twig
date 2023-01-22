@@ -8,9 +8,10 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Comment Id</th>
+                <th>Product Id</th>
                 <th>Author</th>
-                <th>Text</th>
+                <th>Comment</th>
                 <th>Email</th>
                 <th>actions</th>
             </tr>
@@ -19,7 +20,8 @@
         {% for comment in comments %}
             <tr>
                 <td>{{ comment.id }}</td>
-                <td>{{ comment.author }}</td>
+                <td><a href="{{ path('app_product_show', {'id': comment.product.id}) }}">{{ comment.product.id }}</a></td>
+                <td><a href="{{ path('app_user_show', {'id': comment.id}) }}">{{ comment.author }}</a></td>
                 <td>{{ comment.text }}</td>
                 <td>{{ comment.email }}</td>
                 <td>

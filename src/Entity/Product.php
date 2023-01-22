@@ -25,12 +25,12 @@ class Product
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products", fetch="EXTRA_LAZY")
      */
     private $category;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SubCategory::class, inversedBy="products")
+     * @ORM\ManyToOne(targetEntity=SubCategory::class, inversedBy="products", fetch="EXTRA_LAZY")
      */
     private $subCategory;
 
@@ -50,13 +50,40 @@ class Product
     private $sellingPrice;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="product")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="product", fetch="EXTRA_LAZY")
      */
     private $comments;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Basket::class, mappedBy="products", fetch="EXTRA_LAZY")
+     */
+    private $baskets;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $visibility = 1;
+
+    /**
+     * Permet de calculer la marge brute d'un produit
+     * n'est pas persisté en base de données
+     */
+    private $tauxMarque;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $inStock = 0;
+
+    /**
+     * @ORM\Column(type="string", length=5)
+     */
+    private $inStockQuantity = 0;
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->baskets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -166,6 +193,101 @@ class Product
                 $comment->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Basket>
+     */
+    public function getBaskets(): Collection
+    {
+        return $this->baskets;
+    }
+
+    public function addBasket(Basket $basket): self
+    {
+        if (!$this->baskets->contains($basket)) {
+            $this->baskets[] = $basket;
+            $basket->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBasket(Basket $basket): self
+    {
+        if ($this->baskets->removeElement($basket)) {
+            $basket->removeProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function isVisibility(): ?bool
+    {
+        return $this->visibility;
+    }
+
+    public function setVisibility(bool $visibility): self
+    {
+        $this->visibility = $visibility;
+
+        return $this;
+    }
+
+    public function tauxMarque(): ?string
+    {   
+        // On calcule la marge commerciale HT pour easyAdmin
+        //TODO A paufiner et vérifier la formule de calcul
+
+        // pour EasyAdmin on retourne 0 si le prix d'achat ou de vente est à 0
+        // pour ne pas avoir de division par 0 et donc une erreur à la création d'un produit
+        if ($this->buyPrice == 0 || $this->sellingPrice == 0) {
+            return '0 %';
+        }
+        
+        $achatHt = $this->buyPrice * 0.8;
+        $venteHt = $this->sellingPrice * 0.8;
+
+        $margeCommerciale = $venteHt - $achatHt;
+        $tauxDeMarge = ($margeCommerciale / $achatHt) * 100;
+        $tauxDeMarque = ($margeCommerciale / $venteHt) * 100;
+
+        $result = round($tauxDeMarge , 2) . ' %';
+        if ($result <= 25) {
+            return '🔴 ' . $this->tauxMarque = $result;
+        } elseif ($result > 25 && $result <= 40) {
+            return '🟡 ' . $this->tauxMarque = $result;
+        } elseif ($result > 40) {
+            return '🟢 ' .$this->tauxMarque = $result;
+        } else {
+            return $this->tauxMarque = 'informations incomplètes';
+        }
+
+        //return $this->tauxMarque = round($tauxDeMarque , 2) . ' %';
+    }
+
+    public function isInStock(): ?bool
+    {
+        return $this->inStock;
+    }
+
+    public function setInStock(bool $inStock): self
+    {
+        $this->inStock = $inStock;
+
+        return $this;
+    }
+
+    public function getInStockQuantity(): ?string
+    {
+        return $this->inStockQuantity;
+    }
+
+    public function setInStockQuantity(string $inStockQuantity): self
+    {
+        $this->inStockQuantity = $inStockQuantity;
 
         return $this;
     }

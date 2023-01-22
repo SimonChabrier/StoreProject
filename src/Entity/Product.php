@@ -50,7 +50,7 @@ class Product
     private $sellingPrice;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="product", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="product", fetch="EXTRA_LAZY", cascade={"remove"})
      */
     private $comments;
 

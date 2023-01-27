@@ -17,47 +17,18 @@ class ProductDataType extends AbstractType
     // utilisé pour le formulaire d'ajout de caratériqtiques produit dans le CRUD Product
     // EassyAdmin
     public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
+    {   
+
         $builder
 
         ->add('key', TextType::class, [
-            'label' => 'Propriété :', 
+            'label' => 'Propriété :',
         ])
         ->add('value', TextType::class, [
             'label' => 'Valeur',
         ]);
-        // add choices to your form
-        // ->add('value', ChoiceType::class, [
-        //     'choices' => [
-        //         'Choix 1' => 'Choix 1',
-        //         'Choix 2' => 'Choix 2',
-        //         'Choix 3' => 'Choix 3',
-        //     ],
-        //     'label' => 'Valeur',
-        // ]);
-
-            // ->add('key', CollectionType::class, [
-            //     'entry_type' => TextType::class,
-            //     'entry_options' => [
-            //         'label' => false,
-            //     ],
-            //     'allow_add' => true,
-            //     'allow_delete' => true,
-            //     'by_reference' => false,
-            //     'label' => 'Clé',
-            //     'required' => true,
-            // ])
-            // ->add('value', CollectionType::class, [
-            //     'entry_type' => TextType::class,
-            //     'entry_options' => [
-            //         'label' => false,
-            //     ],
-            //     'allow_add' => true,
-            //     'allow_delete' => true,
-            //     'by_reference' => false,
-            //     'label' => 'Valeur',
-            //     'required' => true,
-            // ])
+        $options['template'] = 'bundles/EasyAdminBundle/crud/field/collection.html.twig';
+        
         ;
     }
 

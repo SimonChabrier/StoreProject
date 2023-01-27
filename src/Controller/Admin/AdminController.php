@@ -59,8 +59,6 @@ class AdminController extends AbstractDashboardController
             ->setFaviconPath('favicon.ico')
             ->renderContentMaximized()
             //->renderSidebarMinimized()
-
-
             //->setTranslationDomain('admin')
             //->setTranslationParameters(['%username%' => $this->getUser()->getUsername()])
         ;

@@ -30,14 +30,9 @@
     - Liste des caractéristiques de CE produit (ProductData de la Class Product)
     <hr>
         <ol>
-        {# {% for index, data in product.productData %}
+        {% for index, data in product.productData %}
             
                 <li>{{ data.key|capitalize }} : {{ data.value|capitalize }}</li>
-            
-        {% endfor %} #}
-        {% for index, value in product.productData %}
-            
-                <li>{{ index|capitalize }} : {{ value|capitalize }}</li>
             
         {% endfor %}
         </ol>

@@ -3,12 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ProductType;
-use App\Form\SetProductAttributeType;
-use Symfony\Component\Form\FormTypeInterface;
-use App\Repository\ProductAttributeRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use App\Controller\Admin\ProductAttributeCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 

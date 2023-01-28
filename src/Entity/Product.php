@@ -25,12 +25,20 @@ class Product
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(
+     *      targetEntity=Category::class, 
+     *      inversedBy="products", 
+     *      fetch="EXTRA_LAZY"
+     *  )
      */
     private $category;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SubCategory::class, inversedBy="products", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(
+     *      targetEntity=SubCategory::class, 
+     *      inversedBy="products", 
+     *      fetch="EXTRA_LAZY"
+     *  )
      */
     private $subCategory;
 
@@ -48,11 +56,6 @@ class Product
      * @ORM\Column(type="string", length=10)
      */
     private $sellingPrice;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="product", fetch="EXTRA_LAZY", cascade={"remove"})
-     */
-    private $comments;
 
     /**
      * @ORM\Column(type="boolean")
@@ -76,10 +79,25 @@ class Product
     private $inStockQuantity = 0;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ProductType::class, inversedBy="products", cascade={"persist"}, fetch="EAGER")
+     * @ORM\ManyToOne(
+     *      targetEntity=ProductType::class, 
+     *      inversedBy="products", 
+     *      cascade={"persist"}, 
+     *      fetch="EAGER"
+     *  )
      * @ORM\JoinColumn(nullable=false)
      */
     private $productType;
+
+    /**
+     * @ORM\OneToMany(
+     *      targetEntity=Comment::class, 
+     *      mappedBy="product", 
+     *      fetch="EXTRA_LAZY", 
+     *      cascade={"remove"}
+     *  )
+     */
+    private $comments;
 
     /**
      * @ORM\Column(type="json", nullable=true)

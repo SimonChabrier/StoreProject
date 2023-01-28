@@ -7,10 +7,13 @@
     <h1>{{ product.id }} | {{ product.name|title }}</h1>
     
     <hr>
-    - Categorie : <a href="{{ path('app_category_show', { 'id': product.category.id }) }}">{{ product.category|capitalize   }}</a>
+    {% if product.category %}
+    - Categorie : <a href="{{ path('app_category_show', { 'id': product.category.id }) }}">{{ product.category|capitalize }}</a>
+    {% endif %}
     <br>
+    {% if product.subCategory %}
     - Sous-Categorie : <a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}"> {{ product.subCategory|capitalize }}</a>
-
+    {% endif %}
     <hr>
     
     - Propriétés du produit
@@ -24,37 +27,22 @@
 
     <hr>
 
-    - Liste des caractéristiques du produit
+    - Liste des caractéristiques de CE produit (ProductData de la Class Product)
     <hr>
         <ol>
-        {% for index, data in product.productData %}
+        {# {% for index, data in product.productData %}
             
                 <li>{{ data.key|capitalize }} : {{ data.value|capitalize }}</li>
+            
+        {% endfor %} #}
+        {% for index, value in product.productData %}
+            
+                <li>{{ index|capitalize }} : {{ value|capitalize }}</li>
             
         {% endfor %}
         </ol>
     <hr>
 
-    - Attributs liés au produit
-    <hr>
-
-    <ol>
-        <li> - Type : {{ product.productType.name|capitalize }}</li>
-    </ol>
-
-        {% for index, attribute in product.productType.attributes %}   
-        <hr> 
-           - Attribut {{ index + 1 }} lié à {{ product.productType.name|capitalize }} est : {{ attribute.name|capitalize }}
-        <hr>
-        
-        {# <ol>
-        {% for index, value in attribute.attributeValues %}  
-            <li>Valeur {{ index + 1 }} de l'attribut {{ attribute.name|capitalize }} : {{ value.name|capitalize }}</li>
-        {% endfor %}
-        </ol> #}
-    {% endfor %}
-
-    <hr>
 
     - Commentaires liés au produit
     <hr>

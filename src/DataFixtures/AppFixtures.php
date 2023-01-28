@@ -76,6 +76,8 @@ class AppFixtures extends Fixture
 
          // Foreach category Femme Homme et Enfant create 4 subcategories! Bam!
 
+         $subCats = [];
+
         foreach($cats as $cat) {
             if ($cat->getName() === 'Femme' || $cat->getName() === 'Homme' || $cat->getName() === 'Enfant') {
                 for ($i = 0; $i < 4; $i++) {
@@ -86,6 +88,8 @@ class AppFixtures extends Fixture
                     $subCat->getName() === 'Chaussures' ? $subCat->setListOrder(20) : '';
                     $subCat->getName() === 'Accessoires' ? $subCat->setListOrder(30) : '';
                     $subCat->getName() === 'Soldes' ? $subCat->setListOrder(40) : '';
+
+                    $subCats[] = $subCat;
                     
                     $cat->addSubCategory($subCat);
                     $manager->persist($subCat);
@@ -146,11 +150,11 @@ class AppFixtures extends Fixture
             $product->setCatalogPrice(sprintf('%0.2f', $product->getSellingPrice() * 1.1));
             
             //SousCats = ['Vétements', 'Chaussures', 'Accessoires', 'Soldes'];
-            // $product->getName() === 'Baskets Nike' ? $product->setSubCategory($subCats[1]) : '';
-            // $product->getName() === 'T-shirt Adidas' ? $product->setSubCategory($subCats[0]) : '';
-            // $product->getName() === 'Stop Disque' ? $product->setSubCategory($subCats[2]) : '';
-            // $product->getName() === 'Jean Levis' ? $product->setSubCategory($subCats[0]) : '';
-            // $product->getName() === 'Baskets Puma' ? $product->setSubCategory($subCats[3]) : '';
+            $product->getName() === 'Baskets Nike' ? $product->setSubCategory($subCats[1]) : '';
+            $product->getName() === 'T-shirt Adidas' ? $product->setSubCategory($subCats[0]) : '';
+            $product->getName() === 'Stop Disque' ? $product->setSubCategory($subCats[2]) : '';
+            $product->getName() === 'Jean Levis' ? $product->setSubCategory($subCats[0]) : '';
+            $product->getName() === 'Baskets Puma' ? $product->setSubCategory($subCats[3]) : '';
             
 
             //types = ['jean', 'tea-shirt', 'baskets', 'accessoires musculation'];
@@ -160,12 +164,24 @@ class AppFixtures extends Fixture
             $product->getName() === 'Jean Levis' ? $product->setProductType($productTypes[0]) : '';
             $product->getName() === 'Baskets Puma' ? $product->setProductType($productTypes[2]) : '';
 
+            // TODO : set productData colection key value mais ça va pas car il faut un {
+            //     "1": {
+            //         "key": "clé1",
+            //         "value": "valeur"
+            //     },
+            //     "2": {
+            //         "key": "clé 2",
+            //         "value": "valeur"
+            //     }
+            // }
+            //  et ça fait {"cle":"valeur"} et ça marche pas
+
             // set productData colection key value
-            $product->getName() === 'T-shirt Adidas' ? $product->setProductData(['taille' => 'L', 'couleur' => 'noir', 'marque' => 'Nike', 'genre' => 'homme', 'matiere' => 'coton']) : '';
-            $product->getName() === 'Baskets Nike' ? $product->setProductData(['taille' => '42', 'couleur' => 'noir', 'marque' => 'Nike', 'genre' => 'homme', 'matiere' => 'cuir']) : '';
-            $product->getName() === 'Jean Levis' ? $product->setProductData(['taille' => 'L', 'couleur' => 'bleu', 'marque' => 'Levis', 'genre' => 'homme', 'matiere' => 'coton']) : '';
-            $product->getName() === 'Stop Disque' ? $product->setProductData(['poids' => '10kg', 'couleur' => 'noir', 'marque' => 'Adidas', 'genre' => 'homme', 'matiere' => 'acier']) : '';
-            $product->getName() === 'Baskets Puma' ? $product->setProductData(['taille' => '42', 'couleur' => 'noir', 'marque' => 'Puma', 'genre' => 'homme', 'matiere' => 'cuir']) : '';
+            // $product->getName() === 'T-shirt Adidas' ? $product->setProductData(['taille' => 'L', 'couleur' => 'noir', 'marque' => 'Nike', 'genre' => 'homme', 'matiere' => 'coton']) : '';
+            // $product->getName() === 'Baskets Nike' ? $product->setProductData(['taille' => '42', 'couleur' => 'noir', 'marque' => 'Nike', 'genre' => 'homme', 'matiere' => 'cuir']) : '';
+            // $product->getName() === 'Jean Levis' ? $product->setProductData(['taille' => 'L', 'couleur' => 'bleu', 'marque' => 'Levis', 'genre' => 'homme', 'matiere' => 'coton']) : '';
+            // $product->getName() === 'Stop Disque' ? $product->setProductData(['poids' => '10kg', 'couleur' => 'noir', 'marque' => 'Adidas', 'genre' => 'homme', 'matiere' => 'acier']) : '';
+            // $product->getName() === 'Baskets Puma' ? $product->setProductData(['taille' => '42', 'couleur' => 'noir', 'marque' => 'Puma', 'genre' => 'homme', 'matiere' => 'cuir']) : '';
             
 
             //$product->setVisibility(0);

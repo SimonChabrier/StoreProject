@@ -61,14 +61,7 @@ class AppFixtures extends Fixture
             $category->getName() === 'Nutrition' ? $category->setListOrder(50) : '';
             $category->getName() === 'Soldes' ? $category->setListOrder(60) : '';
             $category->getName() === 'Services' ? $category->setListOrder(70) : '';
-            
-            // link each subcat to each category
-            // $category->addSubCategory($subCats[0]);
-            // $category->addSubCategory($subCats[1]);
-            // $category->addSubCategory($subCats[2]);
-            // $category->addSubCategory($subCats[3]);
-
-
+        
             $cats[] = $category;
             
             $manager->persist($category);
@@ -97,23 +90,6 @@ class AppFixtures extends Fixture
             }
         }
 
-
-        //  $subCats = [];
-
-        //  for ($i = 0; $i < 4; $i++) {
-        //      $names = ['Vétements', 'Chaussures', 'Accessoires', 'Soldes'];
-        //      $subCat = new SubCategory();
-        //      $subCat->setName($names[$i]);
-        //      $subCat->getName() === 'Vétements' ? $subCat->setListOrder(10) : '';
-        //      $subCat->getName() === 'Chaussures' ? $subCat->setListOrder(20) : '';
-        //      $subCat->getName() === 'Accessoires' ? $subCat->setListOrder(30) : '';
-        //      $subCat->getName() === 'Soldes' ? $subCat->setListOrder(40) : '';
-             
-        //      $subCats[] = $subCat;
-        //      $manager->persist($subCat);
-        //  }
-
-        // link each subcat to each category equipement et nutrition
 
         // create 3 product type ! Bam!
         $productTypes = [];
@@ -163,25 +139,6 @@ class AppFixtures extends Fixture
             $product->getName() === 'Stop Disque' ? $product->setProductType($productTypes[3]) : ''; 
             $product->getName() === 'Jean Levis' ? $product->setProductType($productTypes[0]) : '';
             $product->getName() === 'Baskets Puma' ? $product->setProductType($productTypes[2]) : '';
-
-            // TODO : set productData colection key value mais ça va pas car il faut un {
-            //     "1": {
-            //         "key": "clé1",
-            //         "value": "valeur"
-            //     },
-            //     "2": {
-            //         "key": "clé 2",
-            //         "value": "valeur"
-            //     }
-            // }
-            //  et ça fait {"cle":"valeur"} et ça marche pas
-
-            // set productData colection key value
-            // $product->getName() === 'T-shirt Adidas' ? $product->setProductData(['taille' => 'L', 'couleur' => 'noir', 'marque' => 'Nike', 'genre' => 'homme', 'matiere' => 'coton']) : '';
-            // $product->getName() === 'Baskets Nike' ? $product->setProductData(['taille' => '42', 'couleur' => 'noir', 'marque' => 'Nike', 'genre' => 'homme', 'matiere' => 'cuir']) : '';
-            // $product->getName() === 'Jean Levis' ? $product->setProductData(['taille' => 'L', 'couleur' => 'bleu', 'marque' => 'Levis', 'genre' => 'homme', 'matiere' => 'coton']) : '';
-            // $product->getName() === 'Stop Disque' ? $product->setProductData(['poids' => '10kg', 'couleur' => 'noir', 'marque' => 'Adidas', 'genre' => 'homme', 'matiere' => 'acier']) : '';
-            // $product->getName() === 'Baskets Puma' ? $product->setProductData(['taille' => '42', 'couleur' => 'noir', 'marque' => 'Puma', 'genre' => 'homme', 'matiere' => 'cuir']) : '';
             
             // set productData colection key value with index in each json entry 
 
@@ -191,8 +148,13 @@ class AppFixtures extends Fixture
             $product->getName() === 'Stop Disque' ? $product->setProductData(['1' => ['key' => 'poids', 'value' => '10kg'], '2' => ['key' => 'couleur', 'value' => 'noir'], '3' => ['key' => 'marque', 'value' => 'Adidas'], '4' => ['key' => 'genre', 'value' => 'homme'], '5' => ['key' => 'matiere', 'value' => 'acier']]) : '';
             $product->getName() === 'Baskets Puma' ? $product->setProductData(['1' => ['key' => 'taille', 'value' => '42'], '2' => ['key' => 'couleur', 'value' => 'noir'], '3' => ['key' => 'marque', 'value' => 'Puma'], '4' => ['key' => 'genre', 'value' => 'homme'], '5' => ['key' => 'matiere', 'value' => 'cuir']]) : '';
             
-
-            //$product->setVisibility(0);
+            // CATS = ['Femme', 'Homme', 'Enfant', 'Equipement', 'Nutrition', 'Soldes', 'Services'];
+            //Add category to product by name 
+            $product->getName() === 'Baskets Nike' ? $product->setCategory($cats[1]) : '';
+            $product->getName() === 'T-shirt Adidas' ? $product->setCategory($cats[2]) : '';
+            $product->getName() === 'Stop Disque' ? $product->setCategory($cats[3]) : '';
+            $product->getName() === 'Jean Levis' ? $product->setCategory($cats[1]) : '';
+            $product->getName() === 'Baskets Puma' ? $product->setCategory($cats[5]) : '';
             
             $products[] = $product;
 

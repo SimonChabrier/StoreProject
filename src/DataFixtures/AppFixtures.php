@@ -90,7 +90,7 @@ class AppFixtures extends Fixture
                     $subCat->getName() === 'Soldes' ? $subCat->setListOrder(40) : '';
 
                     $subCats[] = $subCat;
-                    
+
                     $cat->addSubCategory($subCat);
                     $manager->persist($subCat);
                 }
@@ -182,6 +182,14 @@ class AppFixtures extends Fixture
             // $product->getName() === 'Jean Levis' ? $product->setProductData(['taille' => 'L', 'couleur' => 'bleu', 'marque' => 'Levis', 'genre' => 'homme', 'matiere' => 'coton']) : '';
             // $product->getName() === 'Stop Disque' ? $product->setProductData(['poids' => '10kg', 'couleur' => 'noir', 'marque' => 'Adidas', 'genre' => 'homme', 'matiere' => 'acier']) : '';
             // $product->getName() === 'Baskets Puma' ? $product->setProductData(['taille' => '42', 'couleur' => 'noir', 'marque' => 'Puma', 'genre' => 'homme', 'matiere' => 'cuir']) : '';
+            
+            // set productData colection key value with index in each json entry 
+
+            $product->getName() === 'T-shirt Adidas' ? $product->setProductData(['1' => ['key' => 'taille', 'value' => 'L'], '2' => ['key' => 'couleur', 'value' => 'noir'], '3' => ['key' => 'marque', 'value' => 'Nike'], '4' => ['key' => 'genre', 'value' => 'homme'], '5' => ['key' => 'matiere', 'value' => 'coton']]) : '';
+            $product->getName() === 'Baskets Nike' ? $product->setProductData(['1' => ['key' => 'taille', 'value' => '42'], '2' => ['key' => 'couleur', 'value' => 'noir'], '3' => ['key' => 'marque', 'value' => 'Nike'], '4' => ['key' => 'genre', 'value' => 'homme'], '5' => ['key' => 'matiere', 'value' => 'cuir']]) : '';
+            $product->getName() === 'Jean Levis' ? $product->setProductData(['1' => ['key' => 'taille', 'value' => 'L'], '2' => ['key' => 'couleur', 'value' => 'bleu'], '3' => ['key' => 'marque', 'value' => 'Levis'], '4' => ['key' => 'genre', 'value' => 'homme'], '5' => ['key' => 'matiere', 'value' => 'coton']]) : '';
+            $product->getName() === 'Stop Disque' ? $product->setProductData(['1' => ['key' => 'poids', 'value' => '10kg'], '2' => ['key' => 'couleur', 'value' => 'noir'], '3' => ['key' => 'marque', 'value' => 'Adidas'], '4' => ['key' => 'genre', 'value' => 'homme'], '5' => ['key' => 'matiere', 'value' => 'acier']]) : '';
+            $product->getName() === 'Baskets Puma' ? $product->setProductData(['1' => ['key' => 'taille', 'value' => '42'], '2' => ['key' => 'couleur', 'value' => 'noir'], '3' => ['key' => 'marque', 'value' => 'Puma'], '4' => ['key' => 'genre', 'value' => 'homme'], '5' => ['key' => 'matiere', 'value' => 'cuir']]) : '';
             
 
             //$product->setVisibility(0);

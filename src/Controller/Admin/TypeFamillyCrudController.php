@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\TypeFamilly;
+
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -21,6 +22,7 @@ class TypeFamillyCrudController extends AbstractCrudController
             TextField::new('name')
                 ->setLabel('Nom')
                 ->setRequired(true),
+
             AssociationField::new('types')
             ->setFormTypeOptions([
                 'by_reference' => false,

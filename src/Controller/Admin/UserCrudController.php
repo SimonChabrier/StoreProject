@@ -21,16 +21,15 @@ class UserCrudController extends AbstractCrudController
         return [
             TextField::new('lastName')
                 ->setLabel('Nom')
-                ->setRequired(true),   
+                ->setRequired(true),  
+
             TextField::new('firstName')
              ->setLabel('Prénom')
              ->setRequired(true),
+
             TextField::new('username')
                 ->setLabel('Nom d\'utilisateur')
                 ->setRequired(true),
-                // TODO voir si affichage du détail du User
-            // AssociationField::new('baskets')
-            //     ->setLabel('Paniers liés'),
         ];
     }
 

@@ -3,26 +3,23 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
-use App\Entity\Basket;
-use App\Entity\Comment;
+
+
 use App\Entity\Product;
-use App\Entity\Category;
+use App\Entity\Comment;
+//use App\Entity\ProductAttribute;
 use App\Entity\ProductType;
-
-
+use App\Entity\TypeFamilly;
+use App\Entity\Category;
 use App\Entity\SubCategory;
-use App\Entity\AttributeValue;
-use App\Entity\ProductAttribute;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Controller\Admin\CategoryCrudController;
-use App\Entity\TypeFamilly;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 
 // Code source perso 
@@ -76,8 +73,6 @@ class AdminController extends AbstractDashboardController
         yield MenuItem::linktoRoute('Accueil Site', 'fa fa-home', 'app_home');
         yield MenuItem::section('Admin Utilisateurs');
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
-        yield MenuItem::linkToCrud('Panier', 'fas fa-shopping-cart', Basket::class);
-
 
         yield MenuItem::section('Admin Navigation');
         yield MenuItem::linkToCrud('Categories', 'fa fa-bars', Category::class);
@@ -88,8 +83,7 @@ class AdminController extends AbstractDashboardController
 
         yield MenuItem::linkToCrud('TypeFamily.php', 'fa fa-tag', TypeFamilly::class);
         yield MenuItem::linkToCrud('ProductType.php', 'fa fa-tag', ProductType::class);
-        yield MenuItem::linkToCrud('ProductAttribute.php', 'fa fa-tag', ProductAttribute::class);
-        yield MenuItem::linkToCrud('AttributeValue.php', 'fa fa-tag', AttributeValue::class);
+        //yield MenuItem::linkToCrud('ProductAttribute.php', 'fa fa-tag', ProductAttribute::class);;
 
         yield MenuItem::section('Admin Commentaires');
         yield MenuItem::linkToCrud('Commentaires', 'fa fa-comment', Comment::class);

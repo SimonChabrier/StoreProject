@@ -34,15 +34,10 @@ class ProductAttribute
      */
     private $productTypes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=AttributeValue::class, mappedBy="productAttribute", cascade={"persist", "remove"}, fetch="EAGER")
-     */
-    private $attributeValues;
 
     public function __construct()
     {
         $this->productTypes = new ArrayCollection();
-        $this->attributeValues = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -106,33 +101,4 @@ class ProductAttribute
         return $this->name;
     }
 
-    /**
-     * @return Collection<int, AttributeValue>
-     */
-    public function getAttributeValues(): Collection
-    {
-        return $this->attributeValues;
-    }
-
-    public function addAttributeValue(AttributeValue $attributeValue): self
-    {
-        if (!$this->attributeValues->contains($attributeValue)) {
-            $this->attributeValues[] = $attributeValue;
-            $attributeValue->setProductAttribute($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAttributeValue(AttributeValue $attributeValue): self
-    {
-        if ($this->attributeValues->removeElement($attributeValue)) {
-            // set the owning side to null (unless already changed)
-            if ($attributeValue->getProductAttribute() === $this) {
-                $attributeValue->setProductAttribute(null);
-            }
-        }
-
-        return $this;
-    }
 }

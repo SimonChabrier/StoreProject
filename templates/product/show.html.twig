@@ -47,11 +47,11 @@
            - Attribut {{ index + 1 }} lié à {{ product.productType.name|capitalize }} est : {{ attribute.name|capitalize }}
         <hr>
         
-        <ol>
+        {# <ol>
         {% for index, value in attribute.attributeValues %}  
             <li>Valeur {{ index + 1 }} de l'attribut {{ attribute.name|capitalize }} : {{ value.name|capitalize }}</li>
         {% endfor %}
-        </ol>
+        </ol> #}
     {% endfor %}
 
     <hr>

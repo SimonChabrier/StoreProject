@@ -32,7 +32,7 @@ class SubCategoryCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Sous categorie')
             ->setEntityLabelInPlural('Sous categories')
             ->setSearchFields(['name', 'listOrder'])
-            ->setDefaultSort(['listOrder' => 'ASC'])
+           // ->setDefaultSort(['listOrder' => 'ASC'])
             ->setPaginatorPageSize(20)
 
             // Si je n'ai pas fermé la visibilité dans la sidebar dans AdminController.php : configureMenuItems()
@@ -59,8 +59,8 @@ class SubCategoryCrudController extends AbstractCrudController
             TextField::new('listOrder', 'Ordre d\'affichage')
             ->setRequired(true),
 
-            AssociationField::new('categories', 'Catégories liées')
-            // Pour afficher le nom des catégories liées à la sous-catégorie
+            AssociationField::new('categories', 'Catégorie')
+            // Display categories names or 'Aucune catégorie liée' if no category in those subcategories
             ->formatValue(function ($value, $entity) {
                 $categories = $entity->getCategories();
                 $categoryNames = [];
@@ -72,6 +72,7 @@ class SubCategoryCrudController extends AbstractCrudController
                 }
                 return implode(', ', $categoryNames);
             })
+
             ->setFormTypeOptions([
                 'by_reference' => false,
                 'multiple' => true,
@@ -86,7 +87,18 @@ class SubCategoryCrudController extends AbstractCrudController
                 'multiple' => true,
                 'expanded' => true,
                 'choice_label' => 'name',
-            ]),
+            ])
+        // display products count or 'Aucun produit' if no product in those subcategories
+            ->formatValue(function ($value, $entity) {
+                $products = $entity->getProducts();
+                foreach ($products as $product) {
+                    $productNames[] = $product->getName();
+                }
+                if(empty($productNames)) {
+                    return 'Aucun produit';
+                }
+                return count($products);
+            }),
         ];
     }
 

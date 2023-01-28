@@ -62,7 +62,18 @@ class CategoryCrudController extends AbstractCrudController
                 'multiple' => true,
                 'expanded' => true,
                 'choice_label' => 'name',
-            ]),
+            ])
+            // display products count or 'Aucun produit' if no product in those categories
+            ->formatValue(function ($value, $entity) {
+                $products = $entity->getProducts();
+                foreach ($products as $product) {
+                    $productNames[] = $product->getName();
+                }
+                if (empty($productNames)) {
+                    return 'Aucun produit';
+                }
+                return count($products);
+            }),
         ];
     }
 

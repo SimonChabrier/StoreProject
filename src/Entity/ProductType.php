@@ -25,23 +25,18 @@ class ProductType
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity=ProductAttribute::class, inversedBy="productTypes", fetch="EAGER")
-     */
-    private $attributes;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="productType", cascade={"persist"}, fetch="EAGER")
+     * @ORM\OneToMany(
+     *      targetEntity=Product::class, 
+     *      mappedBy="productType", 
+     *      cascade={"persist"}, 
+     *      fetch="EAGER"
+     *  )
      */
     private $products;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=TypeFamilly::class, inversedBy="types")
-     */
-    private $typeFamilly;
 
     public function __construct()
     {
-        $this->attributes = new ArrayCollection();
         $this->products = new ArrayCollection();
     }
 
@@ -62,42 +57,9 @@ class ProductType
         return $this;
     }
 
-    /**
-     * @return Collection<int, ProductAttribute>
-     */
-    public function getAttributes(): Collection
-    {
-        return $this->attributes;
-    }
-
-    public function addAttribute(ProductAttribute $attribute): self
-    {
-        if (!$this->attributes->contains($attribute)) {
-            $this->attributes[] = $attribute;
-        }
-
-        return $this;
-    }
-
-    public function removeAttribute(ProductAttribute $attribute): self
-    {
-        $this->attributes->removeElement($attribute);
-
-        return $this;
-    }
-
     public function __toString()
     {
-        // retourner le nom de tous les attributs de ce type
-        // $attributes = $this->getAttributes();
-        // $attributesNames = [];
-        // foreach ($attributes as $attribute) {
-        //     $attributesNames[] = $attribute->getName();
-        // }
-
-        // return $this->getName() . implode(', ', $attributesNames);
         return $this->getName();
-
     }
 
     /**
@@ -130,15 +92,4 @@ class ProductType
         return $this;
     }
 
-    public function getTypeFamilly(): ?TypeFamilly
-    {
-        return $this->typeFamilly;
-    }
-
-    public function setTypeFamilly(?TypeFamilly $typeFamilly): self
-    {
-        $this->typeFamilly = $typeFamilly;
-
-        return $this;
-    }
 }

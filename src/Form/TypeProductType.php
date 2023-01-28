@@ -6,14 +6,20 @@ use App\Entity\ProductType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class ProductTypeType extends AbstractType
+class TypeProductType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('attributes')
+            ->add('name', TextType::class, [
+                'label' => 'Type de produit',
+                'attr' => [
+                    'placeholder' => 'Eg: chaussure, vêtement, accessoire, etc.',
+                    'class' => 'form-control',
+                ],
+            ])
         ;
     }
 

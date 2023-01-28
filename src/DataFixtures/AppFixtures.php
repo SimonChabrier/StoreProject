@@ -5,10 +5,11 @@ namespace App\DataFixtures;
 use App\Entity\Category;
 use App\Entity\SubCategory;
 use App\Entity\Product;
+use App\Entity\ProductType;
+
 use App\Entity\User;
 use App\Entity\Comment;
-use App\Entity\ProductType;
-use App\Entity\ProductAttribute;
+
 
 use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
@@ -38,7 +39,6 @@ class AppFixtures extends Fixture
         $this->connexion->executeQuery('TRUNCATE TABLE user');
         $this->connexion->executeQuery('TRUNCATE TABLE comment');
         $this->connexion->executeQuery('TRUNCATE TABLE product_type');
-        $this->connexion->executeQuery('TRUNCATE TABLE product_attribute');
     }
 
     public function load(ObjectManager $manager): void
@@ -47,28 +47,45 @@ class AppFixtures extends Fixture
 
         $faker = Faker::create('fr_FR');
 
+       
+        // create Subcats! Bam!
         $subCats = [];
-        
-        // create 20 Subcat! Bam!
-        for ($i = 0; $i < 5; $i++) {
+
+        for ($i = 0; $i < 4; $i++) {
+            $names = ['Vétements', 'Chaussures', 'Accessoires', 'Soldes'];
             $subCat = new SubCategory();
-            $subCat->setName('SubCat '.($i +1));
-            $subCat->setListOrder(rand(0, 9999));
+            $subCat->setName($names[$i]);
+            $subCat->getName() === 'Vétements' ? $subCat->setListOrder(10) : '';
+            $subCat->getName() === 'Chaussures' ? $subCat->setListOrder(20) : '';
+            $subCat->getName() === 'Accessoires' ? $subCat->setListOrder(30) : '';
+            $subCat->getName() === 'Soldes' ? $subCat->setListOrder(40) : '';
+            
             $subCats[] = $subCat;
             $manager->persist($subCat);
         }
 
         $cats = [];
 
-        //create 4 categories! Bam!
-        for ($i = 0; $i < 4; $i++) {
+        //create Categories! Bam!
+        for ($i = 0; $i < 7; $i++) {
             $category = new Category();
-            $category->setName('category '.($i +1));
-            $category->setListOrder(rand(0, 9999));
-            // liens vers les sous catégories
-            for ($j = 0; $j < 5; $j++) {
-                $category->addSubCategory($subCats[rand(0, count($subCats) - 1)]);
-            }
+            $names = ['Femme', 'Homme', 'Enfant', 'Equipement', 'Nutrition', 'Soldes', 'Services'];
+            $category->setName($names[$i]);
+            $category->getName() === 'Homme' ? $category->setListOrder(10) : '';
+            $category->getName() === 'Femme' ? $category->setListOrder(20) : '';
+            $category->getName() === 'Enfant' ? $category->setListOrder(30) : '';
+            $category->getName() === 'Equipement' ? $category->setListOrder(40) : '';
+            $category->getName() === 'Nutrition' ? $category->setListOrder(50) : '';
+            $category->getName() === 'Soldes' ? $category->setListOrder(60) : '';
+            $category->getName() === 'Services' ? $category->setListOrder(70) : '';
+            
+            // link each subcat to each category
+            $category->addSubCategory($subCats[0]);
+            $category->addSubCategory($subCats[1]);
+            $category->addSubCategory($subCats[2]);
+            $category->addSubCategory($subCats[3]);
+
+
             $cats[] = $category;
             
             $manager->persist($category);
@@ -76,63 +93,61 @@ class AppFixtures extends Fixture
 
         // create 3 product type ! Bam!
         $productTypes = [];
-        $productAttributes = [];
 
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 4; $i++) {
             $productType = new ProductType();
-            $names = ['jean', 'tea-shirt', 'baskets'];
+            $names = ['jean', 'tea-shirt', 'baskets', 'accessoires musculation'];
             // iterrate over the array to set name in order of array 
             $productType->setName($names[$i]);
 
             $productTypes[] = $productType;
             $manager->persist($productType);
         }
-
-        // create 3 product attributes! Bam!
-        for ($i = 0; $i < 3; $i++) {
-            $productAttribute = new ProductAttribute();
-
-            $names = ['pointure', 'couleur', 'taille'];
-            $productAttribute->setName($names[$i]);
-
-            $type = ['text', 'number'];
-            // set text if != couleur
-            if($names[$i] != 'couleur'){
-                $productAttribute->setType($type[0]);
-            }else{
-                $productAttribute->setType($type[1]);
-            }
-
-            $productAttributes[] = $productAttribute;
-            $productAttribute->addProductType($productTypes[rand(0, count($productTypes) - 1)]);
-            $manager->persist($productAttribute);
-        }
-
-        foreach($productTypes as $productType){
-            $productType->addAttribute($productAttributes[rand(0, count($productAttributes) - 1)]);
-            $manager->persist($productType);
-        }
         
-        // create 20 products! Bam!
+        // create products! Bam!
 
         $products = [];
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $product = new Product();
-            $product->setName('product '.($i +1));
+
+            $names = ['Baskets Nike', 'T-shirt Adidas', 'Stop Disque', 'Jean Levis', 'Baskets Puma'];
+
+            $product->setName($names[$i]);
             
             $product->setInStockQuantity(rand(0, 10));
             $instock = $product->getInStockQuantity();
             $instock >= 1 ? $product->setInStock(1) : $product->setInStock(0);
             $instock >= 1 ? $product->setVisibility(1) : $product->setVisibility(0);
             $product->setBuyPrice($faker->numberBetween(80, 1000) * 0.8);
+            
             $margin = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7];
             $product->setSellingPrice(sprintf('%0.2f',  $product->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
             $product->setCatalogPrice(sprintf('%0.2f', $product->getSellingPrice() * 1.1));
-            $product->setCategory($cats[rand(0, count($cats) - 1)]);
-            $product->setSubCategory($subCats[rand(0, count($subCats) - 1)]);
-            $product->setProductType($productTypes[rand(0, count($productTypes) - 1)]);
             
+            //SousCats = ['Vétements', 'Chaussures', 'Accessoires', 'Soldes'];
+            $product->getName() === 'Baskets Nike' ? $product->setSubCategory($subCats[1]) : '';
+            $product->getName() === 'T-shirt Adidas' ? $product->setSubCategory($subCats[0]) : '';
+            $product->getName() === 'Stop Disque' ? $product->setSubCategory($subCats[2]) : '';
+            $product->getName() === 'Jean Levis' ? $product->setSubCategory($subCats[0]) : '';
+            $product->getName() === 'Baskets Puma' ? $product->setSubCategory($subCats[3]) : '';
+            
+
+            //types = ['jean', 'tea-shirt', 'baskets', 'accessoires musculation'];
+            $product->getName() === 'Baskets Nike' ? $product->setProductType($productTypes[2]) : '';
+            $product->getName() === 'T-shirt Adidas' ? $product->setProductType($productTypes[1]) : '';
+            $product->getName() === 'Stop Disque' ? $product->setProductType($productTypes[3]) : ''; 
+            $product->getName() === 'Jean Levis' ? $product->setProductType($productTypes[0]) : '';
+            $product->getName() === 'Baskets Puma' ? $product->setProductType($productTypes[2]) : '';
+
+            // set productData colection key value
+            $product->getName() === 'T-shirt Adidas' ? $product->setProductData(['taille' => 'L', 'couleur' => 'noir', 'marque' => 'Nike', 'genre' => 'homme', 'matiere' => 'coton']) : '';
+            $product->getName() === 'Baskets Nike' ? $product->setProductData(['taille' => '42', 'couleur' => 'noir', 'marque' => 'Nike', 'genre' => 'homme', 'matiere' => 'cuir']) : '';
+            $product->getName() === 'Jean Levis' ? $product->setProductData(['taille' => 'L', 'couleur' => 'bleu', 'marque' => 'Levis', 'genre' => 'homme', 'matiere' => 'coton']) : '';
+            $product->getName() === 'Stop Disque' ? $product->setProductData(['poids' => '10kg', 'couleur' => 'noir', 'marque' => 'Adidas', 'genre' => 'homme', 'matiere' => 'acier']) : '';
+            $product->getName() === 'Baskets Puma' ? $product->setProductData(['taille' => '42', 'couleur' => 'noir', 'marque' => 'Puma', 'genre' => 'homme', 'matiere' => 'cuir']) : '';
+            
+
             //$product->setVisibility(0);
             
             $products[] = $product;
@@ -141,8 +156,8 @@ class AppFixtures extends Fixture
         }
 
         $user = [];
-        // create 30 user with faker ! Bam!
-        for ($i = 0; $i < 30; $i++) {
+        // create user with faker ! Bam!
+        for ($i = 0; $i < 3; $i++) {
             $user = new User();
             $user->setFirstName($faker->firstName);
             $user->setLastName($faker->lastName);
@@ -155,8 +170,8 @@ class AppFixtures extends Fixture
 
         $comments = [];
 
-        // create 30 comments with faker ! Bam!
-        for ($i = 0; $i < 30; $i++) {
+        // create comments with faker ! Bam!
+        for ($i = 0; $i < 10; $i++) {
             $comment = new Comment();
             $comment->setAuthor($users[rand(0, count($users) - 1)]->getFullName());
             $comment->setEmail($faker->email);

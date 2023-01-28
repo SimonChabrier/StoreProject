@@ -7,8 +7,6 @@ use App\Entity\Category;
 use App\Entity\SubCategory;
 use App\Entity\ProductType as ProductTypeEntity;
 
-use App\Form\SetProductType;
-use App\Form\SetProductAttributeType;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

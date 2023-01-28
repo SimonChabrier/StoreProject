@@ -8,7 +8,6 @@ use App\Entity\Product;
 use App\Entity\User;
 use App\Entity\Comment;
 use App\Entity\ProductType;
-use App\Entity\ProductAttribute;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
@@ -38,7 +37,6 @@ class AppFixtures extends Fixture
         $this->connexion->executeQuery('TRUNCATE TABLE user');
         $this->connexion->executeQuery('TRUNCATE TABLE comment');
         $this->connexion->executeQuery('TRUNCATE TABLE product_type');
-        $this->connexion->executeQuery('TRUNCATE TABLE product_attribute');
     }
 
     public function load(ObjectManager $manager): void
@@ -76,7 +74,6 @@ class AppFixtures extends Fixture
 
         // create 3 product type ! Bam!
         $productTypes = [];
-        $productAttributes = [];
 
         for ($i = 0; $i < 3; $i++) {
             $productType = new ProductType();
@@ -85,31 +82,6 @@ class AppFixtures extends Fixture
             $productType->setName($names[$i]);
 
             $productTypes[] = $productType;
-            $manager->persist($productType);
-        }
-
-        // create 3 product attributes! Bam!
-        for ($i = 0; $i < 3; $i++) {
-            $productAttribute = new ProductAttribute();
-
-            $names = ['pointure', 'couleur', 'taille'];
-            $productAttribute->setName($names[$i]);
-
-            $type = ['text', 'number'];
-            // set text if != couleur
-            if($names[$i] != 'couleur'){
-                $productAttribute->setType($type[0]);
-            }else{
-                $productAttribute->setType($type[1]);
-            }
-
-            $productAttributes[] = $productAttribute;
-            $productAttribute->addProductType($productTypes[rand(0, count($productTypes) - 1)]);
-            $manager->persist($productAttribute);
-        }
-
-        foreach($productTypes as $productType){
-            $productType->addAttribute($productAttributes[rand(0, count($productAttributes) - 1)]);
             $manager->persist($productType);
         }
         

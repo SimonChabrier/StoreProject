@@ -34,14 +34,10 @@ class User
      */
     private $username;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Basket::class, mappedBy="user")
-     */
-    private $baskets;
 
     public function __construct()
     {
-        $this->baskets = new ArrayCollection();
+    
     }
 
     public function getId(): ?int
@@ -85,35 +81,6 @@ class User
         return $this;
     }
 
-    /**
-     * @return Collection<int, Basket>
-     */
-    public function getBaskets(): Collection
-    {
-        return $this->baskets;
-    }
-
-    public function addBasket(Basket $basket): self
-    {
-        if (!$this->baskets->contains($basket)) {
-            $this->baskets[] = $basket;
-            $basket->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBasket(Basket $basket): self
-    {
-        if ($this->baskets->removeElement($basket)) {
-            // set the owning side to null (unless already changed)
-            if ($basket->getUser() === $this) {
-                $basket->setUser(null);
-            }
-        }
-
-        return $this;
-    } 
 
     // retrun firstName + lastName  
     public function getFullName(): string

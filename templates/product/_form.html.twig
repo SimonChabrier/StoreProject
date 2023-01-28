@@ -1,4 +1,70 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+ {{ form_start(form) }}
+ {{ form_row(form.name) }}
+ {{ form_row(form.buyPrice) }}
+ {{ form_row(form.sellingPrice) }}
+ {{ form_row(form.catalogPrice) }}
+ {{ form_row(form.visibility) }}
+ {{ form_row(form.category) }}
+ {{ form_row(form.subCategory) }}
+ {{ form_row(form.productType) }}
+
+    {# Gestion de la collection - nécéssite le JS des balises script #}
+<hr>
+     <h3>Collection d'attributs produit</h3>
+    <button type="button" class="add_item_link btn btn-primary" data-collection="productData">Ajouter</button>
+    <button type="button" class="remove_item_link btn btn-danger" data-collection="productData">Supprimer</button>
+
+    <ul class="productData"
+    data-index="{{ form.productData|length > 0 ? form.productData|last.vars.name + 1 : 0 }}"
+    data-prototype="{{ form_widget(form.productData.vars.prototype)|e('html_attr') }}"
+    >
+    </ul>
+
+<hr>
+    <button class="btn btn-success">{{ button_label|default('Enregistrer le produit') }}</button>
+
 {{ form_end(form) }}
+
+<script> 
+    
+    const addFormToCollection = (e) => {
+    const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collection);
+
+    const item = document.createElement('li');
+
+    item.innerHTML = collectionHolder
+    .dataset
+    .prototype
+    .replace(
+        /__name__/g,
+        collectionHolder.dataset.index
+    );
+
+    collectionHolder.appendChild(item);
+
+    collectionHolder.dataset.index++;
+    };
+
+    document.querySelectorAll('.add_item_link').forEach(btn => {
+        btn.addEventListener("click", addFormToCollection)
+    });
+
+    // remove last li on click using .remove_item_link
+    const removeFormFromCollection = (e) => {
+    const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collection);
+    const items = collectionHolder.querySelectorAll('li');
+
+        if (items.length == 1) {
+            items[0].remove(); // supprime la liste à la clé 0
+        }
+
+        if (items.length > 1) {
+            items[items.length - 1].remove(); // supprime la liste à la dernière clé
+        }
+    };
+
+    document.querySelectorAll('.remove_item_link').forEach(btn => {
+        btn.addEventListener("click", removeFormFromCollection)
+    });
+
+</script>

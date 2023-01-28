@@ -7,9 +7,7 @@ use App\Entity\User;
 
 use App\Entity\Product;
 use App\Entity\Comment;
-//use App\Entity\ProductAttribute;
 use App\Entity\ProductType;
-use App\Entity\TypeFamilly;
 use App\Entity\Category;
 use App\Entity\SubCategory;
 
@@ -80,10 +78,7 @@ class AdminController extends AbstractDashboardController
        
         yield MenuItem::section('Admin Produits');
         yield MenuItem::linkToCrud('Produits', 'fa fa-tag', Product::class);
-
-        yield MenuItem::linkToCrud('TypeFamily.php', 'fa fa-tag', TypeFamilly::class);
         yield MenuItem::linkToCrud('ProductType.php', 'fa fa-tag', ProductType::class);
-        //yield MenuItem::linkToCrud('ProductAttribute.php', 'fa fa-tag', ProductAttribute::class);;
 
         yield MenuItem::section('Admin Commentaires');
         yield MenuItem::linkToCrud('Commentaires', 'fa fa-comment', Comment::class);

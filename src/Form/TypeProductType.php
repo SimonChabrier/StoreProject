@@ -14,9 +14,9 @@ class TypeProductType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom du type de produit',
+                'label' => 'Type de produit',
                 'attr' => [
-                    'placeholder' => 'Nom du type de produit',
+                    'placeholder' => 'Eg: chaussure, vêtement, accessoire, etc.',
                     'class' => 'form-control',
                 ],
             ])

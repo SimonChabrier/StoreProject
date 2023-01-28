@@ -25,6 +25,12 @@ class SubCategory
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=4)
+     * 
+     */
+    private $listOrder = '0000';
+
+    /**
      * @ORM\ManyToMany(
      *      targetEntity=Category::class, 
      *      inversedBy="subCategories",
@@ -35,13 +41,11 @@ class SubCategory
     private $categories;
 
     /**
-     * @ORM\Column(type="string", length=4)
-     * 
-     */
-    private $listOrder = '0000';
-
-    /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="subCategory", fetch="EAGER")
+     * @ORM\OneToMany(
+     *      targetEntity=Product::class, 
+     *      mappedBy="subCategory", 
+     *      fetch="EAGER"
+     *  )
      */
     private $products;
 

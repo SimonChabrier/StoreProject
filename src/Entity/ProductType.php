@@ -25,7 +25,12 @@ class ProductType
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="productType", cascade={"persist"}, fetch="EAGER")
+     * @ORM\OneToMany(
+     *      targetEntity=Product::class, 
+     *      mappedBy="productType", 
+     *      cascade={"persist"}, 
+     *      fetch="EAGER"
+     *  )
      */
     private $products;
 
@@ -54,16 +59,7 @@ class ProductType
 
     public function __toString()
     {
-        // retourner le nom de tous les attributs de ce type
-        // $attributes = $this->getAttributes();
-        // $attributesNames = [];
-        // foreach ($attributes as $attribute) {
-        //     $attributesNames[] = $attribute->getName();
-        // }
-
-        // return $this->getName() . implode(', ', $attributesNames);
         return $this->getName();
-
     }
 
     /**

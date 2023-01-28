@@ -47,23 +47,6 @@ class AppFixtures extends Fixture
 
         $faker = Faker::create('fr_FR');
 
-       
-        // create Subcats! Bam!
-        $subCats = [];
-
-        for ($i = 0; $i < 4; $i++) {
-            $names = ['Vétements', 'Chaussures', 'Accessoires', 'Soldes'];
-            $subCat = new SubCategory();
-            $subCat->setName($names[$i]);
-            $subCat->getName() === 'Vétements' ? $subCat->setListOrder(10) : '';
-            $subCat->getName() === 'Chaussures' ? $subCat->setListOrder(20) : '';
-            $subCat->getName() === 'Accessoires' ? $subCat->setListOrder(30) : '';
-            $subCat->getName() === 'Soldes' ? $subCat->setListOrder(40) : '';
-            
-            $subCats[] = $subCat;
-            $manager->persist($subCat);
-        }
-
         $cats = [];
 
         //create Categories! Bam!
@@ -80,16 +63,53 @@ class AppFixtures extends Fixture
             $category->getName() === 'Services' ? $category->setListOrder(70) : '';
             
             // link each subcat to each category
-            $category->addSubCategory($subCats[0]);
-            $category->addSubCategory($subCats[1]);
-            $category->addSubCategory($subCats[2]);
-            $category->addSubCategory($subCats[3]);
+            // $category->addSubCategory($subCats[0]);
+            // $category->addSubCategory($subCats[1]);
+            // $category->addSubCategory($subCats[2]);
+            // $category->addSubCategory($subCats[3]);
 
 
             $cats[] = $category;
             
             $manager->persist($category);
         }       
+
+         // Foreach category Femme Homme et Enfant create 4 subcategories! Bam!
+
+        foreach($cats as $cat) {
+            if ($cat->getName() === 'Femme' || $cat->getName() === 'Homme' || $cat->getName() === 'Enfant') {
+                for ($i = 0; $i < 4; $i++) {
+                    $names = ['Vétements', 'Chaussures', 'Accessoires', 'Soldes'];
+                    $subCat = new SubCategory();
+                    $subCat->setName($names[$i]);
+                    $subCat->getName() === 'Vétements' ? $subCat->setListOrder(10) : '';
+                    $subCat->getName() === 'Chaussures' ? $subCat->setListOrder(20) : '';
+                    $subCat->getName() === 'Accessoires' ? $subCat->setListOrder(30) : '';
+                    $subCat->getName() === 'Soldes' ? $subCat->setListOrder(40) : '';
+                    
+                    $cat->addSubCategory($subCat);
+                    $manager->persist($subCat);
+                }
+            }
+        }
+
+
+        //  $subCats = [];
+
+        //  for ($i = 0; $i < 4; $i++) {
+        //      $names = ['Vétements', 'Chaussures', 'Accessoires', 'Soldes'];
+        //      $subCat = new SubCategory();
+        //      $subCat->setName($names[$i]);
+        //      $subCat->getName() === 'Vétements' ? $subCat->setListOrder(10) : '';
+        //      $subCat->getName() === 'Chaussures' ? $subCat->setListOrder(20) : '';
+        //      $subCat->getName() === 'Accessoires' ? $subCat->setListOrder(30) : '';
+        //      $subCat->getName() === 'Soldes' ? $subCat->setListOrder(40) : '';
+             
+        //      $subCats[] = $subCat;
+        //      $manager->persist($subCat);
+        //  }
+
+        // link each subcat to each category equipement et nutrition
 
         // create 3 product type ! Bam!
         $productTypes = [];
@@ -126,11 +146,11 @@ class AppFixtures extends Fixture
             $product->setCatalogPrice(sprintf('%0.2f', $product->getSellingPrice() * 1.1));
             
             //SousCats = ['Vétements', 'Chaussures', 'Accessoires', 'Soldes'];
-            $product->getName() === 'Baskets Nike' ? $product->setSubCategory($subCats[1]) : '';
-            $product->getName() === 'T-shirt Adidas' ? $product->setSubCategory($subCats[0]) : '';
-            $product->getName() === 'Stop Disque' ? $product->setSubCategory($subCats[2]) : '';
-            $product->getName() === 'Jean Levis' ? $product->setSubCategory($subCats[0]) : '';
-            $product->getName() === 'Baskets Puma' ? $product->setSubCategory($subCats[3]) : '';
+            // $product->getName() === 'Baskets Nike' ? $product->setSubCategory($subCats[1]) : '';
+            // $product->getName() === 'T-shirt Adidas' ? $product->setSubCategory($subCats[0]) : '';
+            // $product->getName() === 'Stop Disque' ? $product->setSubCategory($subCats[2]) : '';
+            // $product->getName() === 'Jean Levis' ? $product->setSubCategory($subCats[0]) : '';
+            // $product->getName() === 'Baskets Puma' ? $product->setSubCategory($subCats[3]) : '';
             
 
             //types = ['jean', 'tea-shirt', 'baskets', 'accessoires musculation'];

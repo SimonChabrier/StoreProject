@@ -30,19 +30,31 @@ class CategoryCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('name')
-            ->setLabel('Nom')
+            TextField::new('name', 'Nom')
             ->setRequired(true),
-            TextField::new('listOrder')
-            ->setLabel('Ordre d\'affichage'),
-            AssociationField::new('subCategories')
-            ->setLabel('Sous-catégories liés')
+
+            TextField::new('listOrder', 'Ordre d\'affichage')
+            ->setRequired(true),
+
+            AssociationField::new('subCategories', 'Sous-catégories liés')
+            ->formatValue(function ($value, $entity) {
+                $subCategories = $entity->getSubCategories();
+                $subCategoriesNames = [];
+                foreach ($subCategories as $subCategory) {
+                    $subCategoriesNames[] = $subCategory->getName();
+                }
+                if (empty($subCategoriesNames)) {
+                    return 'Aucune sous-catégorie';
+                }
+                return implode(', ', $subCategoriesNames);
+            })
             ->setFormTypeOptions([
                 'by_reference' => false,
                 'multiple' => true,
                 'expanded' => true,
                 'choice_label' => 'name',
             ]),
+
             AssociationField::new('products')
             ->setLabel('Produits liés')
             ->setFormTypeOptions([

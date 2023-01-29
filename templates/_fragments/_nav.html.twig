@@ -22,7 +22,7 @@
 </nav> #}
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="{{ path('app_home') }}">Home</a>
+  {# <a class="navbar-brand" href="{{ path('app_home') }}">Accueil</a> #}
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -33,13 +33,11 @@
 
       {% for cat in nav.getNav() %}
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="{{ path('app_category_index', {'cat': cat.id}) }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ cat.name }}</a>
+        <a class="nav-link dropdown-toggle" href="{{ path('app_category_index', {'id': cat.catId}) }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ cat.catName }}</a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
           {% for subCat in cat.subCategories %}
-            {# {% if subCat.category.id == cat.id %} #}
-              <a class="dropdown-item" href="{{ path('app_sub_category_index', {'subCat': subCat.id}) }}">{{ subCat.name }}</a>
-            {# {% endif %} #}
+              <a class="dropdown-item" href="{{ path('app_sub_category_show', {'id': subCat.subCatId}) }}">{{ subCat.subCatName }}</a>
           {% endfor %}
 
           {# <a class="dropdown-item" href="#">Action</a>

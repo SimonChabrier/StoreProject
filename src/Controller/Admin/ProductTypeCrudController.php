@@ -24,10 +24,10 @@ class ProductTypeCrudController extends AbstractCrudController
                 'multiple' => true,
                 'expanded' => true,
                 'choice_label' => 'getSubCategoryName',
-            ])
-            ->formatValue(function ($value, $entity) {
-                return $entity->getSubCategories()->first()->getName();
-            }),
+            ]),
+            // ->formatValue(function ($value, $entity) {
+            //     return $entity->getSubCategories()->first()->getName();
+            // }),
 
             TextField::new('name', 'Nom du type de produit'),
 

@@ -36,7 +36,7 @@
 
     <ol>
     {% for product in sub_category.getProducts %}
-    {#  si le produit appartient à la catégorie courante #}
+   
         {% if product.category == sub_category.getCategoryName %}
             <li>
                 <a href="{{ path('app_product_show', {'id': product.id}) }}">Produit : {{ product.name }}</a>
@@ -44,7 +44,9 @@
             <ol>
                 <li>Categorie : {{product.category}} </li>  
                 <li>SousCategorie : {{product.subCategory}} </li>
-                <li>Type : {{product.productType}} </li> 
+                <li>Type : <a href="{{ path('app_product_type_show', {'id': product.productType.id}) }}">{{product.productType}}</a></li> 
+
+                
             </ol>           
         {% endif %}
     {% endfor %}

@@ -1,5 +1,7 @@
 <?php
 
+// Jean Tea-Shirt Basket...
+
 namespace App\Entity;
 
 use App\Repository\ProductTypeRepository;
@@ -34,10 +36,19 @@ class ProductType
      */
     private $products;
 
+    /**
+     * @ORM\ManyToMany(
+     *      targetEntity=SubCategory::class, 
+     *      mappedBy="productType"
+     *  )
+     */
+    private $subCategories;
+
 
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->subCategories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,4 +103,32 @@ class ProductType
         return $this;
     }
 
+    /**
+     * @return Collection<int, SubCategory>
+     */
+    public function getSubCategories(): Collection
+    {
+        return $this->subCategories;
+    }
+
+    public function addSubCategory(SubCategory $subCategory): self
+    {
+        if (!$this->subCategories->contains($subCategory)) {
+            $this->subCategories[] = $subCategory;
+            $subCategory->addProductType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubCategory(SubCategory $subCategory): self
+    {
+        if ($this->subCategories->removeElement($subCategory)) {
+            $subCategory->removeProductType($this);
+        }
+
+        return $this;
+    }
+
+    
 }

@@ -4,20 +4,17 @@ namespace App\Controller\Admin;
 
 use App\Entity\Product;
 use App\Form\ProductDataType;
-use Symfony\Component\Form\FormTypeInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use Symfony\Component\Form\ChoiceList\ChoiceList;
-use App\Controller\Admin\ProductTypeCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class ProductCrudController extends AbstractCrudController
-{
+{   
+
+
     public static function getEntityFqcn(): string
     {
         return Product::class;
@@ -51,7 +48,13 @@ class ProductCrudController extends AbstractCrudController
             ->setRequired(true),
             
             AssociationField::new('subCategory')
+            // display only subcategory linked to the slectecd category
             ->setLabel('Sous-catégorie')
+            // set choice on getSubCategoryName method from SubCategory entity
+            ->setFormTypeOption('choice_label', 'getSubCategoryName')
+
+            // display only subcategory linked to the slectecd category
+            
             ->setRequired(true),
 
             BooleanField::new('visibility')
@@ -60,6 +63,7 @@ class ProductCrudController extends AbstractCrudController
 
             AssociationField::new('productType')
             ->setLabel('Types de produits')
+            ->setFormTypeOption('choice_label', 'name')
             ->setRequired(true),
 
             // use ProdctDataType to manage prodcut data (attributes)

@@ -1,5 +1,7 @@
 <?php
 
+// Vétement Chaussures Accessoires...
+
 namespace App\Entity;
 
 use App\Repository\SubCategoryRepository;
@@ -49,10 +51,16 @@ class SubCategory
      */
     private $products;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=ProductType::class, inversedBy="subCategories")
+     */
+    private $productType;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->products = new ArrayCollection();
+        $this->productType = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -143,4 +151,42 @@ class SubCategory
     {   
         return $this->name;
     }
+
+    /**
+     * @return Collection<int, ProductType>
+     */
+    public function getProductType(): Collection
+    {
+        return $this->productType;
+    }
+
+    public function addProductType(ProductType $productType): self
+    {
+        if (!$this->productType->contains($productType)) {
+            $this->productType[] = $productType;
+        }
+
+        return $this;
+    }
+
+    public function removeProductType(ProductType $productType): self
+    {
+        $this->productType->removeElement($productType);
+
+        return $this;
+    }
+
+    // Retourne le nom de la sous catégorie et le nom de la catégorie associée pour l'affichage dans les formulaire
+    public function getSubCategoryName(): string
+    {
+        $categoryName = $this->categories->first()->getName();
+        return $categoryName . ' : ' . $this->name;
+    }
+
+    // retourner le nom de la catégorie associée à la sous catégorie
+    public function getCategoryName(): string
+    {
+        return $this->categories->first()->getName();
+    }
+
 }

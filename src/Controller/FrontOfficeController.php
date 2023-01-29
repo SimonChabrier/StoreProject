@@ -45,6 +45,7 @@ class FrontOfficeController extends AbstractController
             ]);
         }
         // return all products    
+        dump($cr->findAllVisibleProductsAndCatsAndSubCatsOrderedByListOrder());
         return $this->render('front_office/index.html.twig', [
             'cats' => $cr->findAllVisibleProductsAndCatsAndSubCatsOrderedByListOrder(),
             'form' => $form->createView(),

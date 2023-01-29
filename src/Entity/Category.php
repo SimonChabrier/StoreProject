@@ -1,5 +1,7 @@
 <?php
 
+// Homme Femme Enfant...
+
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;

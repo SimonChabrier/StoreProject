@@ -53,32 +53,25 @@ class SubCategoryCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('name', 'Nom')
-            ->setRequired(true),
 
-            TextField::new('listOrder', 'Ordre d\'affichage')
-            ->setRequired(true),
-
-            AssociationField::new('categories', 'Catégorie')
-            // Display categories names or 'Aucune catégorie liée' if no category in those subcategories
+            AssociationField::new('categories', 'Catégorie parente')
+            ->setRequired(true)
+            // format value using return of getSubCategoryName() method from src/Entity/SubCategory.php
             ->formatValue(function ($value, $entity) {
-                $categories = $entity->getCategories();
-                $categoryNames = [];
-                foreach ($categories as $category) {
-                    $categoryNames[] = $category->getName();
-                }
-                if(empty($categoryNames)) {
-                    return 'Aucune catégorie liée';
-                }
-                return implode(', ', $categoryNames);
+                return $entity->getCategoryName();
             })
-
             ->setFormTypeOptions([
                 'by_reference' => false,
                 'multiple' => true,
                 'expanded' => true,
                 'choice_label' => 'name',
             ]),
+
+            TextField::new('name', 'Nom de la sous-catégorie')
+            ->setRequired(true),
+
+            TextField::new('listOrder', 'Ordre d\'affichage')
+            ->setRequired(true),
 
             AssociationField::new('products')
             ->setLabel('Produits liés')
@@ -87,18 +80,15 @@ class SubCategoryCrudController extends AbstractCrudController
                 'multiple' => true,
                 'expanded' => true,
                 'choice_label' => 'name',
+            ]),
+
+            AssociationField::new('productType', 'Type de produit')
+            ->setFormTypeOptions([
+                'by_reference' => false,
+                'multiple' => true,
+                'expanded' => true,
+                'choice_label' => 'name',
             ])
-        // display products count or 'Aucun produit' if no product in those subcategories
-            ->formatValue(function ($value, $entity) {
-                $products = $entity->getProducts();
-                foreach ($products as $product) {
-                    $productNames[] = $product->getName();
-                }
-                if(empty($productNames)) {
-                    return 'Aucun produit';
-                }
-                return count($products);
-            }),
         ];
     }
 

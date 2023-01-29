@@ -14,10 +14,13 @@
     {% if product.subCategory %}
     - Sous-Categorie : <a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}"> {{ product.subCategory|capitalize }}</a>
     {% endif %}
+    <br>
+    {% if product.productType.name %}
+    - Type de produit : <a href="{{ path('app_product_type_show', { 'id': product.productType.id }) }}"> {{ product.productType.name|capitalize }}</a>
+    {% endif %}
+    <br>
     <hr>
-    
     - Propriétés du produit
-    <hr>
         <ol>
             <li>Nom : {{ product.name }}</li>
             <li>Stock : {{ product.inStockQuantity }}</li>

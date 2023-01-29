@@ -51,7 +51,8 @@ class ProductTypeController extends AbstractController
      * @Route("/{id}", name="app_product_type_show", methods={"GET"})
      */
     public function show(ProductType $productType): Response
-    {
+    {   
+        
         return $this->render('product_type/show.html.twig', [
             'product_type' => $productType,
         ]);

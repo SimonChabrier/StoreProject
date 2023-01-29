@@ -132,6 +132,47 @@ class AppFixtures extends Fixture
            
         }
 
+        $courseTypes = [];
+
+        for ($i = 0; $i < 3; $i++) {
+            $productType = new ProductType();
+            $names = ['Montres', 'Bidons', 'Vestes'];
+            // iterrate over the array to set name in order of array 
+            $productType->setName($names[$i]);
+
+            $productType->addSubCategory($equipementSubCat[1]);
+
+            $courseTypes[] = $productType;
+            $manager->persist($productType);
+        }
+
+        // create 10 products of type course
+        $courses = [];
+
+        for( $i = 0; $i < 10; $i++){
+
+            $course = new Product();
+            // faker for name
+            $course->setName($faker->word());
+            $course->setSellingPrice($faker->randomFloat(2, 10, 100));
+            $course->setInStockQuantity(rand(1, 100));
+            // buy price is 20% less than selling price
+            $course->setBuyPrice(sprintf('%0.2f', $course->getSellingPrice() * 0.8));
+            $margin = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7];
+            $course->setSellingPrice(sprintf('%0.2f',  $course->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
+            $course->setCatalogPrice(sprintf('%0.2f', $course->getSellingPrice() * 1.1));
+
+            $course->setProductType($courseTypes[rand(0, 2)]);
+            $course->setSubCategory($equipementSubCat[1]);
+            $course->setCategory($cats[3]);
+        
+            $courses[] = $course;
+            $manager->persist($course);
+
+        }
+
+
+
         // creation des types de produits de la sous catégorie Vélo
         $veloTypes = [];
 
@@ -154,7 +195,7 @@ class AppFixtures extends Fixture
 
             $bike = new Product();
             // faker pour le nom du vélo
-            $bike->setName('Vélo : ' . $faker->name);
+            $bike->setName($faker->word());
             $bike->setInStockQuantity(rand(1, 10));
             $instock = $bike->getInStockQuantity();
             $instock >= 1 ? $bike->setInStock(1) : $bike->setInStock(0);
@@ -216,7 +257,7 @@ class AppFixtures extends Fixture
 
             // TODO lier chaque vélo à une sous catégorie Vélo
             // ['Vélo', 'Course', 'Musculation', 'Natation', 'Camping'];
-            $recuperation->setSubCategory($nutritionSubCat[0]);
+            $recuperation->setSubCategory($nutritionSubCat[rand(0, 3)]);
             // ajouter sous cat vélo à categori equipement
             // categories ['Femme', 'Homme', 'Enfant', 'Equipement', 'Nutrition', 'Soldes'];
             $recuperation->setCategory($cats[4]);

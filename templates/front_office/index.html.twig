@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<div class="container">
+<div class="form-container">
 {{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
 {{ form_end(form) }}
 
@@ -137,28 +137,14 @@
             <li>
                 <h4 style="color:yellow">SOUS-CATEGORIE : {{ subCat.name|upper }}</h4>
             </li>
-            
-            {% if subCat.products|length == 0 %}
-                <ol>
-                    <li> - Pas de Type de produit dans la sous catégorie {{ subCat.name }}</li>
-                </ol>
-            {% endif %}
 
             {# loop on productType of each subcategory #}
             {% for type in subCat.productType %}
-
 
             <ol>
                 <li>
                     <h5 style="color:green">TYPE DE PRODUIT : {{ type.name|upper }}</h5>
                 </li>
-
-                {# if no products in typeName #}
-                {% if type.products|length > 0 %}
-                    <ol>
-                        <li> - Pas de produit de type {{ type.name }} dans la sous catégorie {{ subCat.name }}</li>
-                    </ol>
-                {% endif %}
 
                 {# loop on products of each subCat products #}
                 {% for product in subCat.products %}
@@ -197,7 +183,10 @@
                                 </ol>
 
                         </div>
-                        
+                    {% else %}
+                        <ol>
+                            <li> - Pas de produit de type {{ type.name }} dans la sous catégorie {{ subCat.name }} de la categorie {{ category.name }}</li>
+                        </ol>
                     {% endif %}
                     
                 {% endif %}

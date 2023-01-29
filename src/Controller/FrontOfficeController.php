@@ -18,7 +18,8 @@ class FrontOfficeController extends AbstractController
      */
     public function index(CategoryRepository $cr, ProductRepository $pr, Request $request): Response
     {   
-        dump($pr->findOneBy(['id' => '1']));
+        // dump($pr->findOneBy(['id' => '1']));
+        // dump($pr->findAllVisibleProdcts());
 
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
@@ -44,8 +45,7 @@ class FrontOfficeController extends AbstractController
                 'cats' => $cr->findCatsAndSubCatsProductsByPriceMinMax($min, $max),
             ]);
         }
-        // return all products    
-        dump($cr->findAllVisibleProductsAndCatsAndSubCatsOrderedByListOrder());
+
         return $this->render('front_office/index.html.twig', [
             'cats' => $cr->findAllVisibleProductsAndCatsAndSubCatsOrderedByListOrder(),
             'form' => $form->createView(),

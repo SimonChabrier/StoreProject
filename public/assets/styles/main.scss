@@ -53,6 +53,65 @@ tr:nth-child(even) {
     color:rgb(255, 255, 255)!important;
 }
 
+button {
+    margin: 10px 0!important;
+    width: 100%;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+form.form-inline.my-2.my-lg-0 {
+    display: flex;
+    gap: 10px;
+}
+.navbar {
+    background-color: #161616!important;
+    color: white!important;
+    padding: 0 20px;
+    .navbar-brand {
+        color: rgb(207, 19, 19)!important;
+        font-size: 1.5rem;
+        font-weight: 300;
+        margin: 0;
+        margin-right: 20px;
+        &:hover {
+            color: #cb8431!important;
+        }
+    }
+    .navbar-nav {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        .nav-item {
+            .nav-link {
+                color: black!important;
+                font-size: 1.2rem;
+                font-weight: 300;
+                &:hover {
+                    color: #cb8431!important;
+                }
+            }
+        }
+    }
+}
+
+.navbar-expand-lg .navbar-collapse {
+    display: flex!important;
+    flex-basis: auto;
+    justify-content: space-between;
+}
+
+label {
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin: 0;
+    margin-bottom: 10px!important;
+}
+
 .main {
     width: 1000px;
     margin: 0 auto;

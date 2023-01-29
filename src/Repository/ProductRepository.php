@@ -44,7 +44,7 @@ class ProductRepository extends ServiceEntityRepository
      *
      * @return array
      */
-    public function findALlVisibleProdcts(): array
+    public function findAllVisibleProdcts(): array
     {
         $qb = $this->createQueryBuilder('p');
 

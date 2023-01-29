@@ -1,7 +1,9 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
     form_themes: ['bootstrap_4_layout.html.twig']
-        
+    # ajout du service NavService pour le menu de navigation dans la variable globale: nav
+    globals:
+        nav: '@App\Service\NavService'
 
 when@test:
     twig:

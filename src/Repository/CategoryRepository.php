@@ -342,32 +342,18 @@ class CategoryRepository extends ServiceEntityRepository
     //     ]   
     public function findAllCatsAndSubCatsForNavBar(): array
     {
+        // query categories name and id and subcategories name and idordered by listOrder
+        
         $qb = $this->createQueryBuilder('c');
         $qb->select('c.id as catId, c.name as catName, c.listOrder as catOrder, sc.id as subCatId, sc.name as subCatName, sc.listOrder as subCatOrder')
         ->leftJoin('c.subCategories', 'sc')
         ->orderBy('c.listOrder + 0', 'ASC')
         ->addOrderBy('sc.listOrder + 0', 'ASC');
-
-        $results = $qb->getQuery()->getResult();
-
-            foreach ($results as $res) {
-                if (!isset($categories[$res['catId']])) {
-                    $categories[$res['catId']] = [
-                        'catId' => $res['catId'],
-                        'catName' => $res['catName'],
-                        'catOrder' => $res['catOrder'],
-                        'subCategories' => []
-                    ];
-                }
-                if ($res['subCatId'] != null) {
-                    $categories[$res['catId']]['subCategories'][] = [
-                        'subCatId' => $res['subCatId'],
-                        'subCatName' => $res['subCatName'],
-                        'subCatOrder' => $res['subCatOrder']
-                    ];
-                }
-            }
-        return $categories;
+        $result = $qb->getQuery()->getResult();
+        dump($result);
+        // die;
+        return $result;
+        
     }
 
     // Construit un tableau associatif avec les catégories et sous-catégories et les produits associés

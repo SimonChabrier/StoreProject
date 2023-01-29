@@ -36,7 +36,10 @@
 
     <ol>
     {% for product in products %}
+    {#  si le produit appartient à la catégorie courante #}
+    {%  if product.category.id == sub_category.id %}
        <li>Type : {{ product.productType }}  / Nom :{{ product.name }}</li>
+    {%  endif %}
     {% endfor %}
     </ol>
 

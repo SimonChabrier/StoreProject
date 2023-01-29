@@ -340,20 +340,40 @@ class CategoryRepository extends ServiceEntityRepository
     //             ]
     //         ]
     //     ]   
-    public function findAllCatsAndSubCatsForNavBar(): array
+    //
+    //* appelée dans NavService pour construire le menu de navigation
+    //* qui retourne une variable twig globale (nav) accessible dans toutes les vues
+    public function requestNav(): array
     {
-        // query categories name and id and subcategories name and idordered by listOrder
-        
+        // query categories and subcategories where subcategory belongs to category
         $qb = $this->createQueryBuilder('c');
         $qb->select('c.id as catId, c.name as catName, c.listOrder as catOrder, sc.id as subCatId, sc.name as subCatName, sc.listOrder as subCatOrder')
         ->leftJoin('c.subCategories', 'sc')
         ->orderBy('c.listOrder + 0', 'ASC')
         ->addOrderBy('sc.listOrder + 0', 'ASC');
         $result = $qb->getQuery()->getResult();
-        dump($result);
-        // die;
-        return $result;
-        
+
+        // build array with categories and subcategories
+        $categories = [];
+        foreach ($result as $row) {
+            if (!isset($categories[$row['catId']])) {
+                $categories[$row['catId']] = [
+                    'catId' => $row['catId'],
+                    'catName' => $row['catName'],
+                    'catOrder' => $row['catOrder'],
+                    'subCategories' => []
+                ];
+            }
+            if ($row['subCatId']) {
+                $categories[$row['catId']]['subCategories'][] = [
+                    'subCatId' => $row['subCatId'],
+                    'subCatName' => $row['subCatName'],
+                    'subCatOrder' => $row['subCatOrder']
+                ];
+            }
+        }
+
+        return $categories;            
     }
 
     // Construit un tableau associatif avec les catégories et sous-catégories et les produits associés
@@ -531,7 +551,17 @@ class CategoryRepository extends ServiceEntityRepository
     }
 
                 
-
+    // Get all product from subcategory 
+    public function getSubCatProducts($subCatId)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('p.id', 'p.name', 'p.sellingPrice')
+            ->join('p.subCategory', 's')
+            ->where('s.id = :subCatId')
+            ->setParameter('subCatId', $subCatId)
+            ->getQuery();
+        return $query->getResult();
+    }
 
 
 

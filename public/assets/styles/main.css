@@ -54,6 +54,11 @@ button {
   width: 100%;
 }
 
+button.btn {
+  background: darkgreen;
+  color: aliceblue;
+}
+
 .form-container {
   display: flex;
   flex-direction: column;

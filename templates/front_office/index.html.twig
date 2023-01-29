@@ -122,20 +122,49 @@
     {# loop on categories #}
     <ol>
     {% for category in cats %}
-        <li><h2 style="color:red">CATEGORIE : {{  category.name|upper }}</h2></li>
+        <li>
+            <h2 style="color:red">CATEGORIE : {{  category.name|upper }}</h2>
+        </li>
         {# loop on Subcategories of each category #}
-        
+        {% if category.subCategories|length == 0  %}
+            <ol>
+                <li> - Pas de sous catégorie dans la catégorie {{ category.name }}</li>
+            </ol>
+        {% endif %}
+         
         {% for subCat in category.subCategories %}
         <ol>
-            <li><h4 style="color:yellow">SOUS-CATEGORIE : {{ subCat.name|upper }}</h4></li>
-        
+            <li>
+                <h4 style="color:yellow">SOUS-CATEGORIE : {{ subCat.name|upper }}</h4>
+            </li>
+            
+            {% if subCat.products|length == 0 %}
+                <ol>
+                    <li> - Pas de Type de produit dans la sous catégorie {{ subCat.name }}</li>
+                </ol>
+            {% endif %}
+
             {# loop on productType of each subcategory #}
             {% for type in subCat.productType %}
+
+
             <ol>
-                <li><h5 style="color:green">TYPE DE PRODUIT : {{ type.name|upper }}</h5></li>
+                <li>
+                    <h5 style="color:green">TYPE DE PRODUIT : {{ type.name|upper }}</h5>
+                </li>
+
+                {# if no products in typeName #}
+                {% if type.products|length > 0 %}
+                    <ol>
+                        <li> - Pas de produit de type {{ type.name }} dans la sous catégorie {{ subCat.name }}</li>
+                    </ol>
+                {% endif %}
 
                 {# loop on products of each subCat products #}
                 {% for product in subCat.products %}
+
+                {# si produit  #}
+                {% if product.name %}
 
                     {# check if product is of the same type and category to order display #}
                     {% if product.productType.name == type.name and product.category.name == category.name %} 
@@ -151,8 +180,10 @@
                                     <li>Réduction : {{ discount|round(1) }} %</li>  
                                         {% endif %}
                                     {% if product.inStockQuantity > 0 %}
+                                    <br>
                                         <li> 🟢 {{ product.inStockQuantity }} En stock</li>
                                     {% else %}
+                                    <br>
                                         <li> 🟠 En rupture de stock</li>
                                     {% endif %} 
                                     
@@ -166,7 +197,10 @@
                                 </ol>
 
                         </div>
+                        
                     {% endif %}
+                    
+                {% endif %}
                     
                 {% endfor %}
             </ol>

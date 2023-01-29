@@ -400,12 +400,20 @@ class AppFixtures extends Fixture
         $vetement->setSellingPrice(sprintf('%0.2f', $vetement->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
         $vetement->setCatalogPrice(sprintf('%0.2f', $vetement->getSellingPrice() * 1.1));
 
+        
+        $vetement->setCategory($cats[rand(0, 2)]);
         $vetement->setProductType($vetementTypes[rand(0, count($vetementTypes) - 1)]);
         $vetement->setSubCategory($subCats[rand(0, count($subCats) - 1)]);
-        $vetement->setCategory($cats[rand(0, 2)]);
+//TODO  debuger ça ! tout se met dans la categorie Femme et dans la sous categorie vetements ?
 
-
+        //INFO : $subCats = ['Vétements', 'Chaussures', 'Accessoires', 'Soldes'];
+        // if productType is 'baskets' then add to subCat 'chaussures' if productType is tee-shirt or jean then add to subCat 'vetements'
+        // $vetement->getProductType()->getName() === 'baskets' ? $vetement->setSubCategory($subCats[2]) : '';
+        // $vetement->getProductType()->getName() === 'tea-shirt' ? $vetement->setCategory($cats[1]) : '';
+        // $vetement->getProductType()->getName() === 'jean' ? $vetement->setCategory($cats[1]) : '';
+        
         $vetements[] = $vetement;
+
         $manager->persist($vetement);
         }
 

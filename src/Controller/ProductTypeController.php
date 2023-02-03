@@ -16,10 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductTypeController extends AbstractController
 {
     /**
-     * @Route("/", name="app_product_type_index", methods={"GET"})
+     * @Route("/list", name="app_product_type_index", methods={"GET"})
      */
     public function index(ProductTypeRepository $productTypeRepository): Response
-    {
+    {   
         return $this->render('product_type/index.html.twig', [
             'product_types' => $productTypeRepository->findAll(),
         ]);
@@ -50,7 +50,8 @@ class ProductTypeController extends AbstractController
      * @Route("/{id}", name="app_product_type_show", methods={"GET"})
      */
     public function show(ProductType $productType): Response
-    {
+    {   
+        
         return $this->render('product_type/show.html.twig', [
             'product_type' => $productType,
         ]);

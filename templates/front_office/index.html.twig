@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<div class="container">
+<div class="form-container">
 {{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
 {{ form_end(form) }}
 
@@ -43,7 +43,8 @@
 </div>
 {% endif %}
 
-<div class="container">
+
+{# <div class="container">
 <ul>
 {% for cat in cats %}
     <h2><a href="{{ path('app_category_show', {'id': cat.id}) }}">{{ cat.name|upper }}</a></h2>
@@ -114,5 +115,89 @@
     </ul>
 {% endfor %}
 </ul>
+</div>
+ #}
+
+ <div class="container">
+    {# loop on categories #}
+    <ol>
+    {% for category in cats %}
+        <li>
+            <h2 style="color:red">CATEGORIE : {{  category.name|upper }}</h2>
+        </li>
+        {# loop on Subcategories of each category #}
+        {% if category.subCategories|length == 0  %}
+            <ol>
+                <li> - Pas de sous catégorie dans la catégorie {{ category.name }}</li>
+            </ol>
+        {% endif %}
+         
+        {% for subCat in category.subCategories %}
+        <ol>
+            <li>
+                <h4 style="color:yellow">SOUS-CATEGORIE : {{ subCat.name|upper }}</h4>
+            </li>
+
+            {# loop on productType of each subcategory #}
+            {% for type in subCat.productType %}
+
+            <ol>
+                <li>
+                    <h5 style="color:green">TYPE DE PRODUIT : {{ type.name|upper }}</h5>
+                </li>
+
+                {# loop on products of each subCat products #}
+                {% for product in subCat.products %}
+
+                {# si produit  #}
+                {% if product.name %}
+
+                    {# check if product is of the same type and category to order display #}
+                    {% if product.productType.name == type.name and product.category.name == category.name %} 
+                        <div style="border: 1px solid white; padding:30px; margin: 20px 0"> 
+                            
+                            <li><a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name|upper }}</a></li>
+                            
+                                <ol>
+                                    <li>Prix public : <del>{{ product.catalogPrice }} €</del></li>
+                                    <li>Prix de vente : {{ product.sellingPrice }} €</li>
+                                        {% if (product.catalogPrice - product.sellingPrice ) > 0 %}
+                                            {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
+                                    <li>Réduction : {{ discount|round(1) }} %</li>  
+                                        {% endif %}
+                                    {% if product.inStockQuantity > 0 %}
+                                    <br>
+                                        <li> 🟢 {{ product.inStockQuantity }} En stock</li>
+                                    {% else %}
+                                    <br>
+                                        <li> 🟠 En rupture de stock</li>
+                                    {% endif %} 
+                                    
+                                    <div style="border: 1px solid grey; padding:30px; margin: 20px 0; text-align:right">
+                                        <ol>
+                                            <li> Catégorie : {{ product.category.name }}</li>
+                                            <li> Sous catégorie : {{ product.subCategory.name }}</li>
+                                            <li>Type de produit : {{ product.productType.name }}</li>     
+                                        </ol>
+                                    </div>
+                                </ol>
+
+                        </div>
+                    {% else %}
+                        <ol>
+                            <li> - Pas de produit de type {{ type.name }} dans la sous catégorie {{ subCat.name }} de la categorie {{ category.name }}</li>
+                        </ol>
+                    {% endif %}
+                    
+                {% endif %}
+                    
+                {% endfor %}
+            </ol>
+             {% endfor %}  
+        </ol> 
+        {% endfor %}
+    <br> {#  fin de boucle categories #}
+    {% endfor %}
+<ol>
 </div>
 {% endblock %}

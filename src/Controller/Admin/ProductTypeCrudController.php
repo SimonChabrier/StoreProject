@@ -18,7 +18,28 @@ class ProductTypeCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('name'),
+            AssociationField::new('subCategories', 'Sous catégrories liées')
+            ->setFormTypeOptions([
+                'by_reference' => false,
+                'multiple' => true,
+                'expanded' => true,
+                'choice_label' => 'getSubCategoryName',
+            ]),
+            // ->formatValue(function ($value, $entity) {
+            //     return $entity->getSubCategories()->first()->getName();
+            // }),
+
+            TextField::new('name', 'Nom du type de produit'),
+
+            AssociationField::new('products', 'Nombre de produits liés')
+            ->setFormTypeOptions([
+                'by_reference' => false,
+                'multiple' => true,
+                'expanded' => true,
+                'choice_label' => 'name',
+            ])
+            ,
+            
         ];
     }
     

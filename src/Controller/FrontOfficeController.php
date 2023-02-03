@@ -18,7 +18,8 @@ class FrontOfficeController extends AbstractController
      */
     public function index(CategoryRepository $cr, ProductRepository $pr, Request $request): Response
     {   
-        dump($pr->findOneBy(['id' => '1']));
+        // dump($pr->findOneBy(['id' => '1']));
+        // dump($pr->findAllVisibleProdcts());
 
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
@@ -44,7 +45,7 @@ class FrontOfficeController extends AbstractController
                 'cats' => $cr->findCatsAndSubCatsProductsByPriceMinMax($min, $max),
             ]);
         }
-        // return all products    
+
         return $this->render('front_office/index.html.twig', [
             'cats' => $cr->findAllVisibleProductsAndCatsAndSubCatsOrderedByListOrder(),
             'form' => $form->createView(),
@@ -59,7 +60,7 @@ class FrontOfficeController extends AbstractController
          // use doctrine query offset and limit to paginate
 
         // set the number of items per page
-        $perPage = 20;
+        $perPage = 40;
         // set the offset to 0 if the page is 1 
         $offset = ($id - 1) * $perPage;
         // get the total number of items in the database

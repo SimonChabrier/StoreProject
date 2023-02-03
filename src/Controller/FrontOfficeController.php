@@ -60,7 +60,7 @@ class FrontOfficeController extends AbstractController
          // use doctrine query offset and limit to paginate
 
         // set the number of items per page
-        $perPage = 20;
+        $perPage = 40;
         // set the offset to 0 if the page is 1 
         $offset = ($id - 1) * $perPage;
         // get the total number of items in the database

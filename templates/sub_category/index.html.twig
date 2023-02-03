@@ -18,7 +18,7 @@
         {% for sub_category in sub_categories %}
             <tr>
                 <td>{{ sub_category.id }}</td>
-                <td>{{ sub_category.name }}</td>
+                <td>Cat -> {{ sub_category.getCategoryName }} | SubCat -> {{ sub_category.name }}</td>
                 <td>{{ sub_category.listOrder }}</td>
                 <td>
                     <a href="{{ path('app_sub_category_show', {'id': sub_category.id}) }}">show</a>

@@ -32,7 +32,7 @@ class SubCategoryCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Sous categorie')
             ->setEntityLabelInPlural('Sous categories')
             ->setSearchFields(['name', 'listOrder'])
-            ->setDefaultSort(['listOrder' => 'ASC'])
+           // ->setDefaultSort(['listOrder' => 'ASC'])
             ->setPaginatorPageSize(20)
 
             // Si je n'ai pas fermé la visibilité dans la sidebar dans AdminController.php : configureMenuItems()
@@ -53,20 +53,26 @@ class SubCategoryCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('name')
-            // traduce the label
-            ->setLabel('Nom')
-            ->setRequired(true),
-            TextField::new('listOrder')
-            ->setLabel('Ordre d\'affichage'),
-            AssociationField::new('categories')
-            ->setLabel('Categories liés')
+
+            AssociationField::new('categories', 'Catégorie parente')
+            ->setRequired(true)
+            // format value using return of getSubCategoryName() method from src/Entity/SubCategory.php
+            ->formatValue(function ($value, $entity) {
+                return $entity->getCategoryName();
+            })
             ->setFormTypeOptions([
                 'by_reference' => false,
                 'multiple' => true,
                 'expanded' => true,
                 'choice_label' => 'name',
             ]),
+
+            TextField::new('name', 'Nom de la sous-catégorie')
+            ->setRequired(true),
+
+            TextField::new('listOrder', 'Ordre d\'affichage')
+            ->setRequired(true),
+
             AssociationField::new('products')
             ->setLabel('Produits liés')
             ->setFormTypeOptions([
@@ -75,6 +81,14 @@ class SubCategoryCrudController extends AbstractCrudController
                 'expanded' => true,
                 'choice_label' => 'name',
             ]),
+
+            AssociationField::new('productType', 'Type de produit')
+            ->setFormTypeOptions([
+                'by_reference' => false,
+                'multiple' => true,
+                'expanded' => true,
+                'choice_label' => 'name',
+            ])
         ];
     }
 

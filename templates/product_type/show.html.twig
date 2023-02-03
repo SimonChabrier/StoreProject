@@ -18,6 +18,21 @@
         </tbody>
     </table>
 
+
+    <h2>Produit du type : {{ product_type.name }}</h2> 
+    <ul>
+    {#  sort product by category name #}
+    {% set products = product_type.products|sort((a, b) => a.category.name > b.category.name) %}
+        {% for product in products %}
+            <li>
+                <a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name }}</a>
+                <ol>
+                    <li>Categorie : <a href="{{ path('app_category_show', {'id': product.category.id}) }}">{{ product.category.name }}</a></li>
+                    <li>Sous Categorie : <a href="{{ path('app_sub_category_show', {'id': product.subCategory.id}) }}">{{ product.subCategory.name }}</a></li>
+                </ol>
+            </li>
+        {% endfor %}
+
     <a href="{{ path('app_product_type_index') }}">back to list</a>
 
     <a href="{{ path('app_product_type_edit', {'id': product_type.id}) }}">edit</a>

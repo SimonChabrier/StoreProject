@@ -21,7 +21,7 @@ class ProductDataType extends AbstractType
             'label' => 'Propriété :',
         ])
         ->add('value', TextType::class, [
-            'label' => 'Valeur',
+            'label' => 'Valeur :',
         ]);
         $options['template'] = 'bundles/EasyAdminBundle/crud/field/collection.html.twig';
         

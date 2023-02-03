@@ -21,7 +21,9 @@ class CategoryController extends AbstractController
      * @Route("/", name="app_category_index", methods={"GET"})
      */
     public function index(CategoryRepository $categoryRepository): Response
-    {
+    {   
+        dump($categoryRepository->findAllCatsOrderByListOrder());
+
         return $this->render('category/index.html.twig', [
             'categories' => $categoryRepository->findAllCatsOrderByListOrder(),
         ]);

@@ -5,15 +5,16 @@ namespace App\Form;
 use App\Entity\Product;
 use App\Entity\Category;
 use App\Entity\SubCategory;
-use App\Entity\ProductType as ProductTypeEntity;
-
-
 use Symfony\Component\Form\AbstractType;
+
+
+use App\Repository\ProductTypeRepository;
+use App\Entity\ProductType as ProductTypeEntity;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ProductType extends AbstractType
@@ -52,15 +53,17 @@ class ProductType extends AbstractType
             ])
             ->add('subCategory', EntityType::class, [
                 'class' => SubCategory::class,
-                'choice_label' => 'name',
+                'choice_label' => 'getSubCategoryName',
                 'multiple' => false,
                 'expanded' => true,
             ])
+            
+
             ->add('productType', EntityType::class, [
                 'class' => ProductTypeEntity::class,
                 'choice_label' => 'name',
                 'multiple' => false,
-                'expanded' => true,
+                'expanded' => true,                
             ])
             ->add('productData', CollectionType::class, [
                 'entry_type' => ProductDataType::class,

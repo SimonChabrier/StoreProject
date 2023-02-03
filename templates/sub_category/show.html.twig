@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}SubCategory{% endblock %}
+{% block title %}{{ sub_category.name }}{% endblock %}
 
 {% block body %}
-    <h1>SubCategory</h1>
+    <h1>SousCat : {{ sub_category.name }}</h1>
+    <p>De la catégorie : {{ sub_category.getCategoryName }}</p>
+    <hr>
 
     <table class="table">
         <tbody>
@@ -26,5 +28,28 @@
 
     <a href="{{ path('app_sub_category_edit', {'id': sub_category.id}) }}">edit</a>
 
-    {{ include('sub_category/_delete_form.html.twig') }}
+    {# {{ include('sub_category/_delete_form.html.twig') }} #}
+    
+    <hr>
+    <h2>Produits de {{ sub_category.name }} :</h2>
+    <p>De la catégorie : {{ sub_category.getCategoryName }}</p>
+
+    <ol>
+    {% for product in sub_category.getProducts %}
+   
+        {% if product.category == sub_category.getCategoryName %}
+            <li>
+                <a href="{{ path('app_product_show', {'id': product.id}) }}">Produit : {{ product.name }}</a>
+            </li>
+            <ol>
+                <li>Categorie : {{product.category}} </li>  
+                <li>SousCategorie : {{product.subCategory}} </li>
+                <li>Type : <a href="{{ path('app_product_type_show', {'id': product.productType.id}) }}">{{product.productType}}</a></li> 
+
+                
+            </ol>           
+        {% endif %}
+    {% endfor %}
+    </ol>
+
 {% endblock %}

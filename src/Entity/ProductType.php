@@ -44,6 +44,11 @@ class ProductType
      */
     private $subCategories;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $typeData = [];
+
 
     public function __construct()
     {
@@ -126,6 +131,18 @@ class ProductType
         if ($this->subCategories->removeElement($subCategory)) {
             $subCategory->removeProductType($this);
         }
+
+        return $this;
+    }
+
+    public function getTypeData(): ?array
+    {
+        return $this->typeData;
+    }
+
+    public function setTypeData(?array $typeData): self
+    {
+        $this->typeData = $typeData;
 
         return $this;
     }

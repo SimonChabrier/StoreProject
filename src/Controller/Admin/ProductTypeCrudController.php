@@ -3,7 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ProductType;
+use App\Form\ProductDataType;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
@@ -22,7 +24,7 @@ class ProductTypeCrudController extends AbstractCrudController
             ->setFormTypeOptions([
                 'by_reference' => false,
                 'multiple' => true,
-                'expanded' => true,
+                'expanded' => false,
                 'choice_label' => 'getSubCategoryName',
             ]),
             // ->formatValue(function ($value, $entity) {
@@ -30,15 +32,19 @@ class ProductTypeCrudController extends AbstractCrudController
             // }),
 
             TextField::new('name', 'Nom du type de produit'),
+            
 
-            AssociationField::new('products', 'Nombre de produits liés')
-            ->setFormTypeOptions([
-                'by_reference' => false,
-                'multiple' => true,
-                'expanded' => true,
-                'choice_label' => 'name',
-            ])
-            ,
+            // AssociationField::new('products', 'Nombre de produits liés')
+            // ->setFormTypeOptions([
+            //     'by_reference' => false,
+            //     'multiple' => true,
+            //     'expanded' => true,
+            //     'choice_label' => 'name',
+            // ]),
+            CollectionField::new('typeData', 'Caractéristiques du type de produit')
+            ->setEntryType(ProductDataType::class, [])
+            ->setCustomOption('allow_add', true)
+            ->renderExpanded(true),
             
         ];
     }

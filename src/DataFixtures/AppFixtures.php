@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\SubCategory;
 use App\Entity\Product;
 use App\Entity\ProductType;
+use App\Entity\Brand;
 
 use App\Entity\User;
 use App\Entity\Comment;
@@ -39,6 +40,7 @@ class AppFixtures extends Fixture
         $this->connexion->executeQuery('TRUNCATE TABLE user');
         $this->connexion->executeQuery('TRUNCATE TABLE comment');
         $this->connexion->executeQuery('TRUNCATE TABLE product_type');
+        $this->connexion->executeQuery('TRUNCATE TABLE brand');
     }
 
     public function load(ObjectManager $manager): void
@@ -131,6 +133,19 @@ class AppFixtures extends Fixture
            
         }
 
+        // creation de 10 marques 
+
+        $brands = [];
+
+        for ($i = 0; $i < 10; $i++) {
+            $brandNames = ['Adidas', 'Nike', 'Puma', 'Reebok', 'Asics', 'New Balance', 'Under Armour', 'Salomon', 'The North Face', 'Mizuno'];
+            $brand = new Brand();
+            $brand->setName($brandNames[$i]);
+            $brands[] = $brand;
+
+            $manager->persist($brand);
+        }
+
 //* EQUIPEMENT *//
         $courseTypes = [];
 
@@ -163,6 +178,7 @@ class AppFixtures extends Fixture
             $course->setProductType($courseTypes[rand(0, 2)]);
             $course->setSubCategory($equipementSubCat[1]);
             $course->setCategory($cats[3]);
+            $course->setBrand($brands[rand(0, count($brands) - 1)]);
         
             $courses[] = $course;
             $manager->persist($course);
@@ -202,12 +218,18 @@ class AppFixtures extends Fixture
             $bike->setProductType($veloTypes[rand(0, count($veloTypes) - 1)]);
             $bike->setSubCategory($equipementSubCat[0]);
             $bike->setCategory($cats[3]);
+            $bike->setBrand($brands[rand(0, count($brands) - 1)]);
 
             $velos[] = $bike;
             $manager->persist($bike);
 
 
         }
+
+        // foreach ($velos as $velo) {
+        //     $velo->setBrand($brands[rand(0, count($brands) - 1)]);
+        //     $manager->persist($velo);
+        // }
 
         // creation de types de produit de la sous catégorie Recupération
         $recuperationTypes = [];
@@ -243,6 +265,7 @@ class AppFixtures extends Fixture
             $recuperation->setSubCategory($nutritionSubCat[rand(0, 3)]);
             $recuperation->setCategory($cats[4]);
             $recuperation->setProductType($recuperationTypes[rand(0, count($recuperationTypes) - 1)]);
+            $recuperation->setBrand($brands[rand(0, count($brands) - 1)]);
 
             $recuperations[] = $recuperation;
             $manager->persist($recuperation);
@@ -281,6 +304,7 @@ class AppFixtures extends Fixture
             $musculation->setSubCategory($equipementSubCat[2]);
             $musculation->setCategory($cats[3]);
             $musculation->setProductType($musculationTypes[rand(0, count($musculationTypes) - 1)]);
+            $musculation->setBrand($brands[rand(0, count($brands) - 1)]);
 
             $musculations[] = $musculation;
             $manager->persist($musculation);
@@ -319,6 +343,7 @@ class AppFixtures extends Fixture
             $natation->setSubCategory($equipementSubCat[3]);
             $natation->setCategory($cats[3]);
             $natation->setProductType($natationTypes[rand(0, count($natationTypes) - 1)]);
+            $natation->setBrand($brands[rand(0, count($brands) - 1)]);
 
             $natations[] = $natation;
             $manager->persist($natation);
@@ -365,6 +390,7 @@ class AppFixtures extends Fixture
              $camping->setCategory($cats[3]);
              // ajouter un type de produit à chaque produit
              $camping->setProductType($campingTypes[rand(0, count($campingTypes) - 1)]);
+             $camping->setBrand($brands[rand(0, count($brands) - 1)]);
  
              $campings[] = $camping;
              $manager->persist($camping);
@@ -390,10 +416,10 @@ class AppFixtures extends Fixture
 
         $vetements = [];
 
-        for($i = 0; $i < 500; $i++ ){
+        for($i = 0; $i < 30; $i++ ){
 
         $vetement = new Product();
-        $vetement->setName($faker->word());
+        $vetement->setName('Vetement ' . $i);
         $vetement->setInStockQuantity(rand(1, 10));
         $vetement->setBuyPrice($faker->numberBetween(80, 1000) * 0.8);
         $margin = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7];
@@ -404,6 +430,7 @@ class AppFixtures extends Fixture
         $vetement->setCategory($cats[rand(0, 2)]);
         $vetement->setProductType($vetementTypes[rand(0, count($vetementTypes) - 1)]);
         $vetement->setSubCategory($subCats[rand(0, count($subCats) - 1)]);
+        $vetement->setBrand($brands[rand(0, count($brands) - 1)]);
 //TODO  debuger ça ! tout se met dans la categorie Femme et dans la sous categorie vetements ?
 
         //INFO : $subCats = ['Vétements', 'Chaussures', 'Accessoires', 'Soldes'];

@@ -105,12 +105,11 @@ class SubCategoryCrudController extends AbstractCrudController
         ->add('listOrder', 'text', [
             'label' => 'Ordre',
         ])
-            ->add('categories', 'entity', [
-                'label' => 'Catégories',
-                'class' => Category::class,
-                'choice_label' => 'name',
-            ])
-    
+        ->add('categories', 'entity', [
+            'label' => 'Catégories',
+            'class' => Category::class,
+            'choice_label' => 'name',
+        ])
         ;
     }
 

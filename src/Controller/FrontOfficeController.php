@@ -24,10 +24,11 @@ class FrontOfficeController extends AbstractController
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
 
+        dump($cr->findAll());
         // reset search
         if($request->request->get('resetSearch') == 'resetSearch') {            
             return $this->render('front_office/index.html.twig', [
-                'cats' => $cr->findAllVisibleProductsAndCatsAndSubCatsOrderedByListOrder(),
+                'cats' => $cr->findBy([], ['listOrder' => 'ASC']),
                 'form' => $form->createView(),
             ]);
         } 
@@ -47,7 +48,8 @@ class FrontOfficeController extends AbstractController
         }
 
         return $this->render('front_office/index.html.twig', [
-            'cats' => $cr->findAllVisibleProductsAndCatsAndSubCatsOrderedByListOrder(),
+            // add only categories with products visible
+            'cats' => $cr->findBy([], ['listOrder' => 'ASC']),
             'form' => $form->createView(),
         ]);
     }

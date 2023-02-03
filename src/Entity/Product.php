@@ -104,6 +104,11 @@ class Product
      */
     private $productData = [];
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="products")
+     */
+    private $brand;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -310,6 +315,18 @@ class Product
     {   
 
         $this->productData = $productData;
+
+        return $this;
+    }
+
+    public function getBrand(): ?Brand
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(?Brand $brand): self
+    {
+        $this->brand = $brand;
 
         return $this;
     }

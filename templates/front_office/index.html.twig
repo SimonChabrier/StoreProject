@@ -150,15 +150,16 @@
                 {% for product in subCat.products %}
 
                 {# si produit  #}
-                {% if product.name %}
+                {% if product.visibility == true %}
 
                     {# check if product is of the same type and category to order display #}
-                    {% if product.productType.name == type.name and product.category.name == category.name %} 
+                    {% if product.category.name == category.name %} 
                         <div style="border: 1px solid white; padding:30px; margin: 20px 0"> 
                             
                             <li><a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name|upper }}</a></li>
                             
                                 <ol>
+                                    <li>Marque : {{ product.brand }}</li>
                                     <li>Prix public : <del>{{ product.catalogPrice }} €</del></li>
                                     <li>Prix de vente : {{ product.sellingPrice }} €</li>
                                         {% if (product.catalogPrice - product.sellingPrice ) > 0 %}
@@ -184,9 +185,7 @@
 
                         </div>
                     {% else %}
-                        <ol>
-                            <li> - Pas de produit de type {{ type.name }} dans la sous catégorie {{ subCat.name }} de la categorie {{ category.name }}</li>
-                        </ol>
+                        {# je n'affiche rien au passage de la boucle sur le produit qui n'est pas de la même categorie  #}
                     {% endif %}
                     
                 {% endif %}

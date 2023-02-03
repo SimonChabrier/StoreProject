@@ -16,11 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductTypeController extends AbstractController
 {
     /**
-     * @Route("/", name="app_product_type_index", methods={"GET"})
+     * @Route("/list", name="app_product_type_index", methods={"GET"})
      */
     public function index(ProductTypeRepository $productTypeRepository): Response
     {   
-        
         return $this->render('product_type/index.html.twig', [
             'product_types' => $productTypeRepository->findAll(),
         ]);

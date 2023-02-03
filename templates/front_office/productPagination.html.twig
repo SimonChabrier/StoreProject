@@ -34,11 +34,11 @@
                 {% if currentPage == i %}
                 <li class="active-paginate-link">{{ i }}</li>
         {# Show "..." before current page depending on page numbers to show before #}
-        {# {% elseif (i < currentPage and 1 != i) and (i == currentPage - PageQuantityAroundBefore - 1) %} #}
-        {# <li class="uk-disabled">...</li> #}
+        {% elseif (i < currentPage and 1 != i) and (i == currentPage - PageQuantityAroundBefore - 1) %}
+        <li class="uk-disabled">...</li>
         {# Show "..." after current page depending on page numbers to show after #}
-        {# {% elseif (i > currentPage and pageCount != i) and (i == currentPage + PageQuantityAroundAfter + 1) %} #}
-        {# <li class="uk-disabled">...</li> #}
+        {% elseif (i > currentPage and pageCount != i) and (i == currentPage + PageQuantityAroundAfter + 1) %}
+        <li class="uk-disabled">...</li>
         {# Hide pages under current page and before "..." excepted page 1 #}
                 {% elseif (1 != i) and (i < currentPage - PageQuantityAroundBefore - 1) %}
                 <li class="uk-hidden"><a href="{{ path('app_paginate_products', { 'id': i }) }}" title="Page {{ i }}">{{ i }}</a></li>

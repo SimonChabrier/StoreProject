@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
-use App\Repository\CategoryRepository;
-use App\Repository\ProductRepository;
 use App\Form\SearchType;
+use App\Repository\ProductRepository;
+use App\Repository\CategoryRepository;
 
-use Symfony\Component\HttpFoundation\Response;
+use App\Repository\SubCategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -16,15 +17,16 @@ class FrontOfficeController extends AbstractController
     /**
      * @Route("/", name="app_home", methods={"GET", "POST"})
      */
-    public function index(CategoryRepository $cr, ProductRepository $pr, Request $request): Response
+    public function index(CategoryRepository $cr, ProductRepository $pr, SubCategoryRepository $sc, Request $request): Response
     {   
         // dump($pr->findOneBy(['id' => '1']));
         // dump($pr->findAllVisibleProdcts());
-
+        $lastFive = $cr->findAllCatsLastFiveProducts();
+        dump($lastFive);
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
 
-        dump($cr->findAll());
+        //dump($cr->findAll());
         // reset search
         if($request->request->get('resetSearch') == 'resetSearch') {            
             return $this->render('front_office/index.html.twig', [
@@ -51,6 +53,7 @@ class FrontOfficeController extends AbstractController
             // add only categories with products visible
             'cats' => $cr->findBy([], ['listOrder' => 'ASC']),
             'form' => $form->createView(),
+            'lastFive' => $lastFive,
         ]);
     }
 

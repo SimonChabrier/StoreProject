@@ -25,6 +25,9 @@
             <li>Nom : {{ product.name }}</li>
             <li>Stock : {{ product.inStockQuantity }}</li>
             <li>Visible : {{ (product.visibility) ? 'Oui' : 'Non' }}</li>
+            <li>Prix catalogue : <del>{{ product.catalogPrice }} €</del></li>
+            {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
+            <li>Réduction : <span style='color:yellow'>{{ discount|round(1) }} % </span></li> 
             <li>Prix : {{ product.sellingPrice }} €</li>
             <li>Marque : {{ product.brand }}</li>
         </ol>
@@ -35,9 +38,7 @@
     <hr>
         <ol>
         {% for index, data in product.productData %}
-            
                 <li>{{ data.key|capitalize }} : {{ data.value|capitalize }}</li>
-            
         {% endfor %}
         </ol>
     <hr>

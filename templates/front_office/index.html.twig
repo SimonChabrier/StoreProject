@@ -3,6 +3,23 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
+{% for category in lastFive %}
+{% if category is defined %}
+<div>
+    <div style="border:1px solid white; padding:30px; border-radius:20px; margin: 20px 0">
+        <h2>{{ category.name|upper }}</h2>
+        {% for subCategory in category.subCategories %}
+            {{ subCategory.name|upper }}
+            <ol>
+            {% for product in subCategory.products|slice(0, 5) %}
+               <li> {{ product.name|upper }}</li>
+            {% endfor %}
+            </ol>
+        {% endfor %}
+</div>
+{% endif %}
+{% endfor %}
+
 
 <div class="form-container">
 {{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}

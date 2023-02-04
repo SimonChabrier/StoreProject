@@ -73,14 +73,14 @@ class SubCategoryCrudController extends AbstractCrudController
             TextField::new('listOrder', 'Ordre d\'affichage')
             ->setRequired(true),
 
-            AssociationField::new('products')
-            ->setLabel('Produits liés')
-            ->setFormTypeOptions([
-                'by_reference' => false,
-                'multiple' => true,
-                'expanded' => true,
-                'choice_label' => 'name',
-            ]),
+            // AssociationField::new('products')
+            // ->setLabel('Produits liés')
+            // ->setFormTypeOptions([
+            //     'by_reference' => false,
+            //     'multiple' => true,
+            //     'expanded' => true,
+            //     'choice_label' => 'name',
+            // ]),
 
             AssociationField::new('productType', 'Type de produit')
             ->setFormTypeOptions([

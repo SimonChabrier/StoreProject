@@ -55,11 +55,6 @@ button {
   width: 100%;
 }
 
-button.btn {
-  background: darkgreen;
-  color: aliceblue;
-}
-
 .form-container {
   display: flex;
   flex-direction: column;
@@ -235,6 +230,62 @@ aside {
   color: white;
   padding: 5px 15px;
   margin: 15px 0;
+}
+
+.productInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 1.1rem;
+  position: relative;
+}
+.productInfo .categorie {
+  font-size: 1.2rem;
+  font-weight: 300;
+}
+.productInfo .sous-categorie {
+  font-size: 0.7rem;
+  font-weight: 300;
+}
+.productInfo .type {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.productLink {
+  position: absolute;
+  top: 100px;
+  transform: rotate(-8deg);
+  left: 16px;
+  top: 190px;
+}
+
+.productLink a {
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.productInfoFooter {
+  position: relative;
+  right: 0;
+  bottom: 178px;
+  left: 87px;
+  rotate: 13px;
+  font-size: 0.9rem;
+  background-color: #c7c721;
+  transform: rotate(8deg);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 600;
+  border: 2px solid white;
+}
+
+form.resetForm {
+  margin-top: -30px;
 }
 
 /* Sidenav menu */

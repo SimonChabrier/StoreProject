@@ -2,8 +2,9 @@
 <div class="form-container">
 {{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
 {{ form_end(form) }}
-<form action="{{ path('app_home') }}" method="post">
-<button type="submit" id="reset_submit" name="resetSearch" value="resetSearch" class="btn btn-info">Reset</button>
+
+<form class="resetForm" action="{{ path('app_home') }}" method="post">
+<button type="submit" id="reset_submit" name="resetSearch" value="resetSearch" class="btn btn-light">Reset</button>
 </form> 
 </div>
 </aside>

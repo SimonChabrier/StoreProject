@@ -52,6 +52,10 @@ class SearchType extends AbstractType
                         'message' => 'Le prix minimum doit être supérieur ou égal à {{ compared_value }}',
                     ]),
                 ],
+                'attr' => [
+                    'placeholder' => '100',
+                    'maxlength' => 5,
+                ],
             ])
             ->add('max', IntegerType::class, [
                 'label' => 'Prix maximum',
@@ -85,30 +89,32 @@ class SearchType extends AbstractType
                             $context->buildViolation('Vous pouvez renseigner un prix maximum pour une recherche plus précise !')
                                 ->atPath('max')
                                 ->addViolation();
-                            
-                            // $this->controller->addFlash('info', 'Vous pouvez renseigner un prix maximum pour une recherche plus précise !');
-
-                            //$this->session->getFlashBag()->add('info', 'Vous pouvez renseigner un prix maximum pour une recherche plus précise !');
                         } 
                         // Si le prix minimum et le prix maximum ne sont pas renseignés, on leve une violation de contrainte
                         if ($min === null && $max === null) {
-                            $context->buildViolation('Vous devez renseigner un prix minimum ou maximum pour une recherche')
+                            $context->buildViolation('Vous devez renseigner un prix minimum ou maximum pour effectuer une recherche')
                                 ->atPath('min')
                                 ->addViolation();
                         }
                     }),
                 ],
+                'attr' => [
+                    'placeholder' => '250',
+                    'maxlength' => 5,
+                ],
             ])
             ->add('search', TextType::class, [
-                'constraints' => [
-                    //new NotBlank(),
-                    //new Length(['min' => 3]),
-                ],
                 'label' => 'Recherche',
+                'attr' => [
+                    'placeholder' => 'NEW BALANCE NITREL',
+                ],
             ])
             // // add submit button
             ->add('submit', SubmitType::class, [
                 'label' => 'Rechercher',
+                'attr' => [
+                    'class' => 'btn btn-dark',
+                ],
             ]);
 
         $formModifier = function (FormEvent $event) {

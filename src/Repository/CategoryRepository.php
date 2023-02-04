@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Product;
 use App\Entity\Category;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\SubCategory;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Category>
@@ -561,6 +563,28 @@ class CategoryRepository extends ServiceEntityRepository
             ->setParameter('subCatId', $subCatId)
             ->getQuery();
         return $query->getResult();
+    }
+
+
+    // retourne les categories et les 5 derniers produits de chaque sous catégorie
+    public function findAllCatsLastFiveProducts(): array
+    {
+        $subQb = $this->getEntityManager()->createQueryBuilder();
+        $subQb->select('sc.id')
+            ->from(SubCategory::class, 'sc')
+            ->innerJoin(Product::class, 'p', 'WITH', 'sc = p.subCategory')
+            ->groupBy('sc.id')
+            ->orderBy('MAX(p.id)', 'DESC')
+            ->setMaxResults(5);
+
+        $qb = $this->createQueryBuilder('cat');
+        $qb->select('cat', 'scat', 'prod')
+            ->join('cat.subCategories', 'scat')
+            ->join('scat.products', 'prod')
+            ->where($qb->expr()->in('scat.id', $subQb->getDQL()))
+            ->orderBy('cat.listOrder + 0', 'ASC');
+
+        return $qb->getQuery()->getResult();
     }
 
 

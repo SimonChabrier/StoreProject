@@ -2,10 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Product;
 use App\Entity\SubCategory;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use PhpParser\Node\Expr\Cast;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<SubCategory>
@@ -51,6 +52,60 @@ class SubCategoryRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    // find last five products by subcategory
+    public function findLastFiveProductsBySubCat($id): array
+    {
+        $qb = $this->createQueryBuilder('sc');
+        $qb->select('p')
+            ->join('sc.products', 'p')
+            ->where('sc.id = :id')
+            ->setParameter('id', $id)
+            ->orderBy('p.id', 'DESC')
+            ->setMaxResults(5);
+        return $qb->getQuery()->getResult();
+    }
+
+    // retourne les sous-catégorie et les 5 derniers produits de chaque sous-catégorie
+    public function findAllSubCatsLastFiveProducts(): array
+    {
+        $subQb = $this->getEntityManager()->createQueryBuilder();
+        $subQb->select('sc.id')
+            ->from(SubCategory::class, 'sc')
+            ->innerJoin(Product::class, 'p', 'WITH', 'sc = p.subCategory')
+            ->groupBy('sc.id')
+            ->orderBy('MAX(p.id)', 'DESC')
+            ->setMaxResults(5);
+
+        $qb = $this->createQueryBuilder('scat');
+        $qb->select('scat', 'prod')
+            ->join('scat.products', 'prod')
+            ->where($qb->expr()->in('scat.id', $subQb->getDQL()))
+            ->orderBy('scat.listOrder + 0', 'ASC');
+
+        return $qb->getQuery()->getResult();
+        
+    }
+
+        // retourne la categorie les sous categorie et les 5 derniers produits de chaque sous categorie 
+        public function findAllCatsAndSubCatsLastFiveProducts(): array
+        {
+            $subQb = $this->getEntityManager()->createQueryBuilder();
+            $subQb->select('sc.id')
+                ->from(SubCategory::class, 'sc')
+                ->innerJoin(Product::class, 'p', 'WITH', 'sc = p.subCategory')
+                ->groupBy('sc.id')
+                ->orderBy('MAX(p.id)', 'DESC')
+                ->setMaxResults(5);
+
+            $qb = $this->createQueryBuilder('cat');
+            $qb->select('cat', 'scat', 'prod')
+                ->join('cat.categories', 'scat')
+                ->join('scat.products', 'prod')
+                ->where($qb->expr()->in('scat.id', $subQb->getDQL()))
+                ->orderBy('cat.listOrder + 0', 'ASC');
+
+            return $qb->getQuery()->getResult();
+        }
 
     
 //    /**

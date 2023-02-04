@@ -19,21 +19,22 @@ class FrontOfficeController extends AbstractController
      */
     public function index(CategoryRepository $cr, ProductRepository $pr, SubCategoryRepository $sc, Request $request): Response
     {   
-        // dump($pr->findOneBy(['id' => '1']));
-        // dump($pr->findAllVisibleProdcts());
+
         $lastFive = $cr->findAllCatsLastFiveProducts();
-        dump($lastFive);
+
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
 
-        //dump($cr->findAll());
         // reset search
-        if($request->request->get('resetSearch') == 'resetSearch') {            
+        if($request->request->get('resetSearch') == 'resetSearch') {  
+                
             return $this->render('front_office/index.html.twig', [
                 'cats' => $cr->findBy([], ['listOrder' => 'ASC']),
                 'form' => $form->createView(),
+                'lastFive' => $cr->findAllCatsLastFiveProducts(),
             ]);
         } 
+
         // return search results
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
@@ -46,6 +47,7 @@ class FrontOfficeController extends AbstractController
                 'searchValue' => $term = $data['search'],
                 'searchResults' => isset($term) ? $pr->search($term) : [],
                 'cats' => $cr->findCatsAndSubCatsProductsByPriceMinMax($min, $max),
+                'lastFive' => $cr->findAllCatsLastFiveProducts(),
             ]);
         }
 

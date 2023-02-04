@@ -106,7 +106,7 @@ class SearchType extends AbstractType
                 ],
                 'label' => 'Recherche',
             ])
-            // add submit button
+            // // add submit button
             ->add('submit', SubmitType::class, [
                 'label' => 'Rechercher',
             ]);

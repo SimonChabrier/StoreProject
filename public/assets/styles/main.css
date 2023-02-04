@@ -1,9 +1,9 @@
 body {
-  background: rgb(0, 0, 0) !important;
+  background: rgb(243, 243, 243) !important;
   text-align: left !important;
   padding: 30px !important;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  color: white !important;
+  color: rgb(53, 51, 51) !important;
 }
 
 * {
@@ -31,7 +31,8 @@ table {
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
-table th, table td {
+table th,
+table td {
   padding: 0.4rem !important;
   text-align: left;
   background-color: #161616 !important;
@@ -113,7 +114,6 @@ label {
 }
 
 .main {
-  width: 1000px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -124,15 +124,128 @@ label {
   padding: 0;
 }
 
+.slider {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+.slider .slider-picture {
+  width: 100%;
+  height: 300px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: bottom;
+     object-position: bottom;
+  opacity: 0.5;
+}
+
+.home-cat {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 15px 0 30px 0;
+}
+.home-cat section {
+  padding: 15px 30px;
+  background-color: #E2E2E2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #161616;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  transition: all 0.2s ease-in;
+}
+.home-cat section:hover {
+  cursor: pointer;
+  color: white;
+  background-color: #cb8431;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+aside {
+  display: flex;
+  height: 400px;
+  width: 20%;
+  min-height: 800px;
+  background-color: rgba(184, 176, 176, 0.05);
+  padding: 20px !important;
+  border-left: 6px solid white !important;
+}
+
+.last-five {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin: 0;
+  padding-left: 30px;
+  width: 80%;
+}
+.last-five section {
+  padding: 40px 40px;
+  border: 1px solid #ebebe4;
+  box-shadow: 0px 0px 22px -7px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #161616;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  transition: all 0.2s ease-in;
+  margin: 20px 0;
+}
+.last-five section:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 22px -7px rgba(0, 0, 0, 0.2);
+}
+.last-five .last-five-products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+.last-five ol.last-five {
+  display: inline-block;
+}
+.last-five img.last-five-picture {
+  width: 200px;
+  height: 200px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+  margin: 15px 0 0 0;
+}
+.last-five .selling-price {
+  background-color: black;
+  color: white;
+  padding: 5px 15px;
+  margin: 15px 0;
+}
+
 /* Sidenav menu */
 .sidenav {
   height: 100%;
-  width: 250px;
+  width: 350px;
   position: fixed;
   z-index: 1;
   top: 0;
-  left: -250px;
-  background-color: gray;
+  left: -350px;
+  background-color: #DFDFDF;
   padding-top: 60px;
   transition: left 0.5s ease;
 }
@@ -159,7 +272,7 @@ label {
 }
 
 /* Active class change left position to 0
-   and display sidebar */
+     and display sidebar */
 .sidenav.active {
   left: 0;
 }
@@ -176,8 +289,8 @@ label {
   display: block;
   width: 35px;
   height: 5px;
-  background-color: white;
-  margin: 6px 0;
+  background-color: #DFDFDF;
+  margin: 6px 20px 6px 0;
 }
 
 .pagination ul {

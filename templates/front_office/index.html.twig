@@ -3,217 +3,61 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-{% for category in lastFive %}
-{% if category is defined %}
-<div>
-    <div style="border:1px solid white; padding:30px; border-radius:20px; margin: 20px 0">
-        <h2>{{ category.name|upper }}</h2>
-        {% for subCategory in category.subCategories %}
-            {{ subCategory.name|upper }}
-            <ol>
-            {% for product in subCategory.products|slice(0, 5) %}
-               <li> {{ product.name|upper }}</li>
-            {% endfor %}
-            </ol>
-        {% endfor %}
-</div>
-{% endif %}
-{% endfor %}
 
-
-<div class="form-container">
-{{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
-{{ form_end(form) }}
-
-<form action="{{ path('app_home') }}" method="post">
-<button type="submit" id="reset_submit" name="resetSearch" value="reset" class="btn btn-info">Reset</button>
-</form> 
+{# slider #}
+<div class="slider">
+<img class="slider-picture" src="https://media.gq.com/photos/561ecfd8680c08be3c199b65/16:9/w_1280,c_limit/clean-white-shoes-01_1024.jpg" alt="">
 </div>
 
 
-    {% if searchResults is not defined or searchResults|length is same as 0 %}
-    {% if searchValue is defined and searchValue|length > 0 %}
-<div class="container">
-    <div style="border:1px solid white; padding:30px; border-radius:20px; margin: 20px 0">
-        <ol>
-            <li>Pas de produit trouvé pour la recherche : {{ searchValue }}</li>
-        </ol>
-    </div>
-    {% endif %}
-{% endif %}
 
-{% if searchResults is defined and searchResults|length is not same as 0 %}
-    <div style="border:1px solid white; padding:30px; border-radius:20px; margin: 20px 0">
-    Resultat de la recherche : 
-        <ul>
-            {% for product in searchResults %}
-                <li> <a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name|upper }}</a></li>
-                <ul>
-                    <li>Prix public : <del>{{ product.catalogPrice }} €</del></li>
-                    <li>Prix de vente : {{ product.sellingPrice }} €</li>
-                        {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
-                    <li>Réduction : {{ discount|round(1) }} %</li>  
-                </ul>
-            {% endfor %}
-        </ul>
-    </div
+{# ajouter les liens vers les catégories #}
+<div class="home-cat">
+    <section>HOMME</section>
+    <section>FEMME</section>
+    <section>ENFANT</section>
+    <section>ACCESSOIRES</section>
+    <section>SOLDES</section>
 </div>
-{% endif %}
 
+<div class="page-container">
 
-{# <div class="container">
-<ul>
-{% for cat in cats %}
-    <h2><a href="{{ path('app_category_show', {'id': cat.id}) }}">{{ cat.name|upper }}</a></h2>
-    <ul>
-        {% for product in cat.products %}
-            {% if product.name %}
-                <li><a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name|upper }}</a></li>
-                <ul>
-                    <li>Prix public : <del>{{ product.catalogPrice }} €</del></li>
-                    <li>Prix de vente : {{ product.sellingPrice }} €</li>
-                        {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
-                    <li>Réduction : {{ discount|round(1) }} %</li>  
-                    {% if product.inStockQuantity > 0 %}
-                        <li> 🟢 {{ product.inStockQuantity }} En stock</li>
-                    {% else %}
-                        <li> 🟠 En rupture de stock</li>
-                    {% endif %}
-                    <li>Stock : </li>  
-                    <ul>
-                        | Commentaires liés à {{ product.name }} |
-                        {% for comment in product.comments %}
-                            {% if comment.text %}
-                                <li>{{ comment.text }}</li>
-                                ---- Autheur : {{ comment.author }}
-                            {% endif %}
-                            {% else %}
-                                <li>Pas de commentaire pour ce produit</li>
-                        {% endfor %}
-                    </ul>
-                </ul>
-            {% endif %}
-            {% else %}
-            {% if min is defined and max is defined %} 
-                Pas de produit entre {{ min }} € et {{ max }} €  dans {{ cat.name }}
-                {% else %}
-                <li>Pas de produit dans {{ cat.name }}</li>
-            {% endif %}
-        {% endfor %}
-    </ul>
-    <ul>
-    {% for sub in cat.subCategories %}
-        <li><h3><a href="{{ path('app_sub_category_show', {'id': cat.id}) }}">{{ sub.name|upper }}</a></h3></li>
-            <ul>
-            {% for product in sub.products %}
-                {% if product.name %}
-                    <li> <a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name|upper }}</a></li>
-                    <ul>
-                        <li>Prix public : <del>{{ product.catalogPrice }} €</del></li>
-                        <li>Prix de vente : {{ product.sellingPrice }} €</li>
-                            {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
-                        <li>Réduction : {{ discount|round(1) }} %</li> 
-                        {% if product.inStockQuantity > 0 %}
-                        <li> 🟢 {{ product.inStockQuantity }} En stock</li>
-                        {% else %}
-                            <li> 🟠 En rupture de stock</li>
-                        {% endif %}
-                    </ul>
-                {% endif %}
-                {% else %}
-                    {% if min is defined and max is defined %} 
-                Pas de produit entre {{ min }} € et {{ max }} €  dans {{ sub.name }}
-                {% else %}
-                <li>Pas de produit dans {{ sub.name }}</li>
-            {% endif %}
-            {% endfor %}
-            </ul>
-    {% endfor %}
-    </ul>
-{% endfor %}
-</ul>
-</div>
- #}
+{# barre laterale #}
+{% include '_fragments/_aside.html.twig' %} 
 
- <div class="container">
-    {# loop on categories #}
-    <ol>
-    {% for category in cats %}
-        <li>
-            <h2 style="color:red">CATEGORIE : {{  category.name|upper }}</h2>
-        </li>
-        {# loop on Subcategories of each category #}
-        {% if category.subCategories|length == 0  %}
-            <ol>
-                <li> - Pas de sous catégorie dans la catégorie {{ category.name }}</li>
-            </ol>
-        {% endif %}
-         
-        {% for subCat in category.subCategories %}
-        <ol>
-            <li>
-                <h4 style="color:yellow">SOUS-CATEGORIE : {{ subCat.name|upper }}</h4>
-            </li>
+<div class="last-five">
+{# résultats de la recherche #}
+{% include '_fragments/_searchResults.html.twig' %} 
 
-            {# loop on productType of each subcategory #}
-            {% for type in subCat.productType %}
-
-            <ol>
-                <li>
-                    <h5 style="color:green">TYPE DE PRODUIT : {{ type.name|upper }}</h5>
-                </li>
-
-                {# loop on products of each subCat products #}
-                {% for product in subCat.products %}
-
-                {# si produit  #}
-                {% if product.visibility == true %}
-
-                    {# check if product is of the same type and category to order display #}
-                    {% if product.category.name == category.name %} 
-                        <div style="border: 1px solid white; padding:30px; margin: 20px 0"> 
-                            
-                            <li><a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name|upper }}</a></li>
-                            
-                                <ol>
-                                    <li>Marque : {{ product.brand }}</li>
-                                    <li>Prix public : <del>{{ product.catalogPrice }} €</del></li>
-                                    <li>Prix de vente : {{ product.sellingPrice }} €</li>
-                                        {% if (product.catalogPrice - product.sellingPrice ) > 0 %}
-                                            {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
-                                    <li>Réduction : {{ discount|round(1) }} %</li>  
-                                        {% endif %}
-                                    {% if product.inStockQuantity > 0 %}
-                                    <br>
-                                        <li> 🟢 {{ product.inStockQuantity }} En stock</li>
-                                    {% else %}
-                                    <br>
-                                        <li> 🟠 En rupture de stock</li>
-                                    {% endif %} 
-                                    
-                                    <div style="border: 1px solid grey; padding:30px; margin: 20px 0; text-align:right">
-                                        <ol>
-                                            <li> Catégorie : {{ product.category.name }}</li>
-                                            <li> Sous catégorie : {{ product.subCategory.name }}</li>
-                                            <li>Type de produit : {{ product.productType.name }}</li>     
-                                        </ol>
-                                    </div>
-                                </ol>
-
-                        </div>
-                    {% else %}
-                        {# je n'affiche rien au passage de la boucle sur le produit qui n'est pas de la même categorie  #}
-                    {% endif %}
+{# {% if lastfive is defined %} #}
+    {% for category in lastFive %}
+        {% if category is defined %}
+                <h2>{{ category.name|upper }}</h2>
+                {% for subCategory in category.subCategories %}
+                    {{ category.name|upper }} {{ subCategory.name|upper }}
+                    <div class="last-five-products">
                     
-                {% endif %}
+                    {% for product in subCategory.products|slice(0, 5) %}
+                    {% if product.category.name == category.name %}
+                    <section>
+                    
+                        <h6> {{ product.name|upper }}</h6>
+                        <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
+                        <span class="selling-price">{{ product.sellingPrice }} €</span>
+                        <span class="categorie">Catagorie : {{ product.category }}</span>
+                        <span class="sous-categorie">Sous-categorie : {{ product.subCategory }}</span>
+                        <span class="type">Type : {{ product.productType }}</span>
+                    
+                    </section>
+                    {% endif %}
+                    {% endfor %}
+                    </div>
                     
                 {% endfor %}
-            </ol>
-             {% endfor %}  
-        </ol> 
-        {% endfor %}
-    <br> {#  fin de boucle categories #}
+        {% endif %}
     {% endfor %}
-<ol>
+{# {% endif %} #}
+</div>
+
 </div>
 {% endblock %}

@@ -43,11 +43,22 @@
                     
                         <h6> {{ product.name|upper }}</h6>
                         <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
-                        <span class="selling-price">{{ product.sellingPrice }} €</span>
-                        <span class="categorie">Catagorie : {{ product.category }}</span>
-                        <span class="sous-categorie">Sous-categorie : {{ product.subCategory }}</span>
-                        <span class="type">Type : {{ product.productType }}</span>
-                    
+                                    
+                            <span class="selling-price">{{ product.sellingPrice }} €</span>
+                        <div class="productInfo">
+                            <span class="categorie">Catagorie : {{ product.category }}</span>
+                            <span class="sous-categorie">Sous-categorie : {{ product.subCategory }}</span>
+                            <span class="type">Type : {{ product.productType }}</span>
+                        </div>
+
+                        <div class="productInfoFooter">
+                        {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
+                            <span>-{{ discount|round }}%</span> 
+                            <span class="productLink"><a href="{{ path('app_product_show', {'id': product.id}) }}">Détail</a></span>
+                        </div>
+                            
+                            
+
                     </section>
                     {% endif %}
                     {% endfor %}

@@ -10,8 +10,8 @@
 {% endif %}
 
 {% if searchResults is defined and searchResults|length is not same as 0 %}
-<h5>Resultats de la recherche : </h5>
 <hr>
+<h5>Résultats de la recherche : </h5>
 <div class="last-five-products searchResults">
     {% for product in searchResults %}
         <section>
@@ -24,6 +24,7 @@
         </section>
     {% endfor %}
 </div>
+<h5>Fin des résultats de la recherche...</h5>
+<hr>
 {% endif %}
 
-<hr>

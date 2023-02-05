@@ -7,6 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+// add groups for serialization
+use Symfony\Component\Serializer\Annotation\Groups;
+
+
+
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
@@ -16,6 +21,7 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"product:read"})
      */
     private $id;
 

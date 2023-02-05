@@ -3,12 +3,8 @@
 <h4><i class="bi bi-funnel"></i> Filtres</h4>
 <hr>
     <div class="form-container">
-    {# <h5><i class="bi bi-currency-euro"></i> Prix</h5> #}
-        {{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
-        {{ form_end(form) }}
-        <form class="resetForm" action="{{ path('app_home') }}" method="post">
-            <button type="submit" id="reset_submit" name="resetSearch" value="resetSearch" class="btn btn-light">Reset</button>
-        </form> 
+        {# injection du controller SearchFormController pour accèder au form dans toutes les pages #}
+        {{ render(controller('App\\Controller\\SearchFormController::form')) }} 
     </div>
 <hr>
     <div class="brandCheckboxes">

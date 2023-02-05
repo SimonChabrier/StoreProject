@@ -22,39 +22,39 @@ class FrontOfficeController extends AbstractController
 
         $lastFive = $cr->findAllCatsLastFiveProducts();
 
-        $form = $this->createForm(SearchType::class);
-        $form->handleRequest($request);
+        // $form = $this->createForm(SearchType::class);
+        // $form->handleRequest($request);
 
-        // reset search
-        if($request->request->get('resetSearch') == 'resetSearch') {  
+        // // reset search
+        // if($request->request->get('resetSearch') == 'resetSearch') {  
                 
-            return $this->render('front_office/index.html.twig', [
-                'cats' => $cr->findBy([], ['listOrder' => 'ASC']),
-                'form' => $form->createView(),
-                'lastFive' => $cr->findAllCatsLastFiveProducts(),
-            ]);
-        } 
+        //     return $this->render('front_office/index.html.twig', [
+        //         'cats' => $cr->findBy([], ['listOrder' => 'ASC']),
+        //         'form' => $form->createView(),
+        //         'lastFive' => $cr->findAllCatsLastFiveProducts(),
+        //     ]);
+        // } 
 
-        // return search results
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+        // // return search results
+        // if ($form->isSubmitted() && $form->isValid()) {
+        //     $data = $form->getData();
 
-            // (int) convert $min and max to integer
-            return $this->render('front_office/index.html.twig', [
-                'form' => $form->createView(),
-                'min' => $min = (int) $data['min'],
-                'max' => $max = (int) $data['max'],
-                'searchValue' => $term = $data['search'],
-                'searchResults' => isset($term) ? $pr->search($term) : [],
-                'cats' => $cr->findCatsAndSubCatsProductsByPriceMinMax($min, $max),
-                'lastFive' => $cr->findAllCatsLastFiveProducts(),
-            ]);
-        }
+        //     // (int) convert $min and max to integer
+        //     return $this->render('front_office/index.html.twig', [
+        //         'form' => $form->createView(),
+        //         'min' => $min = (int) $data['min'],
+        //         'max' => $max = (int) $data['max'],
+        //         'searchValue' => $term = $data['search'],
+        //         'searchResults' => isset($term) ? $pr->search($term) : [],
+        //         'cats' => $cr->findCatsAndSubCatsProductsByPriceMinMax($min, $max),
+        //         'lastFive' => $cr->findAllCatsLastFiveProducts(),
+        //     ]);
+        // }
 
         return $this->render('front_office/index.html.twig', [
             // add only categories with products visible
             'cats' => $cr->findBy([], ['listOrder' => 'ASC']),
-            'form' => $form->createView(),
+            //'form' => $form->createView(),
             'lastFive' => $lastFive,
         ]);
     }

@@ -1,5 +1,5 @@
 body {
-    background: rgb(243, 243, 243) !important;
+    background: rgb(255, 255, 255) !important;
     text-align: left !important;
     padding: 30px !important;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -8,6 +8,10 @@ body {
 
 * {
     box-sizing: border-box !important;
+}
+
+.dropdown-toggle::after {
+    margin-left: 1rem!important;
 }
 
 .navbar-expand-lg {
@@ -19,7 +23,6 @@ body {
     .nav-item  a {
     padding: 15px 30px!important;
     margin-right: 15px;
-    background-color: #F3F3F3;
     color: #161616!important;
     font-size: 1.2rem;
     font-weight: 300;
@@ -44,8 +47,9 @@ body {
     }
 
     .dropdown-menu {
-        margin: .5rem 0!important;
-        padding: 0!important;
+        margin: 0!important;
+        padding: 20px 0!important;
+        border: 1px solid #c7c721!important;
     }
 
 }
@@ -134,7 +138,8 @@ label {
 
 .main {
     margin: 0 auto;
-    padding: 0 100px;
+    max-width: 1600px;
+    // box-shadow: 0px 0px 26px 5px rgba(0,0,0,0.09);
 }
 
 .container {
@@ -273,6 +278,11 @@ aside {
         margin: 15px 0 0 0;
     }
 
+    .catalog-price {
+        position: absolute;
+        font-size: .9rem;
+    }
+
     .selling-price {
         background-color: black;
         color: white;
@@ -306,13 +316,19 @@ aside {
     position: absolute;
     top: 100px;
     transform: rotate(-8deg);
-    left: 16px;
-    top: 190px;
+    left: 0;
+    top: 210px;
+    background-color: #c7c721;
+    padding: 3px 15px;
+    border-radius: 0.3rem;
+    border: none;
+
 }
 
 .productLink a {
     font-size: .8rem;
     text-decoration: none;
+    color: white!important;
 }
 
 .productInfoFooter {

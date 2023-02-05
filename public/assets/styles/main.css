@@ -344,6 +344,17 @@ form.resetForm {
   width: 100%;
 }
 
+help.help-block {
+  color: green !important;
+  font-size: 0.8rem !important;
+}
+
+.min-error, .max-error, .text-error {
+  color: red !important;
+  font-size: 0.8rem !important;
+  transition: all 0.5s ease-in;
+}
+
 /* Sidenav menu */
 .sidenav {
   height: 100%;

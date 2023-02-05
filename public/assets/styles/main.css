@@ -54,6 +54,11 @@ h1 {
   margin-bottom: 30px;
 }
 
+hr {
+  border: 1px solid #c7c721 !important;
+  padding: 0 !important;
+}
+
 a {
   color: #cb8431 !important;
 }
@@ -113,7 +118,7 @@ label {
 
 .main {
   margin: 0 auto;
-  padding: 20px;
+  padding: 0 100px;
 }
 
 .container {
@@ -127,6 +132,7 @@ label {
   height: 100%;
   display: flex;
   justify-content: center;
+  margin: 0 0 30px 0;
 }
 .slider .slider-picture {
   width: 100%;
@@ -174,13 +180,12 @@ label {
 
 aside {
   display: flex;
-  height: 400px;
   width: 20%;
   min-height: 800px;
   background-color: rgba(184, 176, 176, 0.05);
   padding: 20px !important;
-  border-left: 3px solid #C6C720 !important;
-  border-radius: 10px 0 0 10px;
+  border-radius: 10px;
+  background-image: linear-gradient(90deg, hsl(0deg, 0%, 100%) 0%, hsl(344deg, 0%, 99%) 18%, hsl(344deg, 0%, 99%) 26%, hsl(344deg, 0%, 98%) 32%, hsl(344deg, 0%, 98%) 37%, hsl(344deg, 0%, 97%) 42%, hsl(344deg, 0%, 97%) 47%, hsl(344deg, 0%, 96%) 54%, hsl(344deg, 0%, 96%) 64%, hsl(0deg, 0%, 95%) 90%);
 }
 
 .last-five {
@@ -286,6 +291,15 @@ aside {
   border-radius: 50%;
   font-weight: 600;
   border: 2px solid white;
+}
+
+h5.searchResults {
+  color: #c7c721 !important;
+  font-size: 1.5rem;
+  font-weight: 200;
+  text-transform: uppercase;
+  margin-top: 20px;
+  padding-left: 15px;
 }
 
 form.resetForm {

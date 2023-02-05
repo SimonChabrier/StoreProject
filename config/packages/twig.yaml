@@ -4,6 +4,7 @@ twig:
     # ajout du service NavService pour le menu de navigation dans la variable globale: nav
     globals:
         nav: '@App\Service\NavService'
+        brands: '@App\Service\BrandsService'
 
 when@test:
     twig:

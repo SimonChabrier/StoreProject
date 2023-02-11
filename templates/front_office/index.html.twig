@@ -8,7 +8,6 @@
 {# résultats de la recherche #}
 {% include '_fragments/_searchResults.html.twig' %} 
 
-{# {% if lastfive is defined %} #}
     {% for category in lastFive %}
         {% if category is defined and category.showOnHome == true %}
                 <h2>{{ category.name|upper }}</h2>
@@ -16,13 +15,13 @@
 
                     {{ category.name|upper }} - {{ subCategory.name|upper }}
                     <div class="last-five-products">
-                    {% for product in category.products|slice(0, 5) %}
+                    {% for product in category.products|slice(0, 4) %}
 
                     {% if product.category.name == category.name %}
 
                     <section>
                
-                        <h6> {{ product.name|upper }}</h6>
+                        <h6> {{ product.name|upper}}</h6>
                         <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
                                     
                             <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
@@ -40,6 +39,7 @@
                         </div>
                             
                     </section>
+                    
                     {% endif %}
                     {% endfor %}
                     </div>

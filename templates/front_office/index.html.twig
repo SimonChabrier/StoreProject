@@ -14,13 +14,15 @@
                 <h2>{{ category.name|upper }}</h2>
                 {% for subCategory in category.subCategories %}
 
-                    {{ category.name|upper }} {{ subCategory.name|upper }}
+                    {{ category.name|upper }} - {{ subCategory.name|upper }}
                     <div class="last-five-products">
-                    {% for product in subCategory.getProducts|slice(0, 5) %}
-                    {% if product.category.name == category.name %}
-                    
+                    {# find first 5  for each subcategory  #}
+                    {# {% for product in subCategory.getProducts|slice(0, 5) %} #}
+
+                    {% for product in subCategory.getProducts %}
+                    {% if product.category.name == category.name and product.subCategory.name == subCategory.name %}
                     <section>
-                    
+               
                         <h6> {{ product.name|upper }}</h6>
                         <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
                                     

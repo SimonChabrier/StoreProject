@@ -2,21 +2,7 @@
 
 {% block content %}
 
-{# ajouter les liens vers les catégories #}
-{# <div class="home-cat">
-    <section>HOMME</section>
-    <section>FEMME</section>
-    <section>ENFANT</section>
-    <section>ACCESSOIRES</section>
-    <section>SOLDES</section>
-</div> #}
-
 <div class="page-container">
-
-
-
-{# barre laterale #}
-{# {% include '_fragments/_aside.html.twig' %}  #}
 
 <div class="last-five">
 {# résultats de la recherche #}
@@ -30,8 +16,7 @@
 
                     {{ category.name|upper }} {{ subCategory.name|upper }}
                     <div class="last-five-products">
-                    {# {{ dump(subCategory.products|slice(0, 5)) }} #}
-                    {% for product in subCategory.products|slice(0, 5) %}
+                    {% for product in subCategory.getProducts|slice(0, 5) %}
                     {% if product.category.name == category.name %}
                     
                     <section>
@@ -53,8 +38,6 @@
                             <span class="productLink"><a href="{{ path('app_product_show', {'id': product.id}) }}">Détail</a></span>
                         </div>
                             
-                            
-
                     </section>
                     {% endif %}
                     {% endfor %}
@@ -63,7 +46,6 @@
                 {% endfor %}
         {% endif %}
     {% endfor %}
-{# {% endif %} #}
 </div>
 
 </div>

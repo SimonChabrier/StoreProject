@@ -35,7 +35,7 @@ class Product
      * @ORM\ManyToOne(
      *      targetEntity=Category::class, 
      *      inversedBy="products", 
-     *      fetch="EXTRA_LAZY"
+     *      fetch="EAGER"
      *  )
      * @Groups({"product:read"})
      */
@@ -45,7 +45,7 @@ class Product
      * @ORM\ManyToOne(
      *      targetEntity=SubCategory::class, 
      *      inversedBy="products", 
-     *      fetch="EXTRA_LAZY"
+     *      fetch="EAGER"
      *  )
      * @Groups({"product:read"})
      */

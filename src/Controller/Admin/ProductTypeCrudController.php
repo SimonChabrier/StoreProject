@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\ProductType;
 use App\Form\ProductDataType;
+use Doctrine\ORM\Mapping\Builder\AssociationBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -20,6 +21,7 @@ class ProductTypeCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
+
             AssociationField::new('subCategories', 'Sous catégrories liées')
             ->setFormTypeOptions([
                 'by_reference' => false,
@@ -34,13 +36,14 @@ class ProductTypeCrudController extends AbstractCrudController
             TextField::new('name', 'Nom du type de produit'),
             
 
-            // AssociationField::new('products', 'Nombre de produits liés')
-            // ->setFormTypeOptions([
-            //     'by_reference' => false,
-            //     'multiple' => true,
-            //     'expanded' => true,
-            //     'choice_label' => 'name',
-            // ]),
+            AssociationField::new('products', 'Nombre de produits liés')
+            ->setFormTypeOptions([
+                'by_reference' => false,
+                'multiple' => true,
+                'expanded' => true,
+                'choice_label' => 'name',
+            ]),
+            
             CollectionField::new('typeData', 'Caractéristiques du type de produit')
             ->setEntryType(ProductDataType::class, [])
             ->setCustomOption('allow_add', true)

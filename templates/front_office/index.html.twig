@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="page-container">
+{# <div class="page-container"> #}
 
 <div class="last-five">
 {# résultats de la recherche #}
@@ -15,9 +15,13 @@
 
                     {{ category.name|upper }} - {{ subCategory.name|upper }}
                     <div class="last-five-products">
-                    {% for product in category.products|slice(0, 4) %}
+                    {# {% for product in category.products|slice(0, 4) %} #}
+                    {% for product in subCategory.getProducts %}
+                   
+                    {% if product.category.id == category.id %}
 
-                    {% if product.category.name == category.name %}
+                    {# limit to 5 products #}
+                 
 
                     <section>
                
@@ -39,8 +43,11 @@
                         </div>
                             
                     </section>
-                    
+
+                  
                     {% endif %}
+
+            
                     {% endfor %}
                     </div>
                     
@@ -49,5 +56,5 @@
     {% endfor %}
 </div>
 
-</div>
+{# </div> #}
 {% endblock %}

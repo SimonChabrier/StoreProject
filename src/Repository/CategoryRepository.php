@@ -567,6 +567,7 @@ class CategoryRepository extends ServiceEntityRepository
 
 
     // retourne les categories et les 5 derniers produits de chaque sous catégorie
+    // mais moins performant que la requête findAll()
     public function test(): array
     {
         $subQb = $this->getEntityManager()->createQueryBuilder();

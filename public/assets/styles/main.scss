@@ -222,8 +222,8 @@ label {
   flex-direction: row;
   flex-wrap: wrap;
   margin: 0;
-  // background-color: #cb8431;
 }
+
 
 aside {
   display: flex;
@@ -255,13 +255,21 @@ aside {
     line-height: 2rem;
 }
 
-.last-five {
+.block-content {
   display: flex;
-  flex-flow: column wrap;
-  margin: 0;
+  // flex-direction: column;
   padding-left: 30px;
-  // background-color: #092781;
   width: 100%;
+  flex-flow: column wrap;
+}
+
+.last-five {
+  // display: flex;
+  // flex-flow: column wrap;
+  // margin: 0;
+  // padding-left: 30px;
+  // background-color: #092781;
+  // width: 100%;
 
   section {
     padding: 40px 40px;
@@ -288,6 +296,7 @@ aside {
       box-shadow: 0px 0px 22px -7px rgba(0, 0, 0, 0.2);
     }
   }
+
   .last-five-products {
     display: flex;
     flex-flow: row wrap;
@@ -508,3 +517,5 @@ help.help-block {
 .red {
   color: red !important;
 }
+
+

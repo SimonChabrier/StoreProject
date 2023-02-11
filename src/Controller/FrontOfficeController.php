@@ -18,6 +18,21 @@ class FrontOfficeController extends AbstractController
     {   
 
         $lastFive = $cr->findAll();
+        
+
+        // return all categories and only 5 products for each subcategory
+        $products = [];
+        foreach($lastFive as $category) {
+            $subcategories = $category->getSubcategories();
+            foreach($subcategories as $subcategory) {
+                $subcatProducts = $subcategory->getProducts();
+                $subcatProducts = array_slice($subcatProducts->toArray(), 0, 5);
+                $products[] = $subcatProducts;
+            }
+        }
+
+        dump($products);
+       
 
         return $this->render('front_office/index.html.twig', [
             'lastFive' => $lastFive,

@@ -221,13 +221,13 @@ aside {
   line-height: 2rem;
 }
 
-.last-five {
+.block-content {
   display: flex;
-  flex-flow: column wrap;
-  margin: 0;
   padding-left: 30px;
   width: 100%;
+  flex-flow: column wrap;
 }
+
 .last-five section {
   padding: 40px 40px;
   border: 1px solid #ebebe4;

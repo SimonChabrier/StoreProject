@@ -11,15 +11,15 @@
     {% if product.category %}
     - Categorie : <a href="{{ path('app_category_show', { 'id': product.category.id }) }}">{{ product.category|capitalize }}</a>
     {% endif %}
-    <br>
+
     {% if product.subCategory %}
     - Sous-Categorie : <a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}"> {{ product.subCategory|capitalize }}</a>
     {% endif %}
-    <br>
+
     {% if product.productType.name %}
     - Type de produit : <a href="{{ path('app_product_type_show', { 'id': product.productType.id }) }}"> {{ product.productType.name|capitalize }}</a>
     {% endif %}
-    <br>
+
     <hr>
     - Propriétés du produit
         <ol>
@@ -28,7 +28,7 @@
             <li>Visible : {{ (product.visibility) ? 'Oui' : 'Non' }}</li>
             <li>Prix catalogue : <del>{{ product.catalogPrice }} €</del></li>
             {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
-            <li>Réduction : <span style='color:yellow'>{{ discount|round(1) }} % </span></li> 
+            <li>Réduction : <span style='color:green'>{{ discount|round(1) }} % </span></li> 
             <li>Prix : {{ product.sellingPrice }} €</li>
             <li>Marque : {{ product.brand }}</li>
         </ol>
@@ -53,14 +53,13 @@
             <li>Commentaire : {{ comment.text }}</li>
         </ol>
     {% endfor %}
-
-
-
-
+    
     <a href="{{ path('app_product_index') }}">back to list</a>
 
     <a href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
 
     {{ include('product/_delete_form.html.twig') }}
+
+
 {% endblock %}
 

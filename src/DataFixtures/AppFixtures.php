@@ -486,17 +486,7 @@ class AppFixtures extends Fixture
             $product->setProductType($productTypes[mt_rand(0, count($productTypes) - 1)]);
             $product->setCategory($categories[rand(1, 3)]);
 
-            // si la categorie est homme ou femme ou enfant on ajoute la sous catégorie liée à la categorie
-            if($product->getCategory()->getName() == 'Homme') {
-                $product->setSubCategory($subCategories[0]);
-            } elseif($product->getCategory()->getName() == 'Femme') {
-                $product->setSubCategory($subCategories[1]);
-            } elseif($product->getCategory()->getName() == 'Enfant') {
-                $product->setSubCategory($subCategories[2]);
-            } 
-
-
-            //$product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
+            $product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
            
             $product->setInStockQuantity(rand(1, 10));
             $product->setBuyPrice($faker->numberBetween(80, 1000) * 0.8);

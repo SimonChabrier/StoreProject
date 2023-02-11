@@ -11,6 +11,11 @@ body {
   box-sizing: border-box !important;
 }
 
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  display: flex;
+  flex-grow: 1;
+}
+
 #header {
   position: relative;
 }
@@ -218,11 +223,10 @@ aside {
 
 .last-five {
   display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
+  flex-flow: column wrap;
   margin: 0;
   padding-left: 30px;
-  width: 80%;
+  width: 100%;
 }
 .last-five section {
   padding: 40px 40px;
@@ -240,6 +244,7 @@ aside {
   text-transform: uppercase;
   transition: all 0.2s ease-in;
   margin: 20px 0;
+  width: 290px;
 }
 .last-five section:hover {
   cursor: pointer;
@@ -247,7 +252,7 @@ aside {
 }
 .last-five .last-five-products {
   display: flex;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
   gap: 30px;
 }
 .last-five ol.last-five {

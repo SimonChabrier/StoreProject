@@ -13,6 +13,8 @@
 
 <div class="page-container">
 
+
+
 {# barre laterale #}
 {# {% include '_fragments/_aside.html.twig' %}  #}
 
@@ -25,11 +27,13 @@
         {% if category is defined %}
                 <h2>{{ category.name|upper }}</h2>
                 {% for subCategory in category.subCategories %}
+
                     {{ category.name|upper }} {{ subCategory.name|upper }}
                     <div class="last-five-products">
-                    
+                    {# {{ dump(subCategory.products|slice(0, 5)) }} #}
                     {% for product in subCategory.products|slice(0, 5) %}
                     {% if product.category.name == category.name %}
+                    
                     <section>
                     
                         <h6> {{ product.name|upper }}</h6>

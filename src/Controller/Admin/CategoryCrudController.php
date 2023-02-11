@@ -44,7 +44,7 @@ class CategoryCrudController extends AbstractCrudController
                     'expanded' => true,
                     'choice_label' => 'getSubCategoryName',
                 ]
-            ),
+            )
             // AssociationField::new('products')
             // ->setLabel('Produits liés')
             // ->setFormTypeOptions([

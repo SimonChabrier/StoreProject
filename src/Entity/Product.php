@@ -27,6 +27,7 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=150)
+     * @Groups({"product:read"})
      */
     private $name;
 
@@ -36,6 +37,7 @@ class Product
      *      inversedBy="products", 
      *      fetch="EXTRA_LAZY"
      *  )
+     * @Groups({"product:read"})
      */
     private $category;
 
@@ -45,6 +47,7 @@ class Product
      *      inversedBy="products", 
      *      fetch="EXTRA_LAZY"
      *  )
+     * @Groups({"product:read"})
      */
     private $subCategory;
 
@@ -60,6 +63,7 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Groups({"product:read"})
      */
     private $sellingPrice;
 
@@ -92,6 +96,7 @@ class Product
      *      fetch="EAGER"
      *  )
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"product:read"})
      */
     private $productType;
 

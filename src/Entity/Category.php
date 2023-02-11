@@ -37,6 +37,7 @@ class Category
      *      mappedBy="categories", 
      *      fetch="EXTRA_LAZY"
      *  )
+     * 
      */
     private $subCategories;
 
@@ -51,6 +52,7 @@ class Category
      *      mappedBy="category", 
      *      fetch="EXTRA_LAZY"
      *  )
+     * 
      */
     private $products;
 

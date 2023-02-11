@@ -20,8 +20,9 @@ class FrontOfficeController extends AbstractController
     public function index(CategoryRepository $cr, ProductRepository $pr, SubCategoryRepository $sc, Request $request): Response
     {   
 
-        $lastFive = $cr->findAllCatsLastFiveProducts();
-
+        //$lastFive = $cr->findAllCatsLastFiveProducts();
+        $lastFive = $cr->findAll();
+        dump($lastFive);
         // $form = $this->createForm(SearchType::class);
         // $form->handleRequest($request);
 

@@ -50,7 +50,7 @@ class Category
      * @ORM\OneToMany(
      *      targetEntity=Product::class, 
      *      mappedBy="category", 
-     *      fetch="EXTRA_LAZY"
+     *      fetch="EAGER"
      *  )
      * 
      */

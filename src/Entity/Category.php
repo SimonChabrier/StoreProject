@@ -56,6 +56,11 @@ class Category
      */
     private $products;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $showOnHome = true;
+
     public function __construct()
     {
         $this->subCategories = new ArrayCollection();
@@ -151,5 +156,17 @@ class Category
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function isShowOnHome(): ?bool
+    {
+        return $this->showOnHome;
+    }
+
+    public function setShowOnHome(bool $showOnHome): self
+    {
+        $this->showOnHome = $showOnHome;
+
+        return $this;
     } 
 }

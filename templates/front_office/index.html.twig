@@ -10,17 +10,16 @@
 
 {# {% if lastfive is defined %} #}
     {% for category in lastFive %}
-        {% if category is defined %}
+        {% if category is defined and category.showOnHome == true %}
                 <h2>{{ category.name|upper }}</h2>
                 {% for subCategory in category.subCategories %}
 
                     {{ category.name|upper }} - {{ subCategory.name|upper }}
                     <div class="last-five-products">
-                    {# find first 5  for each subcategory  #}
-                    {# {% for product in subCategory.getProducts|slice(0, 5) %} #}
+                    {% for product in category.products|slice(0, 5) %}
 
-                    {% for product in subCategory.getProducts %}
-                    {% if product.category.name == category.name and product.subCategory.name == subCategory.name %}
+                    {% if product.category.name == category.name %}
+
                     <section>
                
                         <h6> {{ product.name|upper }}</h6>

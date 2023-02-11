@@ -16,7 +16,8 @@ class FrontOfficeController extends AbstractController
      */
     public function index(CategoryRepository $cr): Response
     {   
-        $lastFive = $cr->findAllCatsLastFiveProducts();
+
+        $lastFive = $cr->findAll();
 
         return $this->render('front_office/index.html.twig', [
             'lastFive' => $lastFive,

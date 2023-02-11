@@ -567,7 +567,7 @@ class CategoryRepository extends ServiceEntityRepository
 
 
     // retourne les categories et les 5 derniers produits de chaque sous catégorie
-    public function findAllCatsLastFiveProducts(): array
+    public function test(): array
     {
         $subQb = $this->getEntityManager()->createQueryBuilder();
         $subQb->select('sc.id')
@@ -585,7 +585,11 @@ class CategoryRepository extends ServiceEntityRepository
             ->orderBy('cat.listOrder + 0', 'ASC');
 
         return $qb->getQuery()->getResult();
+
     }
+
+
+    
 
 
 

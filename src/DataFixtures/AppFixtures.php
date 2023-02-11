@@ -52,8 +52,17 @@ class AppFixtures extends Fixture
         $productTypes = [];
         $brands = [];
 
+        // compteur pour les produits
+        $minimumProductsPerSubCategory = 5;
+        $counter = [
+            'Running' => 0,
+            'Lifestyle' => 0,
+            'Ville' => 0,
+            'Randonnée' => 0,
+            'Training' => 0
+        ];
 
-        // create the main snakers categories names
+        // create the main categories names
         $rootCategoriesNames = [
             'Nouveautés',
             'Homme',
@@ -63,20 +72,16 @@ class AppFixtures extends Fixture
             'Soldes',
         ];
 
-        // create 10 main snakers sub categories names for each main categories
-
+        // create snakers sub categories names for each main categories
         $subCategoriesNames = [
             "Running",
             "Lifestyle",
             "Ville",
-            //"Trail",
             "Randonnée",
             "Training",
-            //"Fitness",
-            //"Basket",
         ]; 
 
-        // create 10 main snakers product types names for each main categories
+        // create snakers product types names sub categories
         $productTypesNames = [
             "Running" => [
                 "course à pied",
@@ -108,14 +113,10 @@ class AppFixtures extends Fixture
                 "athlétisme",
                 "fitness",
             ],
-            // "Basket" => [
-            //     "basket-ball",
-            //     "skate",
-            //     "streetwear",
-            // ],
-        ];
-        //     foreach ($types[$subCategoryName] as $type) {...}
 
+        ];
+
+        // create snakers brands names
         $brandsNames = [
             'Nike',
             'Adidas',
@@ -141,6 +142,7 @@ class AppFixtures extends Fixture
             'Diesel',
         ];
         
+        // create snakers product names
         $subCategoriesProductNames = [
             "Running" => [
                 "Adidas Ultraboost",
@@ -173,7 +175,31 @@ class AppFixtures extends Fixture
                 "Five Ten Hiangle",
                 "Black Diamond Zone",
                 "Mad Rock M5",
-                "Red Chili Durango"
+                "Red Chili Durango",
+                "Mizuno Wave Rider",
+                "Reebok Forever Floatride",
+                "Puma Calibrate",
+                "On Cloudflyer",
+                "Brooks Launch",
+                "Asics Gel Kayano",
+                "New Balance FuelCell",
+                "Under Armour HOVR",
+                "Hoka One One Mach",
+                "Salomon Speedcross",
+                "Columbia Caldorado",
+                "Merrell All Out Crush",
+                "La Sportiva Mutant",
+                "Keen Oakridge Mid",
+                "Salewa Wildfire",
+                "Lowa Innox",
+                "Scarpa Terra",
+                "Ecco Biom",
+                "Inov-8 Roclite",
+                "Altra Lone Peak",
+                "Boreal Lynx",
+                "Five Ten Arrowhead",
+                "Black Diamond Verdict",
+                "Mad Rock Phoenix"
             ],
             "Lifestyle" => [
                 "Converse Chuck Taylor",
@@ -199,6 +225,57 @@ class AppFixtures extends Fixture
                 "Adidas Adizero",
                 "Nike Pegasus",
                 "Boreal Kira",
+                "Five Ten Hiangle",
+                "Black Diamond Momentum",
+                "Mad Rock Drifter",
+                "Red Chili Voltage",
+                "Butora Acro",
+                "Tenaya Oasi",
+                "Mizuno Wave Rider",
+                "Puma Calibrate",
+                "Reebok Forever Floatride",
+                "Under Armour HOVR Phantom",
+                "Skechers Go Run",
+                "Brooks Levitate",
+                "On Cloud",
+                "New Balance Fresh Foam 1080",
+                "Adidas Adizero",
+                "Nike Air Zoom Pegasus 38",
+                "Saucony Triumph",
+                "Hoka One One Bondi",
+                "Salomon Sense Ride",
+                "Columbia Montrail Trans Alps",
+                "Merrell MQM Flex",
+                "La Sportiva Wildcat",
+                "Keen Targhee",
+                "Salewa Rapace Gore-Tex",
+                "Lowa Camino",
+                "Scarpa Mojito",
+                "Ecco Biom",
+                "Inov-8 Roclite",
+                "Altra Lone Peak",
+                "Boreal Lynx",
+                "Five Ten Guide Tennie",
+                "Black Diamond Spot",
+                "Mad Rock Frenzy",
+                "Red Chili Spirit",
+                "Butora Altura",
+                "Tenaya Tarifa",
+                "La Sportiva Mythos",
+                "Five Ten Verdon",
+                "Black Diamond Technician",
+                "Mad Rock Radiant",
+                "Red Chili Fusion",
+                "Mizuno Wave Horizon",
+                "Puma Tazon",
+                "Reebok Floatride Run Fast",
+                "Under Armour HOVR Sonic",
+                "Skechers Go Run Ride",
+                "Brooks Glycerin",
+                "On Cloudflow",
+                "New Balance Fresh Foam More",
+                "Adidas Adizero Pro",
+                "Nike Air Zoom Terra Kiger"
             ],
             "Ville" => [
                 "Loafers",
@@ -231,7 +308,20 @@ class AppFixtures extends Fixture
                 "Snowboarding Boots",
                 "Ice Skates",
                 "Inline Skates",
-                "Roller Skates"
+                "Roller Skates",
+                "Roller Blades",
+                "Skate Shoes",
+                "Skateboard Shoes",
+                "Soccer Cleats",
+                "Baseball Cleats",
+                "Football Cleats",
+                "Golf Shoes",
+                "Dance Shoes",
+                "Dress Shoes",
+                "Slip-Ons",
+                "Loafers",
+                "Oxford Shoes",
+                "Derby Shoes",
             ],
             "Randonnée" => [
                 "Salewa Rapace",
@@ -264,7 +354,15 @@ class AppFixtures extends Fixture
                 "Asics Gel-Kayano",
                 "Brooks Cascadia",
                 "Saucony Xodus",
-                "Nike Air Zoom"
+                "Nike Air Zoom",
+                "Adidas Terrex",
+                "Nike ACG",
+                "The North Face Hedgehog",
+                "Merrell Moab",
+                "Columbia Redmond",
+                "Salomon X Ultra",
+                "Hoka One One Stinson",
+                "Under Armour Horizon",
             ],
             "Training" => [
                 "Nike Metcon",
@@ -290,7 +388,35 @@ class AppFixtures extends Fixture
                 "Nike Zoom Fly 3",
                 "Adidas Solar Boost",
                 "Under Armour Charge 4",
-                "Reebok Forever Floatride Energy"
+                "Reebok Forever Floatride Energy",
+                "Nike Air Zoom Pegasus 37",
+                "Adidas Ultraboost 20",
+                "Under Armour HOVR Sonic",
+                "Reebok Floatride Run Fast",
+                "Nike Air Zoom Pegasus 36",
+                "Adidas Ultraboost 19",
+                "Under Armour HOVR Rise",
+                "Reebok Floatride Run Fast Pro",
+                "Nike Air Zoom Pegasus 35",
+                "Adidas Ultraboost 18",
+                "Under Armour HOVR Guardian",
+                "Reebok Floatride Run Fast 2.0",
+                "Nike Air Zoom Pegasus 34",
+                "Adidas Ultraboost 17",
+                "Under Armour HOVR Phantom 2",
+                "Reebok Floatride Run Fast 2.0",
+                "Nike Air Zoom Pegasus 33",
+                "Adidas Ultraboost 16",
+                "Under Armour HOVR Phantom 2",
+                "Reebok Floatride Run Fast 2.0",
+                "Nike Air Zoom Pegasus 32",
+                "Adidas Ultraboost 15",
+                "Under Armour HOVR Phantom 2",
+                "Reebok Floatride Run Fast 2.0",
+                "Nike Air Zoom Pegasus 31",
+                "Adidas Ultraboost 14",
+                "Under Armour HOVR Phantom 2",
+                "Reebok Floatride Run Fast 2.0",
             ]
         ];
 
@@ -356,7 +482,7 @@ class AppFixtures extends Fixture
             $product->setBrand($brands[mt_rand(0, count($brands) - 1)]);
 
             $product->setProductType($productTypes[mt_rand(0, count($productTypes) - 1)]);
-            $product->setCategory($categories[rand(0, 2)]);
+            $product->setCategory($categories[rand(1, 3)]);
             $product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
            
             $product->setInStockQuantity(rand(1, 10));
@@ -379,7 +505,7 @@ class AppFixtures extends Fixture
             
             $product->setBrand($brands[mt_rand(0, count($brands) - 1)]);
             $product->setProductType($productTypes[mt_rand(0, count($productTypes) - 1)]);
-            $product->setCategory($categories[rand(0, 2)]);
+            $product->setCategory($categories[rand(1, 3)]);
             $product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
 
             $product->setInStockQuantity(rand(1, 10));
@@ -402,7 +528,7 @@ class AppFixtures extends Fixture
             
             $product->setBrand($brands[mt_rand(0, count($brands) - 1)]);
             $product->setProductType($productTypes[mt_rand(0, count($productTypes) - 1)]);
-            $product->setCategory($categories[rand(0, 2)]);
+            $product->setCategory($categories[rand(1, 3)]);
             $product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
 
             $product->setInStockQuantity(rand(1, 10));
@@ -425,7 +551,7 @@ class AppFixtures extends Fixture
             
             $product->setBrand($brands[mt_rand(0, count($brands) - 1)]);
             $product->setProductType($productTypes[mt_rand(0, count($productTypes) - 1)]);
-            $product->setCategory($categories[rand(0, 2)]);
+            $product->setCategory($categories[rand(1, 3)]);
             $product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
 
             $product->setInStockQuantity(rand(1, 10));
@@ -442,24 +568,26 @@ class AppFixtures extends Fixture
         $trainingProducts = [];
 
         foreach ($subCategoriesProductNames['Training'] as $productName) {
-            $product = new Product();
-            $product->setName($productName);
-            $product->setSellingPrice(mt_rand(50, 200));
-            
-            $product->setBrand($brands[mt_rand(0, count($brands) - 1)]);
-            $product->setProductType($productTypes[mt_rand(0, count($productTypes) - 1)]);
-            $product->setCategory($categories[rand(0, 2)]);
-            $product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
 
-            $product->setInStockQuantity(rand(1, 10));
-            $product->setBuyPrice($faker->numberBetween(80, 1000) * 0.8);
-            $margin = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7];
-            $product->setSellingPrice(sprintf('%0.2f', $product->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
-            $product->setCatalogPrice(sprintf('%0.2f', $product->getSellingPrice() * 1.1));
+        $product = new Product();
+        $product->setName($productName);
+        $product->setSellingPrice(mt_rand(50, 200));
 
-            
-            $trainingProducts[] = $product;
-            $manager->persist($product);
+        $product->setBrand($brands[mt_rand(0, count($brands) - 1)]);
+        $product->setProductType($productTypes[mt_rand(0, count($productTypes) - 1)]);
+        $product->setCategory($categories[rand(1, 3)]);
+        $product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
+
+        $product->setInStockQuantity(rand(1, 10));
+        $product->setBuyPrice($faker->numberBetween(80, 1000) * 0.8);
+        $margin = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7];
+        $product->setSellingPrice(sprintf('%0.2f', $product->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
+        $product->setCatalogPrice(sprintf('%0.2f', $product->getSellingPrice() * 1.1));
+
+
+        $trainingProducts[] = $product;
+        $manager->persist($product);
+
         }
 
         foreach ($runningProducts as $product) {
@@ -493,10 +621,58 @@ class AppFixtures extends Fixture
                 $product->setProductType($productTypes[rand(16, 19)]);
             }
 
-            
         }
 
-        // set the products to the subcategories 
+        // while subcategory don't have product add product to subcategory
+
+        while (count($subCategories[0]->getProducts()) < 10) {
+            $subCategories[0]->addProduct($runningProducts[rand(0, count($runningProducts) - 1)]);
+            $manager->persist($subCategories[0]);
+        }
+        while (count($subCategories[1]->getProducts()) < 10) {
+            $subCategories[1]->addProduct($lifeStyleProducts[rand(0, count($lifeStyleProducts) - 1)]);
+            $manager->persist($subCategories[1]);
+        }
+        while (count($subCategories[2]->getProducts()) < 10) {
+            $subCategories[2]->addProduct($classiqueProducts[rand(0, count($classiqueProducts) - 1)]);
+            $manager->persist($subCategories[2]);
+        }
+        while (count($subCategories[3]->getProducts()) < 10) {
+            $subCategories[3]->addProduct($randonneeProducts[rand(0, count($randonneeProducts) - 1)]);
+            $manager->persist($subCategories[3]);
+        }
+        while (count($subCategories[4]->getProducts()) < 10) {
+            $subCategories[4]->addProduct($trainingProducts[rand(0, count($trainingProducts) - 1)]);
+            $manager->persist($subCategories[4]);
+        }
+
+        // wile category don't have product add product to category
+        while (count($categories[1]->getProducts()) < 10) {
+            $categories[1]->addProduct($runningProducts[rand(0, count($runningProducts) - 1)]);
+            $manager->persist($categories[1]);
+        }
+        while (count($categories[2]->getProducts()) < 10) {
+            $categories[2]->addProduct($lifeStyleProducts[rand(0, count($lifeStyleProducts) - 1)]);
+            $manager->persist($categories[2]);
+        }
+        while (count($categories[3]->getProducts()) < 10) {
+            $categories[3]->addProduct($classiqueProducts[rand(0, count($classiqueProducts) - 1)]);
+            $manager->persist($categories[3]);
+        }
+        while (count($categories[4]->getProducts()) < 10) {
+            $categories[4]->addProduct($randonneeProducts[rand(0, count($randonneeProducts) - 1)]);
+            $manager->persist($categories[4]);
+        }
+        while (count($categories[5]->getProducts()) < 10) {
+            $categories[5]->addProduct($trainingProducts[rand(0, count($trainingProducts) - 1)]);
+            $manager->persist($categories[5]);
+        }
+
+
+
+        
+        
+        
 
         $manager->flush();
     } // end function load

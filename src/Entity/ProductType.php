@@ -33,6 +33,7 @@ class ProductType
      *      cascade={"persist"}, 
      *      fetch="EAGER"
      *  )
+     * 
      */
     private $products;
 

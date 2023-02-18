@@ -53,14 +53,18 @@ class SubCategoryRepository extends ServiceEntityRepository
     }
 
     // find last five products by subcategory
-    public function findLastFiveProductsBySubCat($id): array
+    public function findLastFiveProductsBySubCat(): array
     {
         $qb = $this->createQueryBuilder('sc');
-        $qb->select('p')
-            ->join('sc.products', 'p')
-            ->where('sc.id = :id')
-            ->setParameter('id', $id)
-            ->orderBy('p.id', 'DESC')
+        $qb->select('sc', 'prod')
+            ->join('sc.products', 'prod')
+            // ajouter la categorie de la sous categorie
+            ->join('sc.categories', 'cat')
+            ->orderBy('sc.listOrder + 0', 'ASC')
+            ->addOrderBy('prod.id', 'DESC')
+            // si showOnHomePage = true on categorie la sous categorie
+            ->where('cat.showOnHome = true')
+            ->orderBy('prod.id', 'DESC')
             ->setMaxResults(5);
         return $qb->getQuery()->getResult();
     }

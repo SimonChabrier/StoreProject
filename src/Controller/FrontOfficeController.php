@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\SubCategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,28 +15,16 @@ class FrontOfficeController extends AbstractController
     /**
      * @Route("/", name="app_home", methods={"GET", "POST"})
      */
-    public function index(CategoryRepository $cr): Response
+    public function index(CategoryRepository $sc): Response
     {   
 
-        $lastFive = $cr->findAll();
+        //$homeCats = $sc->homeCats();
+        //$homeCats = $sc->findAll();
+        $homeCats = $sc->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
+        dump($homeCats);
         
-
-        // return all categories and only 5 products for each subcategory
-        $products = [];
-        foreach($lastFive as $category) {
-            $subcategories = $category->getSubcategories();
-            foreach($subcategories as $subcategory) {
-                $subcatProducts = $subcategory->getProducts();
-                $subcatProducts = array_slice($subcatProducts->toArray(), 0, 5);
-                $products[] = $subcatProducts;
-            }
-        }
-
-        dump($products);
-       
-
         return $this->render('front_office/index.html.twig', [
-            'lastFive' => $lastFive,
+            'homeCats' => $homeCats,
         ]);
     }
 

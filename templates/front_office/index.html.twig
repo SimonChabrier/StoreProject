@@ -2,59 +2,38 @@
 
 {% block content %}
 
-{# <div class="page-container"> #}
-
 <div class="last-five">
 {# résultats de la recherche #}
 {% include '_fragments/_searchResults.html.twig' %} 
 
-    {% for category in lastFive %}
-        {% if category is defined and category.showOnHome == true %}
-                <h2>{{ category.name|upper }}</h2>
-                {% for subCategory in category.subCategories %}
-
-                    {{ category.name|upper }} - {{ subCategory.name|upper }}
-                    <div class="last-five-products">
-                    {# {% for product in category.products|slice(0, 4) %} #}
-                    {% for product in subCategory.getProducts %}
-                   
-                    {% if product.category.id == category.id %}
-
-                    {# limit to 5 products #}
-                 
-
-                    <section>
-               
-                        <h6> {{ product.name|upper}}</h6>
-                        <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
-                                    
-                            <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
-                            <span class="selling-price">{{ product.sellingPrice }} €</span>
-                        <div class="productInfo">
-                            <span class="categorie">Catagorie : {{ product.category }}</span>
-                            <span class="sous-categorie">Sous-categorie : {{ product.subCategory }}</span>
-                            <span class="type">Type : {{ product.productType }}</span>
-                        </div>
-
-                        <div class="productInfoFooter">
-                        {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
-                            <span>-{{ discount|round }}%</span> 
-                            <span class="productLink"><a href="{{ path('app_product_show', {'id': product.id}) }}">Détail</a></span>
-                        </div>
-                            
-                    </section>
-
-                  
-                    {% endif %}
-
-            
-                    {% endfor %}
+   {% for category in homeCats %}
+    <h2>{{ category.name|upper }}</h2>
+    {% for subCategory in category.subCategories %}
+        {{ category.name|upper }} - {{ subCategory.name|upper }}
+        <div class="last-five-products">
+            {% set products = subCategory.products|slice(0, 5) %}
+            {% for product in products %}
+                <section>
+                    <h6>{{ product.name|upper }}</h6>
+                    <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
+                    <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
+                    <span class="selling-price">{{ product.sellingPrice }} €</span>
+                    <div class="productInfo">
+                        <span class="categorie">Categorie : {{ category.name }}</span>
+                        <span class="sous-categorie">Sous-categorie : {{ subCategory.name }}</span>
+                        <span class="type">Type : {{ product.productType }}</span>
                     </div>
-                    
-                {% endfor %}
-        {% endif %}
+                    <div class="productInfoFooter">
+                        {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
+                        <span>-{{ discount|round }}%</span> 
+                        <span class="productLink"><a href="{{ path('app_product_show', {'id': product.id}) }}">Détail</a></span>
+                    </div>
+                </section>
+            {% endfor %}
+        </div>
     {% endfor %}
+{% endfor %}
+
 </div>
 
-{# </div> #}
 {% endblock %}

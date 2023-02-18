@@ -589,10 +589,14 @@ class CategoryRepository extends ServiceEntityRepository
 
     }
 
-
-    
-
-
+public function homeCats(): array
+{
+    $qb = $this->createQueryBuilder('c');
+    $qb->select('c')
+        ->orderBy('c.listOrder + 0', 'ASC')
+        ->andWhere('c.showOnHome = true');
+    return $qb->getQuery()->getResult();
+}
 
 
 //    /**

@@ -11,7 +11,7 @@
     {% for subCategory in category.subCategories %}
         {{ category.name|upper }} - {{ subCategory.name|upper }}
         <div class="last-five-products">
-            {% set products = subCategory.products|slice(0, 5) %}
+            {% set products = subCategory.products|slice(0, 8) %}
             {% for product in products %}
                 <section>
                     <h6>{{ product.name|upper }}</h6>

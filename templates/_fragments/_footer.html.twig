@@ -30,14 +30,16 @@
               <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                 <h6 class="text-uppercase fw-bold mb-4">SNEAKERS SHOP :</h6>
                    <ol>
-                    <li>Find shoes</li>
-                    <li>Buy shoes</li>
-                    <li>Get shoes</li>
-                    <li>Wear shoes</li>
-                    <li>Enjoy shoes</li>
-                    <hr>
-                    <li>Find sneakers</li>
-                    <li>Buy sneakers</li>
+                    {% for cat in nav.getNav() %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="{{ path('app_category_index', {'id': cat.catId}) }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ cat.catName }}</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for subCat in cat.subCategories %}
+                            <a class="dropdown-item" href="{{ path('app_sub_category_show', {'id': subCat.subCatId}) }}">{{ subCat.subCatName }}</a>
+                        {% endfor %}
+                        </div>
+                    </li>
+                    {% endfor %}
                   </ol>
               
               </div>

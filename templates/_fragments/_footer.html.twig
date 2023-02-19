@@ -1,3 +1,128 @@
-<footer>
-<h5>FOOTER</h5>
+<!-- Footer start -->
+{# <footer class="text-center text-lg-start bg-light text-muted"> #}
+<footer class="text-center">
+    <!-- open container -->
+      {# <div class="container"> #}
+        <!-- Start Social media -->
+        <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+          <!-- Left -->
+          <div class="me-5 d-none d-lg-block">
+            <span>SNEAKERS SHOP</span>
+          </div>
+          <!-- Left -->
+    
+          <!-- Right -->
+          <div> 
+            <a href="https://www.linkedin.com/in/simon-chabrier/" class="me-4 text-reset"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/SimonChabrier" class="me-4 text-reset"><i class="fab fa-github"></i></a>
+          </div>
+          <!-- Right -->
+        </section>
+        <!-- End Social media -->
+    
+        <!-- start 4 sections footer  -->
+        <section class="footerSection">
+          <div class="container text-center text-md-start mt-5">
+            <!-- Open Row -->
+            <div class="row mt-3">
+    
+              <!-- start Col 1 -->
+              <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                <h6 class="text-uppercase fw-bold mb-4">SNEAKERS SHOP :</h6>
+                   <ol>
+                    {% for cat in nav.getNav() %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="{{ path('app_category_index', {'id': cat.catId}) }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ cat.catName }}</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for subCat in cat.subCategories %}
+                            <a class="dropdown-item" href="{{ path('app_sub_category_show', {'id': subCat.subCatId}) }}">{{ subCat.subCatName }}</a>
+                        {% endfor %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                  </ol>
+              
+              </div>
+              <!-- end Col 1 -->
+    
+              <!-- start Col 2 -->
+              <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                <!-- Links -->
+                <h6 class="text-uppercase fw-bold mb-4">STACK</h6>
+                <ol>
+                  <li>
+                  <a href="https://symfony.com/5" class="text-reset"><b>Symfony 5.4</b></a>
+                  </li>
+                    <li>
+                    <a href="https://www.php.net/" class="text-reset"><b>PHP 8.1</b></a>
+                    </li>
+                    <li>
+                    <a href="https://www.mysql.com/fr/" class="text-reset"><b>MySQL</b></a>
+                    </li>
+                    <li>
+                    <a href="https://developer.mozilla.org/fr-FR/docs/Web/JavaScript" class="text-reset"><b>Javascript</b></a>
+                    </li>
+                    <li>
+                    <a href="https://getbootstrap.com/" class="text-reset"><b>Bootstrap 5</b></a>
+                    </li>
+                    <li>
+                    <a href="https://twig.symfony.com/" class="text-reset"><b>Twig</b></a>
+                    </li>
+                </ol>
+              </div>
+              <!-- end Col 2 -->
+    
+              <!-- start Col 3 -->
+              <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                <!-- Links -->
+                <h6 class="text-uppercase fw-bold mb-4">USER ACCOUNT</h6>
+                <ol>
+                    <li>
+                        <a href="#!" class="text-reset">Login</a>
+                    </li>
+                    <li>
+                        <a href="#!" class="text-reset">Register</a>
+                    </li>
+                    <li>
+                        <a href="#!" class="text-reset">Forgot password</a>
+                    </li>
+                    <li>
+                        <a href="#!" class="text-reset">Logout</a>
+                    </li>
+                </ol>
+              </div>
+              <!-- end Col 3 -->
+    
+              <!-- start Col 4 -->
+              <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                <!-- Add Links -->
+                <h6 class="text-uppercase fw-bold mb-4"><i class="bi bi-person-circle"> Sneakers Shop</i></h6>
+                <ol>
+                <li>
+                  <i class="bi bi-geo-alt-fill"></i>  1 rue de la paix, 75000 Paris
+                </li>
+                <li>
+                  <i class="bi bi-telephone-fill"></i>  06 00 00 00 00
+                </li>
+                <li>
+                  <i class="bi bi-envelope-fill"> contact@contact.fr</i>
+                </li>
+                <ol>
+              </div>
+              <!-- end Col 4 -->
+            </div>
+            <!-- Close row -->
+          </div>
+        </section>
+        <!-- End 4 section Links  -->
+    
+          <!-- start Copyright -->
+          <div class="text-center p-4">
+          <hr>
+            <p>© Chabrier Simon - 2023</p>
+          </div>
+          <!-- end Copyright -->
+    
+      {# </div> #}
+      <!-- end container -->  
 </footer>

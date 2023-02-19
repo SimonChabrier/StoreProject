@@ -593,9 +593,9 @@ class AppFixtures extends Fixture
 
         }
 
-        foreach ($runningProducts as $product) {
-            $product->setSubCategory($subCategories[0]);
-        }
+        // foreach ($runningProducts as $product) {
+        //     $product->setSubCategory($subCategories[0]);
+        // }
 
 
         $products = array_merge($runningProducts, $lifeStyleProducts, $classiqueProducts, $randonneeProducts, $trainingProducts);
@@ -672,12 +672,44 @@ class AppFixtures extends Fixture
             $manager->persist($categories[5]);
         }
 
+        // if category name is "Solde" or "Nouveautés" showOnHome = false
+        foreach ($categories as $category) {
+            if ($category->getName() === 'Solde' || $category->getName() === 'Nouveautés') {
+                $category->setShowOnHome(false);
+            }
+        } 
 
+        // create 10 users 
+        $users = [];
 
+        for($i = 0; $i < 10; $i++){
+            $user = new User();
+            $user->setFirstName($faker->firstName);
+            $user->setLastName($faker->lastName);
+            $user->setUsername($user->getFullName());
+            
+            $users[] = $user;
+            $manager->persist($user);
+        }
+
+        // create 100 comments and add to randomly to product 
+        $comments = [];
+
+        for($i = 0; $i < 100; $i++){
+            $comment = new Comment();
+            
+            $comment->setEmail($faker->email);
+            // set authors exploding eamil to get first name
+            $comment->setAuthor(explode('@', $comment->getEmail())[0]);
+            $comment->setProduct($products[rand(0, count($products) - 1)]);
+            $comment->setText($faker->text);
+        
+            $comments[] = $comment;
+            $manager->persist($comment);
+        }
         
         
-        
-
+        //* PERSIST ALL IN DATABASE
         $manager->flush();
     } // end function load
 }// end class

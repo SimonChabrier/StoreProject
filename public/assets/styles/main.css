@@ -82,6 +82,10 @@ body {
   border: 1px solid #c7c721 !important;
 }
 
+.navbar.bg-light {
+  background-color: #ffffff !important;
+}
+
 h1 {
   font-size: 2rem;
   font-weight: 300;
@@ -106,25 +110,25 @@ table {
   border-collapse: collapse;
   width: 100%;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 table th,
 table td {
   padding: 0.4rem !important;
   text-align: left;
-  background-color: #161616 !important;
-  color: #d6d6d6;
 }
-table tr {
-  transition: all 0.2s ease-in;
+table td {
+  border: none !important;
 }
-table tr:hover {
-  background-color: rgb(39, 39, 39) !important;
+table td:nth-child(1),
+table td:nth-child(2),
+table td:nth-child(3),
+table td:nth-child(6) {
+  width: 10%;
+  white-space: nowrap;
 }
 
 tr:nth-child(even) {
-  background-color: rgb(39, 39, 39) !important;
-  color: rgb(255, 255, 255) !important;
+  background-color: rgb(245, 245, 245) !important;
 }
 
 button {
@@ -200,6 +204,30 @@ label {
   background-color: #cb8431;
 }
 
+.last-five h2 {
+  background-color: #c7c721;
+  color: white;
+  padding: 10px 20px;
+  margin: 0;
+  margin-bottom: 5px;
+  text-align: center;
+  font-size: 1.7rem;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+.last-five h3 {
+  background-color: rgba(199, 199, 33, 0.368627451);
+  color: #000000;
+  padding: 10px 20px;
+  margin: 0;
+  margin-bottom: 0;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
 .page-container {
   display: flex;
   flex-direction: row;
@@ -214,6 +242,7 @@ aside {
   padding: 20px !important;
   border-radius: 10px;
   background-image: linear-gradient(90deg, hsl(0deg, 0%, 100%) 0%, hsl(344deg, 0%, 99%) 18%, hsl(344deg, 0%, 99%) 26%, hsl(344deg, 0%, 98%) 32%, hsl(344deg, 0%, 98%) 37%, hsl(344deg, 0%, 97%) 42%, hsl(344deg, 0%, 97%) 47%, hsl(344deg, 0%, 96%) 54%, hsl(344deg, 0%, 96%) 64%, hsl(0deg, 0%, 95%) 90%);
+  height: 100%;
 }
 
 .brandCheckboxes ol {
@@ -460,4 +489,32 @@ help.help-block {
 
 .red {
   color: red !important;
+}
+
+.userbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 15px 25px;
+  background-color: #c7c721;
+  color: white;
+}
+
+.userbar h2 {
+  font-size: 1.5rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  padding: 0;
+  margin: 0;
+}
+
+.userbar_icons {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.basketicon, .usericon {
+  cursor: pointer;
 }/*# sourceMappingURL=main.css.map */

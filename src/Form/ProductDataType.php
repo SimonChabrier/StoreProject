@@ -23,9 +23,8 @@ class ProductDataType extends AbstractType
         ->add('value', TextType::class, [
             'label' => 'Valeur :',
         ]);
-        $options['template'] = 'bundles/EasyAdminBundle/crud/field/collection.html.twig';
-        
-        ;
+        //$options['template'] = 'bundles/EasyAdminBundle/crud/field/collection.html.twig';
+        //;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

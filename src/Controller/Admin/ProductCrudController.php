@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Brand;
 use App\Entity\Product;
 use App\Form\ProductDataType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
@@ -52,9 +53,7 @@ class ProductCrudController extends AbstractCrudController
             ->setLabel('Sous-catégorie')
             // set choice on getSubCategoryName method from SubCategory entity
             ->setFormTypeOption('choice_label', 'getSubCategoryName')
-
             // display only subcategory linked to the slectecd category
-            
             ->setRequired(true),
 
             BooleanField::new('visibility')
@@ -63,6 +62,11 @@ class ProductCrudController extends AbstractCrudController
 
             AssociationField::new('productType')
             ->setLabel('Types de produits')
+            ->setFormTypeOption('choice_label', 'name')
+            ->setRequired(true),
+
+            AssociationField::new('brand')
+            ->setLabel('Marque')
             ->setFormTypeOption('choice_label', 'name')
             ->setRequired(true),
 
@@ -98,6 +102,16 @@ class ProductCrudController extends AbstractCrudController
             ->add('subCategory', 'entity', [
                 'label' => 'Sous-catégorie',
                 'class' => SubCategory::class,
+                'choice_label' => 'name',
+            ])
+            ->add('productType', 'entity', [
+                'label' => 'Type de produit',
+                'class' => ProductType::class,
+                'choice_label' => 'name',
+            ])
+            ->add('brand', 'entity', [
+                'label' => 'Marque',
+                'class' => Brand::class,
                 'choice_label' => 'name',
             ])
         ;

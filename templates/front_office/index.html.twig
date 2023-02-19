@@ -9,7 +9,7 @@
    {% for category in homeCats %}
     <h2>{{ category.name|upper }}</h2>
     {% for subCategory in category.subCategories %}
-        {{ category.name|upper }} - {{ subCategory.name|upper }}
+        <h3>{{ category.name|upper }} - {{ subCategory.name|upper }}</h3>
         <div class="last-five-products">
             {% set products = subCategory.products|slice(0, 8) %}
             {% for product in products %}

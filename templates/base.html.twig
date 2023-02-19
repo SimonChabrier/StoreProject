@@ -39,6 +39,12 @@
         
         {% block body %}
         
+        <div class="userbar">
+        {% block userbar %}
+            {% include '_fragments/_userbar.html.twig' %} 
+        {% endblock %}
+        </div>
+
         <div id="header" class="header">
             {% block header %}
                 {% include '_fragments/_nav.html.twig' %} 

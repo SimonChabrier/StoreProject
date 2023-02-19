@@ -4,27 +4,20 @@ namespace App\Controller;
 
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
-use App\Repository\SubCategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class FrontOfficeController extends AbstractController
+class HomeController extends AbstractController
 {
     /**
      * @Route("/", name="app_home", methods={"GET", "POST"})
      */
     public function index(CategoryRepository $sc): Response
     {   
-
-        //$homeCats = $sc->homeCats();
-        //$homeCats = $sc->findAll();
-        $homeCats = $sc->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
-        dump($homeCats);
-        
         return $this->render('front_office/index.html.twig', [
-            'homeCats' => $homeCats,
+            'homeCats' => $sc->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']),    
         ]);
     }
 

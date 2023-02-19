@@ -223,8 +223,11 @@ label {
 
 // all last-five h2
 .last-five h2 {
-  background-color: #c7c721;
-  color: white;
+  //background-color: #c7c721;
+  background: rgb(255,255,255);
+  //background: linear-gradient(90deg, rgba(255,255,255,0) 45%, rgba(199,199,33,1) 100%);
+  background: linear-gradient(-90deg, rgba(255,255,255,0) 74%, rgba(233, 233, 222, 0.407) 100%);
+  color: #c7c721;
   padding: 10px 20px;
   margin: 0;
   margin-bottom: 5px;
@@ -234,8 +237,9 @@ label {
   text-transform: uppercase;
 }
 .last-five h3 {
-  background-color: #c7c7215e;
-  color: #000000;
+  background: rgb(199,199,33);
+  background: linear-gradient(90deg, rgba(199,199,33,0.4066001400560224) 0%, rgba(255,255,255,0) 44%);
+  color: #7d7d1f;;
   padding: 10px 20px;
   margin: 0;
   margin-bottom: 0;
@@ -551,11 +555,13 @@ help.help-block {
 // user bar
 .userbar {
   display: flex;
-  // justify-content: space-between;
-  justify-content: flex-end;
+  justify-content: space-between;
+  //justify-content: flex-end;
   align-items: center;
   padding: 15px 25px;
-  background-color: #c7c721;
+  background: rgb(255,255,255);
+  //background: linear-gradient(90deg, rgba(255,255,255,0) 45%, rgba(199,199,33,1) 100%);
+  background: linear-gradient(90deg, rgba(255,255,255,0) 74%, rgba(233, 233, 222, 0.407) 100%);
   color: white;
 }
 .userbar h2 {
@@ -565,12 +571,31 @@ help.help-block {
   padding: 0;
   margin: 0;
 }
-
 .userbar_icons {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   gap: 10px;
+  color: #c7c721;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  flex-flow: row nowrap;
+}
+.logo img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.sitename h1 {
+  font-size: 1.5rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  padding: 0;
+  margin: 0 0 0 20px;
+  color: #c7c721;
 }
 
 .basketicon, .usericon {

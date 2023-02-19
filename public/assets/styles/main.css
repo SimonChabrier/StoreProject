@@ -381,6 +381,72 @@ form.resetForm {
   width: 100%;
 }
 
+.userbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 74%, rgba(233, 233, 222, 0.407) 100%);
+  color: white;
+}
+
+.userbar h2 {
+  font-size: 1.5rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  padding: 0;
+  margin: 0;
+}
+
+.userbar_icons {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 10px;
+  color: #c7c721;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  flex-flow: row nowrap;
+}
+
+.logo img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.sitename h1 {
+  font-size: 1.5rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  padding: 0;
+  margin: 0 0 0 20px;
+  color: #c7c721;
+}
+
+.sitename a {
+  text-decoration: none;
+  color: #c7c721;
+  transition: all 0.5s ease-in;
+}
+.sitename a:hover {
+  color: #818009 !important;
+  transition: all 0.2s ease-in;
+}
+
+.basketicon, .usericon {
+  cursor: pointer;
+  transition: all 0.5s ease-in;
+}
+.basketicon:hover, .usericon:hover {
+  color: #818009 !important;
+  transition: all 0.3s ease-in;
+}
+
 help.help-block {
   color: green !important;
   font-size: 0.8rem !important;
@@ -492,55 +558,4 @@ help.help-block {
 
 .red {
   color: red !important;
-}
-
-.userbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 25px;
-  background: rgb(255, 255, 255);
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 74%, rgba(233, 233, 222, 0.407) 100%);
-  color: white;
-}
-
-.userbar h2 {
-  font-size: 1.5rem;
-  font-weight: 300;
-  text-transform: uppercase;
-  padding: 0;
-  margin: 0;
-}
-
-.userbar_icons {
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  gap: 10px;
-  color: #c7c721;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  flex-flow: row nowrap;
-}
-
-.logo img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-.sitename h1 {
-  font-size: 1.5rem;
-  font-weight: 300;
-  text-transform: uppercase;
-  padding: 0;
-  margin: 0 0 0 20px;
-  color: #c7c721;
-}
-
-.basketicon, .usericon {
-  cursor: pointer;
 }/*# sourceMappingURL=main.css.map */

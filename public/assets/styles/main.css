@@ -460,4 +460,32 @@ help.help-block {
 
 .red {
   color: red !important;
+}
+
+.userbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 15px 25px;
+  background-color: #c7c721;
+  color: white;
+}
+
+.userbar h2 {
+  font-size: 1.5rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  padding: 0;
+  margin: 0;
+}
+
+.userbar_icons {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.basketicon, .usericon {
+  cursor: pointer;
 }/*# sourceMappingURL=main.css.map */

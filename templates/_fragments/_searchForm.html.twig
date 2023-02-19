@@ -1,0 +1,33 @@
+
+<div class="form-container">
+
+<div>
+{{ form_start(form, {attr: {'novalidate': 'novalidate', 'id': 'search-form' }}) }}
+<span class="min-error"></span>
+{{ form_widget(form.min)}}
+<help class="help-block">Minimum price</help>
+</div>
+
+<div>
+<span class="max-error"></span>
+{{ form_widget(form.max) }}
+<help class="help-block">Maximum price</help>
+</div>
+
+<div>
+<span class="text-error"></span>
+{{ form_widget(form.search) }}
+<help class="help-block">Mot Clé</help>
+</div>
+
+{{ form_widget(form.submit) }}
+{{ form_end(form) }}
+
+
+
+
+    <form class="resetForm" action="{{ path('app_home') }}" method="post">
+        <button type="submit" id="reset_submit" name="resetSearch" value="resetSearch" class="btn btn-light">Reset</button>
+    </form> 
+
+</div>

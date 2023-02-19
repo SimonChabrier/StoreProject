@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\SubCategory;
 use App\Entity\Product;
 use App\Entity\ProductType;
+use App\Entity\Brand;
 
 use App\Entity\User;
 use App\Entity\Comment;
@@ -18,9 +19,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Faker\Factory as Faker;
 
 class AppFixtures extends Fixture
-{   
-
-
+{
     private $connexion;
 
     public function __construct(Connection $connexion)
@@ -39,6 +38,7 @@ class AppFixtures extends Fixture
         $this->connexion->executeQuery('TRUNCATE TABLE user');
         $this->connexion->executeQuery('TRUNCATE TABLE comment');
         $this->connexion->executeQuery('TRUNCATE TABLE product_type');
+        $this->connexion->executeQuery('TRUNCATE TABLE brand');
     }
 
     public function load(ObjectManager $manager): void
@@ -47,406 +47,637 @@ class AppFixtures extends Fixture
 
         $faker = Faker::create('fr_FR');
 
-        $cats = [];
+        $categories = [];
+        $subCategories = [];
+        $productTypes = [];
+        $brands = [];
 
-        //create Categories! Bam!
-        for ($i = 0; $i < 6; $i++) {
+        // compteur pour les produits
+        $minimumProductsPerSubCategory = 5;
+        $counter = [
+            'Running' => 0,
+            'Lifestyle' => 0,
+            'Ville' => 0,
+            'Randonnée' => 0,
+            'Training' => 0
+        ];
+
+        // create the main categories names
+        $rootCategoriesNames = [
+            'Nouveautés',
+            'Homme',
+            'Femme',
+            'Enfant',
+            'Accessoires',
+            'Soldes',
+        ];
+
+        // create snakers sub categories names for each main categories
+        $subCategoriesNames = [
+            "Running",
+            "Lifestyle",
+            "Ville",
+            "Randonnée",
+            "Training",
+        ]; 
+
+        // create snakers product types names sub categories
+        $productTypesNames = [
+            "Running" => [
+                "course à pied",
+                "trail",
+            ],
+            "Lifestyle" => [
+                "chill",
+                "classics",
+                "skate",
+                "streetwear",
+            ],
+            "Ville" => [
+                "richelieu",
+                "derbies",
+                "bateaux",
+                "boots",
+                "bottines",
+                "mocassins",
+                "bottes",
+                "snakers",
+            ],
+            "Randonnée" => [
+                "randonnée",
+                "montagne",
+            ],
+            "Training" => [
+                "cross-training",
+                "musculation",
+                "athlétisme",
+                "fitness",
+            ],
+
+        ];
+
+        // create snakers brands names
+        $brandsNames = [
+            'Nike',
+            'Adidas',
+            'Adidas Originals',
+            'Clark\'s Originals',
+            'Puma',
+            'Reebok',
+            'New Balance',
+            'Asics',
+            'Vans',
+            'Converse',
+            'Fila',
+            'Salomon',
+            'Le Coq Sportif',
+            'Lacoste',
+            'Kappa',
+            'Timberland',
+            'Geox',
+            'Tommy Hilfiger',
+            'Levi\'s',
+            'Wrangler',
+            'Pepe Jeans',
+            'Diesel',
+        ];
+        
+        // create snakers product names
+        $subCategoriesProductNames = [
+            "Running" => [
+                "Adidas Ultraboost",
+                "Nike Zoom Pegasus",
+                "Saucony Ride",
+                "Brooks Ghost",
+                "Asics Gel Nimbus",
+                "New Balance Fresh Foam",
+                "Under Armour Charged Pursuit",
+                "Hoka One One Clifton",
+                "Salomon Sense",
+                "Columbia Montrail Fluidflex",
+                "Merrell Bare Access",
+                "La Sportiva Akasha",
+                "Keen Oakridge",
+                "Salewa Rapace",
+                "Lowa Renegade",
+                "Scarpa Spin",
+                "Ecco Terra",
+                "Inov-8 Terraultra",
+                "Altra Torin",
+                "Boreal Joker",
+                "Five Ten Anasazi",
+                "Black Diamond Momentum",
+                "Mad Rock Drifter",
+                "Red Chili Voltage",
+                "Butora Acro",
+                "Tenaya Oasi",
+                "La Sportiva Solution",
+                "Five Ten Hiangle",
+                "Black Diamond Zone",
+                "Mad Rock M5",
+                "Red Chili Durango",
+                "Mizuno Wave Rider",
+                "Reebok Forever Floatride",
+                "Puma Calibrate",
+                "On Cloudflyer",
+                "Brooks Launch",
+                "Asics Gel Kayano",
+                "New Balance FuelCell",
+                "Under Armour HOVR",
+                "Hoka One One Mach",
+                "Salomon Speedcross",
+                "Columbia Caldorado",
+                "Merrell All Out Crush",
+                "La Sportiva Mutant",
+                "Keen Oakridge Mid",
+                "Salewa Wildfire",
+                "Lowa Innox",
+                "Scarpa Terra",
+                "Ecco Biom",
+                "Inov-8 Roclite",
+                "Altra Lone Peak",
+                "Boreal Lynx",
+                "Five Ten Arrowhead",
+                "Black Diamond Verdict",
+                "Mad Rock Phoenix"
+            ],
+            "Lifestyle" => [
+                "Converse Chuck Taylor",
+                "Vans Old Skool",
+                "Puma Cali",
+                "Reebok Classic",
+                "Jordan 1",
+                "Timberland 6-Inch",
+                "UGG Classic Mini",
+                "Dr. Martens 1460",
+                "Sperry Top-Sider",
+                "Nike Air Max",
+                "Adidas Superstar",
+                "Vans Slip-On",
+                "Puma Suede",
+                "Reebok Club C",
+                "Jordan XXXII",
+                "Timberland Euro Hiker",
+                "UGG Classic Tall",
+                "Dr. Martens Jadon",
+                "Sperry Bahama",
+                "Converse All Star",
+                "Adidas Adizero",
+                "Nike Pegasus",
+                "Boreal Kira",
+                "Five Ten Hiangle",
+                "Black Diamond Momentum",
+                "Mad Rock Drifter",
+                "Red Chili Voltage",
+                "Butora Acro",
+                "Tenaya Oasi",
+                "Mizuno Wave Rider",
+                "Puma Calibrate",
+                "Reebok Forever Floatride",
+                "Under Armour HOVR Phantom",
+                "Skechers Go Run",
+                "Brooks Levitate",
+                "On Cloud",
+                "New Balance Fresh Foam 1080",
+                "Adidas Adizero",
+                "Nike Air Zoom Pegasus 38",
+                "Saucony Triumph",
+                "Hoka One One Bondi",
+                "Salomon Sense Ride",
+                "Columbia Montrail Trans Alps",
+                "Merrell MQM Flex",
+                "La Sportiva Wildcat",
+                "Keen Targhee",
+                "Salewa Rapace Gore-Tex",
+                "Lowa Camino",
+                "Scarpa Mojito",
+                "Ecco Biom",
+                "Inov-8 Roclite",
+                "Altra Lone Peak",
+                "Boreal Lynx",
+                "Five Ten Guide Tennie",
+                "Black Diamond Spot",
+                "Mad Rock Frenzy",
+                "Red Chili Spirit",
+                "Butora Altura",
+                "Tenaya Tarifa",
+                "La Sportiva Mythos",
+                "Five Ten Verdon",
+                "Black Diamond Technician",
+                "Mad Rock Radiant",
+                "Red Chili Fusion",
+                "Mizuno Wave Horizon",
+                "Puma Tazon",
+                "Reebok Floatride Run Fast",
+                "Under Armour HOVR Sonic",
+                "Skechers Go Run Ride",
+                "Brooks Glycerin",
+                "On Cloudflow",
+                "New Balance Fresh Foam More",
+                "Adidas Adizero Pro",
+                "Nike Air Zoom Terra Kiger"
+            ],
+            "Ville" => [
+                "Loafers",
+                "Oxford Shoes",
+                "Derby Shoes",
+                "Brogues",
+                "Monk Straps",
+                "Boat Shoes",
+                "Wingtips",
+                "Chelsea Boots",
+                "Chukka Boots",
+                "Dress Boots",
+                "Snow Boots",
+                "Rain Boots",
+                "Hiking Boots",
+                "Work Boots",
+                "Combat Boots",
+                "Ankle Boots",
+                "Mid-Calf Boots",
+                "Over-the-Knee Boots",
+                "Sneakers",
+                "Running Shoes",
+                "Cross-Training Shoes",
+                "Basketball Shoes",
+                "Tennis Shoes",
+                "Gym Shoes",
+                "Walking Shoes",
+                "Cycling Shoes",
+                "Ski Boots",
+                "Snowboarding Boots",
+                "Ice Skates",
+                "Inline Skates",
+                "Roller Skates",
+                "Roller Blades",
+                "Skate Shoes",
+                "Skateboard Shoes",
+                "Soccer Cleats",
+                "Baseball Cleats",
+                "Football Cleats",
+                "Golf Shoes",
+                "Dance Shoes",
+                "Dress Shoes",
+                "Slip-Ons",
+                "Loafers",
+                "Oxford Shoes",
+                "Derby Shoes",
+            ],
+            "Randonnée" => [
+                "Salewa Rapace",
+                "Lowa Renegade",
+                "Scarpa Spin",
+                "Ecco Terra",
+                "Inov-8 Terraultra",
+                "Altra Torin",
+                "Boreal Joker",
+                "Five Ten Anasazi",
+                "Black Diamond Momentum",
+                "Mad Rock Drifter",
+                "Red Chili Voltage",
+                "Butora Acro",
+                "Tenaya Oasi",
+                "La Sportiva Solution",
+                "Five Ten Hiangle",
+                "Black Diamond Zone",
+                "Mad Rock M5",
+                "Red Chili Durango",
+                "Adidas Terrex",
+                "Nike ACG",
+                "The North Face Hedgehog",
+                "Merrell Moab",
+                "Columbia Redmond",
+                "Salomon X Ultra",
+                "Hoka One One Stinson",
+                "Under Armour Horizon",
+                "New Balance Nitrel",
+                "Asics Gel-Kayano",
+                "Brooks Cascadia",
+                "Saucony Xodus",
+                "Nike Air Zoom",
+                "Adidas Terrex",
+                "Nike ACG",
+                "The North Face Hedgehog",
+                "Merrell Moab",
+                "Columbia Redmond",
+                "Salomon X Ultra",
+                "Hoka One One Stinson",
+                "Under Armour Horizon",
+            ],
+            "Training" => [
+                "Nike Metcon",
+                "Adidas Adipower",
+                "Under Armour TriBase",
+                "Reebok Crossfit",
+                "Nike Free X Metcon",
+                "Adidas Powerlift",
+                "Under Armour Project Rock",
+                "Reebok Nano",
+                "Nike Zoom Train Command",
+                "Adidas Pureboost",
+                "Under Armour HOVR",
+                "Reebok Legacy Lifter",
+                "Nike Zoom Pegasus Turbo",
+                "Adidas Ultraboost 21",
+                "Under Armour Micro G",
+                "Reebok Crossfit Speed TR",
+                "Nike React Infinity",
+                "Adidas Adizero Adios",
+                "Under Armour HOVR Phantom",
+                "Reebok Harmony Road",
+                "Nike Zoom Fly 3",
+                "Adidas Solar Boost",
+                "Under Armour Charge 4",
+                "Reebok Forever Floatride Energy",
+                "Nike Air Zoom Pegasus 37",
+                "Adidas Ultraboost 20",
+                "Under Armour HOVR Sonic",
+                "Reebok Floatride Run Fast",
+                "Nike Air Zoom Pegasus 36",
+                "Adidas Ultraboost 19",
+                "Under Armour HOVR Rise",
+                "Reebok Floatride Run Fast Pro",
+                "Nike Air Zoom Pegasus 35",
+                "Adidas Ultraboost 18",
+                "Under Armour HOVR Guardian",
+                "Reebok Floatride Run Fast 2.0",
+                "Nike Air Zoom Pegasus 34",
+                "Adidas Ultraboost 17",
+                "Under Armour HOVR Phantom 2",
+                "Reebok Floatride Run Fast 2.0",
+                "Nike Air Zoom Pegasus 33",
+                "Adidas Ultraboost 16",
+                "Under Armour HOVR Phantom 2",
+                "Reebok Floatride Run Fast 2.0",
+                "Nike Air Zoom Pegasus 32",
+                "Adidas Ultraboost 15",
+                "Under Armour HOVR Phantom 2",
+                "Reebok Floatride Run Fast 2.0",
+                "Nike Air Zoom Pegasus 31",
+                "Adidas Ultraboost 14",
+                "Under Armour HOVR Phantom 2",
+                "Reebok Floatride Run Fast 2.0",
+            ]
+        ];
+
+        //////////////////////////////////////////////////////////////////////////////
+        // create the main shoes categories
+        for ($i = 0; $i < count($rootCategoriesNames); $i++) {
             $category = new Category();
-            $names = ['Femme', 'Homme', 'Enfant', 'Equipement', 'Nutrition', 'Soldes'];
-            $category->setName($names[$i]);
-            $category->getName() === 'Homme' ? $category->setListOrder(10) : '';
-            $category->getName() === 'Femme' ? $category->setListOrder(20) : '';
-            $category->getName() === 'Enfant' ? $category->setListOrder(30) : '';
-            $category->getName() === 'Equipement' ? $category->setListOrder(40) : '';
-            $category->getName() === 'Nutrition' ? $category->setListOrder(50) : '';
-            $category->getName() === 'Soldes' ? $category->setListOrder(60) : '';
-        
-            $cats[] = $category;
             
+            $category->setName($rootCategoriesNames[$i]);
+            $category->setListOrder($i);
+
+            $categories[] = $category;
             $manager->persist($category);
-        }       
+        }
 
-        // Création des sous catégories des catégories Femme, Homme et Enfant
-        $subCats = [];
-        $nutritionSubCat = [];
-        $equipementSubCat = [];
+        // boucler sur les categories pour créer les sous categories pour homme femme et enfant
+        foreach ($categories as $category) {
+            foreach ($subCategoriesNames as $subCategoryName) {
 
-        foreach($cats as $cat) {
-
-            if ($cat->getName() === 'Femme' || $cat->getName() === 'Homme' || $cat->getName() === 'Enfant') {
-                for ($i = 0; $i < 4; $i++) {
-                    $names = ['Vétements', 'Chaussures', 'Accessoires', 'Soldes'];
-                    $subCat = new SubCategory();
-                    $subCat->setName($names[$i]);
-                    $subCat->getName() === 'Vétements' ? $subCat->setListOrder(10) : '';
-                    $subCat->getName() === 'Chaussures' ? $subCat->setListOrder(20) : '';
-                    $subCat->getName() === 'Accessoires' ? $subCat->setListOrder(30) : '';
-                    $subCat->getName() === 'Soldes' ? $subCat->setListOrder(40) : '';
-
-                    $subCats[] = $subCat;
-
-                    $cat->addSubCategory($subCat);
-                    $manager->persist($subCat);
+                $category->getName();
+                if($category->getName() == 'Nouveautés' || $category->getName() == 'Soldes' || $category->getName() == 'Accessoires') {
+                    continue;
                 }
-            }  
-
-            // création des sous catégories de la catégrie Nutrition
-            if ($cat->getName() === 'Nutrition') {
-                for ($j = 0; $j < 5; $j++) {
-                    $namesN = ['Récupération', 'Effort', 'Sèche', 'Masse', 'Soldes'];
-                    $subCat = new SubCategory();
-                    $subCat->setName($namesN[$j]);
-                    $subCat->getName() === 'Récupération' ? $subCat->setListOrder(10) : '';
-                    $subCat->getName() === 'Effort' ? $subCat->setListOrder(20) : '';
-                    $subCat->getName() === 'Sèche' ? $subCat->setListOrder(30) : '';
-                    $subCat->getName() === 'Masse' ? $subCat->setListOrder(40) : '';
-                    $subCat->getName() === 'Soldes' ? $subCat->setListOrder(50) : '';
-
-                    $nutritionSubCat[] = $subCat;
-
-                    $cat->addSubCategory($subCat);
-                    $manager->persist($subCat);
-                }
+                
+                $subCategory = new SubCategory();
+                $subCategory->setName($subCategoryName);
+                                
+                $subCategory->addCategory($category);
+                
+                $subCategories[] = $subCategory;
+                $manager->persist($subCategory);
             }
+        }
+        
+        // boucler sur les sous categories pour créer les types de produits pour homme femme et enfant
+        foreach ($subCategories as $subCategory) {
+            foreach ($productTypesNames[$subCategory->getName()] as $productTypeName) {
+                $productType = new ProductType();
+                $productType->setName($productTypeName);
 
-            // création des sous catégories de la catégorie Equipement
-            if ($cat->getName() === 'Equipement') {
-                for ($k = 0; $k < 5; $k++) {
-                    $namesE = ['Vélo', 'Course', 'Musculation', 'Natation', 'Camping'];
-                    $subCat = new SubCategory();
-                    $subCat->setName($namesE[$k]);
-                    $subCat->getName() === 'Vélo' ? $subCat->setListOrder(10) : '';
-                    $subCat->getName() === 'Course' ? $subCat->setListOrder(20) : '';
-                    $subCat->getName() === 'Musculation' ? $subCat->setListOrder(30) : '';
-                    $subCat->getName() === 'Natation' ? $subCat->setListOrder(40) : '';
-                    $subCat->getName() === 'Camping' ? $subCat->setListOrder(50) : '';
-
-                    $equipementSubCat[] = $subCat;
-
-                    $cat->addSubCategory($subCat);
-
-                    $manager->persist($subCat);
-                }
+                $productType->addSubCategory($subCategory);
+                
+                $productTypes[] = $productType;
+                $manager->persist($productType);
             }
+        }
+
+
+        
+        // créer les marques de chaussures
+        foreach ($brandsNames as $brandName) {
+            $brand = new Brand();
+            $brand->setName($brandName);
+            
+            $brands[] = $brand;
+            $manager->persist($brand);
+        }
+
+        $runningProducts = [];
+        
+        foreach ($subCategoriesProductNames['Running'] as $productName) {
+            $product = new Product();
+            $product->setName($productName);
+            $product->setSellingPrice(mt_rand(50, 200));
+            $product->setBrand($brands[mt_rand(0, count($brands) - 1)]);
+
+            $product->setProductType($productTypes[mt_rand(0, count($productTypes) - 1)]);
+            $product->setCategory($categories[rand(1, 3)]);
+
+            $product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
            
-        }
-
-//* EQUIPEMENT *//
-        $courseTypes = [];
-
-        for ($i = 0; $i < 3; $i++) {
-            $productType = new ProductType();
-            $names = ['Montres', 'Bidons', 'Vestes'];
-
-            $productType->setName($names[$i]);
-            $productType->addSubCategory($equipementSubCat[1]);
-
-            $courseTypes[] = $productType;
-            $manager->persist($productType);
-        }
-
-
-        // create 10 products of type course
-        $courses = [];
-
-        for( $i = 0; $i < 10; $i++){
-
-            $course = new Product();
-            $course->setName($faker->word());
-            $course->setSellingPrice($faker->randomFloat(2, 10, 100));
-            $course->setInStockQuantity(rand(1, 100));
-            $course->setBuyPrice(sprintf('%0.2f', $course->getSellingPrice() * 0.8));
+            $product->setInStockQuantity(rand(1, 10));
+            $product->setBuyPrice($faker->numberBetween(80, 1000) * 0.8);
             $margin = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7];
-            $course->setSellingPrice(sprintf('%0.2f',  $course->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
-            $course->setCatalogPrice(sprintf('%0.2f', $course->getSellingPrice() * 1.1));
+            $product->setSellingPrice(sprintf('%0.2f', $product->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
+            $product->setCatalogPrice(sprintf('%0.2f', $product->getSellingPrice() * 1.1));
 
-            $course->setProductType($courseTypes[rand(0, 2)]);
-            $course->setSubCategory($equipementSubCat[1]);
-            $course->setCategory($cats[3]);
-        
-            $courses[] = $course;
-            $manager->persist($course);
-        }
-
-
-        // creation des types de produits de la sous catégorie Vélo
-        $veloTypes = [];
-
-        for ($i = 0; $i < 3; $i++) {
-            $productType = new ProductType();
-            $names = ['Vélo de route', 'Vélo de ville', 'Vélo électrique'];
-            $productType->setName($names[$i]);
-            $productType->addSubCategory($equipementSubCat[0]);
-
-            $veloTypes[] = $productType;
-            $manager->persist($productType);
-        }
-
-        // creation de 10 vélos avec un random Type de vélo
-        $velos = [];
-
-        for ($i = 0; $i < 10; $i++ ){
-
-            $bike = new Product();
-            // faker pour le nom du vélo
-            $bike->setName($faker->word());
-            $bike->setInStockQuantity(rand(1, 10));
-            $instock = $bike->getInStockQuantity();
-            $instock >= 1 ? $bike->setInStock(1) : $bike->setInStock(0);
-            $instock >= 1 ? $bike->setVisibility(1) : $bike->setVisibility(0);
-            $bike->setBuyPrice($faker->numberBetween(80, 1000) * 0.8);
-            $margin = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7];
-            $bike->setSellingPrice(sprintf('%0.2f',  $bike->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
-            $bike->setCatalogPrice(sprintf('%0.2f', $bike->getSellingPrice() * 1.1));
-
-            $bike->setProductType($veloTypes[rand(0, count($veloTypes) - 1)]);
-            $bike->setSubCategory($equipementSubCat[0]);
-            $bike->setCategory($cats[3]);
-
-            $velos[] = $bike;
-            $manager->persist($bike);
-
-
-        }
-
-        // creation de types de produit de la sous catégorie Recupération
-        $recuperationTypes = [];
-
-        for ($i = 0; $i < 3; $i++) {
-            $productType = new ProductType();
-            $names = ['Protéine', 'Glucides', 'Electrolytes'];
-            // iterrate over the array to set name in order of array 
-            $productType->setName($names[$i]);
             
-            $productType->addSubCategory($nutritionSubCat[rand(0, count($nutritionSubCat) - 1)]);
-
-            $recuperationTypes[] = $productType;
-            $manager->persist($productType);
+            $runningProducts[] = $product;
+            $manager->persist($product);
         }
 
-        // creation de 10 produits de la sous catégorie Recupération
-        $recuperations = [];
+        $lifeStyleProducts = [];
 
-        for ($i = 0; $i < 10; $i++) {
-            $recuperation = new Product();
-            // faker pour le nom du produit
-            $recuperation->setName($faker->word());
-            $recuperation->setInStockQuantity(rand(1, 10));
-            $instock = $recuperation->getInStockQuantity();
-            $instock >= 1 ? $recuperation->setInStock(1) : $recuperation->setInStock(0);
-            $instock >= 1 ? $recuperation->setVisibility(1) : $recuperation->setVisibility(0);
-            $recuperation->setBuyPrice($faker->numberBetween(80, 1000) * 0.8);
-            $margin = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7];
-            $recuperation->setSellingPrice(sprintf('%0.2f', $recuperation->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
-            $recuperation->setCatalogPrice(sprintf('%0.2f', $recuperation->getSellingPrice() * 1.1));
-
-            $recuperation->setSubCategory($nutritionSubCat[rand(0, 3)]);
-            $recuperation->setCategory($cats[4]);
-            $recuperation->setProductType($recuperationTypes[rand(0, count($recuperationTypes) - 1)]);
-
-            $recuperations[] = $recuperation;
-            $manager->persist($recuperation);
-        }
-
-         // creation de types de produit pour la Musculation
-         $musculationTypes = [];
-        
-        for ($i = 0; $i < 3; $i++) {
-            $productType = new ProductType();
-            $names = ['Tapis de sol', 'Barre', 'Haltères'];
-            $productType->setName($names[$i]);
-
-            $productType->addSubCategory($equipementSubCat[rand(0, count($equipementSubCat) - 1)]);
-
-            $musculationTypes[] = $productType;
-            $manager->persist($productType);
-        }
- 
-        // creation de produits pour pour le type Musculation
-        $musculations = [];
- 
-        for ($i = 0; $i < 10; $i++) {
-            $musculation = new Product();
-            // faker pour le nom du produit
-            $musculation->setName($faker->word());
-            $musculation->setInStockQuantity(rand(1, 10));
-            $instock = $musculation->getInStockQuantity();
-            $instock >= 1 ? $musculation->setInStock(1) : $musculation->setInStock(0);
-            $instock >= 1 ? $musculation->setVisibility(1) : $musculation->setVisibility(0);
-            $musculation->setBuyPrice($faker->numberBetween(80, 1000) * 0.8);
-            $margin = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7];
-            $musculation->setSellingPrice(sprintf('%0.2f', $musculation->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
-            $musculation->setCatalogPrice(sprintf('%0.2f', $musculation->getSellingPrice() * 1.1));
-
-            $musculation->setSubCategory($equipementSubCat[2]);
-            $musculation->setCategory($cats[3]);
-            $musculation->setProductType($musculationTypes[rand(0, count($musculationTypes) - 1)]);
-
-            $musculations[] = $musculation;
-            $manager->persist($musculation);
-        }
- 
-         // creation de types de produit pour la Natation
-         $natationTypes = [];
- 
-        for ($i = 0; $i < 3; $i++) {
-            $productType = new ProductType();
-            $names = ['Maillot', 'Maillot de bain', 'Maillot de corps'];
-            $productType->setName($names[$i]);
-            $productType->addSubCategory($equipementSubCat[rand(0, count($equipementSubCat) - 1)]);
+        foreach ($subCategoriesProductNames['Lifestyle'] as $productName) {
+            $product = new Product();
+            $product->setName($productName);
+            $product->setSellingPrice(mt_rand(50, 200));
             
-            $natationTypes[] = $productType;
-            $manager->persist($productType);
-        }
- 
-         // creation de produits pour pour le type Natation
-         $natations = [];
- 
-        for ($i = 0; $i < 10; $i++) {
-            $natation = new Product();
-            $natation->setName($faker->word());
-            $natation->setInStockQuantity(rand(1, 10));
-            $instock = $natation->getInStockQuantity();
-            $instock >= 1 ? $natation->setInStock(1) : $natation->setInStock(0);
-            $instock >= 1 ? $natation->setVisibility(1) : $natation->setVisibility(0);
-            $natation->setBuyPrice($faker->numberBetween(80, 1000) * 0.8);
+            $product->setBrand($brands[mt_rand(0, count($brands) - 1)]);
+            $product->setProductType($productTypes[mt_rand(0, count($productTypes) - 1)]);
+            $product->setCategory($categories[rand(1, 3)]);
+            $product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
+
+            $product->setInStockQuantity(rand(1, 10));
+            $product->setBuyPrice($faker->numberBetween(80, 1000) * 0.8);
             $margin = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7];
-            $natation->setSellingPrice(sprintf('%0.2f', $natation->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
-            $natation->setCatalogPrice(sprintf('%0.2f', $natation->getSellingPrice() * 1.1));
+            $product->setSellingPrice(sprintf('%0.2f', $product->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
+            $product->setCatalogPrice(sprintf('%0.2f', $product->getSellingPrice() * 1.1));
 
-            //$natation->setProductType($natationTypes[rand(0, count($natationTypes) - 1)]);
-
-            $natation->setSubCategory($equipementSubCat[3]);
-            $natation->setCategory($cats[3]);
-            $natation->setProductType($natationTypes[rand(0, count($natationTypes) - 1)]);
-
-            $natations[] = $natation;
-            $manager->persist($natation);
-        }
- 
-         // creation de types de produit pour la Camping
- 
-        $campingTypes = [];
- 
-        for ($i = 0; $i < 3; $i++) {
-            $productType = new ProductType();
-            $names = ['Tente', 'Sac de couchage', 'Matelas'];
-            $productType->setName($names[$i]);
-            $productType->addSubCategory($equipementSubCat[rand(0, count($equipementSubCat) - 1)]);
- 
-            $campingTypes[] = $productType;
-            $manager->persist($productType);
-         }
- 
-         // création de 10 produits pour le type camping
-         $campings = [];
- 
-         for ($i = 0; $i < 10; $i++) {
-             $camping = new Product();
-             // faker pour le nom du produit
-             $camping->setName($faker->word());
-             $camping->setInStockQuantity(rand(1, 10));
-             $instock = $camping->getInStockQuantity();
-             $instock >= 1 ? $camping->setInStock(1) : $camping->setInStock(0);
-             $instock >= 1 ? $camping->setVisibility(1) : $camping->setVisibility(0);
-             $camping->setBuyPrice($faker->numberBetween(80, 1000) * 0.8);
-             $margin = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7];
-             $camping->setSellingPrice(sprintf('%0.2f', $camping->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
-             $camping->setCatalogPrice(sprintf('%0.2f', $camping->getSellingPrice() * 1.1));
- 
-             // random bike type from array of bike types ['Vélo de route', 'Vélo de ville', 'Vélo électrique'];
-             $camping->setProductType($campingTypes[rand(0, count($campingTypes) - 1)]);
- 
-             // TODO lier chaque produit à une sous catégorie
-             // ['Vélo', 'Course', 'Musculation', 'Natation', 'Camping'];
-             $camping->setSubCategory($equipementSubCat[4]);
-             // ajouter chaque produit à la catégorie equipement
-            // cats ['Femme', 'Homme', 'Enfant', 'Equipement', 'Nutrition', 'Soldes'];
-             $camping->setCategory($cats[3]);
-             // ajouter un type de produit à chaque produit
-             $camping->setProductType($campingTypes[rand(0, count($campingTypes) - 1)]);
- 
-             $campings[] = $camping;
-             $manager->persist($camping);
-         }
-
-//* VETEMENTS *//
-
-        // création de 4 types de produits pour la catégory Vétements
-        $vetementTypes = [];
-
-        for ($i = 0; $i < 3; $i++) {
-            $productType = new ProductType();
-            $names = ['jean', 'tea-shirt', 'baskets'];
             
-            $productType->setName($names[$i]);
-            $productType->addSubCategory($subCats[rand(0, count($subCats) - 1)]);
-
-            $vetementTypes[] = $productType;
-            $manager->persist($productType);
+            $lifeStyleProducts[] = $product;
+            $manager->persist($product);
         }
 
-        // création de 50 produits pour le type vetement à répartir dans les sous catégories ['Vétements', 'Chaussures', 'Accessoires']; et dans les catégories ['Femme', 'Homme', 'Enfant','Soldes'];
+        $classiqueProducts = [];
 
-        $vetements = [];
+        foreach ($subCategoriesProductNames['Ville'] as $productName) {
+            $product = new Product();
+            $product->setName($productName);
+            $product->setSellingPrice(mt_rand(50, 200));
+            
+            $product->setBrand($brands[mt_rand(0, count($brands) - 1)]);
+            $product->setProductType($productTypes[mt_rand(0, count($productTypes) - 1)]);
+            $product->setCategory($categories[rand(1, 3)]);
+            $product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
 
-        for($i = 0; $i < 500; $i++ ){
+            $product->setInStockQuantity(rand(1, 10));
+            $product->setBuyPrice($faker->numberBetween(80, 1000) * 0.8);
+            $margin = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7];
+            $product->setSellingPrice(sprintf('%0.2f', $product->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
+            $product->setCatalogPrice(sprintf('%0.2f', $product->getSellingPrice() * 1.1));
 
-        $vetement = new Product();
-        $vetement->setName($faker->word());
-        $vetement->setInStockQuantity(rand(1, 10));
-        $vetement->setBuyPrice($faker->numberBetween(80, 1000) * 0.8);
+            
+            $classiqueProducts[] = $product;
+            $manager->persist($product);
+        }
+
+        $randonneeProducts = [];
+
+        foreach ($subCategoriesProductNames['Randonnée'] as $productName) {
+            $product = new Product();
+            $product->setName($productName);
+            $product->setSellingPrice(mt_rand(50, 200));
+            
+            $product->setBrand($brands[mt_rand(0, count($brands) - 1)]);
+            $product->setProductType($productTypes[mt_rand(0, count($productTypes) - 1)]);
+            $product->setCategory($categories[rand(1, 3)]);
+            $product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
+
+            $product->setInStockQuantity(rand(1, 10));
+            $product->setBuyPrice($faker->numberBetween(80, 1000) * 0.8);
+            $margin = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7];
+            $product->setSellingPrice(sprintf('%0.2f', $product->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
+            $product->setCatalogPrice(sprintf('%0.2f', $product->getSellingPrice() * 1.1));
+
+            
+            $randonneeProducts[] = $product;
+            $manager->persist($product);
+        }
+
+        $trainingProducts = [];
+
+        foreach ($subCategoriesProductNames['Training'] as $productName) {
+
+        $product = new Product();
+        $product->setName($productName);
+        $product->setSellingPrice(mt_rand(50, 200));
+
+        $product->setBrand($brands[mt_rand(0, count($brands) - 1)]);
+        $product->setProductType($productTypes[mt_rand(0, count($productTypes) - 1)]);
+        $product->setCategory($categories[rand(1, 3)]);
+        $product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
+
+        $product->setInStockQuantity(rand(1, 10));
+        $product->setBuyPrice($faker->numberBetween(80, 1000) * 0.8);
         $margin = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7];
-        $vetement->setSellingPrice(sprintf('%0.2f', $vetement->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
-        $vetement->setCatalogPrice(sprintf('%0.2f', $vetement->getSellingPrice() * 1.1));
+        $product->setSellingPrice(sprintf('%0.2f', $product->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
+        $product->setCatalogPrice(sprintf('%0.2f', $product->getSellingPrice() * 1.1));
+
+
+        $trainingProducts[] = $product;
+        $manager->persist($product);
+
+        }
+
+        foreach ($runningProducts as $product) {
+            $product->setSubCategory($subCategories[0]);
+        }
+
+
+        $products = array_merge($runningProducts, $lifeStyleProducts, $classiqueProducts, $randonneeProducts, $trainingProducts);
+        // find the subcategories 
+        foreach ($products as $product) {
+            $subCategory = $product->getSubCategory()->getName();
+
+            if ($subCategory === 'Running') {
+                // 2 product types for running
+                $product->setProductType($productTypes[rand(0, 1)]);
+                //set subCategory to main category Homme 
+            } 
+            if ($subCategory === 'Lifestyle') {
+                // 4 product types for lifestyle
+                $product->setProductType($productTypes[rand(2, 5)]);
+            }
+            if ($subCategory === 'Ville') {
+                // 8 product types for ville
+                $product->setProductType($productTypes[rand(6, 13)]);
+            }
+            if ($subCategory === 'Randonnée') {
+                // 2 product types for randonnée
+                $product->setProductType($productTypes[rand(14, 15)]);
+            }
+            if ($subCategory === 'Training') {
+                // 4 product types for training
+                $product->setProductType($productTypes[rand(16, 19)]);
+            }
+
+        }
+
+        // while subcategory don't have product add product to subcategory
+
+        while (count($subCategories[0]->getProducts()) < 10) {
+            $subCategories[0]->addProduct($runningProducts[rand(0, count($runningProducts) - 1)]);
+            $manager->persist($subCategories[0]);
+        }
+        while (count($subCategories[1]->getProducts()) < 10) {
+            $subCategories[1]->addProduct($lifeStyleProducts[rand(0, count($lifeStyleProducts) - 1)]);
+            $manager->persist($subCategories[1]);
+        }
+        while (count($subCategories[2]->getProducts()) < 10) {
+            $subCategories[2]->addProduct($classiqueProducts[rand(0, count($classiqueProducts) - 1)]);
+            $manager->persist($subCategories[2]);
+        }
+        while (count($subCategories[3]->getProducts()) < 10) {
+            $subCategories[3]->addProduct($randonneeProducts[rand(0, count($randonneeProducts) - 1)]);
+            $manager->persist($subCategories[3]);
+        }
+        while (count($subCategories[4]->getProducts()) < 10) {
+            $subCategories[4]->addProduct($trainingProducts[rand(0, count($trainingProducts) - 1)]);
+            $manager->persist($subCategories[4]);
+        }
+
+        // wile category don't have product add product to category
+        while (count($categories[1]->getProducts()) < 10) {
+            $categories[1]->addProduct($runningProducts[rand(0, count($runningProducts) - 1)]);
+            $manager->persist($categories[1]);
+        }
+        while (count($categories[2]->getProducts()) < 10) {
+            $categories[2]->addProduct($lifeStyleProducts[rand(0, count($lifeStyleProducts) - 1)]);
+            $manager->persist($categories[2]);
+        }
+        while (count($categories[3]->getProducts()) < 10) {
+            $categories[3]->addProduct($classiqueProducts[rand(0, count($classiqueProducts) - 1)]);
+            $manager->persist($categories[3]);
+        }
+        while (count($categories[4]->getProducts()) < 10) {
+            $categories[4]->addProduct($randonneeProducts[rand(0, count($randonneeProducts) - 1)]);
+            $manager->persist($categories[4]);
+        }
+        while (count($categories[5]->getProducts()) < 10) {
+            $categories[5]->addProduct($trainingProducts[rand(0, count($trainingProducts) - 1)]);
+            $manager->persist($categories[5]);
+        }
+
+
 
         
-        $vetement->setCategory($cats[rand(0, 2)]);
-        $vetement->setProductType($vetementTypes[rand(0, count($vetementTypes) - 1)]);
-        $vetement->setSubCategory($subCats[rand(0, count($subCats) - 1)]);
-//TODO  debuger ça ! tout se met dans la categorie Femme et dans la sous categorie vetements ?
-
-        //INFO : $subCats = ['Vétements', 'Chaussures', 'Accessoires', 'Soldes'];
-        // if productType is 'baskets' then add to subCat 'chaussures' if productType is tee-shirt or jean then add to subCat 'vetements'
-        // $vetement->getProductType()->getName() === 'baskets' ? $vetement->setSubCategory($subCats[2]) : '';
-        // $vetement->getProductType()->getName() === 'tea-shirt' ? $vetement->setCategory($cats[1]) : '';
-        // $vetement->getProductType()->getName() === 'jean' ? $vetement->setCategory($cats[1]) : '';
         
-        $vetements[] = $vetement;
-
-        $manager->persist($vetement);
-        }
-
-        $user = [];
-        // create user with faker ! Bam!
-        for ($i = 0; $i < 3; $i++) {
-            $user = new User();
-            $user->setFirstName($faker->firstName);
-            $user->setLastName($faker->lastName);
-            $user->setUsername($user->getFirstName(). ' ' .$user->getLastName());
-            
-            $users[] = $user;
-
-            $manager->persist($user);
-        }
-
-        $comments = [];
-
-        // create comments with faker ! Bam!
-        for ($i = 0; $i < 10; $i++) {
-            $comment = new Comment();
-            $comment->setAuthor($users[rand(0, count($users) - 1)]->getFullName());
-            $comment->setEmail($faker->email);
-            $comment->setText($faker->text(rand(50, 200)));
-            $comment->setProduct($vetements[rand(0, count($vetements) - 1)]);
-
-            $comments[] = $comment;
-
-            $manager->persist($comment);
-        }
+        
 
         $manager->flush();
-    }
-}
-
-
+    } // end function load
+}// end class

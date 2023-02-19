@@ -20,6 +20,17 @@ class TypeProductType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
+            ->add('typeData', CollectionType::class, [
+                'entry_type' => ProductDataType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'label' => 'Caractéristiques du produit',
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+            ])
         ;
     }
 

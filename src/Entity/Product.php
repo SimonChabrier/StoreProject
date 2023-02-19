@@ -7,6 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+// add groups for serialization
+use Symfony\Component\Serializer\Annotation\Groups;
+
+
+
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
@@ -16,11 +21,13 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"product:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=150)
+     * @Groups({"product:read"})
      */
     private $name;
 
@@ -28,8 +35,9 @@ class Product
      * @ORM\ManyToOne(
      *      targetEntity=Category::class, 
      *      inversedBy="products", 
-     *      fetch="EXTRA_LAZY"
+     *      fetch="EAGER"
      *  )
+     * @Groups({"product:read"})
      */
     private $category;
 
@@ -37,8 +45,9 @@ class Product
      * @ORM\ManyToOne(
      *      targetEntity=SubCategory::class, 
      *      inversedBy="products", 
-     *      fetch="EXTRA_LAZY"
+     *      fetch="EAGER"
      *  )
+     * @Groups({"product:read"})
      */
     private $subCategory;
 
@@ -54,6 +63,7 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Groups({"product:read"})
      */
     private $sellingPrice;
 
@@ -86,6 +96,7 @@ class Product
      *      fetch="EAGER"
      *  )
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"product:read"})
      */
     private $productType;
 
@@ -103,6 +114,11 @@ class Product
      * @ORM\Column(type="json", nullable=true)
      */
     private $productData = [];
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="products")
+     */
+    private $brand;
 
     public function __construct()
     {
@@ -310,6 +326,18 @@ class Product
     {   
 
         $this->productData = $productData;
+
+        return $this;
+    }
+
+    public function getBrand(): ?Brand
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(?Brand $brand): self
+    {
+        $this->brand = $brand;
 
         return $this;
     }

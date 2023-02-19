@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 
 class CategoryCrudController extends AbstractCrudController
 {
@@ -44,7 +45,9 @@ class CategoryCrudController extends AbstractCrudController
                     'expanded' => true,
                     'choice_label' => 'getSubCategoryName',
                 ]
-            ),
+                ),
+            BooleanField::new('showOnHome', 'Afficher sur la page d\'accueil')
+            ->setRequired(true),
             // AssociationField::new('products')
             // ->setLabel('Produits liés')
             // ->setFormTypeOptions([

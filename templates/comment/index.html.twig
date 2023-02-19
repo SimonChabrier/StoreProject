@@ -18,6 +18,7 @@
         </thead>
         <tbody>
         {% for comment in comments %}
+    
             <tr>
                 <td>{{ comment.id }}</td>
                 <td><a href="{{ path('app_product_show', {'id': comment.product.id}) }}">{{ comment.product.id }}</a></td>

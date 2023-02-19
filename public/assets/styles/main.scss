@@ -111,30 +111,44 @@ table {
   width: 100%;
   //margin: .5rem 0!important;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  // box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 
   th,
   td {
     padding: 0.4rem !important;
     text-align: left;
-    background-color: #161616 !important;
-    color: #d6d6d6;
+    // background-color: #161616 !important;
+    //color: #363434;
   }
 
-  tr {
-    transition: all 0.2s ease-in;
-
-    &:hover {
-      background-color: rgb(39, 39, 39) !important;
-      //color:rgb(255, 255, 255)!important;
-    }
+  // no border on tr
+td {
+    border: none !important;
   }
+
+  // set td 1 2 and 3 width
+  td:nth-child(1),
+  td:nth-child(2),
+  td:nth-child(3),
+  td:nth-child(6) {
+    width: 10%;
+    white-space: nowrap;
+  }
+
+  // tr {
+  //   transition: all 0.2s ease-in;
+
+  //   &:hover {
+  //     background-color: rgb(39, 39, 39) !important;
+  //     color:rgb(255, 255, 255)!important;
+  //   }
+  // }
 }
 
 // colorize table rows 1/2 but not the header
 tr:nth-child(even) {
-  background-color: rgb(39, 39, 39) !important;
-  color: rgb(255, 255, 255) !important;
+  background-color: rgb(245, 245, 245) !important;
+  //color: rgb(255, 255, 255) !important;
 }
 
 button {

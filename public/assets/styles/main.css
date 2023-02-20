@@ -399,7 +399,7 @@ form.resetForm {
   margin: 0;
 }
 
-.topbar {
+.topicons {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;

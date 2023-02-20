@@ -399,7 +399,7 @@ form.resetForm {
   margin: 0;
 }
 
-.userbar_icons {
+.topbar {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -438,11 +438,11 @@ form.resetForm {
   transition: all 0.2s ease-in;
 }
 
-.basketicon, .usericon {
+.basketicon, .topicon {
   cursor: pointer;
   transition: all 0.5s ease-in;
 }
-.basketicon:hover, .usericon:hover {
+.basketicon:hover, .topicon:hover {
   color: #818009 !important;
   transition: all 0.3s ease-in;
 }

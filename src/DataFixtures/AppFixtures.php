@@ -701,6 +701,16 @@ class AppFixtures extends Fixture
             $manager->persist($user);
         }
 
+        $admin = new User();
+        $admin->setEmail('admin@admin.fr');
+        $admin->setRoles(['ROLE_ADMIN']);
+        $plaintextPassword = 'password';
+        $admin->setPassword($this->passwordHasher->hashPassword(
+            $admin,
+            $plaintextPassword
+        ));
+        $manager->persist($admin);
+
         // create 100 comments and add to randomly to product 
         $comments = [];
 

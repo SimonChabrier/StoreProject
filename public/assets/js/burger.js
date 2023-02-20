@@ -16,6 +16,7 @@ const menu = {
         document.getElementById('closeBtn').addEventListener('click', () => {
             menu.handleCloseNav(sidenav)
         });
+
     },
 
     handleOpenNav: function(sidenav) {

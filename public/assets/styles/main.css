@@ -16,6 +16,21 @@ body {
   flex-grow: 1;
 }
 
+.btn {
+  background-color: #c7c721 !important;
+  color: #ffffff !important;
+  font-size: 1rem !important;
+  font-weight: 300;
+  text-transform: uppercase;
+  transition: all 0.2s ease-in;
+  border: none !important;
+  width: auto !important;
+}
+
+button#reset_submit {
+  width: 100% !important;
+}
+
 #header {
   position: relative;
 }
@@ -23,6 +38,7 @@ body {
 #sidebar {
   width: 20%;
   float: left;
+  margin-bottom: 30px;
 }
 
 #main {
@@ -240,12 +256,17 @@ label {
 
 aside {
   display: flex;
+  flex-direction: column;
   min-height: 800px;
+  height: 100%;
   background-color: rgba(184, 176, 176, 0.05);
   padding: 20px !important;
   border-radius: 10px;
   background-image: linear-gradient(90deg, hsl(0deg, 0%, 100%) 0%, hsl(344deg, 0%, 99%) 18%, hsl(344deg, 0%, 99%) 26%, hsl(344deg, 0%, 98%) 32%, hsl(344deg, 0%, 98%) 37%, hsl(344deg, 0%, 97%) 42%, hsl(344deg, 0%, 97%) 47%, hsl(344deg, 0%, 96%) 54%, hsl(344deg, 0%, 96%) 64%, hsl(0deg, 0%, 95%) 90%);
-  height: 100%;
+}
+
+.aside > div {
+  width: 100%;
 }
 
 .brandCheckboxes ol {

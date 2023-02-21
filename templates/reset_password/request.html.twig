@@ -1,0 +1,50 @@
+{# {% extends 'base.html.twig' %}
+
+{% block title %}Réinitialiser votre mot de passe.{% endblock %}
+
+{% block content %}
+    {% for flash_error in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+    <h1>Réinitialiser votre mot de passe.</h1>
+
+    {{ form_start(requestForm) }}
+        {{ form_row(requestForm.email) }}
+        <div>
+            <small>
+                Un email vous sera envoyé avec un lien pour réinitialiser votre mot de passe.
+            </small>
+        </div>
+
+        <button class="btn btn-primary">Valider</button>
+    {{ form_end(requestForm) }}
+{% endblock %} #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Réinitialisation du mot de passe{% endblock %}
+
+{% block content %}
+
+    {% for flash_error in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    {% if app.user %}
+    <h1>Changer de mot de passe</h1>
+    {% else %}
+    <h1>Réinitialiser le mot de passe</h1>
+    {% endif %}
+
+    {{ form_start(requestForm) }}
+        {{ form_row(requestForm.email) }}
+        <div>
+            <small>
+                Entrez l'adresse email utilisée lors de votre inscription...
+            </small>
+        </div>
+
+        <button class="btn btn-primary">Recevoir le lien de renouvellement</button>
+    {{ form_end(requestForm) }}
+
+{% endblock %}  

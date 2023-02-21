@@ -1,0 +1,67 @@
+{% block content %}
+
+{# searchForm #}
+<input type="number" name="min" id="min">
+<input type="number" name="max" id="max">
+<input type="submit" value="Search" id="search">
+<input type="reset" value="Reset" id="reset">
+
+{# searchResult #}
+<div id="searchResults"></div>
+{% endblock %}
+
+{% block javascript %}
+
+<script>
+
+console.log('search script loaded');
+
+const search = document.getElementById('search')
+
+search.addEventListener('click', function(){
+
+    let min = document.getElementById('min').value;
+    let max = document.getElementById('max').value;
+
+    
+    fetch('json/product.json')
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(data){
+        console.log(data);
+        // append the result to the searchResult div
+        let searchResults = document.getElementById('searchResults');
+        searchResults.innerHTML = '';
+        data.forEach(function(product){
+            // convert sellingPrice to number
+            product.sellingPrice = Number(product.sellingPrice);     
+            // sort the products by sellingPrice
+            data.sort(function(a, b){
+                return a.sellingPrice - b.sellingPrice;
+            });
+            // filter the products by sellingPrice
+            if(product.sellingPrice >= min && product.sellingPrice <= max){ 
+                let resultsDiv = document.getElementById('searchResults');
+                resultsDiv = document.createElement('div');
+                resultsDiv.innerHTML = product.name + ' ' + product.sellingPrice + '€' + ' ' + product.category.name + ' ' + product.brand.name + ' ' + product.productType.name;
+                resultsDiv.classList.add('product_search_card');
+                resultsDiv.style.padding = '10px';  
+                searchResults.appendChild(resultsDiv);
+            }
+        });
+    });
+});
+
+// reset search results
+const reset = document.getElementById('reset');
+reset.addEventListener('click', function(){
+    let searchResults = document.getElementById('searchResults');
+    searchResults.innerHTML = '';
+});
+
+</script>
+
+{% endblock %}
+
+

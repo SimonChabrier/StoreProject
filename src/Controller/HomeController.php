@@ -71,7 +71,7 @@ class HomeController extends AbstractController
 
     public function search(): Response
     {
-        return $this->render('_fragments/searchResults.html.twig', []);
+        return $this->render('_fragments/_jsSearch.html.twig', []);
     }
 
 

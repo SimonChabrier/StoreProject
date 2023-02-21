@@ -27,10 +27,7 @@ const URI = window.location.origin;
 const search = document.getElementById('search')
 
 let fetchedProducts = [];
-let productsSearchResults = [];
-let checkedBrands = [];
-
-let cumulatedProducts = [...checkedBrands, ...productsSearchResults];
+let products = [];
 
 fetch(`${URI}/json/product.json`)
     .then(function(response){
@@ -49,7 +46,9 @@ fetch(`${URI}/json/product.json`)
 search.addEventListener('click', function(){
 
 let min = document.getElementById('min').value;
+min = Number(min);
 let max = document.getElementById('max').value;
+max = Number(max);
 let text = document.getElementById('text').value;
 
     // switch case if no input is given
@@ -61,19 +60,30 @@ let text = document.getElementById('text').value;
         // stop the function
         return;
     }
+    if (min > max)
+        {
+            swal("Oupsss !",  `Veuillez saisir un prix minimum supérieur au prix maximum`, "error", {
+            button: "Ok",
+            });
+            // stop the function
+            return;
+        }
     // get the searchResults div and empty it before displaying the results
     resetDivResults();
 
     fetchedProducts.find(function(product){
-        if(product.sellingPrice >= min && product.sellingPrice <= max || product.name.toLowerCase().includes(text.toLowerCase())){ 
-            productsSearchResults.push(product);
+        // evaluate product.sellingPrice as a number and compare it to the min and max values
+        product.sellingPrice = Number(product.sellingPrice);
+        // if the product.sellingPrice is between the min and max values or if the product.name includes the text value then push the product in the products array
+        if(product.sellingPrice >= min && product.sellingPrice <= max || product.name.toLowerCase().includes(text.toLowerCase()) && text != ''){ 
+            products.push(product);
         }
     });
 
-    productsSearchResults.forEach(function(product){
+    products.forEach(function(product){
         createProductCard(product);
         // reset the productsSearchResults array after each search
-        productsSearchResults = [];
+        products = [];
     }); 
 });
 
@@ -84,22 +94,21 @@ document.addEventListener('DOMContentLoaded', function(){
         checkbox.addEventListener('change', function(){
             // if the checkbox is checked then push the value of the checkbox in the array of checked brands
             if(this.checked){
-                checkedBrands.push(this.value.toLowerCase());
+                products.push(this.value.toLowerCase());
                 fetchedProducts.find(function(product){
-                    if(product.brand.name.toLowerCase() == checkedBrands[checkedBrands.length - 1].toLowerCase()){
+                    if(product.brand.name.toLowerCase() == products[products.length - 1].toLowerCase()){
                         createProductCard(product);
                     }
                 });
             } 
             // if the checkbox is unchecked then remove the value of the checkbox from the array of checked brands and refresh the searchResults div
             if(!this.checked){
-                console.log(this.value.toLowerCase());
                 // find the unchecked checkbox and remove it from the array of checked brands 
-                checkedBrands.splice(checkedBrands.indexOf(this.value.toLowerCase()), 1);
+                products.splice(products.indexOf(this.value.toLowerCase()), 1);
                 // remove the unchecked checkbox from the searchResults div
                 resetDivResults();
                 // reloop through the array of checked brands and display the products that match the checked brands
-                checkedBrands.forEach(function(brand){
+                products.forEach(function(brand){
                     fetchedProducts.find(function(product){
                         if(product.brand.name.toLowerCase() == brand.toLowerCase()){
                             createProductCard(product);
@@ -145,8 +154,7 @@ document.getElementById('reset').addEventListener('click', function(){
     max.value = '';
     text.value = '';
     // reset array
-    checkedBrands = [];
-    productsSearchResults = [];
+    products = [];
     // uncheck all checkboxes
     document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox){
         checkbox.checked = false;

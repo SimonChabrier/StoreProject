@@ -20,7 +20,7 @@ class NavService
     // puisque le template nav est inclus dans le template base.html.twig
     public function getNav()
     {   
-        //dump($this->em->getRepository(Category::class)->requestNav());
+        dump($this->em->getRepository(Category::class)->requestNav());
         return $this->em->getRepository(Category::class)->requestNav();
     }
 }

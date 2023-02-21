@@ -26,8 +26,8 @@
                 <td>{{ comment.text }}</td>
                 <td>{{ comment.email }}</td>
                 <td>
-                    <a href="{{ path('app_comment_show', {'id': comment.id}) }}">show</a>
-                    <a href="{{ path('app_comment_edit', {'id': comment.id}) }}">edit</a>
+                    <a href="{{ path('app_comment_show', {'id': comment.id}) }}">Voir</a>
+                    <a href="{{ path('app_comment_edit', {'id': comment.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}

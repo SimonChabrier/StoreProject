@@ -31,7 +31,7 @@ class HomeController extends AbstractController
             //'class' => $class,
         ]);
     
-}
+    }
 
     /**
      * @Route("/paginate/{id}", name="app_paginate_products", methods={"GET", "POST"})
@@ -63,6 +63,16 @@ class HomeController extends AbstractController
             'perPage' => $perPage,
         ]);
    }
+
+   // search route
+   /**
+    * @Route("/search", name="app_search", methods={"GET", "POST"})
+    */
+
+    public function search(): Response
+    {
+        return $this->render('_fragments/searchResults.html.twig', []);
+    }
 
 
 }

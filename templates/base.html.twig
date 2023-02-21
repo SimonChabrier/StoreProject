@@ -79,9 +79,28 @@
         </div>
 
         {% endblock %}
-
 </body>
 
+{# flash messages avec sweetAlert JS  #}
+{% block javascript %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+const sucessMessage = "{{ app.session.flashbag.get('success')|first }}";
+const errorMessage = "{{ app.session.flashbag.get('error')|first }}";
+    if (sucessMessage) {
+        swal("C'est tout bon !", sucessMessage, "success", {
+        button: "Ok",
+    });
+    }
+    if (errorMessage) {
+
+        swal("Oupsss !", errorMessage, "error", {
+        button: "Ok",
+    });
+    }
+});
+</script>
+{% endblock %}
 
         
 

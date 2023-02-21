@@ -5,8 +5,12 @@
 {% block content %}
 
 
-    <h1>{{ product.id }} | {{ product.name|title }}</h1>
+    <h1>{{ product.name|title }}</h1>
     
+    <div class="gallery">
+    <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
+    </div>
+
     <hr>
     {% if product.category %}
     - Categorie : <a href="{{ path('app_category_show', { 'id': product.category.id }) }}">{{ product.category|capitalize }}</a>
@@ -23,13 +27,14 @@
     <hr>
     - Propriétés du produit
         <ol>
+            <li>Id : {{ product.id }}</li>
             <li>Nom : {{ product.name }}</li>
             <li>Stock : {{ product.inStockQuantity }}</li>
             <li>Visible : {{ (product.visibility) ? 'Oui' : 'Non' }}</li>
-            <li>Prix catalogue : <del>{{ product.catalogPrice }} €</del></li>
-            {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
-            <li>Réduction : <span style='color:green'>{{ discount|round(1) }} % </span></li> 
-            <li>Prix : {{ product.sellingPrice }} €</li>
+            <li>Prix catalogue : <span class="catalogPrice"><del>{{ product.catalogPrice|round(0) }} €</del></span></li>
+            {% set discount = (product.catalogPrice - product.sellingPrice|round(0) ) / product.catalogPrice * 100 %}
+            <li>Réduction : <span class="dicountPrice">{{ discount|round(0) }} % </span></li> 
+            <li>Prix : <span class="price">{{ product.sellingPrice|round(0) }} €</span></li>
             <li>Marque : {{ product.brand }}</li>
         </ol>
 
@@ -49,14 +54,14 @@
     <hr>
     {% for index, comment in product.comments %}
         <ol>
-            <li>Posté par : {{ comment.author }}</li>
-            <li>Commentaire : {{ comment.text }}</li>
+            <li><i class="bi bi-person-circle"></i> {{ comment.author }}</li>
+            <li><i class="bi bi-chat-square-text-fill"></i> {{ comment.text }}</li>
         </ol>
     {% endfor %}
     
-    <a href="{{ path('app_product_index') }}">back to list</a>
+    <a href="{{ path('app_product_index') }}">Retour à la liste</a>
 
-    <a href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
+    <a href="{{ path('app_product_edit', {'id': product.id}) }}">Modifier</a>
 
     {{ include('product/_delete_form.html.twig') }}
 

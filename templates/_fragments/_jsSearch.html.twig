@@ -23,8 +23,21 @@
 <script>
 
 console.log('search script loaded');
-
+const URI = window.location.origin;
 const search = document.getElementById('search')
+let products = [];
+
+fetch(`${URI}/json/product.json`)
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(data){
+        // populate data array with the json data
+        data.forEach(function(product){
+            products.push(product);
+        }); 
+    });
+
 
 search.addEventListener('click', function(){
 
@@ -41,9 +54,6 @@ search.addEventListener('click', function(){
         // stop the function
         return;
     }
-
-    // get the URI of the app
-    const URI = window.location.origin;
 
     fetch(`${URI}/json/product.json`)
 
@@ -120,6 +130,39 @@ search.addEventListener('click', function(){
 
             if(product.sellingPrice >= min && product.sellingPrice <= max && product.name.toLowerCase().includes(text.toLowerCase())){ 
                 createProductCard(product);
+            }
+        });
+    });
+});
+
+// si le dom est chargé
+
+// listen checkboxes for changes
+document.addEventListener('DOMContentLoaded', function(){
+
+    checkedBrands = [];
+
+    document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox){
+        checkbox.addEventListener('change', function(){
+            if(this.checked){
+                checkedBrands.push(this.value.toLowerCase());
+                products.find(function(product){
+                    if(product.brand.name.toLowerCase() == checkedBrands[checkedBrands.length - 1].toLowerCase()){
+                        console.log(product);
+                        createProductCard(product);
+                    }
+                });
+
+            } else {
+                checkedBrands.splice(checkedBrands.indexOf(this.value.toLowerCase()), 1);
+                let searchResults = document.getElementById('searchResults');
+                searchResults.innerHTML = '';
+                products.find(function(product){
+                    if(product.brand.name.toLowerCase() == checkedBrands[checkedBrands.length - 1].toLowerCase()){
+                        console.log(product);
+                        createProductCard(product);
+                    }
+                });
             }
         });
     });

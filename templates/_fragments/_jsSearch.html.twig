@@ -25,7 +25,12 @@
 console.log('search script loaded');
 const URI = window.location.origin;
 const search = document.getElementById('search')
-let products = [];
+
+let fetchedProducts = [];
+let productsSearchResults = [];
+let checkedBrands = [];
+
+let cumulatedProducts = [...checkedBrands, ...productsSearchResults];
 
 fetch(`${URI}/json/product.json`)
     .then(function(response){
@@ -34,18 +39,20 @@ fetch(`${URI}/json/product.json`)
     .then(function(data){
         // populate data array with the json data
         data.forEach(function(product){
-            products.push(product);
+            product.sellingPrice = Number(product.sellingPrice); 
+            product.sellingPrice = Math.trunc(product.sellingPrice);
+            fetchedProducts.push(product);
         }); 
     });
 
 
 search.addEventListener('click', function(){
 
-    let min = document.getElementById('min').value;
-    let max = document.getElementById('max').value;
-    let text = document.getElementById('text').value;
+let min = document.getElementById('min').value;
+let max = document.getElementById('max').value;
+let text = document.getElementById('text').value;
 
-     // switch case if no input is given
+    // switch case if no input is given
     if(min == '' && max == '' && text == ''){
         
         swal("Oupsss !",  `Veuillez saisir au moins un critère de recherche`, "error", {
@@ -54,129 +61,54 @@ search.addEventListener('click', function(){
         // stop the function
         return;
     }
+    // get the searchResults div and empty it before displaying the results
+    resetDivResults();
 
-    fetch(`${URI}/json/product.json`)
-
-        .then(function(response){
-            return response.json();
-        })
-
-        .then(function(data){
-            console.log(data);
-        // get the searchResults div and empty it before displaying the results
-        let searchResults = document.getElementById('searchResults');
-        searchResults.innerHTML = '';
-        
-        data.forEach(function(product){
-            noResult(searchResults);
-            // convert sellingPrice to number
-            product.sellingPrice = Number(product.sellingPrice);   
-            // remove decimals from sellingPrice 
-            product.sellingPrice = Math.trunc(product.sellingPrice);
-            // sort the products by sellingPrice min to max
-            data.sort(function(a, b){
-                return a.sellingPrice - b.sellingPrice;
-            });
-
-            // filter the products by sellingPrice
-            // if min and max are given
-            if(min != '' && max != '' && text == ''){
-                if(product.sellingPrice >= min && product.sellingPrice <= max){ 
-                    createProductCard(product);
-                }
-            }
-
-            // if only min is given
-            if(min != '' && max == '' && text == ''){
-                if(product.sellingPrice >= min){ 
-                    createProductCard(product);
-                }
-            }
-
-            // if only max is given
-            if(min == '' && max != '' && text == ''){
-                if(product.sellingPrice <= max){ 
-                    createProductCard(product);
-                }
-            }
-
-            // if only text is given
-            if(min == '' && max == '' && text != ''){
-                if(product.name.toLowerCase().includes(text.toLowerCase())){ 
-                    createProductCard(product);
-                }
-            }
-
-            // if min, max and text are given
-            if(min != '' && max != '' && text != ''){
-                if(product.sellingPrice >= min && product.sellingPrice <= max && product.name.toLowerCase().includes(text.toLowerCase())){ 
-                    createProductCard(product);
-                }
-            }
-
-            // if min and text are given
-            if(min != '' && max == '' && text != ''){
-                if(product.sellingPrice >= min && product.name.toLowerCase().includes(text.toLowerCase())){ 
-                    createProductCard(product);
-                }
-            }
-
-            // if max and text are given
-            if(min == '' && max != '' && text != ''){
-                if(product.sellingPrice <= max && product.name.toLowerCase().includes(text.toLowerCase())){ 
-                    createProductCard(product);
-                }
-            }
-
-            if(product.sellingPrice >= min && product.sellingPrice <= max && product.name.toLowerCase().includes(text.toLowerCase())){ 
-                createProductCard(product);
-            }
-        });
+    fetchedProducts.find(function(product){
+        if(product.sellingPrice >= min && product.sellingPrice <= max || product.name.toLowerCase().includes(text.toLowerCase())){ 
+            productsSearchResults.push(product);
+        }
     });
+
+    productsSearchResults.forEach(function(product){
+        createProductCard(product);
+        // reset the productsSearchResults array after each search
+        productsSearchResults = [];
+    }); 
 });
 
-// si le dom est chargé
-
+// si le dom est chargé alors écouter les checkbox
 // listen checkboxes for changes
 document.addEventListener('DOMContentLoaded', function(){
-
-    checkedBrands = [];
-
     document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox){
         checkbox.addEventListener('change', function(){
+            // if the checkbox is checked then push the value of the checkbox in the array of checked brands
             if(this.checked){
                 checkedBrands.push(this.value.toLowerCase());
-                products.find(function(product){
+                fetchedProducts.find(function(product){
                     if(product.brand.name.toLowerCase() == checkedBrands[checkedBrands.length - 1].toLowerCase()){
-                        console.log(product);
                         createProductCard(product);
                     }
                 });
-
-            } else {
+            } 
+            // if the checkbox is unchecked then remove the value of the checkbox from the array of checked brands and refresh the searchResults div
+            if(!this.checked){
+                console.log(this.value.toLowerCase());
+                // find the unchecked checkbox and remove it from the array of checked brands 
                 checkedBrands.splice(checkedBrands.indexOf(this.value.toLowerCase()), 1);
-                let searchResults = document.getElementById('searchResults');
-                searchResults.innerHTML = '';
-                products.find(function(product){
-                    if(product.brand.name.toLowerCase() == checkedBrands[checkedBrands.length - 1].toLowerCase()){
-                        console.log(product);
-                        createProductCard(product);
-                    }
-                });
+                // remove the unchecked checkbox from the searchResults div
+                resetDivResults();
+                // reloop through the array of checked brands and display the products that match the checked brands
+                checkedBrands.forEach(function(brand){
+                    fetchedProducts.find(function(product){
+                        if(product.brand.name.toLowerCase() == brand.toLowerCase()){
+                            createProductCard(product);
+                        }
+                    });
+                }); 
             }
         });
     });
-});
-
-// reset search results
-const reset = document.getElementById('reset');
-reset.addEventListener('click', function(){
-    let searchResults = document.getElementById('searchResults');
-    searchResults.innerHTML = '';
-    min.value = '';
-    max.value = '';
-    text.value = '';
-
 });
 
 function noResult($searchResults){
@@ -193,12 +125,33 @@ function noResult($searchResults){
 function createProductCard(product){
     let resultsDiv = document.getElementById('searchResults');
     resultsDiv = document.createElement('div');
-    resultsDiv.innerHTML = product.name + ' ' + product.sellingPrice + '€' + ' ' + product.category.name + ' ' + product.brand.name + ' ' + product.productType.name;
+    resultsDiv.innerHTML = product.name + ' ' + product.sellingPrice + '€' + ' ' + product.category.name + ' ' + product.brand.name;
     resultsDiv.classList.add('product_search_card');
     resultsDiv.style.padding = '10px';  
     // append the result to the searchResult div for each product
     searchResults.appendChild(resultsDiv);
 }
+
+function resetDivResults(){
+    let searchResults = document.getElementById('searchResults');
+    searchResults.innerHTML = '';
+}
+
+// reset search results
+document.getElementById('reset').addEventListener('click', function(){
+    let searchResults = document.getElementById('searchResults');
+    searchResults.innerHTML = '';
+    min.value = '';
+    max.value = '';
+    text.value = '';
+    // reset array
+    checkedBrands = [];
+    productsSearchResults = [];
+    // uncheck all checkboxes
+    document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox){
+        checkbox.checked = false;
+    });
+});
 
 </script>
 

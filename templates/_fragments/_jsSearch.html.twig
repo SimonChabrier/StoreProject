@@ -3,19 +3,20 @@
 
 {# searchForm #}
 <div class="form-container">
-    <input type="number" name="min" id="min">
-    <input type="number" name="max" id="max">
-    <input type="text" name="text" id="text">
-    <input type="submit" value="Search" id="search">
-    <input type="reset" value="Reset" id="reset">
+<label for="minprice">Minimum</label>
+    <input type="number" name="min" id="min" class="form-control">
+<label for="maximum">Maximum</label>
+    <input type="number" name="max" id="max" class="form-control">
+<label for="text">Rechercher</label>
+    <input type="text" name="text" id="text" class="form-control">
+<div class="form-container searchButtons">
+    <input type="submit" value="Search" id="search" class="btn btn-light">
+    <input type="reset" value="Reset" id="reset" class="btn btn-light">
 </div>
-{# searchResult #}
-{# <div id="searchResults"></div> #}
+</div>
 
 {# {% endblock %} #}
 {% block javascript %}
-{# call sweetalert2 from base template #}
-{# {{ parent() }} #}
 
 {# search script #}
 

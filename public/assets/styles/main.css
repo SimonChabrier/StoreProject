@@ -164,6 +164,12 @@ button {
   margin-top: 10px;
 }
 
+#searchResults {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
 form.form-inline.my-2.my-lg-0 {
   display: flex;
   gap: 10px;

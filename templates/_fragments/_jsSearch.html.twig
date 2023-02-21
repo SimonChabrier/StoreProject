@@ -1,0 +1,163 @@
+{# {% extends 'base.html.twig' %} #}
+{# {% block content %} #}
+
+{# searchForm #}
+<div class="form-container">
+    <input type="number" name="min" id="min">
+    <input type="number" name="max" id="max">
+    <input type="text" name="text" id="text">
+    <input type="submit" value="Search" id="search">
+    <input type="reset" value="Reset" id="reset">
+</div>
+{# searchResult #}
+{# <div id="searchResults"></div> #}
+
+{# {% endblock %} #}
+{% block javascript %}
+{# call sweetalert2 from base template #}
+{# {{ parent() }} #}
+
+{# search script #}
+
+<script>
+
+console.log('search script loaded');
+
+const search = document.getElementById('search')
+
+search.addEventListener('click', function(){
+
+    let min = document.getElementById('min').value;
+    let max = document.getElementById('max').value;
+    let text = document.getElementById('text').value;
+
+     // switch case if no input is given
+    if(min == '' && max == '' && text == ''){
+        
+        swal("Oupsss !",  `Veuillez saisir au moins un critère de recherche`, "error", {
+        button: "Ok",
+        });
+        // stop the function
+        return;
+    }
+
+    // get the URI of the app
+    const URI = window.location.origin;
+
+    fetch(`${URI}/json/product.json`)
+
+        .then(function(response){
+            return response.json();
+        })
+
+        .then(function(data){
+            console.log(data);
+        // get the searchResults div and empty it before displaying the results
+        let searchResults = document.getElementById('searchResults');
+        searchResults.innerHTML = '';
+        
+        data.forEach(function(product){
+            noResult(searchResults);
+            // convert sellingPrice to number
+            product.sellingPrice = Number(product.sellingPrice);   
+            // remove decimals from sellingPrice 
+            product.sellingPrice = Math.trunc(product.sellingPrice);
+            // sort the products by sellingPrice min to max
+            data.sort(function(a, b){
+                return a.sellingPrice - b.sellingPrice;
+            });
+
+            // filter the products by sellingPrice
+            // if min and max are given
+            if(min != '' && max != '' && text == ''){
+                if(product.sellingPrice >= min && product.sellingPrice <= max){ 
+                    createProductCard(product);
+                }
+            }
+
+            // if only min is given
+            if(min != '' && max == '' && text == ''){
+                if(product.sellingPrice >= min){ 
+                    createProductCard(product);
+                }
+            }
+
+            // if only max is given
+            if(min == '' && max != '' && text == ''){
+                if(product.sellingPrice <= max){ 
+                    createProductCard(product);
+                }
+            }
+
+            // if only text is given
+            if(min == '' && max == '' && text != ''){
+                if(product.name.toLowerCase().includes(text.toLowerCase())){ 
+                    createProductCard(product);
+                }
+            }
+
+            // if min, max and text are given
+            if(min != '' && max != '' && text != ''){
+                if(product.sellingPrice >= min && product.sellingPrice <= max && product.name.toLowerCase().includes(text.toLowerCase())){ 
+                    createProductCard(product);
+                }
+            }
+
+            // if min and text are given
+            if(min != '' && max == '' && text != ''){
+                if(product.sellingPrice >= min && product.name.toLowerCase().includes(text.toLowerCase())){ 
+                    createProductCard(product);
+                }
+            }
+
+            // if max and text are given
+            if(min == '' && max != '' && text != ''){
+                if(product.sellingPrice <= max && product.name.toLowerCase().includes(text.toLowerCase())){ 
+                    createProductCard(product);
+                }
+            }
+
+            if(product.sellingPrice >= min && product.sellingPrice <= max && product.name.toLowerCase().includes(text.toLowerCase())){ 
+                createProductCard(product);
+            }
+        });
+    });
+});
+
+// reset search results
+const reset = document.getElementById('reset');
+reset.addEventListener('click', function(){
+    let searchResults = document.getElementById('searchResults');
+    searchResults.innerHTML = '';
+    min.value = '';
+    max.value = '';
+    text.value = '';
+
+});
+
+function noResult($searchResults){
+    // if there are no results to display in the searchResults div then display a message
+    if($searchResults.innerHTML == ''){
+        swal("Oupsss !",  `Pas de résultat pour la recherche : ${min.value} ${max.value} ${text.value} `, "error", {
+        button: "Ok",
+    });
+    }
+    // stop the function
+    return;
+}
+
+function createProductCard(product){
+    let resultsDiv = document.getElementById('searchResults');
+    resultsDiv = document.createElement('div');
+    resultsDiv.innerHTML = product.name + ' ' + product.sellingPrice + '€' + ' ' + product.category.name + ' ' + product.brand.name + ' ' + product.productType.name;
+    resultsDiv.classList.add('product_search_card');
+    resultsDiv.style.padding = '10px';  
+    // append the result to the searchResult div for each product
+    searchResults.appendChild(resultsDiv);
+}
+
+</script>
+
+{% endblock %}
+
+

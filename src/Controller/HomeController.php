@@ -14,10 +14,19 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_home", methods={"GET", "POST"})
      */
-    public function index(CategoryRepository $sc): Response
+    public function index(CategoryRepository $sc, Request $request): Response
     {   
+        // je récupère la classe de l'alerte qui est définie dans RegistrationController
+        // et qui est passée en paramètre dans l'url de la requête avec redirectToRoute
+        // qui apelle cette route app_home
+        // actuellement non utilisé si j'utilise les flash messages avec SweetAlert2
+        $class = $request->query->get('class', 'alert-success');
+
+        //$this->addFlash('success', 'Message flash de test.');
+
         return $this->render('front_office/index.html.twig', [
-            'homeCats' => $sc->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']),    
+            'homeCats' => $sc->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']),
+            'class' => $class,    
         ]);
     }
 

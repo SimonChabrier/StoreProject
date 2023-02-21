@@ -18,6 +18,21 @@ body {
   flex-grow: 1;
 }
 
+.btn {
+  background-color: #c7c721 !important;
+    color: #ffffff !important;
+    font-size: 1rem!important;
+    font-weight: 300;
+    text-transform: uppercase;
+    transition: all 0.2s ease-in;
+    border: none !important;
+    width: auto !important;
+}
+
+button#reset_submit {
+  width: 100%!important;
+}
+
 #header {
   position: relative;
 }
@@ -25,6 +40,7 @@ body {
 #sidebar {
   width: 20%;
   float: left;
+  margin-bottom: 30px;
 }
 
 #main{
@@ -261,9 +277,9 @@ label {
 
 aside {
   display: flex;
-  // height: 400px;
-  // width: 20%;
+  flex-direction: column;
   min-height: 800px;
+  height: 100%;
   background-color: rgb(184 176 176 / 5%);
   padding: 20px !important;
   // border-right: 1px solid #C6C720!important;
@@ -282,7 +298,10 @@ aside {
     hsl(344deg 0% 96%) 64%,
     hsl(0deg 0% 95%) 90%
   );
-  height: 100%;
+}
+
+.aside > div {
+  width: 100%;
 }
 
 .brandCheckboxes ol{
@@ -446,6 +465,7 @@ form.resetForm {
   //background: linear-gradient(90deg, rgba(255,255,255,0) 45%, rgba(199,199,33,1) 100%);
   background: linear-gradient(90deg, rgba(255,255,255,0) 74%, rgba(233, 233, 222, 0.407) 100%);
   color: white;
+  
 }
 .userbar h2 {
   font-size: 1.5rem;
@@ -454,7 +474,7 @@ form.resetForm {
   padding: 0;
   margin: 0;
 }
-.userbar_icons {
+.topicons {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -492,7 +512,7 @@ form.resetForm {
   }
 }
 
-.basketicon, .usericon {
+.basketicon, .topicon {
   cursor: pointer;
   transition: all 0.5s ease-in;
 

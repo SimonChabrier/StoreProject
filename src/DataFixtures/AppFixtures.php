@@ -18,13 +18,18 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Faker\Factory as Faker;
 
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
+
 class AppFixtures extends Fixture
 {
     private $connexion;
+    private $passwordHasher;
 
-    public function __construct(Connection $connexion)
+    public function __construct(Connection $connexion, UserPasswordHasherInterface $passwordHasher)
     {
         $this->connexion = $connexion;
+        $this->passwordHasher = $passwordHasher;
     }
 
     private function truncate()
@@ -684,13 +689,27 @@ class AppFixtures extends Fixture
 
         for($i = 0; $i < 10; $i++){
             $user = new User();
-            $user->setFirstName($faker->firstName);
-            $user->setLastName($faker->lastName);
-            $user->setUsername($user->getFullName());
+            $user->setEmail($faker->email);
+            $plaintextPassword = 'password';
+            $hashedPassword = $this->passwordHasher->hashPassword(
+                $user,
+                $plaintextPassword
+            );
+            $user->setPassword($hashedPassword);
             
             $users[] = $user;
             $manager->persist($user);
         }
+
+        $admin = new User();
+        $admin->setEmail('admin@admin.fr');
+        $admin->setRoles(['ROLE_ADMIN']);
+        $plaintextPassword = 'password';
+        $admin->setPassword($this->passwordHasher->hashPassword(
+            $admin,
+            $plaintextPassword
+        ));
+        $manager->persist($admin);
 
         // create 100 comments and add to randomly to product 
         $comments = [];

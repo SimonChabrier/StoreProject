@@ -1,0 +1,167 @@
+{# {% extends 'base.html.twig' %} #}
+{# {% block content %} #}
+
+{# searchForm #}
+<div class="form-container">
+<label for="minprice">Minimum</label>
+    <input type="number" name="min" id="min" class="form-control">
+<label for="maximum">Maximum</label>
+    <input type="number" name="max" id="max" class="form-control">
+<label for="text">Rechercher</label>
+    <input type="text" name="text" id="text" class="form-control">
+<div class="form-container searchButtons">
+    <input type="submit" value="Search" id="search" class="btn btn-light">
+    <input type="reset" value="Reset" id="reset" class="btn btn-light">
+</div>
+</div>
+
+{# {% endblock %} #}
+{% block javascript %}
+
+{# search script #}
+
+<script>
+
+console.log('search script loaded');
+const URI = window.location.origin;
+const search = document.getElementById('search')
+
+let fetchedProducts = [];
+let products = [];
+
+fetch(`${URI}/json/product.json`)
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(data){
+        // populate data array with the json data
+        data.forEach(function(product){
+            product.sellingPrice = Number(product.sellingPrice); 
+            product.sellingPrice = Math.trunc(product.sellingPrice);
+            fetchedProducts.push(product);
+        }); 
+    });
+
+
+search.addEventListener('click', function(){
+
+let min = document.getElementById('min').value;
+min = Number(min);
+let max = document.getElementById('max').value;
+max = Number(max);
+let text = document.getElementById('text').value;
+
+    // switch case if no input is given
+    if(min == '' && max == '' && text == ''){
+        
+        swal("Oupsss !",  `Veuillez saisir au moins un critère de recherche`, "error", {
+        button: "Ok",
+        });
+        // stop the function
+        return;
+    }
+    if (min > max)
+        {
+            swal("Oupsss !",  `Veuillez saisir un prix minimum supérieur au prix maximum`, "error", {
+            button: "Ok",
+            });
+            // stop the function
+            return;
+        }
+    // get the searchResults div and empty it before displaying the results
+    resetDivResults();
+
+    fetchedProducts.find(function(product){
+        // evaluate product.sellingPrice as a number and compare it to the min and max values
+        product.sellingPrice = Number(product.sellingPrice);
+        // if the product.sellingPrice is between the min and max values or if the product.name includes the text value then push the product in the products array
+        if(product.sellingPrice >= min && product.sellingPrice <= max || product.name.toLowerCase().includes(text.toLowerCase()) && text != ''){ 
+            products.push(product);
+        }
+    });
+
+    products.forEach(function(product){
+        createProductCard(product);
+        // reset the productsSearchResults array after each search
+        products = [];
+    }); 
+});
+
+// si le dom est chargé alors écouter les checkbox
+// listen checkboxes for changes
+document.addEventListener('DOMContentLoaded', function(){
+    document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox){
+        checkbox.addEventListener('change', function(){
+            // if the checkbox is checked then push the value of the checkbox in the array of checked brands
+            if(this.checked){
+                // foreach fecthedProducts find product.brand.name match with the checked checkbox value and push the product in the products array
+                fetchedProducts.find(function(product){
+                    console.log(product.brand.name.toLowerCase() == this.value.toLowerCase());
+                    if(product.brand.name.toLowerCase() == this.value.toLowerCase()){
+                        products.push(product);
+                        createProductCard(product);
+                    }
+                }.bind(this));
+            } 
+            // if the checkbox is unchecked then remove the products where unchecked brand name matches the product.brand.name from the products array
+            else {
+                products = products.filter(function(product){
+                    return product.brand.name.toLowerCase() != this.value.toLowerCase();
+                }.bind(this));
+                // reset the searchResults div
+                resetDivResults();
+                // display the products array in the searchResults div
+                products.forEach(function(product){
+                    createProductCard(product);
+                });
+            }
+        });
+    });
+});
+
+function noResult($searchResults){
+    // if there are no results to display in the searchResults div then display a message
+    if($searchResults.innerHTML == ''){
+        swal("Oupsss !",  `Pas de résultat pour la recherche : ${min.value} ${max.value} ${text.value} `, "error", {
+        button: "Ok",
+    });
+    }
+    // stop the function
+    return;
+}
+
+function createProductCard(product){
+    let resultsDiv = document.getElementById('searchResults');
+    resultsDiv = document.createElement('div');
+    resultsDiv.innerHTML = product.name + ' ' + product.sellingPrice + '€' + ' ' + product.category.name + ' ' + product.brand.name;
+    resultsDiv.classList.add('product_search_card');
+    resultsDiv.style.padding = '10px';  
+    // append the result to the searchResult div for each product
+    searchResults.appendChild(resultsDiv);
+}
+
+function resetDivResults(){
+    let searchResults = document.getElementById('searchResults');
+    searchResults.innerHTML = '';
+}
+
+// reset search results
+document.getElementById('reset').addEventListener('click', function(){
+    let searchResults = document.getElementById('searchResults');
+    searchResults.innerHTML = '';
+    min.value = '';
+    max.value = '';
+    text.value = '';
+    // reset array
+    products = [];
+    // uncheck all checkboxes
+    document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox){
+        checkbox.checked = false;
+    });
+});
+
+</script>
+
+{% endblock %}
+
+

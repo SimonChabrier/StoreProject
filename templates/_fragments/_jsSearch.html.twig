@@ -13,6 +13,15 @@
     <input type="submit" value="Search" id="search" class="btn btn-light">
     <input type="reset" value="Reset" id="reset" class="btn btn-light">
 </div>
+<hr>
+    <div class="brandCheckboxes">
+        <h5><i class="bi bi-list-check"></i> Marques</h5>
+        <ol>
+        {% for brand in brands.getBrands() %}
+            <li><input type="checkbox" name="brand" value="{{ brand.name }}" class="brandCheckbox"> {{ brand.name }}</li>
+        {% endfor %}
+        </ol>
+    </div>
 </div>
 
 {# {% endblock %} #}
@@ -23,10 +32,13 @@
 <script>
 
 console.log('search script loaded');
+// domcontentloaded
+
+document.addEventListener('DOMContentLoaded', function(){
+
 const URI = window.location.origin;
 const search = document.getElementById('search')
 
-let fetchedProducts = [];
 let products = [];
 
 fetch(`${URI}/json/product.json`)
@@ -38,87 +50,52 @@ fetch(`${URI}/json/product.json`)
         data.forEach(function(product){
             product.sellingPrice = Number(product.sellingPrice); 
             product.sellingPrice = Math.trunc(product.sellingPrice);
-            fetchedProducts.push(product);
+            products.push(product);
         }); 
     });
 
+const minPriceInput = document.getElementById("min");
+const maxPriceInput = document.getElementById("max");
+const searchInput = document.getElementById("text");
+const brandCheckboxes = document.querySelectorAll(".brandCheckbox");
 
-search.addEventListener('click', function(){
 
-let min = document.getElementById('min').value;
-min = Number(min);
-let max = document.getElementById('max').value;
-max = Number(max);
-let text = document.getElementById('text').value;
+// Fonction de filtrage
+function filterProducts() {
+  // Récupération des valeurs saisies dans le formulaire
+  const minPrice = Number(minPriceInput.value);
+  console.log(minPrice);
+  const maxPrice = Number(maxPriceInput.value);
+  console.log(maxPrice);
+  const searchTerm = searchInput.value.toLowerCase();
+  console.log(searchTerm);
 
-    // switch case if no input is given
-    if(min == '' && max == '' && text == ''){
-        
-        swal("Oupsss !",  `Veuillez saisir au moins un critère de recherche`, "error", {
-        button: "Ok",
-        });
-        // stop the function
-        return;
-    }
-    if (min > max)
-        {
-            swal("Oupsss !",  `Veuillez saisir un prix minimum supérieur au prix maximum`, "error", {
-            button: "Ok",
-            });
-            // stop the function
-            return;
-        }
-    // get the searchResults div and empty it before displaying the results
-    resetDivResults();
+  const selectedBrands = Array.from(brandCheckboxes)
+    .filter((checkbox) => checkbox.checked)
+    .map((checkbox) => checkbox.value);
+    console.log(selectedBrands);
 
-    fetchedProducts.find(function(product){
-        // evaluate product.sellingPrice as a number and compare it to the min and max values
-        product.sellingPrice = Number(product.sellingPrice);
-        // if the product.sellingPrice is between the min and max values or if the product.name includes the text value then push the product in the products array
-        if(product.sellingPrice >= min && product.sellingPrice <= max || product.name.toLowerCase().includes(text.toLowerCase()) && text != ''){ 
-            products.push(product);
-        }
-    });
+  // Filtrage des produits en fonction des critères
+  const filteredProducts = products.filter((product) => {
+    const meetsPriceCriteria = (minPrice === "" || product.sellingPrice >= minPrice) && (maxPrice === "" || product.sellingPrice <= maxPrice);
+    console.log(meetsPriceCriteria);
+    const meetsSearchCriteria = searchTerm === "" || product.name.toLowerCase().includes(searchTerm);
+    console.log(meetsSearchCriteria);
+    const meetsBrandCriteria = selectedBrands.length === 0 || selectedBrands.includes(product.brand.name);
+    console.log(meetsBrandCriteria);
+    return meetsPriceCriteria && meetsSearchCriteria && meetsBrandCriteria;
+  });
 
-    products.forEach(function(product){
-        createProductCard(product);
-        // reset the productsSearchResults array after each search
-        products = [];
-    }); 
-});
+  // Affichage des produits filtrés
+    createProductCard(filteredProducts);
+}
 
-// si le dom est chargé alors écouter les checkbox
-// listen checkboxes for changes
-document.addEventListener('DOMContentLoaded', function(){
-    document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox){
-        checkbox.addEventListener('change', function(){
-            // if the checkbox is checked then push the value of the checkbox in the array of checked brands
-            if(this.checked){
-                products.push(this.value.toLowerCase());
-                fetchedProducts.find(function(product){
-                    if(product.brand.name.toLowerCase() == products[products.length - 1].toLowerCase()){
-                        createProductCard(product);
-                    }
-                });
-            } 
-            // if the checkbox is unchecked then remove the value of the checkbox from the array of checked brands and refresh the searchResults div
-            if(!this.checked){
-                // find the unchecked checkbox and remove it from the array of checked brands 
-                products.splice(products.indexOf(this.value.toLowerCase()), 1);
-                // remove the unchecked checkbox from the searchResults div
-                resetDivResults();
-                // reloop through the array of checked brands and display the products that match the checked brands
-                products.forEach(function(brand){
-                    fetchedProducts.find(function(product){
-                        if(product.brand.name.toLowerCase() == brand.toLowerCase()){
-                            createProductCard(product);
-                        }
-                    });
-                }); 
-            }
-        });
-    });
-});
+
+// Écoute des événements de saisie dans le formulaire
+minPriceInput.addEventListener("input", filterProducts);
+maxPriceInput.addEventListener("input", filterProducts);
+searchInput.addEventListener("input", filterProducts);
+brandCheckboxes.forEach((checkbox) => checkbox.addEventListener("change", filterProducts));
 
 function noResult($searchResults){
     // if there are no results to display in the searchResults div then display a message
@@ -132,13 +109,33 @@ function noResult($searchResults){
 }
 
 function createProductCard(product){
-    let resultsDiv = document.getElementById('searchResults');
-    resultsDiv = document.createElement('div');
-    resultsDiv.innerHTML = product.name + ' ' + product.sellingPrice + '€' + ' ' + product.category.name + ' ' + product.brand.name;
-    resultsDiv.classList.add('product_search_card');
-    resultsDiv.style.padding = '10px';  
-    // append the result to the searchResult div for each product
-    searchResults.appendChild(resultsDiv);
+    console.log(product);
+    let searchResults = document.getElementById('searchResults');
+    // create a div for each product
+    resetDivResults();
+    for(let i = 0; i < product.length; i++){
+        let div = document.createElement('div');
+        //div.classList.add('section');
+        div.innerHTML = `
+        <section>
+            <h6>${product[i].name}</h6>
+            <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
+            <span class="catalog-price"><del>${product[i].catalogPrice} €</del></span>
+            <span class="selling-price">${product[i].sellingPrice} €</span>
+            <div class="productInfo">
+                <span class="categorie">Categorie : ${product[i].category.name}</span>
+                <span class="sous-categorie">Sous-categorie : ${product[i].subCategory.name}</span>
+                <span class="sous-categorie">Marque : ${product[i].brand.name}</span>
+                <span class="type">Type : ${product[i].productType.name}</span>
+            </div>
+            <div class="productInfoFooter">
+                                        <span>-9%</span> 
+                <span class="productLink"><a href="/product/${product[i].id}">Détail</a></span>
+            </div>
+        </section>
+        `;
+        searchResults.appendChild(div);
+    };
 }
 
 function resetDivResults(){
@@ -159,6 +156,8 @@ document.getElementById('reset').addEventListener('click', function(){
     document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox){
         checkbox.checked = false;
     });
+});
+
 });
 
 </script>

@@ -58,6 +58,7 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
+     * @Groups({"product:read"})
      */
     private $catalogPrice = '0000';
 

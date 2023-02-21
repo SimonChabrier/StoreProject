@@ -35,7 +35,8 @@ search.addEventListener('click', function(){
         searchResults.innerHTML = '';
         data.forEach(function(product){
             // convert sellingPrice to number
-            product.sellingPrice = Number(product.sellingPrice);     
+            product.sellingPrice = Number(product.sellingPrice);    
+            product.sellingPrice = Math.trunc(product.sellingPrice);
             // sort the products by sellingPrice
             data.sort(function(a, b){
                 return a.sellingPrice - b.sellingPrice;

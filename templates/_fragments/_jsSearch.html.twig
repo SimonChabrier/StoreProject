@@ -10,9 +10,9 @@
 
 
 <label for="minprice">Prix minimum : <span id="minprice"></span></label>
-    <input type="range" name="min" id="min" min="0" max="1000" class="range">
+    <input type="range" name="min" id="min" min="0" max="1000" value = "0" class="range">
     <label for="maxprice">Prix maximum : <span id="maxprice"></span></label>
-    <input type="range" name="max" id="max" min="0" max="1000" class="range">
+    <input type="range" name="max" id="max" min="0" max="1000" value = "0"class="range">
 
     <div class="range-values">
       <span id="minOutput"></span> € - <span id="maxOutput"></span> €
@@ -95,6 +95,7 @@ function filterProducts() {
 
     // Récupération des valeurs saisies dans le formulaire
     let minPrice = Number(minPriceInput.value);
+    console.log(minPrice);
     let maxPrice = Number(maxPriceInput.value);
     const searchTerm = searchInput.value.toLowerCase();
     const selectedBrands = Array.from(brandCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
@@ -107,10 +108,10 @@ function filterProducts() {
         brandIsSelected: false
     }
     // on met à jour les valeurs de searchState en fonction des critères de recherche utilisés
-    if(minPriceInput.value){
+    if(minPriceInput.value > 0){
         searchState.minPrice = true;
     }
-    if(maxPriceInput.value){
+    if(maxPriceInput.value > 0){
         searchState.maxPrice = true;
     }
     if(searchInput.value != '' && searchInput.value.length >= 3){
@@ -120,7 +121,7 @@ function filterProducts() {
         searchState.brandIsSelected = true;
     }
 
-    console.log(searchState);
+    //console.log(searchState);
 
     // si aucun critère de recherche n'est utilisé on affiche tous les produits
     if(!searchState.minPrice && !searchState.maxPrice && !searchState.searchTerm && !searchState.brandIsSelected){
@@ -138,13 +139,13 @@ function filterProducts() {
             let selectedBrandsFilter = true;
 
             let selectedSoloBrand = false;
-            console.log(minPriceFilter, maxPriceFilter, searchTermFilter, selectedBrandsFilter)
+            //console.log(minPriceFilter, maxPriceFilter, searchTermFilter, selectedBrandsFilter)
             
             // comme min et max ne sont pas nul on les prend en compte directement pour qu'il n'écrase pas les autres critères de recherche parce qu'il ne sont jamais false
-            if(searchState.minPrice.length > 0){
+            if(searchState.minPrice){
                 minPriceFilter = product.sellingPrice >= minPrice;
             }
-            if(searchState.maxPrice > 0){
+            if(searchState.maxPrice){
                 maxPriceFilter = product.sellingPrice <= maxPrice;
             }
             if(searchState.searchTerm){
@@ -215,9 +216,9 @@ function resetDivResults(){
 document.getElementById('reset').addEventListener('click', function(){
     let searchResults = document.getElementById('searchResults');
     searchResults.innerHTML = '';
-    min.value = 500;
+    min.value = 0;
     minOutput.innerHTML = min.value;
-    max.value = 500;
+    max.value = 0;
     maxOutput.innerHTML = max.value;
     text.value = '';
     document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox){

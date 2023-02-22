@@ -43,8 +43,34 @@ console.log('search script loaded');
 
 document.addEventListener('DOMContentLoaded', function(){
 
+const minPriceInput = document.getElementById("min");
+const maxPriceInput = document.getElementById("max");
+const searchInput = document.getElementById("text");
+const brandCheckboxes = document.querySelectorAll(".brandCheckbox");
+
+// Écoute des événements de saisie dans le formulaire
+minPriceInput.addEventListener("input", filterProducts);
+maxPriceInput.addEventListener("input", filterProducts);
+searchInput.addEventListener("input", filterProducts);
+brandCheckboxes.forEach((checkbox) => checkbox.addEventListener("change", filterProducts));
+
+// Mise à jour de la valeur de sortie en fonction de la valeur du range
+minOutput.innerHTML = minPriceInput.value;
+minOutput.style.fontSize = 'smaller';
+maxOutput.innerHTML = maxPriceInput.value;
+maxOutput.style.fontSize = 'smaller';
+
+// Gestionnaire d'événements pour mettre à jour la valeur de sortie lorsque la valeur du range est modifiée
+minPriceInput.addEventListener('input', function() {
+  minOutput.innerHTML = this.value;
+});
+
+maxPriceInput.addEventListener('input', function() {
+  maxOutput.innerHTML = this.value;
+});
+
 const URI = window.location.origin;
-const search = document.getElementById('search')
+//const search = document.getElementById('search')
 
 let products = [];
 
@@ -61,24 +87,7 @@ fetch(`${URI}/json/product.json`)
         }); 
     });
 
-const minPriceInput = document.getElementById("min");
-const maxPriceInput = document.getElementById("max");
-const searchInput = document.getElementById("text");
-const brandCheckboxes = document.querySelectorAll(".brandCheckbox");
 
-// Mise à jour de la valeur de sortie en fonction de la valeur du range
-minOutput.innerHTML = minPriceInput.value;
-minOutput.style.fontSize = 'smaller';
-maxOutput.innerHTML = maxPriceInput.value;
-maxOutput.style.fontSize = 'smaller';
-
-// Gestionnaire d'événements pour mettre à jour la valeur de sortie lorsque la valeur du range est modifiée
-minPriceInput.addEventListener('input', function() {
-  minOutput.innerHTML = this.value;
-});
-maxPriceInput.addEventListener('input', function() {
-  maxOutput.innerHTML = this.value;
-});
 
 
 // Fonction de filtrage
@@ -92,24 +101,19 @@ function filterProducts() {
 
     // Filtrage des produits en fonction des critères
     const filteredProducts = products.filter((product) => {
-    const meetsPriceCriteria = (minPrice === "" || product.sellingPrice >= minPrice) && (maxPrice === "" || product.sellingPrice <= maxPrice);
-    const meetsSearchCriteria = searchTerm === "" || product.name.toLowerCase().includes(searchTerm);
-    const meetsBrandCriteria = selectedBrands.length === 0 || selectedBrands.includes(product.brand.name);
+
+    const priceFilter = (minPrice === "" || product.sellingPrice >= minPrice) && (maxPrice === "" || product.sellingPrice <= maxPrice);
+    const textFilter = searchTerm === "" || product.name.toLowerCase().includes(searchTerm);
+    const checkFilter = selectedBrands.length === 0 || selectedBrands.includes(product.brand.name);
     
-    return meetsPriceCriteria && meetsSearchCriteria && meetsBrandCriteria;
+    return priceFilter && textFilter && checkFilter;
   
   });
+
     console.log(filteredProducts);
     // Affichage des produits filtrés
     createProductCard(filteredProducts);
 }
-
-
-// Écoute des événements de saisie dans le formulaire
-minPriceInput.addEventListener("input", filterProducts);
-maxPriceInput.addEventListener("input", filterProducts);
-searchInput.addEventListener("input", filterProducts);
-brandCheckboxes.forEach((checkbox) => checkbox.addEventListener("change", filterProducts));
 
 function noResult($searchResults){
     // if there are no results to display in the searchResults div then display a message

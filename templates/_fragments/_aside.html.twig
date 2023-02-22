@@ -1,11 +1,25 @@
 <aside>
 
 <h4><i class="bi bi-funnel"></i> Filtres</h4>
+<div class="form-container searchButtons">
+    {# <input type="submit" value="Search" id="search" class="btn btn-light"> #}
+    <input type="reset" value="Réinitialiser" id="reset" class="btn btn-light">
+</div>
 <hr>
-    <div class="form-container">
-        {# injection du controller SearchFormController pour accèder au form dans toutes les pages #}
-        {{ render(controller('App\\Controller\\SearchFormController::form')) }} 
+
+
+<div class="form-container">
+<label for="minprice">Prix minimum : <span id="minprice"></span></label>
+    <input type="range" name="min" id="min" min="0" max="1000" value = "0" class="range">
+    <label for="maxprice">Prix maximum : <span id="maxprice"></span></label>
+    <input type="range" name="max" id="max" min="0" max="1000" value = "0"class="range">
+
+    <div class="range-values">
+      <span id="minOutput"></span> € - <span id="maxOutput"></span> €
     </div>
+
+<label for="text">Rechercher Nom</label>
+    <input type="text" name="text" id="text" class="form-control">
 <hr>
     <div class="brandCheckboxes">
         <h5><i class="bi bi-list-check"></i> Marques</h5>
@@ -15,6 +29,9 @@
         {% endfor %}
         </ol>
     </div>
-
-
+</div>
 </aside>
+
+{% block javascripts %} 
+ <script src="/assets/js/asideSearchFilter.js" defer></script>
+{% endblock %}

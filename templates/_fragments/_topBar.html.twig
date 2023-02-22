@@ -53,16 +53,6 @@
 </section>
 {% endif %}
 
-{# user account  #}
-{# <section class="topicon">
-<a href="{{ path('app_account') }}">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 24 24">
-    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm0 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1Z"/>
-    <path d="M4.5 4a3.5 3.5 0 1 0 7 0 3.5 3.5 0 0 0-7 0Z"/>
-    </svg>
-</a>
-</section> #}
-
 <section class="basketicon">
 <a href="#">
 {# panier icon  #}
@@ -91,8 +81,9 @@
     </div>
 {% endfor %} #}
 
-{# flash messages avec sweetAlert JS  #}
+{# flash messages avec sweetAlert JS actuellment déplacé dans le template base  #}
 
+{# {% block javascript %}
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 const sucessMessage = "{{ app.session.flashbag.get('success')|first }}";
@@ -110,3 +101,5 @@ const errorMessage = "{{ app.session.flashbag.get('error')|first }}";
     }
 });
 </script>
+{% endblock %} #}
+

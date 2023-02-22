@@ -1,0 +1,6521 @@
+[
+    {
+        "id": 1,
+        "name": "Adidas Ultraboost",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "947.23",
+        "sellingPrice": "861.12",
+        "inStock": false,
+        "productType": {
+            "id": 17,
+            "name": "cross-training"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 6,
+            "name": "Reebok"
+        }
+    },
+    {
+        "id": 2,
+        "name": "Nike Zoom Pegasus",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "1347.90",
+        "sellingPrice": "1225.36",
+        "inStock": false,
+        "productType": {
+            "id": 18,
+            "name": "musculation"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 21,
+            "name": "Pepe Jeans"
+        }
+    },
+    {
+        "id": 3,
+        "name": "Saucony Ride",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "1039.81",
+        "sellingPrice": "945.28",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [
+            [],
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 21,
+            "name": "Pepe Jeans"
+        }
+    },
+    {
+        "id": 4,
+        "name": "Brooks Ghost",
+        "category": {
+            "name": "Nouveaut\u00e9s"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "104.54",
+        "sellingPrice": "95.04",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 5,
+        "name": "Asics Gel Nimbus",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 11,
+            "name": "Running"
+        },
+        "catalogPrice": "1164.42",
+        "sellingPrice": "1058.56",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 18,
+            "name": "Tommy Hilfiger"
+        }
+    },
+    {
+        "id": 6,
+        "name": "New Balance Fresh Foam",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 7,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "689.83",
+        "sellingPrice": "627.12",
+        "inStock": false,
+        "productType": {
+            "id": 3,
+            "name": "chill"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 17,
+            "name": "Geox"
+        }
+    },
+    {
+        "id": 7,
+        "name": "Under Armour Charged Pursuit",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 6,
+            "name": "Running"
+        },
+        "catalogPrice": "803.44",
+        "sellingPrice": "730.40",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 13,
+            "name": "Le Coq Sportif"
+        }
+    },
+    {
+        "id": 8,
+        "name": "Hoka One One Clifton",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "1097.10",
+        "sellingPrice": "997.36",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 8,
+            "name": "Asics"
+        }
+    },
+    {
+        "id": 9,
+        "name": "Salomon Sense",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "488.40",
+        "sellingPrice": "444.00",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 11,
+            "name": "Fila"
+        }
+    },
+    {
+        "id": 10,
+        "name": "Columbia Montrail Fluidflex",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "1196.80",
+        "sellingPrice": "1088.00",
+        "inStock": false,
+        "productType": {
+            "id": 1,
+            "name": "course \u00e0 pied"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 19,
+            "name": "Levi's"
+        }
+    },
+    {
+        "id": 11,
+        "name": "Merrell Bare Access",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "1141.45",
+        "sellingPrice": "1037.68",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 4,
+            "name": "Clark's Originals"
+        }
+    },
+    {
+        "id": 12,
+        "name": "La Sportiva Akasha",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 9,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "837.76",
+        "sellingPrice": "761.60",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 8,
+            "name": "Asics"
+        }
+    },
+    {
+        "id": 13,
+        "name": "Keen Oakridge",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 6,
+            "name": "Running"
+        },
+        "catalogPrice": "949.08",
+        "sellingPrice": "862.80",
+        "inStock": false,
+        "productType": {
+            "id": 1,
+            "name": "course \u00e0 pied"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 7,
+            "name": "New Balance"
+        }
+    },
+    {
+        "id": 14,
+        "name": "Salewa Rapace",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "653.31",
+        "sellingPrice": "593.92",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 16,
+            "name": "Timberland"
+        }
+    },
+    {
+        "id": 15,
+        "name": "Lowa Renegade",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "789.89",
+        "sellingPrice": "718.08",
+        "inStock": false,
+        "productType": {
+            "id": 20,
+            "name": "fitness"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 4,
+            "name": "Clark's Originals"
+        }
+    },
+    {
+        "id": 16,
+        "name": "Scarpa Spin",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "86.15",
+        "sellingPrice": "78.32",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 12,
+            "name": "Salomon"
+        }
+    },
+    {
+        "id": 17,
+        "name": "Ecco Terra",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 7,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "217.54",
+        "sellingPrice": "197.76",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [
+            [],
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 15,
+            "name": "Kappa"
+        }
+    },
+    {
+        "id": 18,
+        "name": "Inov-8 Terraultra",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "1043.33",
+        "sellingPrice": "948.48",
+        "inStock": false,
+        "productType": {
+            "id": 19,
+            "name": "athl\u00e9tisme"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 9,
+            "name": "Vans"
+        }
+    },
+    {
+        "id": 19,
+        "name": "Altra Torin",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "759.26",
+        "sellingPrice": "690.24",
+        "inStock": false,
+        "productType": {
+            "id": 18,
+            "name": "musculation"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 6,
+            "name": "Reebok"
+        }
+    },
+    {
+        "id": 20,
+        "name": "Boreal Joker",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 8,
+            "name": "Ville"
+        },
+        "catalogPrice": "304.92",
+        "sellingPrice": "277.20",
+        "inStock": false,
+        "productType": {
+            "id": 9,
+            "name": "bateaux"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 21,
+        "name": "Five Ten Anasazi",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 13,
+            "name": "Ville"
+        },
+        "catalogPrice": "791.38",
+        "sellingPrice": "719.44",
+        "inStock": false,
+        "productType": {
+            "id": 9,
+            "name": "bateaux"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 17,
+            "name": "Geox"
+        }
+    },
+    {
+        "id": 22,
+        "name": "Black Diamond Momentum",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "1136.26",
+        "sellingPrice": "1032.96",
+        "inStock": false,
+        "productType": {
+            "id": 18,
+            "name": "musculation"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 11,
+            "name": "Fila"
+        }
+    },
+    {
+        "id": 23,
+        "name": "Mad Rock Drifter",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 6,
+            "name": "Running"
+        },
+        "catalogPrice": "650.50",
+        "sellingPrice": "591.36",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 12,
+            "name": "Salomon"
+        }
+    },
+    {
+        "id": 24,
+        "name": "Red Chili Voltage",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "1174.27",
+        "sellingPrice": "1067.52",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 13,
+            "name": "Le Coq Sportif"
+        }
+    },
+    {
+        "id": 25,
+        "name": "Butora Acro",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "806.78",
+        "sellingPrice": "733.44",
+        "inStock": false,
+        "productType": {
+            "id": 20,
+            "name": "fitness"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 15,
+            "name": "Kappa"
+        }
+    },
+    {
+        "id": 26,
+        "name": "Tenaya Oasi",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 12,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "830.37",
+        "sellingPrice": "754.88",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 17,
+            "name": "Geox"
+        }
+    },
+    {
+        "id": 27,
+        "name": "La Sportiva Solution",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 15,
+            "name": "Training"
+        },
+        "catalogPrice": "497.02",
+        "sellingPrice": "451.84",
+        "inStock": false,
+        "productType": {
+            "id": 20,
+            "name": "fitness"
+        },
+        "comments": [
+            [],
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 3,
+            "name": "Adidas Originals"
+        }
+    },
+    {
+        "id": 28,
+        "name": "Five Ten Hiangle",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 12,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "447.74",
+        "sellingPrice": "407.04",
+        "inStock": false,
+        "productType": {
+            "id": 3,
+            "name": "chill"
+        },
+        "comments": [
+            [],
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 20,
+            "name": "Wrangler"
+        }
+    },
+    {
+        "id": 29,
+        "name": "Black Diamond Zone",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "855.71",
+        "sellingPrice": "777.92",
+        "inStock": false,
+        "productType": {
+            "id": 9,
+            "name": "bateaux"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 5,
+            "name": "Puma"
+        }
+    },
+    {
+        "id": 30,
+        "name": "Mad Rock M5",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "102.96",
+        "sellingPrice": "93.60",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 5,
+            "name": "Puma"
+        }
+    },
+    {
+        "id": 31,
+        "name": "Red Chili Durango",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "110.97",
+        "sellingPrice": "100.88",
+        "inStock": false,
+        "productType": {
+            "id": 20,
+            "name": "fitness"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 8,
+            "name": "Asics"
+        }
+    },
+    {
+        "id": 32,
+        "name": "Mizuno Wave Rider",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "430.76",
+        "sellingPrice": "391.60",
+        "inStock": false,
+        "productType": {
+            "id": 13,
+            "name": "bottes"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 17,
+            "name": "Geox"
+        }
+    },
+    {
+        "id": 33,
+        "name": "Reebok Forever Floatride",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "636.24",
+        "sellingPrice": "578.40",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 15,
+            "name": "Kappa"
+        }
+    },
+    {
+        "id": 34,
+        "name": "Puma Calibrate",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "706.11",
+        "sellingPrice": "641.92",
+        "inStock": false,
+        "productType": {
+            "id": 1,
+            "name": "course \u00e0 pied"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 17,
+            "name": "Geox"
+        }
+    },
+    {
+        "id": 35,
+        "name": "On Cloudflyer",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 6,
+            "name": "Running"
+        },
+        "catalogPrice": "394.24",
+        "sellingPrice": "358.40",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 22,
+            "name": "Diesel"
+        }
+    },
+    {
+        "id": 36,
+        "name": "Brooks Launch",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "456.19",
+        "sellingPrice": "414.72",
+        "inStock": false,
+        "productType": {
+            "id": 11,
+            "name": "bottines"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 6,
+            "name": "Reebok"
+        }
+    },
+    {
+        "id": 37,
+        "name": "Asics Gel Kayano",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "209.09",
+        "sellingPrice": "190.08",
+        "inStock": false,
+        "productType": {
+            "id": 11,
+            "name": "bottines"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 15,
+            "name": "Kappa"
+        }
+    },
+    {
+        "id": 38,
+        "name": "New Balance FuelCell",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "672.76",
+        "sellingPrice": "611.60",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 9,
+            "name": "Vans"
+        }
+    },
+    {
+        "id": 39,
+        "name": "Under Armour HOVR",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "541.11",
+        "sellingPrice": "491.92",
+        "inStock": false,
+        "productType": {
+            "id": 18,
+            "name": "musculation"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 6,
+            "name": "Reebok"
+        }
+    },
+    {
+        "id": 40,
+        "name": "Hoka One One Mach",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 7,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "713.86",
+        "sellingPrice": "648.96",
+        "inStock": false,
+        "productType": {
+            "id": 3,
+            "name": "chill"
+        },
+        "comments": [
+            [],
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 7,
+            "name": "New Balance"
+        }
+    },
+    {
+        "id": 41,
+        "name": "Salomon Speedcross",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "447.22",
+        "sellingPrice": "406.56",
+        "inStock": false,
+        "productType": {
+            "id": 13,
+            "name": "bottes"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 9,
+            "name": "Vans"
+        }
+    },
+    {
+        "id": 42,
+        "name": "Columbia Caldorado",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "494.21",
+        "sellingPrice": "449.28",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 11,
+            "name": "Fila"
+        }
+    },
+    {
+        "id": 43,
+        "name": "Merrell All Out Crush",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "1057.06",
+        "sellingPrice": "960.96",
+        "inStock": false,
+        "productType": {
+            "id": 20,
+            "name": "fitness"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 13,
+            "name": "Le Coq Sportif"
+        }
+    },
+    {
+        "id": 44,
+        "name": "La Sportiva Mutant",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "333.87",
+        "sellingPrice": "303.52",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 2,
+            "name": "Adidas"
+        }
+    },
+    {
+        "id": 45,
+        "name": "Keen Oakridge Mid",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "1228.30",
+        "sellingPrice": "1116.64",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 46,
+        "name": "Salewa Wildfire",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 13,
+            "name": "Ville"
+        },
+        "catalogPrice": "317.50",
+        "sellingPrice": "288.64",
+        "inStock": false,
+        "productType": {
+            "id": 14,
+            "name": "snakers"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 21,
+            "name": "Pepe Jeans"
+        }
+    },
+    {
+        "id": 47,
+        "name": "Lowa Innox",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "174.94",
+        "sellingPrice": "159.04",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 17,
+            "name": "Geox"
+        }
+    },
+    {
+        "id": 48,
+        "name": "Scarpa Terra",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "119.33",
+        "sellingPrice": "108.48",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 17,
+            "name": "Geox"
+        }
+    },
+    {
+        "id": 49,
+        "name": "Ecco Biom",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "874.37",
+        "sellingPrice": "794.88",
+        "inStock": false,
+        "productType": {
+            "id": 18,
+            "name": "musculation"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 12,
+            "name": "Salomon"
+        }
+    },
+    {
+        "id": 50,
+        "name": "Inov-8 Roclite",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 12,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "396.88",
+        "sellingPrice": "360.80",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 3,
+            "name": "Adidas Originals"
+        }
+    },
+    {
+        "id": 51,
+        "name": "Altra Lone Peak",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 13,
+            "name": "Ville"
+        },
+        "catalogPrice": "554.66",
+        "sellingPrice": "504.24",
+        "inStock": false,
+        "productType": {
+            "id": 13,
+            "name": "bottes"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 15,
+            "name": "Kappa"
+        }
+    },
+    {
+        "id": 52,
+        "name": "Boreal Lynx",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "716.14",
+        "sellingPrice": "651.04",
+        "inStock": false,
+        "productType": {
+            "id": 19,
+            "name": "athl\u00e9tisme"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 5,
+            "name": "Puma"
+        }
+    },
+    {
+        "id": 53,
+        "name": "Five Ten Arrowhead",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 11,
+            "name": "Running"
+        },
+        "catalogPrice": "523.60",
+        "sellingPrice": "476.00",
+        "inStock": false,
+        "productType": {
+            "id": 1,
+            "name": "course \u00e0 pied"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 16,
+            "name": "Timberland"
+        }
+    },
+    {
+        "id": 54,
+        "name": "Black Diamond Verdict",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "927.87",
+        "sellingPrice": "843.52",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 12,
+            "name": "Salomon"
+        }
+    },
+    {
+        "id": 55,
+        "name": "Mad Rock Phoenix",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "967.12",
+        "sellingPrice": "879.20",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 20,
+            "name": "Wrangler"
+        }
+    },
+    {
+        "id": 56,
+        "name": "Converse Chuck Taylor",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 7,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "121.97",
+        "sellingPrice": "110.88",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 16,
+            "name": "Timberland"
+        }
+    },
+    {
+        "id": 57,
+        "name": "Vans Old Skool",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "1155.62",
+        "sellingPrice": "1050.56",
+        "inStock": false,
+        "productType": {
+            "id": 19,
+            "name": "athl\u00e9tisme"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 11,
+            "name": "Fila"
+        }
+    },
+    {
+        "id": 58,
+        "name": "Puma Cali",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "772.20",
+        "sellingPrice": "702.00",
+        "inStock": false,
+        "productType": {
+            "id": 13,
+            "name": "bottes"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 16,
+            "name": "Timberland"
+        }
+    },
+    {
+        "id": 59,
+        "name": "Reebok Classic",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "629.38",
+        "sellingPrice": "572.16",
+        "inStock": false,
+        "productType": {
+            "id": 20,
+            "name": "fitness"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 1,
+            "name": "Nike"
+        }
+    },
+    {
+        "id": 60,
+        "name": "Jordan 1",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "630.34",
+        "sellingPrice": "573.04",
+        "inStock": false,
+        "productType": {
+            "id": 19,
+            "name": "athl\u00e9tisme"
+        },
+        "comments": [
+            [],
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 7,
+            "name": "New Balance"
+        }
+    },
+    {
+        "id": 61,
+        "name": "Timberland 6-Inch",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "556.60",
+        "sellingPrice": "506.00",
+        "inStock": false,
+        "productType": {
+            "id": 8,
+            "name": "derbies"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 19,
+            "name": "Levi's"
+        }
+    },
+    {
+        "id": 62,
+        "name": "UGG Classic Mini",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 15,
+            "name": "Training"
+        },
+        "catalogPrice": "898.04",
+        "sellingPrice": "816.40",
+        "inStock": false,
+        "productType": {
+            "id": 18,
+            "name": "musculation"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 9,
+            "name": "Vans"
+        }
+    },
+    {
+        "id": 63,
+        "name": "Dr. Martens 1460",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 13,
+            "name": "Ville"
+        },
+        "catalogPrice": "327.18",
+        "sellingPrice": "297.44",
+        "inStock": false,
+        "productType": {
+            "id": 11,
+            "name": "bottines"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 9,
+            "name": "Vans"
+        }
+    },
+    {
+        "id": 64,
+        "name": "Sperry Top-Sider",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 6,
+            "name": "Running"
+        },
+        "catalogPrice": "574.46",
+        "sellingPrice": "522.24",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 11,
+            "name": "Fila"
+        }
+    },
+    {
+        "id": 65,
+        "name": "Nike Air Max",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "745.54",
+        "sellingPrice": "677.76",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 2,
+            "name": "Adidas"
+        }
+    },
+    {
+        "id": 66,
+        "name": "Adidas Superstar",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "592.68",
+        "sellingPrice": "538.80",
+        "inStock": false,
+        "productType": {
+            "id": 3,
+            "name": "chill"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 21,
+            "name": "Pepe Jeans"
+        }
+    },
+    {
+        "id": 67,
+        "name": "Vans Slip-On",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 8,
+            "name": "Ville"
+        },
+        "catalogPrice": "831.60",
+        "sellingPrice": "756.00",
+        "inStock": false,
+        "productType": {
+            "id": 11,
+            "name": "bottines"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 68,
+        "name": "Puma Suede",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "793.94",
+        "sellingPrice": "721.76",
+        "inStock": false,
+        "productType": {
+            "id": 18,
+            "name": "musculation"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 15,
+            "name": "Kappa"
+        }
+    },
+    {
+        "id": 69,
+        "name": "Reebok Club C",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 15,
+            "name": "Training"
+        },
+        "catalogPrice": "283.36",
+        "sellingPrice": "257.60",
+        "inStock": false,
+        "productType": {
+            "id": 20,
+            "name": "fitness"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 19,
+            "name": "Levi's"
+        }
+    },
+    {
+        "id": 70,
+        "name": "Jordan XXXII",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 12,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "630.96",
+        "sellingPrice": "573.60",
+        "inStock": false,
+        "productType": {
+            "id": 4,
+            "name": "classics"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 71,
+        "name": "Timberland Euro Hiker",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "1072.90",
+        "sellingPrice": "975.36",
+        "inStock": false,
+        "productType": {
+            "id": 1,
+            "name": "course \u00e0 pied"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 5,
+            "name": "Puma"
+        }
+    },
+    {
+        "id": 72,
+        "name": "UGG Classic Tall",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "937.99",
+        "sellingPrice": "852.72",
+        "inStock": false,
+        "productType": {
+            "id": 17,
+            "name": "cross-training"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 73,
+        "name": "Dr. Martens Jadon",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "784.26",
+        "sellingPrice": "712.96",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 21,
+            "name": "Pepe Jeans"
+        }
+    },
+    {
+        "id": 74,
+        "name": "Sperry Bahama",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "265.32",
+        "sellingPrice": "241.20",
+        "inStock": false,
+        "productType": {
+            "id": 11,
+            "name": "bottines"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 22,
+            "name": "Diesel"
+        }
+    },
+    {
+        "id": 75,
+        "name": "Converse All Star",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "1011.30",
+        "sellingPrice": "919.36",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 20,
+            "name": "Wrangler"
+        }
+    },
+    {
+        "id": 76,
+        "name": "Adidas Adizero",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 15,
+            "name": "Training"
+        },
+        "catalogPrice": "222.64",
+        "sellingPrice": "202.40",
+        "inStock": false,
+        "productType": {
+            "id": 19,
+            "name": "athl\u00e9tisme"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 22,
+            "name": "Diesel"
+        }
+    },
+    {
+        "id": 77,
+        "name": "Nike Pegasus",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "516.91",
+        "sellingPrice": "469.92",
+        "inStock": false,
+        "productType": {
+            "id": 14,
+            "name": "snakers"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 11,
+            "name": "Fila"
+        }
+    },
+    {
+        "id": 78,
+        "name": "Boreal Kira",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 11,
+            "name": "Running"
+        },
+        "catalogPrice": "577.72",
+        "sellingPrice": "525.20",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 4,
+            "name": "Clark's Originals"
+        }
+    },
+    {
+        "id": 79,
+        "name": "Five Ten Hiangle",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "771.94",
+        "sellingPrice": "701.76",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 16,
+            "name": "Timberland"
+        }
+    },
+    {
+        "id": 80,
+        "name": "Black Diamond Momentum",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "502.92",
+        "sellingPrice": "457.20",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 81,
+        "name": "Mad Rock Drifter",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 8,
+            "name": "Ville"
+        },
+        "catalogPrice": "271.04",
+        "sellingPrice": "246.40",
+        "inStock": false,
+        "productType": {
+            "id": 11,
+            "name": "bottines"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 19,
+            "name": "Levi's"
+        }
+    },
+    {
+        "id": 82,
+        "name": "Red Chili Voltage",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "1214.75",
+        "sellingPrice": "1104.32",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 5,
+            "name": "Puma"
+        }
+    },
+    {
+        "id": 83,
+        "name": "Butora Acro",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "505.65",
+        "sellingPrice": "459.68",
+        "inStock": false,
+        "productType": {
+            "id": 18,
+            "name": "musculation"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 11,
+            "name": "Fila"
+        }
+    },
+    {
+        "id": 84,
+        "name": "Tenaya Oasi",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "827.11",
+        "sellingPrice": "751.92",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [
+            [],
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 20,
+            "name": "Wrangler"
+        }
+    },
+    {
+        "id": 85,
+        "name": "Mizuno Wave Rider",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 8,
+            "name": "Ville"
+        },
+        "catalogPrice": "715.09",
+        "sellingPrice": "650.08",
+        "inStock": false,
+        "productType": {
+            "id": 10,
+            "name": "boots"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 5,
+            "name": "Puma"
+        }
+    },
+    {
+        "id": 86,
+        "name": "Puma Calibrate",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 8,
+            "name": "Ville"
+        },
+        "catalogPrice": "855.36",
+        "sellingPrice": "777.60",
+        "inStock": false,
+        "productType": {
+            "id": 9,
+            "name": "bateaux"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 20,
+            "name": "Wrangler"
+        }
+    },
+    {
+        "id": 87,
+        "name": "Reebok Forever Floatride",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "652.96",
+        "sellingPrice": "593.60",
+        "inStock": false,
+        "productType": {
+            "id": 17,
+            "name": "cross-training"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 2,
+            "name": "Adidas"
+        }
+    },
+    {
+        "id": 88,
+        "name": "Under Armour HOVR Phantom",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "1036.20",
+        "sellingPrice": "942.00",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 8,
+            "name": "Asics"
+        }
+    },
+    {
+        "id": 89,
+        "name": "Skechers Go Run",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 8,
+            "name": "Ville"
+        },
+        "catalogPrice": "981.55",
+        "sellingPrice": "892.32",
+        "inStock": false,
+        "productType": {
+            "id": 12,
+            "name": "mocassins"
+        },
+        "comments": [
+            [],
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 17,
+            "name": "Geox"
+        }
+    },
+    {
+        "id": 90,
+        "name": "Brooks Levitate",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "586.43",
+        "sellingPrice": "533.12",
+        "inStock": false,
+        "productType": {
+            "id": 20,
+            "name": "fitness"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 2,
+            "name": "Adidas"
+        }
+    },
+    {
+        "id": 91,
+        "name": "On Cloud",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 9,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "192.19",
+        "sellingPrice": "174.72",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 16,
+            "name": "Timberland"
+        }
+    },
+    {
+        "id": 92,
+        "name": "New Balance Fresh Foam 1080",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 7,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "1160.54",
+        "sellingPrice": "1055.04",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [
+            [],
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 21,
+            "name": "Pepe Jeans"
+        }
+    },
+    {
+        "id": 93,
+        "name": "Adidas Adizero",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "510.84",
+        "sellingPrice": "464.40",
+        "inStock": false,
+        "productType": {
+            "id": 8,
+            "name": "derbies"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 94,
+        "name": "Nike Air Zoom Pegasus 38",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "448.80",
+        "sellingPrice": "408.00",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 3,
+            "name": "Adidas Originals"
+        }
+    },
+    {
+        "id": 95,
+        "name": "Saucony Triumph",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "1280.40",
+        "sellingPrice": "1164.00",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 15,
+            "name": "Kappa"
+        }
+    },
+    {
+        "id": 96,
+        "name": "Hoka One One Bondi",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 8,
+            "name": "Ville"
+        },
+        "catalogPrice": "569.98",
+        "sellingPrice": "518.16",
+        "inStock": false,
+        "productType": {
+            "id": 11,
+            "name": "bottines"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 17,
+            "name": "Geox"
+        }
+    },
+    {
+        "id": 97,
+        "name": "Salomon Sense Ride",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "662.11",
+        "sellingPrice": "601.92",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 98,
+        "name": "Columbia Montrail Trans Alps",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 15,
+            "name": "Training"
+        },
+        "catalogPrice": "344.08",
+        "sellingPrice": "312.80",
+        "inStock": false,
+        "productType": {
+            "id": 17,
+            "name": "cross-training"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 22,
+            "name": "Diesel"
+        }
+    },
+    {
+        "id": 99,
+        "name": "Merrell MQM Flex",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 13,
+            "name": "Ville"
+        },
+        "catalogPrice": "492.36",
+        "sellingPrice": "447.60",
+        "inStock": false,
+        "productType": {
+            "id": 10,
+            "name": "boots"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 16,
+            "name": "Timberland"
+        }
+    },
+    {
+        "id": 100,
+        "name": "La Sportiva Wildcat",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "720.72",
+        "sellingPrice": "655.20",
+        "inStock": false,
+        "productType": {
+            "id": 7,
+            "name": "richelieu"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 2,
+            "name": "Adidas"
+        }
+    },
+    {
+        "id": 101,
+        "name": "Keen Targhee",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 15,
+            "name": "Training"
+        },
+        "catalogPrice": "461.03",
+        "sellingPrice": "419.12",
+        "inStock": false,
+        "productType": {
+            "id": 17,
+            "name": "cross-training"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 15,
+            "name": "Kappa"
+        }
+    },
+    {
+        "id": 102,
+        "name": "Salewa Rapace Gore-Tex",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 6,
+            "name": "Running"
+        },
+        "catalogPrice": "588.90",
+        "sellingPrice": "535.36",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 11,
+            "name": "Fila"
+        }
+    },
+    {
+        "id": 103,
+        "name": "Lowa Camino",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 6,
+            "name": "Running"
+        },
+        "catalogPrice": "338.10",
+        "sellingPrice": "307.36",
+        "inStock": false,
+        "productType": {
+            "id": 1,
+            "name": "course \u00e0 pied"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 2,
+            "name": "Adidas"
+        }
+    },
+    {
+        "id": 104,
+        "name": "Scarpa Mojito",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "189.02",
+        "sellingPrice": "171.84",
+        "inStock": false,
+        "productType": {
+            "id": 11,
+            "name": "bottines"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 8,
+            "name": "Asics"
+        }
+    },
+    {
+        "id": 105,
+        "name": "Ecco Biom",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "780.03",
+        "sellingPrice": "709.12",
+        "inStock": false,
+        "productType": {
+            "id": 19,
+            "name": "athl\u00e9tisme"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 6,
+            "name": "Reebok"
+        }
+    },
+    {
+        "id": 106,
+        "name": "Inov-8 Roclite",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "834.06",
+        "sellingPrice": "758.24",
+        "inStock": false,
+        "productType": {
+            "id": 17,
+            "name": "cross-training"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 16,
+            "name": "Timberland"
+        }
+    },
+    {
+        "id": 107,
+        "name": "Altra Lone Peak",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "97.15",
+        "sellingPrice": "88.32",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 2,
+            "name": "Adidas"
+        }
+    },
+    {
+        "id": 108,
+        "name": "Boreal Lynx",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 15,
+            "name": "Training"
+        },
+        "catalogPrice": "633.60",
+        "sellingPrice": "576.00",
+        "inStock": false,
+        "productType": {
+            "id": 18,
+            "name": "musculation"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 16,
+            "name": "Timberland"
+        }
+    },
+    {
+        "id": 109,
+        "name": "Five Ten Guide Tennie",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "1071.93",
+        "sellingPrice": "974.48",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [
+            [],
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 110,
+        "name": "Black Diamond Spot",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "155.76",
+        "sellingPrice": "141.60",
+        "inStock": false,
+        "productType": {
+            "id": 11,
+            "name": "bottines"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 9,
+            "name": "Vans"
+        }
+    },
+    {
+        "id": 111,
+        "name": "Mad Rock Frenzy",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "157.70",
+        "sellingPrice": "143.36",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 7,
+            "name": "New Balance"
+        }
+    },
+    {
+        "id": 112,
+        "name": "Red Chili Spirit",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 11,
+            "name": "Running"
+        },
+        "catalogPrice": "920.83",
+        "sellingPrice": "837.12",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 21,
+            "name": "Pepe Jeans"
+        }
+    },
+    {
+        "id": 113,
+        "name": "Butora Altura",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "603.06",
+        "sellingPrice": "548.24",
+        "inStock": false,
+        "productType": {
+            "id": 19,
+            "name": "athl\u00e9tisme"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 8,
+            "name": "Asics"
+        }
+    },
+    {
+        "id": 114,
+        "name": "Tenaya Tarifa",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "302.28",
+        "sellingPrice": "274.80",
+        "inStock": false,
+        "productType": {
+            "id": 20,
+            "name": "fitness"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 11,
+            "name": "Fila"
+        }
+    },
+    {
+        "id": 115,
+        "name": "La Sportiva Mythos",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "771.06",
+        "sellingPrice": "700.96",
+        "inStock": false,
+        "productType": {
+            "id": 14,
+            "name": "snakers"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 13,
+            "name": "Le Coq Sportif"
+        }
+    },
+    {
+        "id": 116,
+        "name": "Five Ten Verdon",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 13,
+            "name": "Ville"
+        },
+        "catalogPrice": "1038.75",
+        "sellingPrice": "944.32",
+        "inStock": false,
+        "productType": {
+            "id": 14,
+            "name": "snakers"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 9,
+            "name": "Vans"
+        }
+    },
+    {
+        "id": 117,
+        "name": "Black Diamond Technician",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "1086.62",
+        "sellingPrice": "987.84",
+        "inStock": false,
+        "productType": {
+            "id": 1,
+            "name": "course \u00e0 pied"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 14,
+            "name": "Lacoste"
+        }
+    },
+    {
+        "id": 118,
+        "name": "Mad Rock Radiant",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 6,
+            "name": "Running"
+        },
+        "catalogPrice": "1102.20",
+        "sellingPrice": "1002.00",
+        "inStock": false,
+        "productType": {
+            "id": 1,
+            "name": "course \u00e0 pied"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 12,
+            "name": "Salomon"
+        }
+    },
+    {
+        "id": 119,
+        "name": "Red Chili Fusion",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 6,
+            "name": "Running"
+        },
+        "catalogPrice": "174.24",
+        "sellingPrice": "158.40",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 11,
+            "name": "Fila"
+        }
+    },
+    {
+        "id": 120,
+        "name": "Mizuno Wave Horizon",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 12,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "1065.24",
+        "sellingPrice": "968.40",
+        "inStock": false,
+        "productType": {
+            "id": 4,
+            "name": "classics"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 22,
+            "name": "Diesel"
+        }
+    },
+    {
+        "id": 121,
+        "name": "Puma Tazon",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "729.34",
+        "sellingPrice": "663.04",
+        "inStock": false,
+        "productType": {
+            "id": 11,
+            "name": "bottines"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 15,
+            "name": "Kappa"
+        }
+    },
+    {
+        "id": 122,
+        "name": "Reebok Floatride Run Fast",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "282.57",
+        "sellingPrice": "256.88",
+        "inStock": false,
+        "productType": {
+            "id": 1,
+            "name": "course \u00e0 pied"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 21,
+            "name": "Pepe Jeans"
+        }
+    },
+    {
+        "id": 123,
+        "name": "Under Armour HOVR Sonic",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "948.46",
+        "sellingPrice": "862.24",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 14,
+            "name": "Lacoste"
+        }
+    },
+    {
+        "id": 124,
+        "name": "Skechers Go Run Ride",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "1042.80",
+        "sellingPrice": "948.00",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 3,
+            "name": "Adidas Originals"
+        }
+    },
+    {
+        "id": 125,
+        "name": "Brooks Glycerin",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "765.34",
+        "sellingPrice": "695.76",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 6,
+            "name": "Reebok"
+        }
+    },
+    {
+        "id": 126,
+        "name": "On Cloudflow",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 11,
+            "name": "Running"
+        },
+        "catalogPrice": "437.18",
+        "sellingPrice": "397.44",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 127,
+        "name": "New Balance Fresh Foam More",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 6,
+            "name": "Running"
+        },
+        "catalogPrice": "508.99",
+        "sellingPrice": "462.72",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 6,
+            "name": "Reebok"
+        }
+    },
+    {
+        "id": 128,
+        "name": "Adidas Adizero Pro",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "448.45",
+        "sellingPrice": "407.68",
+        "inStock": false,
+        "productType": {
+            "id": 17,
+            "name": "cross-training"
+        },
+        "comments": [
+            [],
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 9,
+            "name": "Vans"
+        }
+    },
+    {
+        "id": 129,
+        "name": "Nike Air Zoom Terra Kiger",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "629.38",
+        "sellingPrice": "572.16",
+        "inStock": false,
+        "productType": {
+            "id": 4,
+            "name": "classics"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 22,
+            "name": "Diesel"
+        }
+    },
+    {
+        "id": 130,
+        "name": "Loafers",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 6,
+            "name": "Running"
+        },
+        "catalogPrice": "916.08",
+        "sellingPrice": "832.80",
+        "inStock": false,
+        "productType": {
+            "id": 1,
+            "name": "course \u00e0 pied"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 17,
+            "name": "Geox"
+        }
+    },
+    {
+        "id": 131,
+        "name": "Oxford Shoes",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 12,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "516.12",
+        "sellingPrice": "469.20",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 19,
+            "name": "Levi's"
+        }
+    },
+    {
+        "id": 132,
+        "name": "Derby Shoes",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "911.33",
+        "sellingPrice": "828.48",
+        "inStock": false,
+        "productType": {
+            "id": 11,
+            "name": "bottines"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 17,
+            "name": "Geox"
+        }
+    },
+    {
+        "id": 133,
+        "name": "Brogues",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "577.81",
+        "sellingPrice": "525.28",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 2,
+            "name": "Adidas"
+        }
+    },
+    {
+        "id": 134,
+        "name": "Monk Straps",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 8,
+            "name": "Ville"
+        },
+        "catalogPrice": "832.48",
+        "sellingPrice": "756.80",
+        "inStock": false,
+        "productType": {
+            "id": 11,
+            "name": "bottines"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 18,
+            "name": "Tommy Hilfiger"
+        }
+    },
+    {
+        "id": 135,
+        "name": "Boat Shoes",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "341.26",
+        "sellingPrice": "310.24",
+        "inStock": false,
+        "productType": {
+            "id": 17,
+            "name": "cross-training"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 1,
+            "name": "Nike"
+        }
+    },
+    {
+        "id": 136,
+        "name": "Wingtips",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 15,
+            "name": "Training"
+        },
+        "catalogPrice": "679.54",
+        "sellingPrice": "617.76",
+        "inStock": false,
+        "productType": {
+            "id": 18,
+            "name": "musculation"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 8,
+            "name": "Asics"
+        }
+    },
+    {
+        "id": 137,
+        "name": "Chelsea Boots",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "707.52",
+        "sellingPrice": "643.20",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 1,
+            "name": "Nike"
+        }
+    },
+    {
+        "id": 138,
+        "name": "Chukka Boots",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "445.28",
+        "sellingPrice": "404.80",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 14,
+            "name": "Lacoste"
+        }
+    },
+    {
+        "id": 139,
+        "name": "Dress Boots",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 13,
+            "name": "Ville"
+        },
+        "catalogPrice": "627.97",
+        "sellingPrice": "570.88",
+        "inStock": false,
+        "productType": {
+            "id": 11,
+            "name": "bottines"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 7,
+            "name": "New Balance"
+        }
+    },
+    {
+        "id": 140,
+        "name": "Snow Boots",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 7,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "258.54",
+        "sellingPrice": "235.04",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 17,
+            "name": "Geox"
+        }
+    },
+    {
+        "id": 141,
+        "name": "Rain Boots",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 7,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "396.97",
+        "sellingPrice": "360.88",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 18,
+            "name": "Tommy Hilfiger"
+        }
+    },
+    {
+        "id": 142,
+        "name": "Hiking Boots",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "975.48",
+        "sellingPrice": "886.80",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 7,
+            "name": "New Balance"
+        }
+    },
+    {
+        "id": 143,
+        "name": "Work Boots",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "1326.34",
+        "sellingPrice": "1205.76",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 144,
+        "name": "Combat Boots",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "1247.66",
+        "sellingPrice": "1134.24",
+        "inStock": false,
+        "productType": {
+            "id": 20,
+            "name": "fitness"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 21,
+            "name": "Pepe Jeans"
+        }
+    },
+    {
+        "id": 145,
+        "name": "Ankle Boots",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "806.78",
+        "sellingPrice": "733.44",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 6,
+            "name": "Reebok"
+        }
+    },
+    {
+        "id": 146,
+        "name": "Mid-Calf Boots",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 6,
+            "name": "Running"
+        },
+        "catalogPrice": "994.14",
+        "sellingPrice": "903.76",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 7,
+            "name": "New Balance"
+        }
+    },
+    {
+        "id": 147,
+        "name": "Over-the-Knee Boots",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "1413.72",
+        "sellingPrice": "1285.20",
+        "inStock": false,
+        "productType": {
+            "id": 17,
+            "name": "cross-training"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 4,
+            "name": "Clark's Originals"
+        }
+    },
+    {
+        "id": 148,
+        "name": "Sneakers",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 7,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "352.35",
+        "sellingPrice": "320.32",
+        "inStock": false,
+        "productType": {
+            "id": 4,
+            "name": "classics"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 15,
+            "name": "Kappa"
+        }
+    },
+    {
+        "id": 149,
+        "name": "Running Shoes",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 9,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "981.38",
+        "sellingPrice": "892.16",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 5,
+            "name": "Puma"
+        }
+    },
+    {
+        "id": 150,
+        "name": "Cross-Training Shoes",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "142.56",
+        "sellingPrice": "129.60",
+        "inStock": false,
+        "productType": {
+            "id": 7,
+            "name": "richelieu"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 8,
+            "name": "Asics"
+        }
+    },
+    {
+        "id": 151,
+        "name": "Basketball Shoes",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 8,
+            "name": "Ville"
+        },
+        "catalogPrice": "807.31",
+        "sellingPrice": "733.92",
+        "inStock": false,
+        "productType": {
+            "id": 10,
+            "name": "boots"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 4,
+            "name": "Clark's Originals"
+        }
+    },
+    {
+        "id": 152,
+        "name": "Tennis Shoes",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "96.80",
+        "sellingPrice": "88.00",
+        "inStock": false,
+        "productType": {
+            "id": 19,
+            "name": "athl\u00e9tisme"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 19,
+            "name": "Levi's"
+        }
+    },
+    {
+        "id": 153,
+        "name": "Gym Shoes",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "1025.64",
+        "sellingPrice": "932.40",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 5,
+            "name": "Puma"
+        }
+    },
+    {
+        "id": 154,
+        "name": "Walking Shoes",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "1305.48",
+        "sellingPrice": "1186.80",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 155,
+        "name": "Cycling Shoes",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "220.44",
+        "sellingPrice": "200.40",
+        "inStock": false,
+        "productType": {
+            "id": 12,
+            "name": "mocassins"
+        },
+        "comments": [
+            [],
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 2,
+            "name": "Adidas"
+        }
+    },
+    {
+        "id": 156,
+        "name": "Ski Boots",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 13,
+            "name": "Ville"
+        },
+        "catalogPrice": "903.06",
+        "sellingPrice": "820.96",
+        "inStock": false,
+        "productType": {
+            "id": 7,
+            "name": "richelieu"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 16,
+            "name": "Timberland"
+        }
+    },
+    {
+        "id": 157,
+        "name": "Snowboarding Boots",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "1293.60",
+        "sellingPrice": "1176.00",
+        "inStock": false,
+        "productType": {
+            "id": 17,
+            "name": "cross-training"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 7,
+            "name": "New Balance"
+        }
+    },
+    {
+        "id": 158,
+        "name": "Ice Skates",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "228.45",
+        "sellingPrice": "207.68",
+        "inStock": false,
+        "productType": {
+            "id": 1,
+            "name": "course \u00e0 pied"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 18,
+            "name": "Tommy Hilfiger"
+        }
+    },
+    {
+        "id": 159,
+        "name": "Inline Skates",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "1262.98",
+        "sellingPrice": "1148.16",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 7,
+            "name": "New Balance"
+        }
+    },
+    {
+        "id": 160,
+        "name": "Roller Skates",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 11,
+            "name": "Running"
+        },
+        "catalogPrice": "473.88",
+        "sellingPrice": "430.80",
+        "inStock": false,
+        "productType": {
+            "id": 1,
+            "name": "course \u00e0 pied"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 15,
+            "name": "Kappa"
+        }
+    },
+    {
+        "id": 161,
+        "name": "Roller Blades",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "1271.60",
+        "sellingPrice": "1156.00",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 3,
+            "name": "Adidas Originals"
+        }
+    },
+    {
+        "id": 162,
+        "name": "Skate Shoes",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "505.65",
+        "sellingPrice": "459.68",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 5,
+            "name": "Puma"
+        }
+    },
+    {
+        "id": 163,
+        "name": "Skateboard Shoes",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "944.77",
+        "sellingPrice": "858.88",
+        "inStock": false,
+        "productType": {
+            "id": 4,
+            "name": "classics"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 18,
+            "name": "Tommy Hilfiger"
+        }
+    },
+    {
+        "id": 164,
+        "name": "Soccer Cleats",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 8,
+            "name": "Ville"
+        },
+        "catalogPrice": "150.04",
+        "sellingPrice": "136.40",
+        "inStock": false,
+        "productType": {
+            "id": 14,
+            "name": "snakers"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 5,
+            "name": "Puma"
+        }
+    },
+    {
+        "id": 165,
+        "name": "Baseball Cleats",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "543.84",
+        "sellingPrice": "494.40",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 18,
+            "name": "Tommy Hilfiger"
+        }
+    },
+    {
+        "id": 166,
+        "name": "Football Cleats",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 15,
+            "name": "Training"
+        },
+        "catalogPrice": "1234.20",
+        "sellingPrice": "1122.00",
+        "inStock": false,
+        "productType": {
+            "id": 18,
+            "name": "musculation"
+        },
+        "comments": [
+            [],
+            [],
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 15,
+            "name": "Kappa"
+        }
+    },
+    {
+        "id": 167,
+        "name": "Golf Shoes",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 15,
+            "name": "Training"
+        },
+        "catalogPrice": "1412.22",
+        "sellingPrice": "1283.84",
+        "inStock": false,
+        "productType": {
+            "id": 19,
+            "name": "athl\u00e9tisme"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 2,
+            "name": "Adidas"
+        }
+    },
+    {
+        "id": 168,
+        "name": "Dance Shoes",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "769.91",
+        "sellingPrice": "699.92",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 169,
+        "name": "Dress Shoes",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "1021.15",
+        "sellingPrice": "928.32",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 22,
+            "name": "Diesel"
+        }
+    },
+    {
+        "id": 170,
+        "name": "Slip-Ons",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 8,
+            "name": "Ville"
+        },
+        "catalogPrice": "90.82",
+        "sellingPrice": "82.56",
+        "inStock": false,
+        "productType": {
+            "id": 12,
+            "name": "mocassins"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 15,
+            "name": "Kappa"
+        }
+    },
+    {
+        "id": 171,
+        "name": "Loafers",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 7,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "1286.56",
+        "sellingPrice": "1169.60",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 8,
+            "name": "Asics"
+        }
+    },
+    {
+        "id": 172,
+        "name": "Oxford Shoes",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "985.60",
+        "sellingPrice": "896.00",
+        "inStock": false,
+        "productType": {
+            "id": 18,
+            "name": "musculation"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 14,
+            "name": "Lacoste"
+        }
+    },
+    {
+        "id": 173,
+        "name": "Derby Shoes",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "128.13",
+        "sellingPrice": "116.48",
+        "inStock": false,
+        "productType": {
+            "id": 4,
+            "name": "classics"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 8,
+            "name": "Asics"
+        }
+    },
+    {
+        "id": 174,
+        "name": "Salewa Rapace",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "662.82",
+        "sellingPrice": "602.56",
+        "inStock": false,
+        "productType": {
+            "id": 1,
+            "name": "course \u00e0 pied"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 12,
+            "name": "Salomon"
+        }
+    },
+    {
+        "id": 175,
+        "name": "Lowa Renegade",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 9,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "480.48",
+        "sellingPrice": "436.80",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 1,
+            "name": "Nike"
+        }
+    },
+    {
+        "id": 176,
+        "name": "Scarpa Spin",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "1027.84",
+        "sellingPrice": "934.40",
+        "inStock": false,
+        "productType": {
+            "id": 14,
+            "name": "snakers"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 1,
+            "name": "Nike"
+        }
+    },
+    {
+        "id": 177,
+        "name": "Ecco Terra",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "731.81",
+        "sellingPrice": "665.28",
+        "inStock": false,
+        "productType": {
+            "id": 17,
+            "name": "cross-training"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 20,
+            "name": "Wrangler"
+        }
+    },
+    {
+        "id": 178,
+        "name": "Inov-8 Terraultra",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "907.10",
+        "sellingPrice": "824.64",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 22,
+            "name": "Diesel"
+        }
+    },
+    {
+        "id": 179,
+        "name": "Altra Torin",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "286.18",
+        "sellingPrice": "260.16",
+        "inStock": false,
+        "productType": {
+            "id": 20,
+            "name": "fitness"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 5,
+            "name": "Puma"
+        }
+    },
+    {
+        "id": 180,
+        "name": "Boreal Joker",
+        "category": {
+            "name": "Accessoires"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "1071.84",
+        "sellingPrice": "974.40",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 17,
+            "name": "Geox"
+        }
+    },
+    {
+        "id": 181,
+        "name": "Five Ten Anasazi",
+        "category": {
+            "name": "Accessoires"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "573.06",
+        "sellingPrice": "520.96",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 2,
+            "name": "Adidas"
+        }
+    },
+    {
+        "id": 182,
+        "name": "Black Diamond Momentum",
+        "category": {
+            "name": "Accessoires"
+        },
+        "subCategory": {
+            "id": 6,
+            "name": "Running"
+        },
+        "catalogPrice": "1046.76",
+        "sellingPrice": "951.60",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 1,
+            "name": "Nike"
+        }
+    },
+    {
+        "id": 183,
+        "name": "Mad Rock Drifter",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 11,
+            "name": "Running"
+        },
+        "catalogPrice": "1167.94",
+        "sellingPrice": "1061.76",
+        "inStock": false,
+        "productType": {
+            "id": 1,
+            "name": "course \u00e0 pied"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 13,
+            "name": "Le Coq Sportif"
+        }
+    },
+    {
+        "id": 184,
+        "name": "Red Chili Voltage",
+        "category": {
+            "name": "Accessoires"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "919.78",
+        "sellingPrice": "836.16",
+        "inStock": false,
+        "productType": {
+            "id": 11,
+            "name": "bottines"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 19,
+            "name": "Levi's"
+        }
+    },
+    {
+        "id": 185,
+        "name": "Butora Acro",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "615.30",
+        "sellingPrice": "559.36",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 5,
+            "name": "Puma"
+        }
+    },
+    {
+        "id": 186,
+        "name": "Tenaya Oasi",
+        "category": {
+            "name": "Accessoires"
+        },
+        "subCategory": {
+            "id": 8,
+            "name": "Ville"
+        },
+        "catalogPrice": "938.08",
+        "sellingPrice": "852.80",
+        "inStock": false,
+        "productType": {
+            "id": 12,
+            "name": "mocassins"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 8,
+            "name": "Asics"
+        }
+    },
+    {
+        "id": 187,
+        "name": "La Sportiva Solution",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "342.58",
+        "sellingPrice": "311.44",
+        "inStock": false,
+        "productType": {
+            "id": 7,
+            "name": "richelieu"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 1,
+            "name": "Nike"
+        }
+    },
+    {
+        "id": 188,
+        "name": "Five Ten Hiangle",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "1300.99",
+        "sellingPrice": "1182.72",
+        "inStock": false,
+        "productType": {
+            "id": 19,
+            "name": "athl\u00e9tisme"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 14,
+            "name": "Lacoste"
+        }
+    },
+    {
+        "id": 189,
+        "name": "Black Diamond Zone",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "821.30",
+        "sellingPrice": "746.64",
+        "inStock": false,
+        "productType": {
+            "id": 13,
+            "name": "bottes"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 14,
+            "name": "Lacoste"
+        }
+    },
+    {
+        "id": 190,
+        "name": "Mad Rock M5",
+        "category": {
+            "name": "Accessoires"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "332.64",
+        "sellingPrice": "302.40",
+        "inStock": false,
+        "productType": {
+            "id": 19,
+            "name": "athl\u00e9tisme"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 20,
+            "name": "Wrangler"
+        }
+    },
+    {
+        "id": 191,
+        "name": "Red Chili Durango",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "440.88",
+        "sellingPrice": "400.80",
+        "inStock": false,
+        "productType": {
+            "id": 17,
+            "name": "cross-training"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 4,
+            "name": "Clark's Originals"
+        }
+    },
+    {
+        "id": 192,
+        "name": "Adidas Terrex",
+        "category": {
+            "name": "Accessoires"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "547.01",
+        "sellingPrice": "497.28",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 11,
+            "name": "Fila"
+        }
+    },
+    {
+        "id": 193,
+        "name": "Nike ACG",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 8,
+            "name": "Ville"
+        },
+        "catalogPrice": "1026.26",
+        "sellingPrice": "932.96",
+        "inStock": false,
+        "productType": {
+            "id": 13,
+            "name": "bottes"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 19,
+            "name": "Levi's"
+        }
+    },
+    {
+        "id": 194,
+        "name": "The North Face Hedgehog",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 12,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "716.67",
+        "sellingPrice": "651.52",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 8,
+            "name": "Asics"
+        }
+    },
+    {
+        "id": 195,
+        "name": "Merrell Moab",
+        "category": {
+            "name": "Accessoires"
+        },
+        "subCategory": {
+            "id": 12,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "1170.84",
+        "sellingPrice": "1064.40",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 18,
+            "name": "Tommy Hilfiger"
+        }
+    },
+    {
+        "id": 196,
+        "name": "Columbia Redmond",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 7,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "715.79",
+        "sellingPrice": "650.72",
+        "inStock": false,
+        "productType": {
+            "id": 4,
+            "name": "classics"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 19,
+            "name": "Levi's"
+        }
+    },
+    {
+        "id": 197,
+        "name": "Salomon X Ultra",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "406.91",
+        "sellingPrice": "369.92",
+        "inStock": false,
+        "productType": {
+            "id": 3,
+            "name": "chill"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 4,
+            "name": "Clark's Originals"
+        }
+    },
+    {
+        "id": 198,
+        "name": "Hoka One One Stinson",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "253.79",
+        "sellingPrice": "230.72",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 7,
+            "name": "New Balance"
+        }
+    },
+    {
+        "id": 199,
+        "name": "Under Armour Horizon",
+        "category": {
+            "name": "Accessoires"
+        },
+        "subCategory": {
+            "id": 12,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "501.60",
+        "sellingPrice": "456.00",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 6,
+            "name": "Reebok"
+        }
+    },
+    {
+        "id": 200,
+        "name": "New Balance Nitrel",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "1430.18",
+        "sellingPrice": "1300.16",
+        "inStock": false,
+        "productType": {
+            "id": 11,
+            "name": "bottines"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 201,
+        "name": "Asics Gel-Kayano",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "946.18",
+        "sellingPrice": "860.16",
+        "inStock": false,
+        "productType": {
+            "id": 9,
+            "name": "bateaux"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 202,
+        "name": "Brooks Cascadia",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 9,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "775.63",
+        "sellingPrice": "705.12",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 8,
+            "name": "Asics"
+        }
+    },
+    {
+        "id": 203,
+        "name": "Saucony Xodus",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "125.40",
+        "sellingPrice": "114.00",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 19,
+            "name": "Levi's"
+        }
+    },
+    {
+        "id": 204,
+        "name": "Nike Air Zoom",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 13,
+            "name": "Ville"
+        },
+        "catalogPrice": "999.68",
+        "sellingPrice": "908.80",
+        "inStock": false,
+        "productType": {
+            "id": 13,
+            "name": "bottes"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 6,
+            "name": "Reebok"
+        }
+    },
+    {
+        "id": 205,
+        "name": "Adidas Terrex",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "570.24",
+        "sellingPrice": "518.40",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 15,
+            "name": "Kappa"
+        }
+    },
+    {
+        "id": 206,
+        "name": "Nike ACG",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 11,
+            "name": "Running"
+        },
+        "catalogPrice": "641.78",
+        "sellingPrice": "583.44",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 12,
+            "name": "Salomon"
+        }
+    },
+    {
+        "id": 207,
+        "name": "The North Face Hedgehog",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "285.12",
+        "sellingPrice": "259.20",
+        "inStock": false,
+        "productType": {
+            "id": 14,
+            "name": "snakers"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 17,
+            "name": "Geox"
+        }
+    },
+    {
+        "id": 208,
+        "name": "Merrell Moab",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "592.42",
+        "sellingPrice": "538.56",
+        "inStock": false,
+        "productType": {
+            "id": 4,
+            "name": "classics"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 8,
+            "name": "Asics"
+        }
+    },
+    {
+        "id": 209,
+        "name": "Columbia Redmond",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "644.07",
+        "sellingPrice": "585.52",
+        "inStock": false,
+        "productType": {
+            "id": 18,
+            "name": "musculation"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 19,
+            "name": "Levi's"
+        }
+    },
+    {
+        "id": 210,
+        "name": "Salomon X Ultra",
+        "category": {
+            "name": "Accessoires"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "1207.36",
+        "sellingPrice": "1097.60",
+        "inStock": false,
+        "productType": {
+            "id": 18,
+            "name": "musculation"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 15,
+            "name": "Kappa"
+        }
+    },
+    {
+        "id": 211,
+        "name": "Hoka One One Stinson",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "175.21",
+        "sellingPrice": "159.28",
+        "inStock": false,
+        "productType": {
+            "id": 11,
+            "name": "bottines"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 5,
+            "name": "Puma"
+        }
+    },
+    {
+        "id": 212,
+        "name": "Under Armour Horizon",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "617.76",
+        "sellingPrice": "561.60",
+        "inStock": false,
+        "productType": {
+            "id": 18,
+            "name": "musculation"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 9,
+            "name": "Vans"
+        }
+    },
+    {
+        "id": 213,
+        "name": "Nike Metcon",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 13,
+            "name": "Ville"
+        },
+        "catalogPrice": "1234.82",
+        "sellingPrice": "1122.56",
+        "inStock": false,
+        "productType": {
+            "id": 12,
+            "name": "mocassins"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 5,
+            "name": "Puma"
+        }
+    },
+    {
+        "id": 214,
+        "name": "Adidas Adipower",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "657.89",
+        "sellingPrice": "598.08",
+        "inStock": false,
+        "productType": {
+            "id": 20,
+            "name": "fitness"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 21,
+            "name": "Pepe Jeans"
+        }
+    },
+    {
+        "id": 215,
+        "name": "Under Armour TriBase",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "1238.16",
+        "sellingPrice": "1125.60",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 9,
+            "name": "Vans"
+        }
+    },
+    {
+        "id": 216,
+        "name": "Reebok Crossfit",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "331.58",
+        "sellingPrice": "301.44",
+        "inStock": false,
+        "productType": {
+            "id": 4,
+            "name": "classics"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 18,
+            "name": "Tommy Hilfiger"
+        }
+    },
+    {
+        "id": 217,
+        "name": "Nike Free X Metcon",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "460.77",
+        "sellingPrice": "418.88",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 7,
+            "name": "New Balance"
+        }
+    },
+    {
+        "id": 218,
+        "name": "Adidas Powerlift",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 12,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "1236.22",
+        "sellingPrice": "1123.84",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 14,
+            "name": "Lacoste"
+        }
+    },
+    {
+        "id": 219,
+        "name": "Under Armour Project Rock",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 6,
+            "name": "Running"
+        },
+        "catalogPrice": "1038.84",
+        "sellingPrice": "944.40",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [
+            [],
+            [],
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 1,
+            "name": "Nike"
+        }
+    },
+    {
+        "id": 220,
+        "name": "Reebok Nano",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "602.62",
+        "sellingPrice": "547.84",
+        "inStock": false,
+        "productType": {
+            "id": 17,
+            "name": "cross-training"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 2,
+            "name": "Adidas"
+        }
+    },
+    {
+        "id": 221,
+        "name": "Nike Zoom Train Command",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "959.64",
+        "sellingPrice": "872.40",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 20,
+            "name": "Wrangler"
+        }
+    },
+    {
+        "id": 222,
+        "name": "Adidas Pureboost",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 13,
+            "name": "Ville"
+        },
+        "catalogPrice": "505.65",
+        "sellingPrice": "459.68",
+        "inStock": false,
+        "productType": {
+            "id": 14,
+            "name": "snakers"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 223,
+        "name": "Under Armour HOVR",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "1039.72",
+        "sellingPrice": "945.20",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 9,
+            "name": "Vans"
+        }
+    },
+    {
+        "id": 224,
+        "name": "Reebok Legacy Lifter",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "322.43",
+        "sellingPrice": "293.12",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 22,
+            "name": "Diesel"
+        }
+    },
+    {
+        "id": 225,
+        "name": "Nike Zoom Pegasus Turbo",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "585.02",
+        "sellingPrice": "531.84",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    },
+    {
+        "id": 226,
+        "name": "Adidas Ultraboost 21",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "757.68",
+        "sellingPrice": "688.80",
+        "inStock": false,
+        "productType": {
+            "id": 18,
+            "name": "musculation"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 21,
+            "name": "Pepe Jeans"
+        }
+    },
+    {
+        "id": 227,
+        "name": "Under Armour Micro G",
+        "category": {
+            "name": "Soldes"
+        },
+        "subCategory": {
+            "id": 9,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "231.88",
+        "sellingPrice": "210.80",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 14,
+            "name": "Lacoste"
+        }
+    },
+    {
+        "id": 228,
+        "name": "Reebok Crossfit Speed TR",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 7,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "108.77",
+        "sellingPrice": "98.88",
+        "inStock": false,
+        "productType": {
+            "id": 4,
+            "name": "classics"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 11,
+            "name": "Fila"
+        }
+    },
+    {
+        "id": 229,
+        "name": "Nike React Infinity",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "909.92",
+        "sellingPrice": "827.20",
+        "inStock": false,
+        "productType": {
+            "id": 19,
+            "name": "athl\u00e9tisme"
+        },
+        "comments": [
+            [],
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 6,
+            "name": "Reebok"
+        }
+    },
+    {
+        "id": 230,
+        "name": "Adidas Adizero Adios",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "648.56",
+        "sellingPrice": "589.60",
+        "inStock": false,
+        "productType": {
+            "id": 19,
+            "name": "athl\u00e9tisme"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 18,
+            "name": "Tommy Hilfiger"
+        }
+    },
+    {
+        "id": 231,
+        "name": "Under Armour HOVR Phantom",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "123.55",
+        "sellingPrice": "112.32",
+        "inStock": false,
+        "productType": {
+            "id": 4,
+            "name": "classics"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 16,
+            "name": "Timberland"
+        }
+    },
+    {
+        "id": 232,
+        "name": "Reebok Harmony Road",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "601.92",
+        "sellingPrice": "547.20",
+        "inStock": false,
+        "productType": {
+            "id": 17,
+            "name": "cross-training"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 13,
+            "name": "Le Coq Sportif"
+        }
+    },
+    {
+        "id": 233,
+        "name": "Nike Zoom Fly 3",
+        "category": {
+            "name": "Soldes"
+        },
+        "subCategory": {
+            "id": 8,
+            "name": "Ville"
+        },
+        "catalogPrice": "477.22",
+        "sellingPrice": "433.84",
+        "inStock": false,
+        "productType": {
+            "id": 8,
+            "name": "derbies"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 13,
+            "name": "Le Coq Sportif"
+        }
+    },
+    {
+        "id": 234,
+        "name": "Adidas Solar Boost",
+        "category": {
+            "name": "Soldes"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "264.88",
+        "sellingPrice": "240.80",
+        "inStock": false,
+        "productType": {
+            "id": 8,
+            "name": "derbies"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 9,
+            "name": "Vans"
+        }
+    },
+    {
+        "id": 235,
+        "name": "Under Armour Charge 4",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 3,
+            "name": "Ville"
+        },
+        "catalogPrice": "253.44",
+        "sellingPrice": "230.40",
+        "inStock": false,
+        "productType": {
+            "id": 12,
+            "name": "mocassins"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 20,
+            "name": "Wrangler"
+        }
+    },
+    {
+        "id": 236,
+        "name": "Reebok Forever Floatride Energy",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 12,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "106.48",
+        "sellingPrice": "96.80",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 3,
+            "name": "Adidas Originals"
+        }
+    },
+    {
+        "id": 237,
+        "name": "Nike Air Zoom Pegasus 37",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 15,
+            "name": "Training"
+        },
+        "catalogPrice": "797.37",
+        "sellingPrice": "724.88",
+        "inStock": false,
+        "productType": {
+            "id": 19,
+            "name": "athl\u00e9tisme"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 4,
+            "name": "Clark's Originals"
+        }
+    },
+    {
+        "id": 238,
+        "name": "Adidas Ultraboost 20",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 11,
+            "name": "Running"
+        },
+        "catalogPrice": "765.95",
+        "sellingPrice": "696.32",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 22,
+            "name": "Diesel"
+        }
+    },
+    {
+        "id": 239,
+        "name": "Under Armour HOVR Sonic",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "771.50",
+        "sellingPrice": "701.36",
+        "inStock": false,
+        "productType": {
+            "id": 17,
+            "name": "cross-training"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 3,
+            "name": "Adidas Originals"
+        }
+    },
+    {
+        "id": 240,
+        "name": "Reebok Floatride Run Fast",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 8,
+            "name": "Ville"
+        },
+        "catalogPrice": "222.64",
+        "sellingPrice": "202.40",
+        "inStock": false,
+        "productType": {
+            "id": 8,
+            "name": "derbies"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 9,
+            "name": "Vans"
+        }
+    },
+    {
+        "id": 241,
+        "name": "Nike Air Zoom Pegasus 36",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "425.04",
+        "sellingPrice": "386.40",
+        "inStock": false,
+        "productType": {
+            "id": 19,
+            "name": "athl\u00e9tisme"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 9,
+            "name": "Vans"
+        }
+    },
+    {
+        "id": 242,
+        "name": "Adidas Ultraboost 19",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "99.26",
+        "sellingPrice": "90.24",
+        "inStock": false,
+        "productType": {
+            "id": 4,
+            "name": "classics"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 15,
+            "name": "Kappa"
+        }
+    },
+    {
+        "id": 243,
+        "name": "Under Armour HOVR Rise",
+        "category": {
+            "name": "Soldes"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "1090.23",
+        "sellingPrice": "991.12",
+        "inStock": false,
+        "productType": {
+            "id": 19,
+            "name": "athl\u00e9tisme"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 16,
+            "name": "Timberland"
+        }
+    },
+    {
+        "id": 244,
+        "name": "Reebok Floatride Run Fast Pro",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "739.20",
+        "sellingPrice": "672.00",
+        "inStock": false,
+        "productType": {
+            "id": 3,
+            "name": "chill"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 5,
+            "name": "Puma"
+        }
+    },
+    {
+        "id": 245,
+        "name": "Nike Air Zoom Pegasus 35",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "733.30",
+        "sellingPrice": "666.64",
+        "inStock": false,
+        "productType": {
+            "id": 10,
+            "name": "boots"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 14,
+            "name": "Lacoste"
+        }
+    },
+    {
+        "id": 246,
+        "name": "Adidas Ultraboost 18",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 4,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "402.69",
+        "sellingPrice": "366.08",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 11,
+            "name": "Fila"
+        }
+    },
+    {
+        "id": 247,
+        "name": "Under Armour HOVR Guardian",
+        "category": {
+            "name": "Soldes"
+        },
+        "subCategory": {
+            "id": 1,
+            "name": "Running"
+        },
+        "catalogPrice": "547.89",
+        "sellingPrice": "498.08",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 3,
+            "name": "Adidas Originals"
+        }
+    },
+    {
+        "id": 248,
+        "name": "Reebok Floatride Run Fast 2.0",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 7,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "235.31",
+        "sellingPrice": "213.92",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 9,
+            "name": "Vans"
+        }
+    },
+    {
+        "id": 249,
+        "name": "Nike Air Zoom Pegasus 34",
+        "category": {
+            "name": "Soldes"
+        },
+        "subCategory": {
+            "id": 11,
+            "name": "Running"
+        },
+        "catalogPrice": "154.44",
+        "sellingPrice": "140.40",
+        "inStock": false,
+        "productType": {
+            "id": 2,
+            "name": "trail"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 14,
+            "name": "Lacoste"
+        }
+    },
+    {
+        "id": 250,
+        "name": "Adidas Ultraboost 17",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 7,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "144.67",
+        "sellingPrice": "131.52",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 19,
+            "name": "Levi's"
+        }
+    },
+    {
+        "id": 251,
+        "name": "Under Armour HOVR Phantom 2",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 8,
+            "name": "Ville"
+        },
+        "catalogPrice": "1079.94",
+        "sellingPrice": "981.76",
+        "inStock": false,
+        "productType": {
+            "id": 14,
+            "name": "snakers"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 18,
+            "name": "Tommy Hilfiger"
+        }
+    },
+    {
+        "id": 252,
+        "name": "Reebok Floatride Run Fast 2.0",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 7,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "760.76",
+        "sellingPrice": "691.60",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 12,
+            "name": "Salomon"
+        }
+    },
+    {
+        "id": 253,
+        "name": "Nike Air Zoom Pegasus 33",
+        "category": {
+            "name": "Soldes"
+        },
+        "subCategory": {
+            "id": 7,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "413.95",
+        "sellingPrice": "376.32",
+        "inStock": false,
+        "productType": {
+            "id": 5,
+            "name": "skate"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 9,
+            "name": "Vans"
+        }
+    },
+    {
+        "id": 254,
+        "name": "Adidas Ultraboost 16",
+        "category": {
+            "name": "Soldes"
+        },
+        "subCategory": {
+            "id": 8,
+            "name": "Ville"
+        },
+        "catalogPrice": "630.78",
+        "sellingPrice": "573.44",
+        "inStock": false,
+        "productType": {
+            "id": 10,
+            "name": "boots"
+        },
+        "comments": [
+            []
+        ],
+        "productData": [],
+        "brand": {
+            "id": 21,
+            "name": "Pepe Jeans"
+        }
+    },
+    {
+        "id": 255,
+        "name": "Under Armour HOVR Phantom 2",
+        "category": {
+            "name": "Soldes"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "155.76",
+        "sellingPrice": "141.60",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 7,
+            "name": "New Balance"
+        }
+    },
+    {
+        "id": 256,
+        "name": "Reebok Floatride Run Fast 2.0",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 12,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "228.89",
+        "sellingPrice": "208.08",
+        "inStock": false,
+        "productType": {
+            "id": 3,
+            "name": "chill"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 12,
+            "name": "Salomon"
+        }
+    },
+    {
+        "id": 257,
+        "name": "Nike Air Zoom Pegasus 32",
+        "category": {
+            "name": "Soldes"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "425.57",
+        "sellingPrice": "386.88",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 17,
+            "name": "Geox"
+        }
+    },
+    {
+        "id": 258,
+        "name": "Adidas Ultraboost 15",
+        "category": {
+            "name": "Homme"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "434.02",
+        "sellingPrice": "394.56",
+        "inStock": false,
+        "productType": {
+            "id": 16,
+            "name": "montagne"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 16,
+            "name": "Timberland"
+        }
+    },
+    {
+        "id": 259,
+        "name": "Under Armour HOVR Phantom 2",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 14,
+            "name": "Randonn\u00e9e"
+        },
+        "catalogPrice": "1056.18",
+        "sellingPrice": "960.16",
+        "inStock": false,
+        "productType": {
+            "id": 15,
+            "name": "randonn\u00e9e"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 22,
+            "name": "Diesel"
+        }
+    },
+    {
+        "id": 260,
+        "name": "Reebok Floatride Run Fast 2.0",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 13,
+            "name": "Ville"
+        },
+        "catalogPrice": "511.63",
+        "sellingPrice": "465.12",
+        "inStock": false,
+        "productType": {
+            "id": 14,
+            "name": "snakers"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 18,
+            "name": "Tommy Hilfiger"
+        }
+    },
+    {
+        "id": 261,
+        "name": "Nike Air Zoom Pegasus 31",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 7,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "553.34",
+        "sellingPrice": "503.04",
+        "inStock": false,
+        "productType": {
+            "id": 3,
+            "name": "chill"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 20,
+            "name": "Wrangler"
+        }
+    },
+    {
+        "id": 262,
+        "name": "Adidas Ultraboost 14",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 5,
+            "name": "Training"
+        },
+        "catalogPrice": "1056.00",
+        "sellingPrice": "960.00",
+        "inStock": false,
+        "productType": {
+            "id": 18,
+            "name": "musculation"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 21,
+            "name": "Pepe Jeans"
+        }
+    },
+    {
+        "id": 263,
+        "name": "Under Armour HOVR Phantom 2",
+        "category": {
+            "name": "Enfant"
+        },
+        "subCategory": {
+            "id": 2,
+            "name": "Lifestyle"
+        },
+        "catalogPrice": "683.67",
+        "sellingPrice": "621.52",
+        "inStock": false,
+        "productType": {
+            "id": 6,
+            "name": "streetwear"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 18,
+            "name": "Tommy Hilfiger"
+        }
+    },
+    {
+        "id": 264,
+        "name": "Reebok Floatride Run Fast 2.0",
+        "category": {
+            "name": "Femme"
+        },
+        "subCategory": {
+            "id": 10,
+            "name": "Training"
+        },
+        "catalogPrice": "1092.61",
+        "sellingPrice": "993.28",
+        "inStock": false,
+        "productType": {
+            "id": 17,
+            "name": "cross-training"
+        },
+        "comments": [],
+        "productData": [],
+        "brand": {
+            "id": 10,
+            "name": "Converse"
+        }
+    }
+]

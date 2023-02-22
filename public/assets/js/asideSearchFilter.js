@@ -120,8 +120,8 @@ function filterProducts() {
     filteredProducts.sort(function(a, b){
         return a.sellingPrice - b.sellingPrice;
     });
-    console.log(filteredProducts);
         createProductCard(filteredProducts);
+        noResult(filteredProducts);
     }
 }
 
@@ -179,10 +179,26 @@ document.getElementById('reset').addEventListener('click', function(){
 // alert if there are no results
 function noResult($searchResults){
     // if there are no results to display in the searchResults div then display a message
-    if($searchResults.innerHTML == ''){
-        swal("Oupsss !",  `Pas de résultat pour la recherche : ${min.value} ${max.value} ${text.value} `, "error", {
-        button: "Ok",
-    });
+    // si j'ai des valeurs dans les inputs et que je n'ai pas de résultats alors j'affiche un message d'erreur
+    console.log($searchResults.length, min.value, max.value, text.value);
+    if($searchResults.length == 0 && min.value != 0 && max.value != 0 || text.value != ''){
+        // on crée un div pour afficher le message d'erreur et on l'ajoute à la div searchResults
+        let div = document.createElement('div');
+        div.classList.add('alert');
+        div.classList.add('alert-warning');
+        div.style.textAlign = 'center';
+        div.style.width = '100%';
+        div.style.display = 'flex';
+        div.style.justifyContent = 'center';
+        div.innerHTML = `
+        <span>Aucun de résultat pour la recherche : <br> 
+            prix minimum : ${min.value} € prix maximum : ${max.value} € ${text.value}</span>
+        `;
+        searchResults.appendChild(div);
+        
+        // swal("Oupsss !",  `Pas de résultat pour la recherche : ${min.value} ${max.value} ${text.value} `, "error", {
+        // button: "Ok",
+    //});
     }
     // stop the function
     return;

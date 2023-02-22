@@ -152,7 +152,7 @@ function filterProducts() {
             }
             return minPriceFilter && maxPriceFilter && searchTermFilter && selectedBrandsFilter;
         });
-        
+
         createProductCard(filteredProducts);
     }
 }
@@ -206,12 +206,11 @@ function resetDivResults(){
 document.getElementById('reset').addEventListener('click', function(){
     let searchResults = document.getElementById('searchResults');
     searchResults.innerHTML = '';
-    min.value = '';
-    max.value = '';
+    min.value = 500;
+    minOutput.innerHTML = min.value;
+    max.value = 500;
+    maxOutput.innerHTML = max.value;
     text.value = '';
-    // reset array
-    //products = [];
-    // uncheck all checkboxes
     document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox){
         checkbox.checked = false;
     });

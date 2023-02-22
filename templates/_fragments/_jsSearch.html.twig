@@ -1,14 +1,4 @@
-{# {% extends 'base.html.twig' %} #}
-{# {% block content %} #}
-
-{# searchForm #}
 <div class="form-container">
-{# <label for="minprice">Prix Minimum</label>
-    <input type="number" name="min" id="min" class="form-control">
-<label for="maximum">Prix Maximum</label>
-    <input type="number" name="max" id="max" class="form-control"> #}
-
-
 <label for="minprice">Prix minimum : <span id="minprice"></span></label>
     <input type="range" name="min" id="min" min="0" max="1000" value = "0" class="range">
     <label for="maxprice">Prix maximum : <span id="maxprice"></span></label>
@@ -39,8 +29,7 @@
 <script>
 
 console.log('search script loaded');
-// domcontentloaded
-
+// domcontentloaded pour que les checkbox soit accessibles dans le dom avant de l'utiliser
 document.addEventListener('DOMContentLoaded', function(){
 
 const minPriceInput = document.getElementById("min");

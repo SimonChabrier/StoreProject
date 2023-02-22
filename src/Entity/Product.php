@@ -58,6 +58,7 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
+     * @Groups({"product:read"})
      */
     private $catalogPrice = '0000';
 
@@ -80,6 +81,7 @@ class Product
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"product:read"})
      */
     private $inStock = 0;
 
@@ -107,16 +109,19 @@ class Product
      *      fetch="EXTRA_LAZY", 
      *      cascade={"remove"}
      *  )
+     * @Groups({"product:read"})
      */
     private $comments;
 
     /**
      * @ORM\Column(type="json", nullable=true)
+     * @Groups({"product:read"})
      */
     private $productData = [];
 
     /**
      * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="products")
+     * @Groups({"product:read"})
      */
     private $brand;
 

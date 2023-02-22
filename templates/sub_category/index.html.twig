@@ -21,8 +21,8 @@
                 <td>Cat -> {{ sub_category.getCategoryName }} | SubCat -> {{ sub_category.name }}</td>
                 <td>{{ sub_category.listOrder }}</td>
                 <td>
-                    <a href="{{ path('app_sub_category_show', {'id': sub_category.id}) }}">show</a>
-                    <a href="{{ path('app_sub_category_edit', {'id': sub_category.id}) }}">edit</a>
+                    <a href="{{ path('app_sub_category_show', {'id': sub_category.id}) }}">Voir</a>
+                    <a href="{{ path('app_sub_category_edit', {'id': sub_category.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}

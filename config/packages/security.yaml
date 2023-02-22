@@ -20,6 +20,8 @@ security:
             custom_authenticator: App\Security\LoginFormAuthenticator
             logout:
                 path: app_logout
+                # don't invalidate the session when logging out for flash messages
+                invalidate_session: false
                 # where to redirect after logout
                 # target: app_any_route
 

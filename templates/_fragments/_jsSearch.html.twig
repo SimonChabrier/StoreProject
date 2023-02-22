@@ -85,28 +85,19 @@ maxPriceInput.addEventListener('input', function() {
 function filterProducts() {
   // Récupération des valeurs saisies dans le formulaire
   const minPrice = Number(minPriceInput.value);
-  console.log(minPrice);
   const maxPrice = Number(maxPriceInput.value);
-  console.log(maxPrice);
   const searchTerm = searchInput.value.toLowerCase();
-  console.log(searchTerm);
-
-  const selectedBrands = Array.from(brandCheckboxes)
-    .filter((checkbox) => checkbox.checked)
-    .map((checkbox) => checkbox.value);
-
+  const selectedBrands = Array.from(brandCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
+    console.log(selectedBrands);
   // Filtrage des produits en fonction des critères
   const filteredProducts = products.filter((product) => {
     const meetsPriceCriteria = (minPrice === "" || product.sellingPrice >= minPrice) && (maxPrice === "" || product.sellingPrice <= maxPrice);
-    console.log(meetsPriceCriteria);
     const meetsSearchCriteria = searchTerm === "" || product.name.toLowerCase().includes(searchTerm);
-    console.log(meetsSearchCriteria);
     const meetsBrandCriteria = selectedBrands.length === 0 || selectedBrands.includes(product.brand.name);
-    console.log(meetsBrandCriteria);
     return meetsPriceCriteria && meetsSearchCriteria && meetsBrandCriteria;
   });
-
-  // Affichage des produits filtrés
+    console.log(filteredProducts);
+    // Affichage des produits filtrés
     createProductCard(filteredProducts);
 }
 
@@ -129,7 +120,6 @@ function noResult($searchResults){
 }
 
 function createProductCard(product){
-    console.log(product);
     let searchResults = document.getElementById('searchResults');
     // create a div for each product
     resetDivResults();

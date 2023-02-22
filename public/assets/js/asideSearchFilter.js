@@ -1,6 +1,6 @@
 console.log('search script loaded');
 // domcontentloaded pour que les checkbox soit accessibles dans le dom avant de l'utiliser
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener('DOMContentLoaded', function() {
 
 const minPriceInput = document.getElementById("min");
 const maxPriceInput = document.getElementById("max");
@@ -8,10 +8,14 @@ const searchInput = document.getElementById("text");
 const brandCheckboxes = document.querySelectorAll(".brandCheckbox");
 
 // Écoute des événements de saisie dans le formulaire
-minPriceInput.addEventListener("input", filterProducts, false);
+minPriceInput.addEventListener("input", filterProducts);
 maxPriceInput.addEventListener("input", filterProducts);
 searchInput.addEventListener("input", filterProducts);
 brandCheckboxes.forEach((checkbox) => checkbox.addEventListener("change", filterProducts));
+
+// Gestionnaire d'événements pour mettre à jour la valeur de sortie lorsque la valeur du range est modifiée
+minPriceInput.addEventListener('input', () => (minOutput.innerHTML = minPriceInput.value));
+maxPriceInput.addEventListener('input', () => (maxOutput.innerHTML = maxPriceInput.value));
 
 // Mise à jour de la valeur de sortie en fonction de la valeur du range
 minOutput.innerHTML = minPriceInput.value;
@@ -19,46 +23,35 @@ minOutput.style.fontSize = 'smaller';
 maxOutput.innerHTML = maxPriceInput.value;
 maxOutput.style.fontSize = 'smaller';
 
-// Gestionnaire d'événements pour mettre à jour la valeur de sortie lorsque la valeur du range est modifiée
-minPriceInput.addEventListener('input', function() {
-  minOutput.innerHTML = this.value;
-});
+// get products from json file
+async function fetchProducts() {
+    const URI = window.location.origin;
+    const response = await fetch(`${URI}/json/product.json`);
+    const data = await response.json();
+    return data;
+}
 
-maxPriceInput.addEventListener('input', function() {
-  maxOutput.innerHTML = this.value;
-});
-
-const URI = window.location.origin;
-//const search = document.getElementById('search')
-
+// stock products in an array
 let products = [];
 
-fetch(`${URI}/json/product.json`)
-    .then(function(response){
-        return response.json();
-    })
-    .then(function(data){
-        // populate data array with the json data
-        data.forEach(function(product){
-            product.sellingPrice = Number(product.sellingPrice); 
-            product.sellingPrice = Math.trunc(product.sellingPrice);
-            products.push(product);
-        }); 
+// on résout la promesse de fetchProducts() et on récupère les données de la promesse pour les mettre dans un tableau products
+fetchProducts().then((data) => {
+    data.forEach((product) => {
+        product.sellingPrice = Number(product.sellingPrice);
+        product.sellingPrice = Math.trunc(product.sellingPrice);
+        products.push(product);
     });
+});
 
-
-
-
-// Fonction de filtrage
+// filter products with the search criteria
 function filterProducts() {
 
     // Récupération des valeurs saisies dans le formulaire
     let minPrice = Number(minPriceInput.value);
-    console.log(minPrice);
     let maxPrice = Number(maxPriceInput.value);
     const searchTerm = searchInput.value.toLowerCase();
     const selectedBrands = Array.from(brandCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
-    console.log(selectedBrands);
+
     // Filtrage des produits en fonction des critères on va toggle true ou false pour chaque critère de recherche et on va utiliser ces valeurs pour évaluer si on utilise ou non chaque critère de recherche dans le filtre
     let searchState = {
         minPrice: false,
@@ -126,21 +119,12 @@ function filterProducts() {
     }
 }
 
-function noResult($searchResults){
-    // if there are no results to display in the searchResults div then display a message
-    if($searchResults.innerHTML == ''){
-        swal("Oupsss !",  `Pas de résultat pour la recherche : ${min.value} ${max.value} ${text.value} `, "error", {
-        button: "Ok",
-    });
-    }
-    // stop the function
-    return;
-}
-
+// make product card with the filtered products
 function createProductCard(product){
     let searchResults = document.getElementById('searchResults');
-    // create a div for each product
+    // on nettoie avant d'afficher les résultats ou de les mettre à jour
     resetDivResults();
+    // on affiche les résultats
     for(let i = 0; i < product.length; i++){
         let div = document.createElement('div');
         //div.classList.add('section');
@@ -166,12 +150,13 @@ function createProductCard(product){
     };
 }
 
+// reset div searchResults
 function resetDivResults(){
     let searchResults = document.getElementById('searchResults');
     searchResults.innerHTML = '';
 }
 
-// reset search results
+// reset search results and  inputs values
 document.getElementById('reset').addEventListener('click', function(){
     let searchResults = document.getElementById('searchResults');
     searchResults.innerHTML = '';
@@ -185,4 +170,15 @@ document.getElementById('reset').addEventListener('click', function(){
     });
 });
 
+// alert if there are no results
+function noResult($searchResults){
+    // if there are no results to display in the searchResults div then display a message
+    if($searchResults.innerHTML == ''){
+        swal("Oupsss !",  `Pas de résultat pour la recherche : ${min.value} ${max.value} ${text.value} `, "error", {
+        button: "Ok",
+    });
+    }
+    // stop the function
+    return;
+}
 });

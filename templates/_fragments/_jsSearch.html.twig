@@ -94,8 +94,8 @@ fetch(`${URI}/json/product.json`)
 function filterProducts() {
 
     // Récupération des valeurs saisies dans le formulaire
-    const minPrice = Number(minPriceInput.value);
-    const maxPrice = Number(maxPriceInput.value);
+    let minPrice = Number(minPriceInput.value);
+    let maxPrice = Number(maxPriceInput.value);
     const searchTerm = searchInput.value.toLowerCase();
     const selectedBrands = Array.from(brandCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
     console.log(selectedBrands);
@@ -136,11 +136,15 @@ function filterProducts() {
             let maxPriceFilter = true;
             let searchTermFilter = true;
             let selectedBrandsFilter = true;
+
+            let selectedSoloBrand = false;
+            console.log(minPriceFilter, maxPriceFilter, searchTermFilter, selectedBrandsFilter)
             
-            if(searchState.minPrice){
+            // comme min et max ne sont pas nul on les prend en compte directement pour qu'il n'écrase pas les autres critères de recherche parce qu'il ne sont jamais false
+            if(searchState.minPrice.length > 0){
                 minPriceFilter = product.sellingPrice >= minPrice;
             }
-            if(searchState.maxPrice){
+            if(searchState.maxPrice > 0){
                 maxPriceFilter = product.sellingPrice <= maxPrice;
             }
             if(searchState.searchTerm){
@@ -149,8 +153,14 @@ function filterProducts() {
             if(searchState.brandIsSelected){
                 selectedBrandsFilter = selectedBrands.includes(product.brand.name);
             }
-            return minPriceFilter && maxPriceFilter && searchTermFilter && selectedBrandsFilter;
+
+            return minPriceFilter && maxPriceFilter && searchTermFilter && selectedBrandsFilter ;
         });
+    
+    // sort the filtered products by product.selligPrice
+    filteredProducts.sort(function(a, b){
+        return a.sellingPrice - b.sellingPrice;
+    });
     console.log(filteredProducts);
         createProductCard(filteredProducts);
     }

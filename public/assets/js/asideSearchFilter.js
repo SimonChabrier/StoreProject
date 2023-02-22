@@ -1,33 +1,3 @@
-<div class="form-container">
-<label for="minprice">Prix minimum : <span id="minprice"></span></label>
-    <input type="range" name="min" id="min" min="0" max="1000" value = "0" class="range">
-    <label for="maxprice">Prix maximum : <span id="maxprice"></span></label>
-    <input type="range" name="max" id="max" min="0" max="1000" value = "0"class="range">
-
-    <div class="range-values">
-      <span id="minOutput"></span> € - <span id="maxOutput"></span> €
-    </div>
-
-<label for="text">Rechercher Nom</label>
-    <input type="text" name="text" id="text" class="form-control">
-<hr>
-    <div class="brandCheckboxes">
-        <h5><i class="bi bi-list-check"></i> Marques</h5>
-        <ol>
-        {% for brand in brands.getBrands() %}
-            <li><input type="checkbox" name="brand" value="{{ brand.name }}" class="brandCheckbox"> {{ brand.name }}</li>
-        {% endfor %}
-        </ol>
-    </div>
-</div>
-
-{# {% endblock %} #}
-{% block javascript %}
-
-{# search script #}
-
-<script>
-
 console.log('search script loaded');
 // domcontentloaded pour que les checkbox soit accessibles dans le dom avant de l'utiliser
 document.addEventListener('DOMContentLoaded', function(){
@@ -216,9 +186,3 @@ document.getElementById('reset').addEventListener('click', function(){
 });
 
 });
-
-</script>
-
-{% endblock %}
-
-

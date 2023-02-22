@@ -92,27 +92,69 @@ fetch(`${URI}/json/product.json`)
 
 // Fonction de filtrage
 function filterProducts() {
-  
+
     // Récupération des valeurs saisies dans le formulaire
     const minPrice = Number(minPriceInput.value);
     const maxPrice = Number(maxPriceInput.value);
     const searchTerm = searchInput.value.toLowerCase();
     const selectedBrands = Array.from(brandCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
-
+    console.log(searchTerm);
     // Filtrage des produits en fonction des critères
-    const filteredProducts = products.filter((product) => {
+    let searchState = {
+        minPrice: false,
+        maxPrice: false,
+        searchTerm: false,
+        selectedBrands: false
+    }
 
-    const priceFilter = (minPrice === "" || product.sellingPrice >= minPrice) && (maxPrice === "" || product.sellingPrice <= maxPrice);
-    const textFilter = searchTerm === "" || product.name.toLowerCase().includes(searchTerm);
-    const checkFilter = selectedBrands.length === 0 || selectedBrands.includes(product.brand.name);
-    
-    return priceFilter && textFilter && checkFilter;
-  
-  });
+    // on met à jour les valeurs de searchState en fonction des critères de recherche pour les utiliser pour évaluer si on utilse ou non chaque critère de recherche
+    if(minPriceInput.value != 500){
+        searchState.minPrice = true;
+    }
+    if(maxPriceInput.value != 500){
+        searchState.maxPrice = true;
+    }
+    if(searchInput.value != '' && searchInput.value.length >= 3){
+        searchState.searchTerm = true;
+    }
+    if(selectedBrands.length > 0){
+        searchState.selectedBrands = true;
+    }
 
-    console.log(filteredProducts);
-    // Affichage des produits filtrés
-    createProductCard(filteredProducts);
+    console.log(searchState);
+
+    // si aucun critère de recherche n'est utilisé on affiche tous les produits
+    if(!searchState.minPrice && !searchState.maxPrice && !searchState.searchTerm && !searchState.selectedBrands){
+        resetDivResults();
+        return;
+    }
+    // si j'ai au moins un critère de recherche alors je filtre les produits par rapport à ce critère
+    if(searchState.minPrice || searchState.maxPrice || searchState.searchTerm || searchState.selectedBrands){
+        
+        let filteredProducts = products.filter(function(product){
+            
+            let minPriceFilter = true;
+            let maxPriceFilter = true;
+            let searchTermFilter = true;
+            let selectedBrandsFilter = true;
+            
+            if(searchState.minPrice){
+                minPriceFilter = product.sellingPrice >= minPrice;
+            }
+            if(searchState.maxPrice){
+                maxPriceFilter = product.sellingPrice <= maxPrice;
+            }
+            if(searchState.searchTerm){
+                searchTermFilter = product.name.toLowerCase().includes(searchTerm);
+            }
+            if(searchState.selectedBrands){
+                selectedBrandsFilter = selectedBrands.includes(product.brand.name);
+            }
+            return minPriceFilter && maxPriceFilter && searchTermFilter && selectedBrandsFilter;
+        });
+        
+        createProductCard(filteredProducts);
+    }
 }
 
 function noResult($searchResults){

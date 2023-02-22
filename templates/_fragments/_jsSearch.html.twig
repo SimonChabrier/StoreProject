@@ -83,18 +83,21 @@ maxPriceInput.addEventListener('input', function() {
 
 // Fonction de filtrage
 function filterProducts() {
-  // Récupération des valeurs saisies dans le formulaire
-  const minPrice = Number(minPriceInput.value);
-  const maxPrice = Number(maxPriceInput.value);
-  const searchTerm = searchInput.value.toLowerCase();
-  const selectedBrands = Array.from(brandCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
-    console.log(selectedBrands);
-  // Filtrage des produits en fonction des critères
-  const filteredProducts = products.filter((product) => {
+  
+    // Récupération des valeurs saisies dans le formulaire
+    const minPrice = Number(minPriceInput.value);
+    const maxPrice = Number(maxPriceInput.value);
+    const searchTerm = searchInput.value.toLowerCase();
+    const selectedBrands = Array.from(brandCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
+
+    // Filtrage des produits en fonction des critères
+    const filteredProducts = products.filter((product) => {
     const meetsPriceCriteria = (minPrice === "" || product.sellingPrice >= minPrice) && (maxPrice === "" || product.sellingPrice <= maxPrice);
     const meetsSearchCriteria = searchTerm === "" || product.name.toLowerCase().includes(searchTerm);
     const meetsBrandCriteria = selectedBrands.length === 0 || selectedBrands.includes(product.brand.name);
+    
     return meetsPriceCriteria && meetsSearchCriteria && meetsBrandCriteria;
+  
   });
     console.log(filteredProducts);
     // Affichage des produits filtrés

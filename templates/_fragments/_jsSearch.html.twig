@@ -49,7 +49,7 @@ const searchInput = document.getElementById("text");
 const brandCheckboxes = document.querySelectorAll(".brandCheckbox");
 
 // Écoute des événements de saisie dans le formulaire
-minPriceInput.addEventListener("input", filterProducts);
+minPriceInput.addEventListener("input", filterProducts, false);
 maxPriceInput.addEventListener("input", filterProducts);
 searchInput.addEventListener("input", filterProducts);
 brandCheckboxes.forEach((checkbox) => checkbox.addEventListener("change", filterProducts));
@@ -98,38 +98,37 @@ function filterProducts() {
     const maxPrice = Number(maxPriceInput.value);
     const searchTerm = searchInput.value.toLowerCase();
     const selectedBrands = Array.from(brandCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
-    console.log(searchTerm);
-    // Filtrage des produits en fonction des critères
+    console.log(selectedBrands);
+    // Filtrage des produits en fonction des critères on va toggle true ou false pour chaque critère de recherche et on va utiliser ces valeurs pour évaluer si on utilise ou non chaque critère de recherche dans le filtre
     let searchState = {
         minPrice: false,
         maxPrice: false,
         searchTerm: false,
-        selectedBrands: false
+        brandIsSelected: false
     }
-
-    // on met à jour les valeurs de searchState en fonction des critères de recherche pour les utiliser pour évaluer si on utilse ou non chaque critère de recherche
-    if(minPriceInput.value != 500){
+    // on met à jour les valeurs de searchState en fonction des critères de recherche utilisés
+    if(minPriceInput.value){
         searchState.minPrice = true;
     }
-    if(maxPriceInput.value != 500){
+    if(maxPriceInput.value){
         searchState.maxPrice = true;
     }
     if(searchInput.value != '' && searchInput.value.length >= 3){
         searchState.searchTerm = true;
     }
     if(selectedBrands.length > 0){
-        searchState.selectedBrands = true;
+        searchState.brandIsSelected = true;
     }
 
     console.log(searchState);
 
     // si aucun critère de recherche n'est utilisé on affiche tous les produits
-    if(!searchState.minPrice && !searchState.maxPrice && !searchState.searchTerm && !searchState.selectedBrands){
+    if(!searchState.minPrice && !searchState.maxPrice && !searchState.searchTerm && !searchState.brandIsSelected){
         resetDivResults();
         return;
     }
     // si j'ai au moins un critère de recherche alors je filtre les produits par rapport à ce critère
-    if(searchState.minPrice || searchState.maxPrice || searchState.searchTerm || searchState.selectedBrands){
+    if(searchState.minPrice || searchState.maxPrice || searchState.searchTerm || searchState.brandIsSelected){
         
         let filteredProducts = products.filter(function(product){
             
@@ -147,12 +146,12 @@ function filterProducts() {
             if(searchState.searchTerm){
                 searchTermFilter = product.name.toLowerCase().includes(searchTerm);
             }
-            if(searchState.selectedBrands){
+            if(searchState.brandIsSelected){
                 selectedBrandsFilter = selectedBrands.includes(product.brand.name);
             }
             return minPriceFilter && maxPriceFilter && searchTermFilter && selectedBrandsFilter;
         });
-
+    console.log(filteredProducts);
         createProductCard(filteredProducts);
     }
 }

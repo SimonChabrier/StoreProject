@@ -25,10 +25,16 @@ maxOutput.style.fontSize = 'smaller';
 
 // get products from json file
 async function fetchProducts() {
+    
     const URI = window.location.origin;
-    const response = await fetch(`${URI}/json/product.json`);
-    const data = await response.json();
-    return data;
+    
+    try {
+        const response = await fetch(`${URI}/json/product.json`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 // stock products in an array

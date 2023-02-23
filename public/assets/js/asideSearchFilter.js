@@ -40,7 +40,7 @@ async function fetchProducts() {
 // stock products in an array
 let products = [];
 
-// on résout la promesse de fetchProducts() et on récupère les données de la promesse pour les mettre dans un tableau products
+//TODO à revoir mais ça marche - on résout la promesse de fetchProducts() et on récupère les données de la promesse pour les mettre dans un tableau products
 fetchProducts().then((data) => {
     data.forEach((product) => {
         product.sellingPrice = Number(product.sellingPrice);
@@ -99,7 +99,7 @@ function filterProducts() {
             let selectedSoloBrand = false;
             //console.log(minPriceFilter, maxPriceFilter, searchTermFilter, selectedBrandsFilter)
             
-            // comme min et max ne sont pas nul on les prend en compte directement pour qu'il n'écrase pas les autres critères de recherche parce qu'il ne sont jamais false
+            // comme min et max ne sont pas null par ddéfaut, on les prend en compte directement pour qu'il n'écrase pas les autres critères de recherche parce qu'il ne sont jamais false
             if(searchState.minPrice){
                 minPriceFilter = product.sellingPrice >= minPrice;
             }
@@ -121,7 +121,7 @@ function filterProducts() {
         return a.sellingPrice - b.sellingPrice;
     });
         createProductCard(filteredProducts);
-        noResult(filteredProducts);
+        countResults(filteredProducts.length);  
     }
 }
 
@@ -153,14 +153,6 @@ function createProductCard(product){
             </div>
         `;
         searchResults.appendChild(section);
-        
-        // si i == 0 je crée un h2 avec le nombre de résultats
-        if(i == 0){
-            let h2 = document.createElement('h2');
-            h2.classList.add('resultsNumber');
-            product.length > 1 ? h2.innerHTML = `${product.length} Résultats pour  la recherche prix minimum : ${min.value} € prix maximum : ${max.value} € ${text.value}` : h2.innerHTML = `${product.length} Résultat pour  la recherche prix minimum : ${min.value} € prix maximum : ${max.value} € ${text.value}`;
-            searchResults.prepend(h2);
-        }
     };
 }
 
@@ -169,9 +161,17 @@ function resetDivResults(){
     let searchResults = document.getElementById('searchResults');
     searchResults.innerHTML = '';
 }
+// Make a message with the number of results
+function countResults(count){
+    let searchResults = document.getElementById('searchResults');
+    let h2 = document.createElement('h2');
+    h2.classList.add('resultsNumber');
+    count > 1 ? h2.innerHTML = `${count} Résultats pour  la recherche prix minimum : ${min.value} € prix maximum : ${max.value} € ${text.value}` : h2.innerHTML = `${count} Résultat pour  la recherche prix minimum : ${min.value} € prix maximum : ${max.value} € ${text.value}`;
+    searchResults.prepend(h2);
+}
 
-// reset search results and  inputs values
-document.getElementById('reset').addEventListener('click', function(){
+// reset search results and inputs values
+document.getElementById('reset').addEventListener('click', function() {
     let searchResults = document.getElementById('searchResults');
     searchResults.innerHTML = '';
     min.value = 0;
@@ -179,37 +179,8 @@ document.getElementById('reset').addEventListener('click', function(){
     max.value = 0;
     maxOutput.innerHTML = max.value;
     text.value = '';
-    document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox){
-        checkbox.checked = false;
+    document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => { checkbox.checked = false });
     });
 });
 
-// alert if there are no results
-function noResult($searchResults){
-    // if there are no results to display in the searchResults div then display a message
-    // si j'ai des valeurs dans les inputs et que je n'ai pas de résultats alors j'affiche un message d'erreur
-    if($searchResults.length == 0 ){
-        // on crée un div pour afficher le message d'erreur et on l'ajoute à la div searchResults
-        let div = document.createElement('div');
-        div.classList.add('alert');
-        div.classList.add('alert-warning');
-        div.style.textAlign = 'center';
-        div.style.width = '100%';
-        div.style.display = 'flex';
-        div.style.justifyContent = 'center';
-        div.innerHTML = `
-        <span>Aucun résultat pour la recherche : <br> 
-            prix minimum : ${min.value} € prix maximum : ${max.value} € ${text.value}</span>
-        `;
-        searchResults.appendChild(div);
-    } else {
-        // on supprime le message d'erreur
-        let div = document.querySelector('.alert');
-        if(div){
-            div.remove();
-        }
-    }
-    // stop the function
-    return;
-}
-});
+

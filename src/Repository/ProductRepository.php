@@ -56,21 +56,29 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne les produits liées à la catégorie du produit courant
-     *
+     * Retourne 4 produits liées à la catégorie du produit courant
+     * dont la visibilité est true et la quentité en stock est supérieure à 0
      * @return array
      */
-    public function relatedProducts($categoryId): array
+    public function relatedProducts($subCatId): array
     {
         $qb = $this->createQueryBuilder('p');
 
-        $qb->select('p')   
-            ->andWhere('p.visibility = 1')
-            ->andWhere('p.subCategory = :category')
-            ->setParameter('category', $categoryId)
-            ->orderBy('p.id', 'asc')
-            ->setMaxResults(4);
+        $count = $qb->select('count(p.id)')
+            ->andWhere('p.visibility = 1 AND p.inStockQuantity > 0')
+            ->andWhere('p.subCategory = :subCategory')
+            ->setParameter('subCategory', $subCatId)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $qb->select('p')
+            ->andWhere('p.visibility = 1 AND p.inStockQuantity > 0')
+            ->andWhere('p.subCategory = :subCategory')
+            ->setParameter('subCategory', $subCatId)
+            ->setFirstResult(rand(0, $count - 4))
+            ->setMaxResults(4)
             
+            ->orderBy('p.id', 'asc');
         return $qb->getQuery()->getResult();
     }
 

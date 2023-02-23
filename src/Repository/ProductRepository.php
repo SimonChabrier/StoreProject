@@ -55,6 +55,25 @@ class ProductRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * Retourne les produits liées à la catégorie du produit courant
+     *
+     * @return array
+     */
+    public function relatedProducts($categoryId): array
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->select('p')   
+            ->andWhere('p.visibility = 1')
+            ->andWhere('p.subCategory = :category')
+            ->setParameter('category', $categoryId)
+            ->orderBy('p.id', 'asc')
+            ->setMaxResults(4);
+            
+        return $qb->getQuery()->getResult();
+    }
+
     // find all products category and subcategory products where visibility = 1
     public function test(): array
     {

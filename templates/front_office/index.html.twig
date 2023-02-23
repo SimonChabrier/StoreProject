@@ -19,7 +19,9 @@
                 <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
                 <span class="selling-price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span>
                 <div class="productInfo">
+                    {% if product.category is not empty %}
                     <span class="categorie">Categorie : {{ category.name }}</span>
+                    {% endif %}
                     {% if product.subCategory is not empty %}
                     {% for subCategory in product.subCategory %}
                         <span class="sous-categorie">Sous-categorie : {{ subCategory.name }}</span>

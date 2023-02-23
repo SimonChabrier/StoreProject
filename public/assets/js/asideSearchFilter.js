@@ -132,10 +132,11 @@ function createProductCard(product){
     resetDivResults();
     // on affiche les résultats
     for(let i = 0; i < product.length; i++){
-        let div = document.createElement('div');
-        //div.classList.add('section');
-        div.innerHTML = `
-        <section>
+        
+        let section = document.createElement('section')
+        section.classList.add('result-card');
+        
+        section.innerHTML = `
             <h6>${product[i].name}</h6>
             <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
             <span class="catalog-price"><del>${product[i].catalogPrice} €</del></span>
@@ -150,9 +151,16 @@ function createProductCard(product){
                                         <span>-9%</span> 
                 <span class="productLink"><a href="/product/${product[i].id}">Détail</a></span>
             </div>
-        </section>
         `;
-        searchResults.appendChild(div);
+        searchResults.appendChild(section);
+        
+        // si i == 0 je crée un h2 avec le nombre de résultats
+        if(i == 0){
+            let h2 = document.createElement('h2');
+            h2.classList.add('resultsNumber');
+            product.length > 1 ? h2.innerHTML = `${product.length} Résultats pour  la recherche prix minimum : ${min.value} € prix maximum : ${max.value} € ${text.value}` : h2.innerHTML = `${product.length} Résultat pour  la recherche prix minimum : ${min.value} € prix maximum : ${max.value} € ${text.value}`;
+            searchResults.prepend(h2);
+        }
     };
 }
 

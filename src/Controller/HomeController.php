@@ -26,10 +26,12 @@ class HomeController extends AbstractController
 
 
         //$this->addFlash('success', 'Message flash de test.');
+        // find by visible on home
+        //$homeCats = $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
         
         return $this->render('front_office/index.html.twig', [
-            //'homeCats' => $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']),
-            'homeCats' => $categoryRepository->findLatestProductsByCategoryAndSubcategory(),
+            'homeCats' => $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']),
+            //'homeCats' => $categoryRepository->findLatestProductsByCategoryAndSubcategory(),
             //'class' => $class,
         ]);
     

@@ -9,16 +9,17 @@
 
 
 <div class="form-container">
-<label for="minprice">Prix minimum : <span id="minprice"></span></label>
+
+<label for="minprice">A partir de : <span id="minprice"></span></label>
     <input type="range" name="min" id="min" min="0" max="1000" value = "0" class="range">
-    <label for="maxprice">Prix maximum : <span id="maxprice"></span></label>
+    <label for="maxprice">Jusqu'à : <span id="maxprice"></span></label>
     <input type="range" name="max" id="max" min="0" max="1000" value = "0"class="range">
 
     <div class="range-values">
       <span id="minOutput"></span> € - <span id="maxOutput"></span> €
     </div>
 
-<label for="text">Rechercher Nom</label>
+<label for="text">Rechercher</label>
     <input type="text" name="text" id="text" class="form-control">
 <hr>
     <div class="brandCheckboxes">
@@ -30,6 +31,7 @@
         </ol>
     </div>
 </div>
+
 </aside>
 
 {% block javascripts %} 

@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 
 class ProductCrudController extends AbstractCrudController
 {   
@@ -24,6 +25,11 @@ class ProductCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
+            // show product id 
+            NumberField::new('id')
+            ->setLabel('ID')
+            ->setFormTypeOption('disabled', true),
+
             TextField::new('name')
             ->setLabel('Nom')
             ->setRequired(true),
@@ -113,6 +119,12 @@ class ProductCrudController extends AbstractCrudController
                 'label' => 'Marque',
                 'class' => Brand::class,
                 'choice_label' => 'name',
+            ])
+            ->add('visibility', 'boolean', [
+                'label' => 'Visible',
+            ])
+            ->add('id', 'number', [
+                'label' => 'ID',
             ])
         ;
     }

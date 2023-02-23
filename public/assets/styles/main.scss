@@ -18,6 +18,14 @@ body {
   flex-grow: 1;
 }
 
+i {
+  margin-right: 10px!important;
+}
+
+input.brandCheckbox {
+  margin-right: 12px;
+}
+
 .btn {
   background-color: #c7c721 !important;
     color: #ffffff !important;
@@ -367,6 +375,30 @@ label {
   font-size: 1.1rem;
   font-weight: 300;
   text-transform: uppercase;
+}
+
+.last-five h6 {
+  //background-color: #c7c721;
+  background: rgb(255,255,255);
+  //background: linear-gradient(90deg, rgba(255,255,255,0) 45%, rgba(199,199,33,1) 100%);
+  background: linear-gradient(-90deg, rgba(255,255,255,0) 74%, rgba(233, 233, 222, 0.407) 100%);
+  color: #454543;
+  padding: 10px 20px;
+  margin: 0;
+  margin-bottom: 5px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  height: fit-content;
+  width: 100%;
+}
+
+.last-five h6 ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
 }
 
 
@@ -789,4 +821,10 @@ margin: 20px 0 10px 0;
 
 section.result-card {
   margin-top: inherit;
+}
+
+.resultsNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

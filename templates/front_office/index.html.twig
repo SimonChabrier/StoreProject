@@ -6,12 +6,11 @@
 {# résultats de la recherche #}
 {% include '_fragments/_searchResults.html.twig' %} 
 
-{# si produits directement dans la category #}
     {% for category in homeCats %}
     <h2>{{ category.name|upper }}</h2>
     
     <div class="last-five-products">
-    {% if category.products is not empty  %}
+    
     {% set categoryProducts = category.products|slice(0, 4) %}
         {% for product in categoryProducts %}
             <section>
@@ -35,7 +34,7 @@
                 </div>
             </section>
         {% endfor %}
-    {% endif %}
+
     </div>
 
 {# si produits dans une sous category #}
@@ -69,10 +68,8 @@
         </div>
     {% endfor %}
 {% endfor %}
-
 </div>
 
-{# end content block #}
 {% endblock %} 
 
 

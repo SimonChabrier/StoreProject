@@ -489,7 +489,7 @@ class AppFixtures extends Fixture
             $product->setBrand($brands[mt_rand(0, count($brands) - 1)]);
 
             $product->setProductType($productTypes[mt_rand(0, count($productTypes) - 1)]);
-            $product->setCategory($categories[rand(1, 3)]);
+            //$product->setCategory($categories[rand(1, 3)]);
 
             $product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
            
@@ -513,7 +513,7 @@ class AppFixtures extends Fixture
             
             $product->setBrand($brands[mt_rand(0, count($brands) - 1)]);
             $product->setProductType($productTypes[mt_rand(0, count($productTypes) - 1)]);
-            $product->setCategory($categories[rand(1, 3)]);
+            //$product->setCategory($categories[rand(1, 3)]);
             $product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
 
             $product->setInStockQuantity(rand(1, 10));
@@ -536,7 +536,7 @@ class AppFixtures extends Fixture
             
             $product->setBrand($brands[mt_rand(0, count($brands) - 1)]);
             $product->setProductType($productTypes[mt_rand(0, count($productTypes) - 1)]);
-            $product->setCategory($categories[rand(1, 3)]);
+            //$product->setCategory($categories[rand(1, 3)]);
             $product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
 
             $product->setInStockQuantity(rand(1, 10));
@@ -559,7 +559,7 @@ class AppFixtures extends Fixture
             
             $product->setBrand($brands[mt_rand(0, count($brands) - 1)]);
             $product->setProductType($productTypes[mt_rand(0, count($productTypes) - 1)]);
-            $product->setCategory($categories[rand(1, 3)]);
+            //$product->setCategory($categories[rand(1, 3)]);
             $product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
 
             $product->setInStockQuantity(rand(1, 10));
@@ -583,7 +583,7 @@ class AppFixtures extends Fixture
 
         $product->setBrand($brands[mt_rand(0, count($brands) - 1)]);
         $product->setProductType($productTypes[mt_rand(0, count($productTypes) - 1)]);
-        $product->setCategory($categories[rand(1, 3)]);
+        //$product->setCategory($categories[rand(1, 3)]);
         $product->setSubCategory($subCategories[rand(0, count($subCategories) - 1)]);
 
         $product->setInStockQuantity(rand(1, 10));
@@ -677,12 +677,23 @@ class AppFixtures extends Fixture
             $manager->persist($categories[5]);
         }
 
-        // if category name is "Solde" or "Nouveautés" showOnHome = false
+        // if category name is "Solde" or "Accessoires" showOnHome = false
         foreach ($categories as $category) {
-            if ($category->getName() === 'Solde' || $category->getName() === 'Nouveautés') {
+            if ($category->getName() === 'Solde' || $category->getName() === 'Accessoires') {
                 $category->setShowOnHome(false);
             }
         } 
+        
+        // unset all category for all products 
+        foreach ($products as $product) {
+            $product->setCategory(null);
+        }
+
+        // randmoly and 10 products to Nouveautés category
+        for ($i = 0; $i < 10; $i++) {
+            $categories[0]->addProduct($products[rand(0, count($products) - 1)]);
+            $manager->persist($categories[0]);
+        }
 
         // create 10 users 
         $users = [];

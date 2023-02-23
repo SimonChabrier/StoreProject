@@ -334,6 +334,9 @@ label {
   font-size: 1.7rem;
   font-weight: 300;
   text-transform: uppercase;
+  height: -moz-fit-content;
+  height: fit-content;
+  width: 100%;
 }
 
 .last-five h3,
@@ -726,4 +729,8 @@ help.help-block {
   font-size: 1.2rem;
   font-weight: 300;
   color: #c7c721;
+}
+
+section.result-card {
+  margin-top: inherit;
 }/*# sourceMappingURL=main.css.map */

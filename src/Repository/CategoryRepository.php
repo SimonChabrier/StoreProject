@@ -56,11 +56,15 @@ class CategoryRepository extends ServiceEntityRepository
         ->leftJoin('c.subCategories', 'sc')
         // je récupère les produits de la catégorie et de ses sous-catégories qui sont visibles (visibility = 1)
         ->leftJoin('c.products', 'cp', 'WITH', 'cp.visibility = true')
+        
+        // récupérer uniquement les 4 derniers produits de la catégorie et de ses sous-catégories
+        
         // et dont le prix est supérieur à 150  - commenté mais fonctionnel - peut être utilisé pour filtrer les produits avec un paramètre de requête par exemple
         // $price = 150; 
         //->andWhere('cp.sellingPrice > :price')->setParameter('price', $price)
         // ->andWhere('cp.sellingPrice > 100')
         ->leftJoin('sc.products', 'scp', 'WITH', 'scp.visibility = true')
+     
         // je trie les catégories et sous-catégories par leur ordre de liste (listOrder)
         ->orderBy('c.listOrder + 0', 'ASC')
         ->addOrderBy('sc.listOrder + 0', 'ASC')
@@ -352,9 +356,11 @@ class CategoryRepository extends ServiceEntityRepository
         $qb->select('c.id as catId, c.name as catName, c.listOrder as catOrder, sc.id as subCatId, sc.name as subCatName, sc.listOrder as subCatOrder')
         ->leftJoin('c.subCategories', 'sc')
         ->orderBy('c.listOrder + 0', 'ASC')
+        ->andWhere('c.subCategories IS NOT EMPTY')
+        //->andWhere('sc.products IS NOT EMPTY')
+        //->orWhere('c.products IS NOT EMPTY')
         ->addOrderBy('sc.listOrder + 0', 'ASC');
         $result = $qb->getQuery()->getResult();
-
         // build array with categories and subcategories
         $categories = [];
         foreach ($result as $row) {
@@ -589,15 +595,21 @@ class CategoryRepository extends ServiceEntityRepository
 
     }
 
-public function homeCats(): array
-{
-    $qb = $this->createQueryBuilder('c');
-    $qb->select('c')
-        ->orderBy('c.listOrder + 0', 'ASC')
-        ->andWhere('c.showOnHome = true');
-    return $qb->getQuery()->getResult();
-}
+    public function homeCats(): array
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->select('c')
+            ->orderBy('c.listOrder + 0', 'ASC')
+            ->andWhere('c.showOnHome = true');
+        return $qb->getQuery()->getResult();
+    }
 
+    
+    
+    
+    
+    
+    
 
 //    /**
 //     * @return Category[] Returns an array of Category objects

@@ -39,7 +39,7 @@ class SubCategory
      * @ORM\ManyToMany(
      *      targetEntity=Category::class, 
      *      inversedBy="subCategories",
-     *      fetch="EXTRA_LAZY",
+     *      fetch="EAGER",
      *      cascade={"persist"}
      *  )
      */

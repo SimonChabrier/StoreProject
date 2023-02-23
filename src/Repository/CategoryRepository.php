@@ -56,11 +56,15 @@ class CategoryRepository extends ServiceEntityRepository
         ->leftJoin('c.subCategories', 'sc')
         // je récupère les produits de la catégorie et de ses sous-catégories qui sont visibles (visibility = 1)
         ->leftJoin('c.products', 'cp', 'WITH', 'cp.visibility = true')
+        
+        // récupérer uniquement les 4 derniers produits de la catégorie et de ses sous-catégories
+        
         // et dont le prix est supérieur à 150  - commenté mais fonctionnel - peut être utilisé pour filtrer les produits avec un paramètre de requête par exemple
         // $price = 150; 
         //->andWhere('cp.sellingPrice > :price')->setParameter('price', $price)
         // ->andWhere('cp.sellingPrice > 100')
         ->leftJoin('sc.products', 'scp', 'WITH', 'scp.visibility = true')
+     
         // je trie les catégories et sous-catégories par leur ordre de liste (listOrder)
         ->orderBy('c.listOrder + 0', 'ASC')
         ->addOrderBy('sc.listOrder + 0', 'ASC')
@@ -591,46 +595,21 @@ class CategoryRepository extends ServiceEntityRepository
 
     }
 
-public function homeCats(): array
-{
-    $qb = $this->createQueryBuilder('c');
-    $qb->select('c')
-        ->orderBy('c.listOrder + 0', 'ASC')
-        ->andWhere('c.showOnHome = true');
-    return $qb->getQuery()->getResult();
-}
+    public function homeCats(): array
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->select('c')
+            ->orderBy('c.listOrder + 0', 'ASC')
+            ->andWhere('c.showOnHome = true');
+        return $qb->getQuery()->getResult();
+    }
 
-// OK utilisé sur HOMECONTROLLER pour la page home
-public function findLatestProductsByCategoryAndSubcategory()
-{
-    $qb = $this->createQueryBuilder('c');
-    $qb->select('c', 's', 'p')
-        ->leftJoin('c.subCategories', 's')
-        ->leftJoin('c.products', 'p')
-        ->where('c.showOnHome = true')
-        ->andWhere(
-            $qb->expr()->in(
-                'p.id',
-                $qb->getEntityManager()->createQueryBuilder()
-                    ->select('p2.id')
-                    ->from('App\Entity\Product', 'p2')
-                    ->where('p2.category = c OR p2.subCategory = s')
-                    ->andWhere('p2.visibility = true')
-                    ->orderBy('p2.id', 'DESC')
-                    ->setMaxResults(5)
-                    ->getDQL()
-            )
-        )
-        ->orderBy('c.id', 'ASC')
-        ->addOrderBy('s.id', 'ASC')
-        ->addOrderBy('p.id', 'DESC');
-
-    $query = $qb->getQuery();
-    $results = $query->getResult();
-
-    return $results;
-}
-
+    
+    
+    
+    
+    
+    
 
 //    /**
 //     * @return Category[] Returns an array of Category objects

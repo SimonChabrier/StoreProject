@@ -352,6 +352,8 @@ label {
   font-size: 1.7rem;
   font-weight: 300;
   text-transform: uppercase;
+  height: fit-content;
+  width: 100%;
 }
 .last-five h3,
 .block-content h1 {
@@ -783,4 +785,8 @@ margin: 20px 0 10px 0;
   font-size: 1.2rem;
   font-weight: 300;
   color: #c7c721;
+}
+
+section.result-card {
+  margin-top: inherit;
 }

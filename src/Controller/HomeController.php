@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Service\JsonManager;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
@@ -15,7 +16,7 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_home", methods={"GET", "POST"})
      */
-    public function index(CategoryRepository $sc, Request $request, JsonManager $jsonManager): Response
+    public function index(CategoryRepository $categoryRepository, ProductRepository $productRepository, Request $request, JsonManager $jsonManager): Response
     {
     // je récupère la classe de l'alerte qui est définie dans RegistrationController
     // et qui est passée en paramètre dans l'url de la requête avec redirectToRoute
@@ -23,11 +24,11 @@ class HomeController extends AbstractController
     // actuellement non utilisé si j'utilise les flash messages avec SweetAlert2
     //$class = $request->query->get('class', 'alert-success');
 
-
         //$this->addFlash('success', 'Message flash de test.');
-
+        
         return $this->render('front_office/index.html.twig', [
-            'homeCats' => $sc->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']),
+            'homeCats' => $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']),
+            //'homeCats' => $categoryRepository->findLatestProductsByCategoryAndSubcategory(),
             //'class' => $class,
         ]);
     

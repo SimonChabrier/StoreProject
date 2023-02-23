@@ -6,13 +6,44 @@
 {# résultats de la recherche #}
 {% include '_fragments/_searchResults.html.twig' %} 
 
-   {% for category in homeCats %}
+    {% for category in homeCats %}
     <h2>{{ category.name|upper }}</h2>
+    
+    <div class="last-five-products">
+    
+    {% set categoryProducts = category.products|slice(0, 4) %}
+        {% for product in categoryProducts %}
+            <section>
+                <h6>{{ product.name|upper }}</h6>
+                <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
+                <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
+                <span class="selling-price">{{ product.sellingPrice }} €</span>
+                <div class="productInfo">
+                    <span class="categorie">Categorie : {{ category.name }}</span>
+                    {% if product.subCategory is not empty %}
+                    {% for subCategory in product.subCategory %}
+                        <span class="sous-categorie">Sous-categorie : {{ subCategory.name }}</span>
+                    {% endfor %}
+                    {% endif %}
+                    <span class="type">Type : {{ product.productType }}</span>
+                </div>
+                <div class="productInfoFooter">
+                    {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
+                    <span>-{{ discount|round }}%</span> 
+                    <span class="productLink"><a href="{{ path('app_product_show', {'id': product.id}) }}">Détail</a></span>
+                </div>
+            </section>
+        {% endfor %}
+
+    </div>
+
+{# si produits dans une sous category #}
     {% for subCategory in category.subCategories %}
         <h3>{{ category.name|upper }} - {{ subCategory.name|upper }}</h3>
+
         <div class="last-five-products">
-            {% set products = subCategory.products|slice(0, 4) %}
-            {% for product in products %}
+        {% set subCategoryproducts = subCategory.products|slice(0, 4) %}
+            {% for product in subCategoryproducts %}
                 <section>
                     <h6>{{ product.name|upper }}</h6>
                     <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
@@ -20,7 +51,11 @@
                     <span class="selling-price">{{ product.sellingPrice }} €</span>
                     <div class="productInfo">
                         <span class="categorie">Categorie : {{ category.name }}</span>
-                        <span class="sous-categorie">Sous-categorie : {{ subCategory.name }}</span>
+                        {# {% if product.subCategory is not empty %} #}
+                        {# {% for subCategory in product.subCategory %} #}
+                            <span class="sous-categorie">Sous-categorie : {{ subCategory.name }}</span>
+                        {# {% endfor %} #}
+                        {# {% endif %} #}
                         <span class="type">Type : {{ product.productType }}</span>
                     </div>
                     <div class="productInfoFooter">
@@ -33,10 +68,8 @@
         </div>
     {% endfor %}
 {% endfor %}
-
 </div>
 
-{# end content block #}
 {% endblock %} 
 
 

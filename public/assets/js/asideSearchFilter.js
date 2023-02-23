@@ -1,6 +1,6 @@
 console.log('search script loaded');
 // domcontentloaded pour que les checkbox soit accessibles dans le dom avant de l'utiliser
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener('DOMContentLoaded', function() {
 
 const minPriceInput = document.getElementById("min");
 const maxPriceInput = document.getElementById("max");
@@ -8,10 +8,14 @@ const searchInput = document.getElementById("text");
 const brandCheckboxes = document.querySelectorAll(".brandCheckbox");
 
 // Écoute des événements de saisie dans le formulaire
-minPriceInput.addEventListener("input", filterProducts, false);
+minPriceInput.addEventListener("input", filterProducts);
 maxPriceInput.addEventListener("input", filterProducts);
 searchInput.addEventListener("input", filterProducts);
 brandCheckboxes.forEach((checkbox) => checkbox.addEventListener("change", filterProducts));
+
+// Gestionnaire d'événements pour mettre à jour la valeur de sortie lorsque la valeur du range est modifiée
+minPriceInput.addEventListener('input', () => (minOutput.innerHTML = minPriceInput.value));
+maxPriceInput.addEventListener('input', () => (maxOutput.innerHTML = maxPriceInput.value));
 
 // Mise à jour de la valeur de sortie en fonction de la valeur du range
 minOutput.innerHTML = minPriceInput.value;
@@ -19,46 +23,41 @@ minOutput.style.fontSize = 'smaller';
 maxOutput.innerHTML = maxPriceInput.value;
 maxOutput.style.fontSize = 'smaller';
 
-// Gestionnaire d'événements pour mettre à jour la valeur de sortie lorsque la valeur du range est modifiée
-minPriceInput.addEventListener('input', function() {
-  minOutput.innerHTML = this.value;
-});
+// get products from json file
+async function fetchProducts() {
+    
+    const URI = window.location.origin;
+    
+    try {
+        const response = await fetch(`${URI}/json/product.json`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-maxPriceInput.addEventListener('input', function() {
-  maxOutput.innerHTML = this.value;
-});
-
-const URI = window.location.origin;
-//const search = document.getElementById('search')
-
+// stock products in an array
 let products = [];
 
-fetch(`${URI}/json/product.json`)
-    .then(function(response){
-        return response.json();
-    })
-    .then(function(data){
-        // populate data array with the json data
-        data.forEach(function(product){
-            product.sellingPrice = Number(product.sellingPrice); 
-            product.sellingPrice = Math.trunc(product.sellingPrice);
-            products.push(product);
-        }); 
+//TODO à revoir mais ça marche - on résout la promesse de fetchProducts() et on récupère les données de la promesse pour les mettre dans un tableau products
+fetchProducts().then((data) => {
+    data.forEach((product) => {
+        product.sellingPrice = Number(product.sellingPrice);
+        product.sellingPrice = Math.trunc(product.sellingPrice);
+        products.push(product);
     });
+});
 
-
-
-
-// Fonction de filtrage
+// filter products with the search criteria
 function filterProducts() {
 
     // Récupération des valeurs saisies dans le formulaire
     let minPrice = Number(minPriceInput.value);
-    console.log(minPrice);
     let maxPrice = Number(maxPriceInput.value);
     const searchTerm = searchInput.value.toLowerCase();
     const selectedBrands = Array.from(brandCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
-    console.log(selectedBrands);
+
     // Filtrage des produits en fonction des critères on va toggle true ou false pour chaque critère de recherche et on va utiliser ces valeurs pour évaluer si on utilise ou non chaque critère de recherche dans le filtre
     let searchState = {
         minPrice: false,
@@ -100,7 +99,7 @@ function filterProducts() {
             let selectedSoloBrand = false;
             //console.log(minPriceFilter, maxPriceFilter, searchTermFilter, selectedBrandsFilter)
             
-            // comme min et max ne sont pas nul on les prend en compte directement pour qu'il n'écrase pas les autres critères de recherche parce qu'il ne sont jamais false
+            // comme min et max ne sont pas null par ddéfaut, on les prend en compte directement pour qu'il n'écrase pas les autres critères de recherche parce qu'il ne sont jamais false
             if(searchState.minPrice){
                 minPriceFilter = product.sellingPrice >= minPrice;
             }
@@ -121,31 +120,23 @@ function filterProducts() {
     filteredProducts.sort(function(a, b){
         return a.sellingPrice - b.sellingPrice;
     });
-    console.log(filteredProducts);
         createProductCard(filteredProducts);
+        countResults(filteredProducts.length);  
     }
 }
 
-function noResult($searchResults){
-    // if there are no results to display in the searchResults div then display a message
-    if($searchResults.innerHTML == ''){
-        swal("Oupsss !",  `Pas de résultat pour la recherche : ${min.value} ${max.value} ${text.value} `, "error", {
-        button: "Ok",
-    });
-    }
-    // stop the function
-    return;
-}
-
+// make product card with the filtered products
 function createProductCard(product){
     let searchResults = document.getElementById('searchResults');
-    // create a div for each product
+    // on nettoie avant d'afficher les résultats ou de les mettre à jour
     resetDivResults();
+    // on affiche les résultats
     for(let i = 0; i < product.length; i++){
-        let div = document.createElement('div');
-        //div.classList.add('section');
-        div.innerHTML = `
-        <section>
+        
+        let section = document.createElement('section')
+        section.classList.add('result-card');
+        
+        section.innerHTML = `
             <h6>${product[i].name}</h6>
             <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
             <span class="catalog-price"><del>${product[i].catalogPrice} €</del></span>
@@ -160,19 +151,27 @@ function createProductCard(product){
                                         <span>-9%</span> 
                 <span class="productLink"><a href="/product/${product[i].id}">Détail</a></span>
             </div>
-        </section>
         `;
-        searchResults.appendChild(div);
+        searchResults.appendChild(section);
     };
 }
 
+// reset div searchResults
 function resetDivResults(){
     let searchResults = document.getElementById('searchResults');
     searchResults.innerHTML = '';
 }
+// Make a message with the number of results
+function countResults(count){
+    let searchResults = document.getElementById('searchResults');
+    let h2 = document.createElement('h2');
+    h2.classList.add('resultsNumber');
+    count > 1 ? h2.innerHTML = `${count} Résultats pour  la recherche prix minimum : ${min.value} € prix maximum : ${max.value} € ${text.value}` : h2.innerHTML = `${count} Résultat pour  la recherche prix minimum : ${min.value} € prix maximum : ${max.value} € ${text.value}`;
+    searchResults.prepend(h2);
+}
 
-// reset search results
-document.getElementById('reset').addEventListener('click', function(){
+// reset search results and inputs values
+document.getElementById('reset').addEventListener('click', function() {
     let searchResults = document.getElementById('searchResults');
     searchResults.innerHTML = '';
     min.value = 0;
@@ -180,9 +179,8 @@ document.getElementById('reset').addEventListener('click', function(){
     max.value = 0;
     maxOutput.innerHTML = max.value;
     text.value = '';
-    document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox){
-        checkbox.checked = false;
+    document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => { checkbox.checked = false });
     });
 });
 
-});
+

@@ -35,7 +35,7 @@ class Category
      * @ORM\ManyToMany(
      *      targetEntity=SubCategory::class, 
      *      mappedBy="categories", 
-     *      fetch="EXTRA_LAZY"
+     *      fetch="EAGER"
      *  )
      * 
      */

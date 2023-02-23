@@ -819,3 +819,16 @@ section.result-card {
   align-items: center;
   justify-content: center;
 }
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-button-next, .swiper-button-prev {
+  color: #c7c721!important;
+}
+
+.last-five-products-related {
+  gap: 30px;
+}

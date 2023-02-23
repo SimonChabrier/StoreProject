@@ -35,8 +35,8 @@
     <p>De la catégorie : {{ sub_category.getCategoryName }}</p>
 
     <ol>
-    {% for product in sub_category.getProducts %}
-        {% if product.category == sub_category.getCategoryName %}
+    {% for product in products %}
+        {% if product.getSubCategory.getName == sub_category.name %}
             <li>
                 <a href="{{ path('app_product_show', {'id': product.id}) }}">Produit : {{ product.name }}</a>
             </li>

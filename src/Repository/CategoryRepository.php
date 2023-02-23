@@ -352,9 +352,11 @@ class CategoryRepository extends ServiceEntityRepository
         $qb->select('c.id as catId, c.name as catName, c.listOrder as catOrder, sc.id as subCatId, sc.name as subCatName, sc.listOrder as subCatOrder')
         ->leftJoin('c.subCategories', 'sc')
         ->orderBy('c.listOrder + 0', 'ASC')
+        ->andWhere('c.subCategories IS NOT EMPTY')
+        //->andWhere('sc.products IS NOT EMPTY')
+        //->orWhere('c.products IS NOT EMPTY')
         ->addOrderBy('sc.listOrder + 0', 'ASC');
         $result = $qb->getQuery()->getResult();
-
         // build array with categories and subcategories
         $categories = [];
         foreach ($result as $row) {
@@ -596,6 +598,37 @@ public function homeCats(): array
         ->orderBy('c.listOrder + 0', 'ASC')
         ->andWhere('c.showOnHome = true');
     return $qb->getQuery()->getResult();
+}
+
+// OK utilisé sur HOMECONTROLLER pour la page home
+public function findLatestProductsByCategoryAndSubcategory()
+{
+    $qb = $this->createQueryBuilder('c');
+    $qb->select('c', 's', 'p')
+        ->leftJoin('c.subCategories', 's')
+        ->leftJoin('c.products', 'p')
+        ->where('c.showOnHome = true')
+        ->andWhere(
+            $qb->expr()->in(
+                'p.id',
+                $qb->getEntityManager()->createQueryBuilder()
+                    ->select('p2.id')
+                    ->from('App\Entity\Product', 'p2')
+                    ->where('p2.category = c OR p2.subCategory = s')
+                    ->andWhere('p2.visibility = true')
+                    ->orderBy('p2.id', 'DESC')
+                    ->setMaxResults(5)
+                    ->getDQL()
+            )
+        )
+        ->orderBy('c.id', 'ASC')
+        ->addOrderBy('s.id', 'ASC')
+        ->addOrderBy('p.id', 'DESC');
+
+    $query = $qb->getQuery();
+    $results = $query->getResult();
+
+    return $results;
 }
 
 

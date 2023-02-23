@@ -50,7 +50,8 @@ class SubCategoryController extends AbstractController
      * @Route("/{id}", name="app_sub_category_show", methods={"GET"})
      */
     public function show(SubCategory $subCategory): Response
-    {
+    {   
+        dump($subCategory->getProducts());
         return $this->render('sub_category/show.html.twig', [
             'sub_category' => $subCategory,
             'products' => $subCategory->getProducts(),

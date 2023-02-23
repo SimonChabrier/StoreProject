@@ -67,11 +67,11 @@
 
     {# liked products #}
     <hr>
-    <div class="last-five">
+    <div class="last-five swiper">
     <h2>Produits similaires</h2>
-    <div class="last-five-products">
+    <div class="last-five-products-related swiper-wrapper">
     {% for product in relatedProducts %}
-            <section>
+            <section class="swiper-slide">
                 <h6>{{ product.name|upper }}</h6>
                 <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
                 <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
@@ -95,6 +95,51 @@
             </section>
         {% endfor %}
         </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+         {# <div class="swiper-scrollbar"></div> #}
     </div>
+
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
 {% endblock %}
 
+{% block javascripts %}
+    {# https://swiperjs.com/get-started #}
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+    const swiper = new Swiper('.swiper', {
+    // use arrows to navigate
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    },
+    // Optional parameters
+    slidesPerView: 4,
+    direction: 'horizontal',
+    autoplay: {
+        delay: 3000,
+        disableOnInteraction: true,
+    },
+    
+    transitionEffect: 'slide',
+    loop: true,
+    centeredSlides: true,
+   
+    pagination: {
+        el: '.swiper-pagination',
+        type: 'bullets',
+        clickable: true,
+    },
+});
+});
+</script>
+
+{% endblock %}
+
+{% endblock %}

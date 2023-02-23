@@ -75,8 +75,8 @@ class ProductRepository extends ServiceEntityRepository
             ->andWhere('p.visibility = 1 AND p.inStockQuantity > 0')
             ->andWhere('p.subCategory = :subCategory')
             ->setParameter('subCategory', $subCatId)
-            ->setFirstResult(rand(0, $count - 4))
-            ->setMaxResults(4)
+            ->setFirstResult(rand(0, $count - 8))
+            ->setMaxResults(8)
             
             ->orderBy('p.id', 'asc');
         return $qb->getQuery()->getResult();

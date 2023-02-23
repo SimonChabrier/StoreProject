@@ -78,12 +78,12 @@
                 <span class="selling-price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span>
                 <div class="productInfo">
                     {% if product.category is not empty %}
-                    <span class="categorie">Categorie : {{ category.name }}</span>
+                    <span class="categorie">Categorie : {{ product.category.name }}</span>
                     {% endif %}
                     {% if product.subCategory is not empty %}
-                    {% for subCategory in product.subCategory %}
-                        <span class="sous-categorie">Sous-categorie : {{ subCategory.name }}</span>
-                    {% endfor %}
+                    {# {% for subCategory in product.subCategory %} #}
+                        <span class="sous-categorie">Sous-categorie : {{ product.subCategory }}</span>
+                    {# {% endfor %} #}
                     {% endif %}
                     <span class="type">Type : {{ product.productType }}</span>
                 </div>

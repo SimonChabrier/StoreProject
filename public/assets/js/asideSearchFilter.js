@@ -220,7 +220,7 @@ function countResults(count){
     // Ajouter un espace après la virgule pour chaque élément  du tableau des marques sauf le dernier
     text.brands = selectedBrands.reduce((acc, brand, index) => {
       if (index > 0) {
-        acc += ', ';
+        acc += ' + ';
       }
       acc += brand;
       return acc;

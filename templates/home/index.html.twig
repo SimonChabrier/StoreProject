@@ -7,6 +7,8 @@
 {% include '_fragments/_searchResults.html.twig' %} 
 </div>
 
+
+{# affiche les produits de chaque category #}
 <div class="last-five swiper">
 {% for category in homeCats %}
     <h2>{{ category.name|upper }}</h2>
@@ -38,8 +40,9 @@
     <div class="swiper-pagination"></div>
 </div>
 
+{# affiche les produits de chaque sous category #}
+
 <div class="last-five">
-{# si produits dans une sous category #}
     {% for subCategory in category.subCategories %}
         <h3>{{ category.name|upper }} - {{ subCategory.name|upper }}</h3>
 

@@ -24,9 +24,12 @@ class ApiController extends AbstractController
     public function apiGet(ProductRepository $pr): Response
     {   
         return $this->json(
-            $pr->findAll(),
+            // find in  products inStockQuantity = true or > 0
+            $pr->findBy(['inStockQuantity' => true], ['createdAt' => 'ASC']),
             Response::HTTP_OK, 
-            [], 
+            [   // count the number of products in stock
+                'info' => count($pr->findBy(['inStockQuantity' => true]))
+            ], 
             ['groups' => 'product:read']
         );
     }

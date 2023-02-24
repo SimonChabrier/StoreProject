@@ -45,7 +45,8 @@ class Product
      * @ORM\ManyToOne(
      *      targetEntity=SubCategory::class, 
      *      inversedBy="products", 
-     *      fetch="EAGER"
+     *      fetch="EAGER",
+     *      cascade={"persist"}
      *  )
      * @Groups({"product:read"})
      */

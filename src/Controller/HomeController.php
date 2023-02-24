@@ -26,7 +26,7 @@ class HomeController extends AbstractController
 
         //$this->addFlash('success', 'Message flash de test.');
         
-        return $this->render('front_office/index.html.twig', [
+        return $this->render('home/index.html.twig', [
             'homeCats' => $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']),
             //'homeCats' => $categoryRepository->findLatestProductsByCategoryAndSubcategory(),
             //'class' => $class,
@@ -57,7 +57,7 @@ class HomeController extends AbstractController
         //$results = $pr->findBy([], ['id' => 'ASC'], $perPage, $offset);
         $results = $pr->findPaginateProducts($perPage, $offset);
        
-        return $this->render('front_office/productPagination.html.twig', [
+        return $this->render('home/productPagination.html.twig', [
             'products' => $results,
             'pageCount' => $totalPage,
             'currentPage' => $currentPage,

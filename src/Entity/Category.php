@@ -8,6 +8,7 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 // add groups for serialization
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -60,6 +61,18 @@ class Category
      * @ORM\Column(type="boolean")
      */
     private $showOnHome = true;
+
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $updatedAt;
 
     public function __construct()
     {
@@ -166,6 +179,30 @@ class Category
     public function setShowOnHome(bool $showOnHome): self
     {
         $this->showOnHome = $showOnHome;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     } 

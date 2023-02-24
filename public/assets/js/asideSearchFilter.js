@@ -5,13 +5,13 @@ document.addEventListener('DOMContentLoaded', function() {
 const minPriceInput = document.getElementById("min");
 const maxPriceInput = document.getElementById("max");
 const searchInput = document.getElementById("text");
-const brandCheckboxes = document.querySelectorAll(".brandCheckbox");
+const checkBoxes = document.querySelectorAll(".brandCheckbox");
 
 // Écoute des événements de saisie dans le formulaire
 minPriceInput.addEventListener("input", filterProducts);
 maxPriceInput.addEventListener("input", filterProducts);
 searchInput.addEventListener("input", filterProducts);
-brandCheckboxes.forEach((checkbox) => checkbox.addEventListener("change", filterProducts));
+checkBoxes.forEach((checkbox) => checkbox.addEventListener("change", filterProducts));
 
 // Gestionnaire d'événements pour mettre à jour la valeur de sortie lorsque la valeur du range est modifiée
 minPriceInput.addEventListener('input', () => (minOutput.innerHTML = minPriceInput.value));
@@ -84,14 +84,15 @@ function filterProducts() {
     let minPrice = Number(minPriceInput.value);
     let maxPrice = Number(maxPriceInput.value);
     const searchTerm = searchInput.value.toLowerCase();
-    const selectedBrands = Array.from(brandCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
+    const selectedBrands = Array.from(checkBoxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
 
     // Filtrage des produits en fonction des critères on va toggle true ou false pour chaque critère de recherche et on va utiliser ces valeurs pour évaluer si on utilise ou non chaque critère de recherche dans le filtre
     let searchState = {
         minPrice: false,
         maxPrice: false,
         searchTerm: false,
-        brandIsSelected: false
+        brandIsSelected: false,
+        categoryIsSelected: false
     }
     // on met à jour les valeurs de searchState en fonction des critères de recherche utilisés
     if(minPriceInput.value > 0){
@@ -123,8 +124,6 @@ function filterProducts() {
             let maxPriceFilter = true;
             let searchTermFilter = true;
             let selectedBrandsFilter = true;
-
-            let selectedSoloBrand = false;
             //console.log(minPriceFilter, maxPriceFilter, searchTermFilter, selectedBrandsFilter)
             
             // comme min et max ne sont pas null par ddéfaut, on les prend en compte directement pour qu'il n'écrase pas les autres critères de recherche parce qu'il ne sont jamais false
@@ -204,7 +203,7 @@ function resetDivResults(){
 //         number: ''
 //     }
     
-//     let selectedBrands = Array.from(brandCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
+//     let selectedBrands = Array.from(checkBoxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
 
 //     // get selctedBrands index and add a space after , on each index except the last one : adidas,nike,reebok => adidas, nike, reebok
 //     text.brands = selectedBrands.reduce((acc, brand, index) => {
@@ -244,7 +243,7 @@ function countResults(count){
         number: ''
     }
     
-    let selectedBrands = Array.from(brandCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
+    let selectedBrands = Array.from(checkBoxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
   
     // Ajouter un espace après la virgule pour chaque élément  du tableau des marques sauf le dernier
     text.brands = selectedBrands.reduce((acc, brand, index) => {

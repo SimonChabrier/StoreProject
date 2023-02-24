@@ -15,7 +15,7 @@
         {% for product in categoryProducts %}
             <section class="swiper-slide">
                 <h6>{{ product.name|upper }}</h6>
-                <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
+                <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="" loading="lazy">
                 <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
                 <span class="selling-price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span>
                 <div class="productInfo">
@@ -48,7 +48,7 @@
             {% for product in subCategoryproducts %}
                 <section>
                     <h6>{{ product.name|upper}}</h6>
-                    <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
+                    <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="..." loading="lazy">
                     <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
                     <span class="selling-price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span>
                     <div class="productInfo">
@@ -91,6 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
         dynamicBullets: true,
         dynamicMainBullets: 5,
     },
+
+    //effect: 'fade',
+    //fadeEffect: {
+    //crossFade: true
+    //},
 
     // Optional parameters
     slidesPerView: 4,

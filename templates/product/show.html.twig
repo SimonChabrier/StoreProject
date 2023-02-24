@@ -13,19 +13,23 @@
 
     <hr>
     {% if product.category %}
-    - Categorie : <a href="{{ path('app_category_show', { 'id': product.category.id }) }}">{{ product.category|capitalize }}</a>
+    <h5 style="text-transform: uppercase; font-weight:400; margin: 5px 0!important; padding: 0"><a href="{{ path('app_category_show', { 'id': product.category.id }) }}">Categorie :  {{ product.category|capitalize }}</a></h5>
+    {% else %}
+    <h6> Aucune categorie renseigné pour ce produit </h6>
     {% endif %}
 
     {% if product.subCategory %}
-    - Sous-Categorie : <a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}"> {{ product.subCategory|capitalize }}</a>
+    <h6 style="text-transform: uppercase; font-weight:400; margin: 5px 0!important; padding: 0"><a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}">Sous-Categorie : {{ product.subCategory|capitalize }}</a></h6>
     {% endif %}
 
     {% if product.productType.name %}
-    - Type de produit : <a href="{{ path('app_product_type_show', { 'id': product.productType.id }) }}"> {{ product.productType.name|capitalize }}</a>
+    <a style="text-transform: uppercase; font-weight:300; margin: 3px 0!important; padding: 0" href="{{ path('app_product_type_show', { 'id': product.productType.id }) }}">Type de produit :  {{ product.productType.name|capitalize }}</a>
     {% endif %}
 
     <hr>
-    - Propriétés du produit
+    <div class="last-five">
+    <h3> Propriétés du produit </h3>
+    <hr>
         <ol>
             <li>Id : {{ product.id }}</li>
             <li>Nom : {{ product.name }}</li>
@@ -40,21 +44,24 @@
 
     <hr>
 
-    - Liste des caractéristiques de CE produit (ProductData de la Class Product)
+    <h3> Liste des caractéristiques du produit </h3>
     <hr>
         <ol>
+        {% if product.productData %}
         {% for index, data in product.productData %}
                 <li>{{ data.key|capitalize }} : {{ data.value|capitalize }}</li>
         {% endfor %}
+        {% else %}
+            <li> Aucune caractéristique renseigné pour ce produit </li>
+        {% endif %}
         </ol>
     <hr>
 
-
-    - Commentaires liés au produit
+    <h3> Commentaires liés au produit </h3>
     <hr>
     {% for index, comment in product.comments %}
         <ol>
-            <li><i class="bi bi-person-circle"></i> {{ comment.author }}</li>
+            <h6><li><i class="bi bi-person-circle"></i> {{ comment.author|upper }}</li></h6>
             <li><i class="bi bi-chat-square-text-fill"></i> {{ comment.text }}</li>
         </ol>
     {% endfor %}
@@ -64,7 +71,123 @@
     <a href="{{ path('app_product_edit', {'id': product.id}) }}">Modifier</a>
 
     {{ include('product/_delete_form.html.twig') }}
+    </div>
+    
+    
+    
+    {# liked products #}
+    <hr>
+    <div class="last-five swiper">
+    <h3>Produits similaires à {{ product.name }} dans {{ product.subCategory.name }}</h3>
+    <div class="last-five-products-related swiper-wrapper">
+    {% for product in relatedProducts %}
+            <section class="swiper-slide">
+                <h6>{{ product.name|upper }}</h6>
+                <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
+                <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
+                <span class="selling-price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span>
+                <div class="productInfo">
+                    {% if product.category is not empty %}
+                    <span class="categorie">Categorie : {{ product.category.name }}</span>
+                    {% endif %}
+                    {% if product.subCategory is not empty %}
+                    {# {% for subCategory in product.subCategory %} #}
+                        <span class="sous-categorie">Sous-categorie : {{ product.subCategory }}</span>
+                    {# {% endfor %} #}
+                    {% endif %}
+                    <span class="type">Type : {{ product.productType }}</span>
+                </div>
+                <div class="productInfoFooter">
+                    {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
+                    <span>-{{ discount|round }}%</span> 
+                    <span class="productLink"><a href="{{ path('app_product_show', {'id': product.id}) }}">Détail</a></span>
+                </div>
+            </section>
+        {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
+        {# <div class="swiper-button-prev"></div> #}
+        {# <div class="swiper-button-next"></div> #}
+         {# <div class="swiper-scrollbar"></div> #}
+    </div>
 
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
+{% endblock %}
+
+{% block javascripts %}
+    {# https://swiperjs.com/get-started #}
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+    const swiper = new Swiper('.swiper', {
+    // use arrows to navigate
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    },
+    pagination: {
+        el: '.swiper-pagination',
+        type: 'bullets',
+        clickable: true,
+        dynamicBullets: true,
+        dynamicMainBullets: 5,
+    },
+
+    // Optional parameters
+    slidesPerView: 4,
+    direction: 'horizontal',
+    
+
+    autoplay: {
+        delay: 3000,
+        // stop slide autoplay when user click on it
+        disableOnInteraction: true,
+    },
+
+    transitionEffect: 'slide',
+
+    loop: true,
+    centeredSlides: true,
+
+    // theme color
+    // scrollbar: {
+    //     el: '.swiper-scrollbar',
+    //     draggable: true,
+    //     dragSize: 100,
+    //     snapOnRelease: true,
+    //     hide: false,
+    //     },
+
+    // Responsive breakpoints
+    breakpoints: {
+        // when window width is >= 320px
+        320: {
+        slidesPerView: 1,
+        spaceBetween: 10
+        },
+        // when window width is >= 480px
+        480: {
+        slidesPerView: 2,
+        spaceBetween: 20
+        },
+        // when window width is >= 640px
+        640: {
+        slidesPerView: 3,
+        spaceBetween: 30
+        },
+        1024: {
+        slidesPerView: 4,
+        spaceBetween: 40
+        }
+    }
+});
+});
+</script>
 
 {% endblock %}
 
+{% endblock %}

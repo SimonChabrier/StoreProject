@@ -162,13 +162,84 @@ function resetDivResults(){
     searchResults.innerHTML = '';
 }
 // Make a message with the number of results
+// function countResults(count){
+//     let searchResults = document.getElementById('searchResults');
+//     let h2 = document.createElement('h6');
+//     h2.classList.add('resultsNumber');
+
+//     let text = {
+//         min: '',
+//         max: '',
+//         search: '',
+//         brands: '',
+//         number: ''
+//     }
+    
+//     let selectedBrands = Array.from(brandCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
+
+//     // get selctedBrands index and add a space after , on each index except the last one : adidas,nike,reebok => adidas, nike, reebok
+//     text.brands = selectedBrands.reduce((acc, brand, index) => {
+//         if (index > 0) {
+//           acc += ', ';
+//         }
+//         acc += brand;
+//         return acc;
+//       }, '').trim();
+//       console.log(text.brands);
+
+//     // get input values
+//     min.value == 0 ? text.min = '' : text.min = 'à partir de : ' +  min.value + ' € | ';
+//     max.value == 0 ? text.max = '' : text.max = 'jusqu\'à : ' +  max.value + ' € | ';
+//     console.log(searchInput.value.length);
+//     searchInput.value.length <= 2 ? text.search = '' : text.search = 'contenant : ' +  searchInput.value + ' | ';
+//     selectedBrands.length == 0 ? text.brands = '' : text.brands = 'dans les marques : ' + selectedBrands.toString() + ' | ';
+//     count == 0 ? text.number = 'Aucun' : text.number = count;
+
+
+//     count > 1 ? h2.innerHTML = `${text.number} Résultats pour  la recherche : ${text.min} ${text.max} ${text.search} ${text.brands}` :
+//                 h2.innerHTML = `${text.number} Résultat pour  la recherche : ${text.min} ${text.max} ${text.search}  ${text.brands}`;
+
+//     searchResults.prepend(h2);
+// }
+
 function countResults(count){
     let searchResults = document.getElementById('searchResults');
-    let h2 = document.createElement('h2');
-    h2.classList.add('resultsNumber');
-    count > 1 ? h2.innerHTML = `${count} Résultats pour  la recherche prix minimum : ${min.value} € prix maximum : ${max.value} € ${text.value}` : h2.innerHTML = `${count} Résultat pour  la recherche prix minimum : ${min.value} € prix maximum : ${max.value} € ${text.value}`;
-    searchResults.prepend(h2);
-}
+    let h6 = document.createElement('h6');
+    h6.classList.add('resultsNumber');
+  
+    let text = {
+        min: '',
+        max: '',
+        search: '',
+        brands: '',
+        number: ''
+    }
+    
+    let selectedBrands = Array.from(brandCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
+  
+    // Ajouter un espace après la virgule pour chaque élément  du tableau des marques sauf le dernier
+    text.brands = selectedBrands.reduce((acc, brand, index) => {
+      if (index > 0) {
+        acc += ' + ';
+      }
+      acc += brand;
+      return acc;
+    }, '').trim();
+  
+    text.min = min.value == 0 ? '' : `à partir de : ${min.value} €${max.value == 0 ? '' : ' | '}`;
+    text.max = max.value == 0 ? '' : `jusqu'à : ${max.value} €${searchInput.value == '' ? '' : ' | '}`;
+    text.search = searchInput.value.length <= 2 ? '' : `contenant : ${searchInput.value}${selectedBrands.length == 0 ? '' : ' | '}`;
+    text.brands = selectedBrands.length == 0 ? '' : `dans ${selectedBrands.length > 1 ? 'les' : 'la'} marque${selectedBrands.length > 1 ? 's' : ''} : ${text.brands}`;
+
+
+    
+    count == 0 ? text.number = 'Aucun' : text.number = count;
+    count > 1 ? h6.innerHTML = `${text.number} Résultats pour  la recherche : ${text.min} ${text.max} ${text.search} ${text.brands}` :
+                h6.innerHTML = `${text.number} Résultat pour  la recherche : ${text.min} ${text.max} ${text.search}  ${text.brands}`;
+  
+    searchResults.prepend(h6);
+  }
+  
 
 // reset search results and inputs values
 document.getElementById('reset').addEventListener('click', function() {

@@ -469,6 +469,7 @@ aside {
     transition: all 0.2s ease-in;
     margin: 20px 0;
     width: 290px!important;
+    height: auto;
 
     &:hover {
       cursor: pointer;
@@ -834,4 +835,14 @@ section.result-card {
   background-color: #c7c721 !important;
 }
 
+.swiper-slide {
+  margin: 0;
+}
 
+// équilibre margin entre les slides du swiper pour 30px de marge totale entre les slides
+.swiper-slide, .swiper-slide-next {
+  margin-left: 15px!important;
+}
+.swiper-slide, .swiper-slide-prev {
+  margin-right: 15px!important;
+}

@@ -427,7 +427,7 @@ aside {
   text-transform: uppercase;
   transition: all 0.2s ease-in;
   margin: 20px 0;
-  width: 290px;
+  width: 290px !important;
 }
 .last-five section:hover {
   cursor: pointer;
@@ -774,6 +774,6 @@ section.result-card {
   color: #c7c721 !important;
 }
 
-.last-five-products-related {
-  gap: 30px;
+.swiper-pagination-bullet-active {
+  background-color: #c7c721 !important;
 }/*# sourceMappingURL=main.css.map */

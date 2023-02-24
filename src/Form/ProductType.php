@@ -57,8 +57,19 @@ class ProductType extends AbstractType
                 'multiple' => false,
                 'expanded' => true,
             ])
-            
-
+            // ->add('subCategories', CollectionType::class, [
+            //     'entry_type' => EntityType::class,
+            //     'entry_options' => [
+            //         'class' => SubCategory::class,
+            //         'choice_label' => 'name',
+            //         'by_reference' => false,
+            //         'multiple' => false,
+            //         'expanded' => true,
+            //     ],
+            //     'allow_add' => true,
+            //     'allow_delete' => true,
+            //     'by_reference' => false,
+            // ])
             ->add('productType', EntityType::class, [
                 'class' => ProductTypeEntity::class,
                 'choice_label' => 'name',

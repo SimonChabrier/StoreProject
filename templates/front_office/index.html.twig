@@ -17,9 +17,11 @@
                 <h6>{{ product.name|upper }}</h6>
                 <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
                 <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
-                <span class="selling-price">{{ product.sellingPrice }} €</span>
+                <span class="selling-price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span>
                 <div class="productInfo">
+                    {% if product.category is not empty %}
                     <span class="categorie">Categorie : {{ category.name }}</span>
+                    {% endif %}
                     {% if product.subCategory is not empty %}
                     {% for subCategory in product.subCategory %}
                         <span class="sous-categorie">Sous-categorie : {{ subCategory.name }}</span>
@@ -48,7 +50,7 @@
                     <h6>{{ product.name|upper }}</h6>
                     <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
                     <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
-                    <span class="selling-price">{{ product.sellingPrice }} €</span>
+                    <span class="selling-price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span>
                     <div class="productInfo">
                         <span class="categorie">Categorie : {{ category.name }}</span>
                         {# {% if product.subCategory is not empty %} #}

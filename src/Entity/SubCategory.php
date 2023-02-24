@@ -20,7 +20,6 @@ class SubCategory
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"product:read"})
      */
     private $id;
 
@@ -43,6 +42,7 @@ class SubCategory
      *      fetch="EAGER",
      *      cascade={"persist"}
      *  )
+     * @Groups({"product:read"})
      */
     private $categories;
 

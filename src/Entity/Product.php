@@ -85,10 +85,11 @@ class Product
      * @ORM\Column(type="boolean")
      * @Groups({"product:read"})
      */
-    private $inStock = 0;
+    private $inStock = 1;
 
     /**
      * @ORM\Column(type="string", length=5)
+     * @Groups({"product:read"})
      */
     private $inStockQuantity = 0;
 

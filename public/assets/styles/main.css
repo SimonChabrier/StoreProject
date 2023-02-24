@@ -790,4 +790,8 @@ section.result-card {
 
 .swiper-slide, .swiper-slide-prev {
   margin-right: 15px !important;
+}
+
+.swiper-horizontal > .swiper-pagination-bullets.swiper-pagination-bullets-dynamic, .swiper-pagination-horizontal.swiper-pagination-bullets.swiper-pagination-bullets-dynamic {
+  bottom: 0;
 }/*# sourceMappingURL=main.css.map */

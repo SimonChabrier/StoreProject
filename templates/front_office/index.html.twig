@@ -23,9 +23,7 @@
                     <span class="categorie">Categorie : {{ category.name }}</span>
                     {% endif %}
                     {% if product.subCategory is not empty %}
-                    {% for subCategory in product.subCategory %}
-                        <span class="sous-categorie">Sous-categorie : {{ subCategory.name }}</span>
-                    {% endfor %}
+                        <span class="sous-categorie">Sous-categorie : {{ product.subCategory.name }}</span>
                     {% endif %}
                     <span class="type">Type : {{ product.productType }}</span>
                 </div>

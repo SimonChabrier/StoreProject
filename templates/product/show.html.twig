@@ -13,15 +13,17 @@
 
     <hr>
     {% if product.category %}
-    - Categorie : <a href="{{ path('app_category_show', { 'id': product.category.id }) }}">{{ product.category|capitalize }}</a>
+    <h5 style="text-transform: uppercase; font-weight:400; margin: 5px 0!important; padding: 0"><a href="{{ path('app_category_show', { 'id': product.category.id }) }}">Categorie :  {{ product.category|capitalize }}</a></h5>
+    {% else %}
+    <h6> Aucune categorie renseigné pour ce produit </h6>
     {% endif %}
 
     {% if product.subCategory %}
-    <h6 style="text-transform: uppercase;"><a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}">Sous-Categorie : {{ product.subCategory|capitalize }}</a></h6>
+    <h6 style="text-transform: uppercase; font-weight:400; margin: 5px 0!important; padding: 0"><a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}">Sous-Categorie : {{ product.subCategory|capitalize }}</a></h6>
     {% endif %}
 
     {% if product.productType.name %}
-    <a href="{{ path('app_product_type_show', { 'id': product.productType.id }) }}">Type de produit :  {{ product.productType.name|capitalize }}</a>
+    <a style="text-transform: uppercase; font-weight:300; margin: 3px 0!important; padding: 0" href="{{ path('app_product_type_show', { 'id': product.productType.id }) }}">Type de produit :  {{ product.productType.name|capitalize }}</a>
     {% endif %}
 
     <hr>

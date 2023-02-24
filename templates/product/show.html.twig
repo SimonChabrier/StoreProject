@@ -38,7 +38,7 @@
             <li>Prix catalogue : <span class="catalogPrice"><del>{{ product.catalogPrice|round(0) }} €</del></span></li>
             {% set discount = (product.catalogPrice - product.sellingPrice|round(0) ) / product.catalogPrice * 100 %}
             <li>Réduction : <span class="dicountPrice">{{ discount|round(0) }} % </span></li> 
-            <li>Prix : <span class="price">{{ product.sellingPrice|round(0) }} €</span></li>
+            <li>Prix : <span class="price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span></li>
             <li>Marque : {{ product.brand }}</li>
         </ol>
 

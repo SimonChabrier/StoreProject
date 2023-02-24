@@ -3,7 +3,7 @@
 {% block title %}ProductType{% endblock %}
 
 {% block content %}
-    <h1>ProductType</h1>
+    <h1>Product Type</h1>
 
     <table class="table">
         <tbody>
@@ -19,15 +19,19 @@
     </table>
 
 
-    <h2>Produit du type : {{ product_type.name }}</h2> 
+    <h2>Produit du type : {{ product_type.name|upper }}</h2> 
     <ul>
     {#  sort product by category name #}
-    {% set products = product_type.products|sort((a, b) => a.category.name > b.category.name) %}
+    {% set products = product_type.products|sort((a, b) => a.subCategory.name > b.subCategory.name) %}
         {% for product in products %}
             <li>
                 <a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name }}</a>
                 <ol>
+                    {% if product.category %}
                     <li>Categorie : <a href="{{ path('app_category_show', {'id': product.category.id}) }}">{{ product.category.name }}</a></li>
+                    {% else %}
+                    Pas de categorie pour ce produit
+                    {% endif %}
                     <li>Sous Categorie : <a href="{{ path('app_sub_category_show', {'id': product.subCategory.id}) }}">{{ product.subCategory.name }}</a></li>
                 </ol>
             </li>

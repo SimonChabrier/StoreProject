@@ -429,6 +429,7 @@ aside {
   transition: all 0.2s ease-in;
   margin: 20px 0;
   width: 290px !important;
+  height: auto;
 }
 .last-five section:hover {
   cursor: pointer;
@@ -777,4 +778,16 @@ section.result-card {
 
 .swiper-pagination-bullet-active {
   background-color: #c7c721 !important;
+}
+
+.swiper-slide {
+  margin: 0;
+}
+
+.swiper-slide, .swiper-slide-next {
+  margin-left: 15px !important;
+}
+
+.swiper-slide, .swiper-slide-prev {
+  margin-right: 15px !important;
 }/*# sourceMappingURL=main.css.map */

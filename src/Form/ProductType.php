@@ -57,6 +57,7 @@ class ProductType extends AbstractType
                 'multiple' => false,
                 'expanded' => true,
             ])
+            // A utiliser si produit et sous catégories sont liés par une ManyToMany
             // ->add('subCategories', CollectionType::class, [
             //     'entry_type' => EntityType::class,
             //     'entry_options' => [

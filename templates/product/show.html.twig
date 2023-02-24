@@ -96,8 +96,8 @@
         {% endfor %}
         </div>
         <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
+        {# <div class="swiper-button-prev"></div> #}
+        {# <div class="swiper-button-next"></div> #}
          {# <div class="swiper-scrollbar"></div> #}
     </div>
 
@@ -119,23 +119,61 @@ document.addEventListener('DOMContentLoaded', () => {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
     },
-    // Optional parameters
-    slidesPerView: 4,
-    direction: 'horizontal',
-    autoplay: {
-        delay: 3000,
-        disableOnInteraction: true,
-    },
-    
-    transitionEffect: 'slide',
-    loop: true,
-    centeredSlides: true,
-   
     pagination: {
         el: '.swiper-pagination',
         type: 'bullets',
         clickable: true,
+        dynamicBullets: true,
+        dynamicMainBullets: 5,
     },
+
+    // Optional parameters
+    slidesPerView: 4,
+    direction: 'horizontal',
+    
+
+    autoplay: {
+        delay: 3000,
+        // stop slide autoplay when user click on it
+        disableOnInteraction: true,
+    },
+
+    transitionEffect: 'slide',
+
+    loop: true,
+    centeredSlides: true,
+
+    // theme color
+    // scrollbar: {
+    //     el: '.swiper-scrollbar',
+    //     draggable: true,
+    //     dragSize: 100,
+    //     snapOnRelease: true,
+    //     hide: false,
+    //     },
+
+    // Responsive breakpoints
+    breakpoints: {
+        // when window width is >= 320px
+        320: {
+        slidesPerView: 1,
+        spaceBetween: 10
+        },
+        // when window width is >= 480px
+        480: {
+        slidesPerView: 2,
+        spaceBetween: 20
+        },
+        // when window width is >= 640px
+        640: {
+        slidesPerView: 3,
+        spaceBetween: 30
+        },
+        1024: {
+        slidesPerView: 4,
+        spaceBetween: 40
+        }
+    }
 });
 });
 </script>

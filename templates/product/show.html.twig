@@ -17,15 +17,17 @@
     {% endif %}
 
     {% if product.subCategory %}
-    - Sous-Categorie : <a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}"> {{ product.subCategory|capitalize }}</a>
+    <h6 style="text-transform: uppercase;"><a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}">Sous-Categorie : {{ product.subCategory|capitalize }}</a></h6>
     {% endif %}
 
     {% if product.productType.name %}
-    - Type de produit : <a href="{{ path('app_product_type_show', { 'id': product.productType.id }) }}"> {{ product.productType.name|capitalize }}</a>
+    <a href="{{ path('app_product_type_show', { 'id': product.productType.id }) }}">Type de produit :  {{ product.productType.name|capitalize }}</a>
     {% endif %}
 
     <hr>
-    - Propriétés du produit
+    <div class="last-five">
+    <h3> Propriétés du produit </h3>
+    <hr>
         <ol>
             <li>Id : {{ product.id }}</li>
             <li>Nom : {{ product.name }}</li>
@@ -40,21 +42,24 @@
 
     <hr>
 
-    - Liste des caractéristiques de CE produit (ProductData de la Class Product)
+    <h3> Liste des caractéristiques du produit </h3>
     <hr>
         <ol>
+        {% if product.productData %}
         {% for index, data in product.productData %}
                 <li>{{ data.key|capitalize }} : {{ data.value|capitalize }}</li>
         {% endfor %}
+        {% else %}
+            <li> Aucune caractéristique renseigné pour ce produit </li>
+        {% endif %}
         </ol>
     <hr>
 
-
-    - Commentaires liés au produit
+    <h3> Commentaires liés au produit </h3>
     <hr>
     {% for index, comment in product.comments %}
         <ol>
-            <li><i class="bi bi-person-circle"></i> {{ comment.author }}</li>
+            <h6><li><i class="bi bi-person-circle"></i> {{ comment.author|upper }}</li></h6>
             <li><i class="bi bi-chat-square-text-fill"></i> {{ comment.text }}</li>
         </ol>
     {% endfor %}
@@ -64,11 +69,14 @@
     <a href="{{ path('app_product_edit', {'id': product.id}) }}">Modifier</a>
 
     {{ include('product/_delete_form.html.twig') }}
-
+    </div>
+    
+    
+    
     {# liked products #}
     <hr>
     <div class="last-five swiper">
-    <h2>Produits similaires</h2>
+    <h3>Produits similaires à {{ product.name }} dans {{ product.subCategory.name }}</h3>
     <div class="last-five-products-related swiper-wrapper">
     {% for product in relatedProducts %}
             <section class="swiper-slide">

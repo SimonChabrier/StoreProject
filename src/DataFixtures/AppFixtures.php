@@ -57,8 +57,8 @@ class AppFixtures extends Fixture
         $productTypes = [];
         $brands = [];
 
-        // initialiser à true pour ajouter ou pas des produits dans les categories
-        $productHaveCategory = true;
+        //* initialiser à true pour associer chque produitnaussi à une categorie en plus d'avoir une sous catégorie
+        $productHaveCategory = false;
 
         // compteur pour les produits
         $minimumProductsPerSubCategory = 5;

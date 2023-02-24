@@ -151,6 +151,8 @@ function filterProducts() {
             if(searchState.categoryIsSelected){
                 // on concatene le nom de la catégorie et du sous-catégorie retournée par chaque checkbox et on le compare avec la valeur concatenée de la sous categorie et de la categorie de la sous categorie du produit pour savoir si le produit est dans la catégorie sélectionnée
                 // ['Enfant Ville'] donne ['enfantville'] donc pas de double comparaison si on a par ex ['Enfant Ville', 'Femme Ville'] ! Ville ne sera pas évalué deux fois.
+                // on reçoit ça de twig ici value="{{ cat.catName }} {{ subCat.subCatName  }}" j'aurais pu coller {{ cat.catName }} et {{ subCat.subCatName  }} mais c'est plus propre comme ça 
+                // si l'espace est supprimé dans twig ou augmenté pour donner ce format ['Enfant      Ville'] dans le futur ça ne plantera pas l'espace blanc sera toujours supprimé ci-dessous
                 selectedCategories = selectedCategories.map(category => category.replace(/\s/g, '').toLowerCase());
                 // ensuite on compare la valeur de chaque checkbox avec la valeur de la sous categorie et de la categorie concaténées
                 selectedCategoriesFilter = selectedCategories.includes(product.subCategory.categories[0].name.replace(/\s/g, '').toLowerCase() + product.subCategory.name.replace(/\s/g, '').toLowerCase());
@@ -159,7 +161,7 @@ function filterProducts() {
             return minPriceFilter && maxPriceFilter && searchTermFilter && selectedBrandsFilter && selectedCategoriesFilter;
         });
     
-    //console.log(filteredProducts);
+    console.log(filteredProducts);
 
     // sort the filtered products by product.selligPrice
     filteredProducts.sort(function(a, b){

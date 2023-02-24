@@ -37,6 +37,8 @@ async function fetchProducts() {
     }
 }
 
+
+
 // stock products in an array
 let products = [];
 
@@ -48,6 +50,32 @@ fetchProducts().then((data) => {
         products.push(product);
     });
 });
+
+
+// plus lent que le fetch sur le json 
+
+// async function getApiProducts() {
+
+//     const URI = window.location.origin;
+    
+//     try {
+//         const response = await fetch(`${URI}/api/products`);
+//         const data = await response.json();
+//         return data;
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+
+
+// getApiProducts().then((data) => {
+//     data.forEach((product) => {
+//         product.sellingPrice = Number(product.sellingPrice);
+//         product.sellingPrice = Math.trunc(product.sellingPrice);
+//         products.push(product);
+//     });
+// });
+
 
 // filter products with the search criteria
 function filterProducts() {
@@ -135,15 +163,15 @@ function createProductCard(product){
         
         let section = document.createElement('section')
         section.classList.add('result-card');
-        
+
         section.innerHTML = `
             <h6>${product[i].name}</h6>
             <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
             <span class="catalog-price"><del>${product[i].catalogPrice} €</del></span>
             <span class="selling-price">${product[i].sellingPrice} €</span>
             <div class="productInfo">
-                <span class="categorie">Categorie : ${product[i].category.name}</span>
-                <span class="sous-categorie">Sous-categorie : ${product[i].subCategory.name}</span>
+                <span class="categorie">Categorie : ${product[i].category == null ? 'aucune' : product[i].category.name}</span>
+                <span class="sous-categorie">Sous-categorie : ${product[i].subCategory.name == null ? 'Pas de sous categorie' : product[i].subCategory.name}</span>
                 <span class="sous-categorie">Marque : ${product[i].brand.name}</span>
                 <span class="type">Type : ${product[i].productType.name}</span>
             </div>

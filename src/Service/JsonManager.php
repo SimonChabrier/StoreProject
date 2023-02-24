@@ -17,6 +17,23 @@ class JsonManager extends AbstractController
         $this->serializer = $serializer;
     }
 
+
+    /**
+     * Check if the json file exist
+     * Get the json file creation date
+     * @return boolean
+     * @return int $fileCreationDate
+     */
+    public function checkJsonFile($fileName) 
+    {
+        $publicDirectory = $this->getParameter('kernel.project_dir').'/public';
+        if (file_exists($publicDirectory.'/json/'.$fileName)) {
+            $fileCreationDate = filectime($publicDirectory.'/json/'.$fileName);
+            return $fileCreationDate;
+        }
+        return false;
+    }
+
     /**
      * Create a json file from object or objects
      *

@@ -176,7 +176,7 @@ button {
 #searchResults {
   display: flex;
   flex-wrap: wrap;
-  gap: 25px;
+  gap: 30px;
 }
 
 .range {
@@ -376,6 +376,8 @@ label {
   margin: 0;
   width: 100%;
   line-height: inherit;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .page-container {

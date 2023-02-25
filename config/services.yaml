@@ -10,7 +10,10 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-    
+        public: false       # activé pour les tests unitaires mettre à false en prod
+                            # Allows optimizing the container by removing unused services; this also means
+                            # fetching services directly from the container via $container->get() won't work.
+                            # The best practice is to be explicit about your dependencies anyway.
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -27,4 +30,6 @@ services:
     # SearchFormService
     App\Service\SearchFormService:
         arguments: ['@form.factory']      
+    #App\Service\MailingService:
+    #    arguments: ['@mailer']
 

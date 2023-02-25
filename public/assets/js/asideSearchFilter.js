@@ -151,6 +151,8 @@ function filterProducts() {
             if(searchState.categoryIsSelected){
                 // on concatene le nom de la catégorie et du sous-catégorie retournée par chaque checkbox et on le compare avec la valeur concatenée de la sous categorie et de la categorie de la sous categorie du produit pour savoir si le produit est dans la catégorie sélectionnée
                 // ['Enfant Ville'] donne ['enfantville'] donc pas de double comparaison si on a par ex ['Enfant Ville', 'Femme Ville'] ! Ville ne sera pas évalué deux fois.
+                // on reçoit ça de twig ici value="{{ cat.catName }} {{ subCat.subCatName  }}" j'aurais pu coller {{ cat.catName }} et {{ subCat.subCatName  }} mais c'est plus propre comme ça 
+                // si l'espace est supprimé dans twig ou augmenté pour donner ce format ['Enfant      Ville'] dans le futur ça ne plantera pas l'espace blanc sera toujours supprimé ci-dessous
                 selectedCategories = selectedCategories.map(category => category.replace(/\s/g, '').toLowerCase());
                 // ensuite on compare la valeur de chaque checkbox avec la valeur de la sous categorie et de la categorie concaténées
                 selectedCategoriesFilter = selectedCategories.includes(product.subCategory.categories[0].name.replace(/\s/g, '').toLowerCase() + product.subCategory.name.replace(/\s/g, '').toLowerCase());
@@ -159,7 +161,7 @@ function filterProducts() {
             return minPriceFilter && maxPriceFilter && searchTermFilter && selectedBrandsFilter && selectedCategoriesFilter;
         });
     
-    //console.log(filteredProducts);
+    console.log(filteredProducts);
 
     // sort the filtered products by product.selligPrice
     filteredProducts.sort(function(a, b){
@@ -207,46 +209,6 @@ function resetDivResults(){
     let searchResults = document.getElementById('searchResults');
     searchResults.innerHTML = '';
 }
-// Make a message with the number of results
-// function countResults(count){
-//     let searchResults = document.getElementById('searchResults');
-//     let h2 = document.createElement('h6');
-//     h2.classList.add('resultsNumber');
-
-//     let text = {
-//         min: '',
-//         max: '',
-//         search: '',
-//         brands: '',
-//         number: ''
-//     }
-    
-//     let selectedBrands = Array.from(brandCheckBoxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
-
-//     // get selctedBrands index and add a space after , on each index except the last one : adidas,nike,reebok => adidas, nike, reebok
-//     text.brands = selectedBrands.reduce((acc, brand, index) => {
-//         if (index > 0) {
-//           acc += ', ';
-//         }
-//         acc += brand;
-//         return acc;
-//       }, '').trim();
-//       console.log(text.brands);
-
-//     // get input values
-//     min.value == 0 ? text.min = '' : text.min = 'à partir de : ' +  min.value + ' € | ';
-//     max.value == 0 ? text.max = '' : text.max = 'jusqu\'à : ' +  max.value + ' € | ';
-//     console.log(searchInput.value.length);
-//     searchInput.value.length <= 2 ? text.search = '' : text.search = 'contenant : ' +  searchInput.value + ' | ';
-//     selectedBrands.length == 0 ? text.brands = '' : text.brands = 'dans les marques : ' + selectedBrands.toString() + ' | ';
-//     count == 0 ? text.number = 'Aucun' : text.number = count;
-
-
-//     count > 1 ? h2.innerHTML = `${text.number} Résultats pour  la recherche : ${text.min} ${text.max} ${text.search} ${text.brands}` :
-//                 h2.innerHTML = `${text.number} Résultat pour  la recherche : ${text.min} ${text.max} ${text.search}  ${text.brands}`;
-
-//     searchResults.prepend(h2);
-// }
 
 function countResults(count){
     let searchResults = document.getElementById('searchResults');
@@ -268,7 +230,7 @@ function countResults(count){
     // Ajouter un espace après la virgule pour chaque élément  du tableau des marques sauf le dernier
     text.brands = selectedBrands.reduce((acc, brand, index) => {
       if (index > 0) {
-        acc += ' + ';
+        acc += ' <i class="bi bi-three-dots-vertical" style="margin-left:10px; color:#c7c721; font-size:1.2rem;"></i> ';
       }
       acc += brand;
       return acc;
@@ -276,22 +238,24 @@ function countResults(count){
 
     text.categories = selectedCategories.reduce((acc, category, index) => {
         if (index > 0) {
-            acc += ' + ';
+            acc += ' <i class="bi bi-three-dots-vertical" style="margin-left:10px; color:#c7c721; font-size:1.2rem;"></i> ';
         }
         acc += category;
         return acc;
     }, '').trim();
+
+    let icon = '<i class="bi bi-caret-right-fill" style="margin-left:10px; color:#c7c721; font-size:1.2rem;"></i>';
   
-    text.min = min.value == 0 ? '' : `à partir de : ${min.value} €${max.value == 0 ? '' : ' | '}`;
-    text.max = max.value == 0 ? '' : `jusqu'à : ${max.value} €${searchInput.value == '' ? '' : ' | '}`;
-    text.search = searchInput.value.length <= 2 ? '' : `contenant : ${searchInput.value}${selectedBrands.length == 0 ? '' : ' | '}`;
-    text.brands = selectedBrands.length == 0 ? '' : `dans ${selectedBrands.length > 1 ? 'les' : 'la'} marque${selectedBrands.length > 1 ? 's' : ''} : ${text.brands}`;
-    text.categories = selectedCategories.length == 0 ? '' : `dans ${selectedCategories.length > 1 ? 'les' : 'la'} catégorie${selectedCategories.length > 1 ? 's' : ''} : ${text.categories}`;
+    text.min = min.value == 0 ? '' : `à partir de ${icon} ${min.value} €${max.value == 0 ? '' : `${icon}` }`;
+    text.max = max.value == 0 ? '' : `jusqu'à ${icon} ${max.value} €${searchInput.value == '' ? '' :  `${icon}` }`;
+    text.search = searchInput.value.length <= 2 ? '' : `contenant ${icon} ${searchInput.value}${selectedBrands.length == 0 ? '' : ' '}`;
+    text.brands = selectedBrands.length == 0 ? '' : `${icon} dans ${selectedBrands.length > 1 ? 'les' : 'la'} marque${selectedBrands.length > 1 ? 's' : ''} ${icon} ${text.brands}`;
+    text.categories = selectedCategories.length == 0 ? '' : `${icon} dans ${selectedCategories.length > 1 ? 'les' : 'la'} catégorie${selectedCategories.length > 1 ? 's' : ''} ${icon} ${text.categories}`;
 
     
     count == 0 ? text.number = 'Aucun' : text.number = count;
-    count > 1 ? h6.innerHTML = `${text.number} Résultats pour  la recherche : ${text.min} ${text.max} ${text.search} ${text.brands} ${text.categories}` :
-                h6.innerHTML = `${text.number} Résultat pour  la recherche : ${text.min} ${text.max} ${text.search}  ${text.brands} ${text.categories}`;
+    count > 1 ? h6.innerHTML = `${text.number} Résultats pour  la recherche ${text.min} ${text.max} ${text.search} ${text.brands} ${text.categories}` :
+                h6.innerHTML = `${text.number} Résultat pour  la recherche ${text.min} ${text.max} ${text.search}  ${text.brands} ${text.categories}`;
   
     searchResults.prepend(h6);
   }

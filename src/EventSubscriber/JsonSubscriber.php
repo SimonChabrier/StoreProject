@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class JsonSubscriber extends AbstractController implements EventSubscriberInterface 
 {
+    private $jsonManager;
+    private $productRepository;
 
     public function __construct(JsonManager $jsonManager, ProductRepository $productRepository)
     {
@@ -19,18 +21,26 @@ class JsonSubscriber extends AbstractController implements EventSubscriberInterf
 
     /**
      * Create a json file with the users data if the index method is called and the json file doesn't exist
-     *
+     * or if the json file exist and is older than 3600 seconds (1 hour) create a new json file with the products data
+     * 
      * @param ControllerEvent $event
      * @return void
      */
-    public function onKernelController(ControllerEvent $event): void
+    public function onKernelController(): void
     {   
-        // if the controller is HomeController and the méthod is index() and the json file doesn't exist        
-        if($event->getRequest()->attributes->get('_controller') == "App\Controller\HomeController::index" && !file_exists($this->getParameter('kernel.project_dir').'/public/json/product.json')) {
-            $products = $this->productRepository->findAll();            
-            
-            // create a json file with goups of data
+        // $fileCreationDate vaudra false si le fichier json n'existe pas ou le timestamp de création du fichier si le fichier json existe
+        $fileCreationDate = $this->jsonManager->checkJsonFile('product.json');
+        // nombre de secondes à évaluer entre la date de création du fichier et la date actuelle avant de créer un nouveau fichier json
+        $time = 3600;
+
+        if(!$fileCreationDate) {
+            $products = $this->productRepository->findAll();
             $this->jsonManager->jsonFileInit($products, 'product:read', 'product.json', 'json');
+        } else {
+            if(time() - $fileCreationDate > $time) {
+                $products = $this->productRepository->findAll();
+                $this->jsonManager->jsonFileInit($products, 'product:read', 'product.json', 'json');
+            }
         }
     }
 

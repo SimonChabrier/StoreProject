@@ -4,11 +4,10 @@ namespace App\Service;
 
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mailer\Messenger\SendEmailMessage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
-class EmailNotification extends AbstractController
+class MailingService extends AbstractController
 {
     private $mailer;
 
@@ -16,6 +15,7 @@ class EmailNotification extends AbstractController
     {
         $this->mailer = $mailer;
     }
+
     public function sendEmail($recipient, $subject, $body)
     {
         $email = (new Email())
@@ -23,11 +23,18 @@ class EmailNotification extends AbstractController
             ->to($recipient)
             ->subject($subject)
             ->text($body);
+        try {
+            $sentCount = $this->mailer->send($email);
+            $this->sendConfirmationEmail($sentCount, $recipient);
+        } catch (TransportExceptionInterface $e) {
+            // L'email n'a pas été envoyé
+           return false;
+        }
 
-        $this->mailer->send($email);
+        // $this->mailer->send($email);
 
-        $sentCount = $this->mailer->send($email);
-        $this->sendConfirmationEmail($sentCount, $recipient);
+        // $sentCount = $this->mailer->send($email);
+        // $this->sendConfirmationEmail($sentCount, $recipient);
         
     }
 
@@ -41,6 +48,7 @@ class EmailNotification extends AbstractController
                 ->subject('Notification d\'envoi d\'email')
                 ->text('L\'email a été envoyé avec succès.');
             $this->mailer->send($notificationEmail);
+            return true;
         } else {
             // L'email n'a pas été envoyé
             $notificationEmail = (new Email())
@@ -49,6 +57,7 @@ class EmailNotification extends AbstractController
                 ->subject('Echec d\'envoi d\'email')
                 ->text('L\'email n\'a pas été envoyé à ' . $recipient . ' .');
             $this->mailer->send($notificationEmail);
+            return false;
         }
     }
 
@@ -94,64 +103,64 @@ class EmailNotification extends AbstractController
     // mail to recipents in array with the same subject and body 
     public function sendEmailToRecipients($recipients, $subject, $body)
     {
-    $total = count($recipients);
-    $i = 0;
-    
-    $recipientFailed = [];
+        $total = count($recipients);
+        $i = 0;
 
-        foreach ($recipients as $recipient) {
-            $email = (new Email())
-                ->from('mail@exemple.com')
-                ->to($recipient)
-                ->subject($subject)
-                ->text($body);
+        $recipientFailed = [];
 
-                try {
-                    $this->mailer->send($email);
-                } catch (TransportExceptionInterface $e) {
-                    // feed getFailedRecipients() with each recipient in failed on the loop 
-                    $recipientFailed[] = filter_var($recipient, FILTER_VALIDATE_EMAIL) !== false ? $recipient : 'Email invalide pour: ' . $recipient;
-                    $recipientFailed = array_filter($recipientFailed, function ($recipient) {
-                    return $recipient !== null;
-                    });
-                }
-            $i++;
-        }
+            foreach ($recipients as $recipient) {
+                $email = (new Email())
+                    ->from('mail@exemple.com')
+                    ->to($recipient)
+                    ->subject($subject)
+                    ->text($body);
 
-        if($total == $i) {
-            // ok on a envoyé à tous les destinataires
-            $confirmationMessage = 'Email envoyé à ' . $i . ' destinataires sur ' . $total .' au total';
-            $i = 0;
+                    try {
+                        $this->mailer->send($email);
+                    } catch (TransportExceptionInterface $e) {
+                        // feed getFailedRecipients() with each recipient in failed on the loop 
+                        $recipientFailed[] = filter_var($recipient, FILTER_VALIDATE_EMAIL) !== false ? $recipient : 'Email invalide pour: ' . $recipient;
+                        $recipientFailed = array_filter($recipientFailed, function ($recipient) {
+                        return $recipient !== null;
+                        });
+                    }
+                $i++;
+            }
 
-            $confirmationEmail = (new Email())
-                ->from('mailsendconfirmation@sneakers-shop.com')
-                ->to('admin@sneakers-shop.com')
-                ->subject('Confirmation d\'envoi de mail')
-                ->text($confirmationMessage);
+            if($total == $i) {
+                // ok on a envoyé à tous les destinataires
+                $confirmationMessage = 'Email envoyé à ' . $i . ' destinataires sur ' . $total .' au total';
+                $i = 0;
+
+                $confirmationEmail = (new Email())
+                    ->from('mailsendconfirmation@sneakers-shop.com')
+                    ->to('admin@sneakers-shop.com')
+                    ->subject('Confirmation d\'envoi de mail')
+                    ->text($confirmationMessage);
+                    
+                    $this->mailer->send($confirmationEmail);
+
+                    return $total;
+
+            } else {
+
+                // il manque des mails à envoyer
+
+                $failedCount = $total - $i;
+                $failedMessage = 'Email envoyé à ' . $i . ' destinataires sur ' . $total .' au total. ' . $failedCount . ' mails n\'ont pas été envoyés.';
+                $i = 0;
+
+                //$recipentsInError = implode(', ', $recipientFailed);
+                $recipentsInError = implode(PHP_EOL, $recipientFailed);
+
+                $failedEmail = (new Email())
+                    ->from('error@sneakers-shop.com')
+                    ->to('admin@sneakers-shop.com')
+                    ->subject('Erreur d\'envoi de mail')
+                    ->text($failedMessage . ' Les mails n\'ont pas été envoyés à : ' . $recipentsInError);
+                    $this->mailer->send($failedEmail);
                 
-                $this->mailer->send($confirmationEmail);
-
-                return $total;
-
-        } else {
-
-            // il manque des mails à envoyer
-
-            $failedCount = $total - $i;
-            $failedMessage = 'Email envoyé à ' . $i . ' destinataires sur ' . $total .' au total. ' . $failedCount . ' mails n\'ont pas été envoyés.';
-            $i = 0;
-
-            //$recipentsInError = implode(', ', $recipientFailed);
-            $recipentsInError = implode(PHP_EOL, $recipientFailed);
-
-            $failedEmail = (new Email())
-                ->from('error@sneakers-shop.com')
-                ->to('admin@sneakers-shop.com')
-                ->subject('Erreur d\'envoi de mail')
-                ->text($failedMessage . ' Les mails n\'ont pas été envoyés à : ' . $recipentsInError);
-                $this->mailer->send($failedEmail);
-            
-                return $failedCount;
+                    return $failedCount;
         }
         
     }

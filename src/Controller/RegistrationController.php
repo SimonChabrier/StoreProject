@@ -18,6 +18,7 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
+
 class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
@@ -77,8 +78,8 @@ class RegistrationController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        // si le user actuellement connecté est déjà vérifié, on adapte le message flash et on redirige vers la page d'accueil
-        if ($this->getUser()->isVerified()) {
+        // si le user passe ici en étant connecté c'est qu'il a déjà validé son email
+        if ($this->getUser()) {
             $this->addFlash('success', 'Votre adresse email est déjà validée.');
             
             $class = 'alert-warning';

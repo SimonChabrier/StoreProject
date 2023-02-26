@@ -16,8 +16,8 @@ class BrandsService
 
     // retourne toutes les marques pour les filtres de la sidebar
     // déclaré dans twig comme un service injecté dans une variable 'brands' rendue globale..(voir config/twig.yaml)
-    // la méthode est ensuite appellée dans twig comme ceci: {% for brand in brands.getBrands() %} et les marques sont accèssibles dans tous les templates
-    // puisque le template aside est inclus dans le template base.html.twig
+    // la méthode est ensuite appellée dans twig comme ceci: {% for brand in brands.getBrands() %} 
+    
     public function getBrands()
     {   
         return $this->em->getRepository(Brand::class)->findBy([], ['name' => 'ASC']);

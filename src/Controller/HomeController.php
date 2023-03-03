@@ -2,21 +2,30 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
 use App\Service\JsonManager;
+use App\Service\EmailService;
+use App\Message\AdminNotification;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
+use App\Message\AccountCreatedNotification;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
-{
+{   
+    private $adminEmail;
+
+    public function __construct($adminEmail)
+    {
+        $this->adminEmail = $adminEmail;
+    }
     /**
      * @Route("/", name="app_home", methods={"GET", "POST"})
      */
-    public function index(CategoryRepository $categoryRepository, ProductRepository $productRepository, Request $request, JsonManager $jsonManager): Response
+    public function index(CategoryRepository $categoryRepository): Response
     {
     // je récupère la classe de l'alerte qui est définie dans RegistrationController
     // et qui est passée en paramètre dans l'url de la requête avec redirectToRoute
@@ -74,5 +83,26 @@ class HomeController extends AbstractController
         return $this->render('_fragments/_jsSearch.html.twig', []);
     }
 
+    // test mail route
+    /**
+     * @Route("/test", name="app_testmail", methods={"GET", "POST"})
+     */
+    public function testMail(EmailService $emailService): Response
+    {   
 
+        // 3 Définir une route et une action de contrôleur pour déclencher l'envoi 
+        // de la notification de création de compte client. 
+        // Cette action de contrôleur placera un message messenger 
+        // correspondant dans la file d'attente pour être traité par un worker.
+        
+        $user = $this->getUser();
+
+        try {
+            $emailService->sendAccountCreatedNotification($user->getEmail());
+            $emailService->sendAdminNotification('Nouveau compte client', $user->getEmail(), 'créé avec succès');
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Une erreur est survenue lors de l\'envoi du mail.');
+        }
+        return $this->redirectToRoute('app_home', []);
+    }
 }

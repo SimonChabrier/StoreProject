@@ -14,9 +14,16 @@ framework:
                     multiplier: 2
             failed: 'doctrine://default?queue_name=failed'
             # sync: 'sync://'
+        #################################################
+        ### APRES AVOIR AJOUTER UN NOUVEAU TRANSPORT ####
+        ############### STOPER LES WORKERS ##############
+        ################ VIDER LE CACHE #################
+        ############## RELANCER LES WORKERS #############
 
         routing:
-            Symfony\Component\Mailer\Messenger\SendEmailMessage: async
+            #Symfony\Component\Mailer\Messenger\SendEmailMessage: async
+            App\Message\AccountCreatedNotification: async
+            App\Message\AdminNotification: async
             #Symfony\Component\Notifier\Message\ChatMessage: async
             #Symfony\Component\Notifier\Message\SmsMessage: async
 

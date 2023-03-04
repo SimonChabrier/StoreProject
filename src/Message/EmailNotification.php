@@ -2,7 +2,13 @@
 
 namespace App\Message;
 
+use Symfony\Component\Messenger\Annotation\Message;
 
+
+/**
+ * @Message(handler="App\MessageHandler\BatchHandler")
+ * @Routable(route="email_notification")
+ */
 class EmailNotification
 {   
     // from config/services.yaml

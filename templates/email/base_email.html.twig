@@ -8,12 +8,14 @@
 <body>
 <div class="mailcontainer">
     {% block header %}
+        {% include 'email/header.html.twig' %} 
     {% endblock %}
 
     {% block mailcontent %}
     {% endblock %}
 
     {% block footer %}
+        {% include 'email/footer.html.twig' %} 
     {% endblock %}
 </div>
 </body>

@@ -4,14 +4,14 @@ namespace App\Message;
 
 class EmailNotification
 {   
+    // from config/services.yaml
     private $adminMail;
+
     private $from;
     private $to;
     private $subject;
     private $template = 'email/base_email.html.twig';
     private $context = [];
-    private $header = 'email/header.html.twig';
-    private $footer = 'email/footer.html.twig';
 
     public function __construct(string $from, string $to, string $subject = 'Notification', string $template = null, array $context = [], string $header = null, string $footer = null)
     {   
@@ -20,8 +20,6 @@ class EmailNotification
         $this->subject = $subject ?: 'Notification';
         $this->template = $template ?: 'email/base_email.html.twig';
         $this->context = $context ?: [];
-        $this->header = $header ?: 'email/header.html.twig';
-        $this->footer = $footer ?: 'email/footer.html.twig';
     }
 
     public function getFrom(): string
@@ -57,25 +55,5 @@ class EmailNotification
     public function getContext(): array
     {
         return $this->context;
-    }
-
-    public function setHeader(string $header = null): void
-    {
-        $this->header = $header ?: 'email/header.html.twig';
-    }
-
-    public function getHeader(): string
-    {
-        return $this->header;
-    }
-
-    public function setFooter(string $footer = null): void
-    {
-        $this->footer = $footer ?: 'email/footer.html.twig';
-    }
-
-    public function getFooter(): string
-    {
-        return $this->footer;
     }
 }

@@ -108,13 +108,11 @@ class HomeController extends AbstractController
                 'email/user/account_confirmation.html.twig', 
                 [   
                     'title' => 'Titre du template depuis le controller',
-                    'username' => 'username',
+                    'username' => $user->getEmail(),
                     'subject' => 'Sujet depuis le controller',
                     'title' => 'Message d\'en-tête depuis le controller',
                     'message' => 'Message depuis le controller',
                 ],
-                '',
-                ''
             );
         } catch (\Exception $e) {
             dd($e->getMessage());

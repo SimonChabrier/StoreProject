@@ -20,6 +20,8 @@ framework:
         ############### STOPER LES WORKERS ##############
         ################ VIDER LE CACHE #################
         ############## RELANCER LES WORKERS #############
+        # add handler for bacth messages
+        # https://symfony.com/doc/current/messenger.html#batch-handling
 
         routing:
             # Route par défaut pour tous les messages qui n'ont pas de route définie

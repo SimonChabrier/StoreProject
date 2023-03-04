@@ -1,23 +1,25 @@
 .mailcontainer {
-  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
   padding: 0 20px;
-  background-color: #ced2c9;
-  border: 1px solid #ddd;
+  background-color: #fff;
+  border: 1px solid #c7c721;
   border-radius: 5px;
   font-family: "Open Sans", sans-serif;
   font-size: 16px;
   line-height: 1.5;
-  color: #333;
+  color: #454543;
   padding: 20px;
 }
 
 .headermail__logo img {
-  height: 150px;
-  width: 150px;
+  width: 100%;
+  height: 300px;
   -o-object-fit: cover;
      object-fit: cover;
-  border-radius: 50%;
+  -o-object-position: bottom;
+     object-position: bottom;
+  opacity: 0.5;
 }
 
 .h1 {

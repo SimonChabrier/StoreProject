@@ -8,6 +8,8 @@ use App\Message\AdminNotification;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
 use App\Message\AccountCreatedNotification;
+use App\Repository\UserRepository;
+use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -87,7 +89,7 @@ class HomeController extends AbstractController
     /**
      * @Route("/test", name="app_test", methods={"GET", "POST"})
      */
-    public function testMail(EmailService $emailService): Response
+    public function testMail(EmailService $emailService, UserRepository $ur): Response
     {   
 
         // 3 Définir une route et une action de contrôleur pour déclencher l'envoi 
@@ -99,19 +101,36 @@ class HomeController extends AbstractController
         // pour alléger le controller.
         
         $user = $this->getUser();
-        
-        try {
+        $users = $ur->findAll();
+
+        // envoi du mail de confirmation de création de compte
+        foreach ($users as $user) {
             $emailService->sendEmailNotification(
                 $this->adminEmail, 
                 $user->getEmail(), 
-                'Nouveau compte client', 
-                'email/user/account_confirmation.html.twig', 
+                'Nouvelle notification de Sneaker-Shop', 
+                'email/base_email.html.twig', 
                 [   
                     'title' => 'Titre du template depuis le controller',
                     'username' => $user->getEmail(),
                     'subject' => 'Sujet depuis le controller',
-                    'title' => 'Message d\'en-tête depuis le controller',
-                    'message' => 'Message depuis le controller',
+                    'content' => 'Message depuis le controller',
+                ],
+            );
+        }
+
+
+        try {
+            $emailService->sendEmailNotification(
+                $this->adminEmail, 
+                $user->getEmail(), 
+                'Nouvelle notification de Sneaker-Shop', 
+                'email/base_email.html.twig', 
+                [   
+                    'title' => 'Titre du template depuis le controller',
+                    'email' => $user->getEmail(),
+                    'subject' => 'Sujet depuis le controller',
+                    'content' => 'Message depuis le controller',
                 ],
             );
         } catch (\Exception $e) {

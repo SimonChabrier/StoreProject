@@ -1,11 +1,11 @@
 {% apply inline_css(source('@styles_email/email.css')) %}
-<!DOCTYPE html>
+{# <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{{ title }}{% endblock %}</title>
 </head>
-<body>
+<body> #}
 <div class="mailcontainer">
     {% block header %}
         {% include 'email/header.html.twig' %} 
@@ -21,3 +21,5 @@
 </body>
 </html>
 {% endapply %}
+
+

@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Message\AdminNotification;
+use App\Message\EmailNotification;
 use App\Message\AccountCreatedNotification;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -29,6 +30,13 @@ class EmailService
     public function sendAdminNotification($subject, $email, $status)
     {
         $message = new AdminNotification($subject, $email, $status);
+
+        $this->bus->dispatch($message);
+    }
+
+    public function sendEmailNotification($to, $subject, $template, $context, $header, $footer)
+    {
+        $message = new EmailNotification($to, $subject, $template, $context, $header, $footer);
 
         $this->bus->dispatch($message);
     }

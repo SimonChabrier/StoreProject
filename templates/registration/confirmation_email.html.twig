@@ -1,11 +1,28 @@
-<h1>Bonjour, merci de confirmer votre e-mail!</h1>
+{% extends 'email/base_email.html.twig' %}
 
-<p>
-    En suivant le lien ci-dessous: <br><br>
-    <a href="{{ signedUrl }}">Je confirme mon adresse email.</a>.
-    Ce lien expire dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
-</p>
+{% set title = 'mon titre' %}
+{% set headerMessage = 'Bonjour, merci de confirmer votre e-mail!' %}
 
-<p>
-    A bientôt!
-</p>
+{% block title %}{{ title }}{% endblock %}
+
+{% block header %}
+    {% include 'email/header.html.twig' %}
+{% endblock %}
+
+{% block mailcontent %}
+{% apply inline_css(source('@styles_email/email.css')) %}
+
+<div>
+    <p><a href="{{ signedUrl }}">Je confirme mon adresse email.</a></p>
+    <p>Ce lien expire dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.</p>
+</div>
+
+<h4>A bientôt!</h4>
+
+{% endapply %}
+{% endblock %}
+
+{% block footer %}
+    {% include 'email/footer.html.twig' %}
+{% endblock %}
+

@@ -1,0 +1,20 @@
+{% extends 'email/base_email.html.twig' %}
+
+{% block footer %}
+    <div class="footermail">
+        <div class="footermail__content">
+            <div class="footermail__content__title">
+                <h2>Newsletter</h2>
+            </div>
+            <div class="footermail__content__text">
+                <p>Recevez nos dernières actualités</p>
+            </div>
+            <div class="footermail__content__form">
+                <form action="" method="post">
+                    <input type="email" name="email" placeholder="Votre adresse mail">
+                    <input type="submit" value="S'inscrire">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

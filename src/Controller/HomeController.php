@@ -94,15 +94,39 @@ class HomeController extends AbstractController
         // de la notification de création de compte client. 
         // Cette action de contrôleur placera un message messenger 
         // correspondant dans la file d'attente pour être traité par un worker.
+
+        // la logique de l'envoi du mail qui utilise les Message et MessageHandler est déplacée dans le service EmailService
+        // pour alléger le controller.
         
         $user = $this->getUser();
-
         try {
-            $emailService->sendAccountCreatedNotification($user->getEmail());
-            $emailService->sendAdminNotification('Nouveau compte client', $user->getEmail(), 'créé avec succès');
+            $emailService->sendEmailNotification(
+                $this->adminEmail, $user->getEmail(), 
+                'Nouveau compte client', 
+                'email/user/account_confirmation.html.twig', 
+                [   
+                    'title' => 'Titre du template depuis le controller',
+                    'username' => 'username',
+                    'subject' => 'Sujet depuis le controller',
+                    'headerMessage' => 'Message d\'en-tête depuis le controller',
+                    'message' => 'Message depuis le controller',
+                ],
+                '',
+                ''
+            );
         } catch (\Exception $e) {
-            $this->addFlash('error', 'Une erreur est survenue lors de l\'envoi du mail.');
+            dd($e->getMessage());
+            $emailService->sendAdminNotification('Erreur à l\'envoi du mail de confirmation de ', $user->getEmail(), 'Message d\'erreur: ' . $e->getMessage());
         }
+        
+
+        // try {
+        //     $emailService->sendAccountCreatedNotification($user->getEmail());
+        //     $this->addFlash('success', 'Un mail de confirmation a été envoyé à ' . $user->getEmail());
+        //     $emailService->sendAdminNotification('Nouveau compte client', $user->getEmail(), 'créé avec succès');
+        // } catch (\Exception $e) {
+        //     $emailService->sendAdminNotification('Erreur à l\'envoi du mail de confirmation de ', $user->getEmail(), 'Message d\'erreur: ' . $e->getMessage());
+        // }
         return $this->redirectToRoute('app_home', []);
     }
 }

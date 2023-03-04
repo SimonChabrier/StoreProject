@@ -6,8 +6,7 @@ use Symfony\Component\Messenger\Annotation\Message;
 
 
 /**
- * @Message(handler="App\MessageHandler\BatchHandler")
- * @Routable(route="email_notification")
+ * @Message(handler="App\MessageHandler\EmailNotificationHandler")
  */
 class EmailNotification
 {   

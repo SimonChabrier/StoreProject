@@ -40,9 +40,7 @@ services:
     App\Service\EmailService:
        arguments: ['@messenger.default_bus']
     # Messenger
-    App\Message\EmailNotification:
-        arguments: ['@messenger.default_bus']
-    App\MessageHandler\BatchHandler:
-        arguments: ['@mailer', '@twig', '@messenger.default_bus']
+    # App\Message\EmailNotification:
+    #     arguments: ['@messenger.default_bus']
 
         

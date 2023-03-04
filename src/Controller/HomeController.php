@@ -105,7 +105,7 @@ class HomeController extends AbstractController
 
         // envoi du mail de confirmation de création de compte
         foreach ($users as $user) {
-            $emailService->sendEmailNotification(
+            $emailService->sendTemplateEmailNotification(
                 $this->adminEmail, 
                 $user->getEmail(), 
                 'Nouvelle notification de Sneaker-Shop', 
@@ -121,7 +121,7 @@ class HomeController extends AbstractController
 
 
         try {
-            $emailService->sendEmailNotification(
+            $emailService->sendTemplateEmailNotification(
                 $this->adminEmail, 
                 $user->getEmail(), 
                 'Nouvelle notification de Sneaker-Shop', 

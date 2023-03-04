@@ -25,7 +25,6 @@ framework:
         routing:
             # Route par défaut pour tous les messages qui n'ont pas de route définie
             Symfony\Component\Mailer\Messenger\SendEmailMessage: async
-            App\Message\AccountCreatedNotification: async
             App\Message\AdminNotification: async
             App\Message\EmailNotification: async
             #Symfony\Component\Notifier\Message\ChatMessage: async

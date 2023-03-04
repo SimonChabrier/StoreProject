@@ -31,6 +31,6 @@ class EmailNotificationHandler implements MessageHandlerInterface
             ->subject($message->getSubject())
             ->html($body);
 
-        $this->mailer->send($email);
+        //$this->mailer->send($email);
     }
 }

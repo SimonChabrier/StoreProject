@@ -2,6 +2,7 @@
 
 namespace App\Message;
 
+
 class EmailNotification
 {   
     // from config/services.yaml

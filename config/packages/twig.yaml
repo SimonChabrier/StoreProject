@@ -5,7 +5,8 @@ twig:
     globals:
         catsAndSubCats: '@App\Service\CatsAndSubCatsService'
         brands: '@App\Service\BrandsService'
-
+    paths:
+        '%kernel.project_dir%/public/assets/styles': styles_email
 when@test:
     twig:
         strict_variables: true

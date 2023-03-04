@@ -39,4 +39,7 @@ services:
     # Mail Service    
     App\Service\EmailService:
        arguments: ['@messenger.default_bus']
+    # Messenger
+    # App\Message\EmailNotification:
+    #     arguments: ['@messenger.default_bus']
 

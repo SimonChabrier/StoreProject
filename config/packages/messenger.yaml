@@ -22,8 +22,9 @@ framework:
 
         routing:
             #Symfony\Component\Mailer\Messenger\SendEmailMessage: async
-            App\Message\AccountCreatedNotification: async
-            App\Message\AdminNotification: async
+            #App\Message\AccountCreatedNotification: async
+            #App\Message\AdminNotification: async
+            App\Message\EmailNotification: async
             #Symfony\Component\Notifier\Message\ChatMessage: async
             #Symfony\Component\Notifier\Message\SmsMessage: async
 

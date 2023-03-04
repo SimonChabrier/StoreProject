@@ -99,16 +99,18 @@ class HomeController extends AbstractController
         // pour alléger le controller.
         
         $user = $this->getUser();
+        
         try {
             $emailService->sendEmailNotification(
-                $this->adminEmail, $user->getEmail(), 
+                $this->adminEmail, 
+                $user->getEmail(), 
                 'Nouveau compte client', 
                 'email/user/account_confirmation.html.twig', 
                 [   
                     'title' => 'Titre du template depuis le controller',
                     'username' => 'username',
                     'subject' => 'Sujet depuis le controller',
-                    'headerMessage' => 'Message d\'en-tête depuis le controller',
+                    'title' => 'Message d\'en-tête depuis le controller',
                     'message' => 'Message depuis le controller',
                 ],
                 '',

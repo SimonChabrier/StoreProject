@@ -34,9 +34,9 @@ class EmailService
         $this->bus->dispatch($message);
     }
 
-    public function sendEmailNotification($to, $subject, $template, $context, $header, $footer)
+    public function sendEmailNotification($from, $to, $subject, $template, $context, $header, $footer)
     {
-        $message = new EmailNotification($to, $subject, $template, $context, $header, $footer);
+        $message = new EmailNotification($from, $to, $subject, $template, $context, $header, $footer);
 
         $this->bus->dispatch($message);
     }

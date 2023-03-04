@@ -85,7 +85,7 @@ class HomeController extends AbstractController
 
     // test mail route
     /**
-     * @Route("/test", name="app_testmail", methods={"GET", "POST"})
+     * @Route("/test", name="app_test", methods={"GET", "POST"})
      */
     public function testMail(EmailService $emailService): Response
     {   

@@ -22,15 +22,14 @@ class EmailNotificationHandler implements MessageHandlerInterface
 
     public function __invoke(EmailNotification $message)
     {   
-        $header = $this->twig->render($message->getHeader(), $message->getContext());
+    
         $body = $this->twig->render($message->getTemplate(), $message->getContext());
-        $footer = $this->twig->render($message->getFooter(), $message->getContext());
         
         $email = (new Email())
             ->from(new Address($message->getFrom(), 'Sneaker-Shop'))
             ->to(new Address($message->getTo()))
             ->subject($message->getSubject())
-            ->html($header . $body . $footer);
+            ->html($body);
 
         $this->mailer->send($email);
     }

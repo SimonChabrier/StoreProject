@@ -29,8 +29,9 @@ class EmailNotificationHandler implements MessageHandlerInterface
             ->from(new Address($message->getFrom(), 'Sneaker-Shop'))
             ->to(new Address($message->getTo()))
             ->subject($message->getSubject())
-            ->html($body);
+            ->html($this->twig->render($message->getTemplate(), $message->getContext()));
 
+        
         //$this->mailer->send($email);
     }
 }

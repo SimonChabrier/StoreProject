@@ -43,6 +43,6 @@ services:
     App\Message\EmailNotification:
         arguments: ['@messenger.default_bus']
     App\MessageHandler\BatchHandler:
-        arguments: ['@mailer', '@twig']
+        arguments: ['@mailer', '@twig', '@messenger.default_bus']
 
         

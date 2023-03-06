@@ -2,10 +2,10 @@
 
 namespace App\Service;
 
-use App\Entity\Brand;
+use App\Entity\ProductType;
 use Doctrine\ORM\EntityManagerInterface;
 
-class BrandsService
+class ProductsTypesService
 {
     private $em;
 
@@ -16,10 +16,10 @@ class BrandsService
 
     // retourne toutes les marques pour les filtres de la sidebar
     // déclaré dans twig comme un service injecté dans une variable 'brands' rendue globale..(voir config/twig.yaml)
-    // la méthode est ensuite appellée dans twig comme ceci: {% for brand in brands.getBrands() %} 
+    // la méthode est ensuite appellée dans twig comme ceci: {% for productType in productsTypes.getProductsTypes() %} 
     
-    public function getBrands()
+    public function getProductsTypes()
     {   
-        return $this->em->getRepository(Brand::class)->findBy([], ['name' => 'ASC']);
+        return $this->em->getRepository(ProductType::class)->findBy([], ['name' => 'ASC']);
     }
 }

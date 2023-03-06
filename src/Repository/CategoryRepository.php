@@ -347,9 +347,9 @@ class CategoryRepository extends ServiceEntityRepository
     //         ]
     //     ]   
     //
-    //* appelée dans NavService pour construire le menu de navigation
+    //* appelée dans CatsAndSubCatsService pour construire le menu de navigation
     //* qui retourne une variable twig globale (nav) accessible dans toutes les vues
-    public function requestNav(): array
+    public function getOnlyCatAndOnlySubCat(): array
     {
         // query categories and subcategories where subcategory belongs to category
         $qb = $this->createQueryBuilder('c');

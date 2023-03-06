@@ -12,11 +12,21 @@ framework:
                 retry_strategy:
                     max_retries: 3
                     multiplier: 2
+                    max_delay: 0
+                    # https://symfony.com/doc/current/messenger.html#retry-strategy
             failed: 'doctrine://default?queue_name=failed'
-            # sync: 'sync://'
+        # #################################################
+        ### APRES AVOIR AJOUTER UN NOUVEAU TRANSPORT ####
+        ############### STOPER LES WORKERS ##############
+        ################ VIDER LE CACHE #################
+        ############## RELANCER LES WORKERS #############
+        # add handler for bacth messages
+        # https://symfony.com/doc/current/messenger.html#batch-handling
 
         routing:
+            # Route par défaut pour tous les messages qui n'ont pas de route définie
             Symfony\Component\Mailer\Messenger\SendEmailMessage: async
-            Symfony\Component\Notifier\Message\ChatMessage: async
-            Symfony\Component\Notifier\Message\SmsMessage: async
-
+            App\Message\AdminNotification: async
+            App\Message\EmailNotification: async
+            #Symfony\Component\Notifier\Message\ChatMessage: async
+            #Symfony\Component\Notifier\Message\SmsMessage: async

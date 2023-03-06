@@ -1,11 +1,13 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
     form_themes: ['bootstrap_4_layout.html.twig']
-    # ajout du service NavService pour le menu de navigation dans la variable globale: nav
+    # ajout du service CatsAndSubCatsService pour injecter les categories et sous categories dans la variable globale: catsAndSubCats
     globals:
-        nav: '@App\Service\NavService'
+        catsAndSubCats: '@App\Service\CatsAndSubCatsService'
         brands: '@App\Service\BrandsService'
-
+    # ajout du style pour les emails - voir base_email.html.twig pour l'appel du style
+    paths:
+        '%kernel.project_dir%/public/assets/styles': styles_email
 when@test:
     twig:
         strict_variables: true

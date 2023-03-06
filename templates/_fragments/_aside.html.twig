@@ -34,7 +34,7 @@
     <div class="brandCheckboxes">
         <h5><i class="bi bi-list-check"></i> Categories</h5>
         <ol>
-        {% for cat in nav.getNav() %}
+        {% for cat in catsAndSubCats.getOnlyCatsAndOnlySubCats() %}
         {{ cat.catName }}
         {% for subCat in cat.subCategories %}
             <li><input type="checkbox" name="category" value="{{ cat.catName }} {{ subCat.subCatName  }}" class="brandCheckbox"> {{ subCat.subCatName }}</li>

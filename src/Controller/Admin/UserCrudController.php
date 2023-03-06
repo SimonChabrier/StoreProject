@@ -6,8 +6,9 @@ use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -19,16 +20,19 @@ class UserCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('lastName')
-                ->setLabel('Nom')
-                ->setRequired(true),  
+            // TextField::new('lastName')
+            //     ->setLabel('Nom')
+            //     ->setRequired(true),  
 
-            TextField::new('firstName')
-             ->setLabel('Prénom')
-             ->setRequired(true),
+            // TextField::new('firstName')
+            //  ->setLabel('Prénom')
+            //  ->setRequired(true),
 
-            TextField::new('username')
+            TextField::new('email')
                 ->setLabel('Nom d\'utilisateur')
+                ->setRequired(true),
+            BooleanField::new('isVerified')
+                ->setLabel('Compte vérifié')
                 ->setRequired(true),
         ];
     }
@@ -41,8 +45,8 @@ class UserCrudController extends AbstractCrudController
     {
         return $crud
 
-            ->setSearchFields(['lastName', 'firstName', 'username'])
-            ->setDefaultSort(['lastName' => 'ASC'])
+            ->setSearchFields(['email', 'email', 'email'])
+            ->setDefaultSort(['email' => 'ASC'])
             // Si je n'ai pas fermé la visibilité dans la sidebar dans AdminController.php : configureMenuItems()
             // alors, ici je peux aussi décider de cacher le contenu de ce CRUD aux rôle non autorisés
             // ->setEntityPermission('ROLE_ADMIN')
@@ -61,15 +65,15 @@ class UserCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-            ->add('lastName', 'text', [
+            ->add('email', 'text', [
                 'label' => 'Nom',
             ])
-            ->add('firstName', 'text', [
-                'label' => 'Prénom',
-            ])
-            ->add('username', 'text', [
-                'label' => 'Nom d\'utilisateur',
-            ])
+            // ->add('firstName', 'text', [
+            //     'label' => 'Prénom',
+            // ])
+            // ->add('username', 'text', [
+            //     'label' => 'Nom d\'utilisateur',
+            // ])
             // ->add('subCategories', 'entity', [
             //     'label' => 'Sous catégories',
             //     'class' => SubCategory::class,

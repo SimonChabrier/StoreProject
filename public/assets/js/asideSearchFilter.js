@@ -202,11 +202,11 @@ function createProductCard(product){
         `;
         searchResults.appendChild(section);
 
-        section.addEventListener('click', function(e){
+        section.addEventListener('click', function(){
             // ajout du lien vers la page produit pour les résultats de recherche
             var href = $(this).find("a").attr("href");
-            href = href.substring(1);
-            $(".productLink").attr("href", window.location.href + href);
+            //href = href.substring(1);
+            $(".productLink").attr("href", window.location.origin + href);
             window.open($(".productLink").attr("href"), "_self");
         });
     };

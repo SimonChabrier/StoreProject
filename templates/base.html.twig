@@ -115,6 +115,19 @@ const errorMessage = "{{ app.session.flashbag.get('error')|first }}";
     });
     }
 });
+
+
+// when click on .result-card div, concat href value in span .productLink 
+// and concat widow.location.href + value of href in span to go to product page
+// using jquery
+$(document).ready(function(){
+    $(".last-five-products section").click(function(){
+        var href = $(this).find("a").attr("href");
+        href = href.substring(1);
+        $(".productLink").attr("href", window.location.href + href);
+        window.open($(".productLink").attr("href"), "_self");
+    });
+});
 </script>
 {% endblock %}
 

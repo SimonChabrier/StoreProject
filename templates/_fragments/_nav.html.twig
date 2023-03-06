@@ -31,7 +31,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
 
-      {% for cat in nav.getNav() %}
+      {% for cat in catsAndSubCats.getOnlyCatsAndOnlySubCats() %}
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="{{ path('app_category_index', {'id': cat.catId}) }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ cat.catName }}</a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">

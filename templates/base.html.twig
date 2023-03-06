@@ -121,8 +121,8 @@ const errorMessage = "{{ app.session.flashbag.get('error')|first }}";
 $(document).ready(function(){
     $(".last-five-products section").click(function(){
         var href = $(this).find("a").attr("href");
-        href = href.substring(1);
-        $(".productLink").attr("href", window.location.href + href);
+        //href = href.substring(1);
+        $(".productLink").attr("href", window.location.origin + href);
         window.open($(".productLink").attr("href"), "_self");
     });
 });

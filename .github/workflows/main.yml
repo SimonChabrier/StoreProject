@@ -17,8 +17,7 @@ jobs:
       - name: Update main branch
         run: |
           git pull origin main
-          php /usr/bin/composer install --no-scripts --no-dev
-          php /usr/bin/composer dump-autoload --optimize --no-dev --classmap-authoritative
+          composer install --no-scripts --no-dev --no-interaction
           php bin/console doctrine:schema:update --force
           git push
 

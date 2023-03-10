@@ -51,7 +51,7 @@ class SubCategoryController extends AbstractController
      */
     public function show(SubCategory $subCategory): Response
     {   
-        dump($subCategory->getProducts());
+        //dump($subCategory->getProducts());
         return $this->render('sub_category/show.html.twig', [
             'sub_category' => $subCategory,
             'products' => $subCategory->getProducts(),

@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  update_main:
+    name: Update main branch
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+    - name: Checkout main branch
+      uses: actions/checkout@v2
+      with:
+        ref: main
+    - name: Merge develop branch into main branch
+      run: git merge --ff-only develop
+    - name: Push changes to main branch
+      uses: ad-m/github-push-action@v0.6.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: main
+    - name: Install Composer dependencies
+      run: composer install --no-dev --optimize-autoloader
+    - name: Update database schema
+      run: php bin/console doctrine:schema:update --force

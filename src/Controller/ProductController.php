@@ -52,7 +52,7 @@ class ProductController extends AbstractController
      */
     public function show(Product $product, ProductRepository $pr): Response
     {   
-        dump($product);
+        //dump($product);
         
         return $this->render('product/show.html.twig', [
             'product' => $product,

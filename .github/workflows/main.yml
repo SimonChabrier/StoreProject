@@ -17,7 +17,7 @@ jobs:
       - name: Update main branch
         run: |
           git pull origin main
-          composer2 install --no-interaction --no-suggest --no-progress --prefer-dist
+          exec('composer install --no-scripts --no-dev');
           php bin/console doctrine:schema:update --force
           git push
 

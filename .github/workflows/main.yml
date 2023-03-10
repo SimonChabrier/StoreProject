@@ -16,8 +16,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
       - name: Update main branch
         run: |
-          git checkout main
-          git pull
+          git pull origin main
           composer install --no-interaction --no-suggest --no-progress --prefer-dist
           php bin/console doctrine:schema:update --force
           git push

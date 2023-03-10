@@ -24,6 +24,7 @@ class CatsAndSubCatsService
         dump('test working');
         dump('test working');
         dump('test working');
+        dump('test working');
         dump($this->em->getRepository(Category::class)->getOnlyCatAndOnlySubCat());
         return $this->em->getRepository(Category::class)->getOnlyCatAndOnlySubCat();
     }

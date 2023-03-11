@@ -1,8 +1,9 @@
 name: Mon Flux de travail
 
 on:
-  pull_request:
-    branches: [ main ]
+  push:
+    branches:
+      - main
 
 jobs:
   deploy:
@@ -20,7 +21,7 @@ jobs:
         run: |
           git pull origin main
           composer install --ignore-platform-reqs
-      - name: Mise à jour de la branche main
+      - name: Update main branch
         run: |
           git pull origin main
           php bin/console doctrine:schema:update --force

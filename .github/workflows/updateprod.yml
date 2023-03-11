@@ -13,12 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup PHP 8
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.0'
-          extensions: mbstring, zip, pdo_mysql
-
       - name: Install dependencies
         run: |
           composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts --no-dev

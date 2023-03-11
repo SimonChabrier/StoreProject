@@ -1,36 +1,20 @@
-name: Deploy to Production
+name: Mon Flux de travail
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - uses: actions/checkout@v2
+      
+    - name: Installer les dépendances
+      run: |
+        composer install
 
-      - name: Install dependencies
-        run: |
-          composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts --no-dev
-
-      - name: Update database schema
-        env:
-          APP_ENV: prod
-        run: |
-          php bin/console doctrine:schema:update --force --no-interaction
-
-      - name: Execute migrations
-        env:
-          APP_ENV: prod
-        run: |
-          php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
-
-      - name: Clear cache
-        env:
-          APP_ENV: prod
-        run: |
-          php bin/console cache:clear
+    - name: Mettre à jour la base de données
+      run: |
+        php bin/console doctrine:migrations:migrate --no-interaction

@@ -15,4 +15,4 @@ jobs:
       - name: Update main branch
         run: |
           git config pull.ff true
-          git push
+          git pull

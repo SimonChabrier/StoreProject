@@ -2,19 +2,21 @@ name: Mon Flux de travail
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - develop
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-      
-    - name: Installer les dépendances
-      run: |
-        composer install
-
-    - name: Mettre à jour la base de données
-      run: |
-        php bin/console doctrine:migrations:migrate --no-interaction
+      - name: Checkout de la branche
+        uses: actions/checkout@v2
+        with:
+          ref: main
+      - name: Pull de la branche
+        run: git pull

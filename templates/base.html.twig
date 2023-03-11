@@ -119,7 +119,7 @@ const errorMessage = "{{ app.session.flashbag.get('error')|first }}";
 
 // ajout du lien vers la page produit pour les cartes de la page d'accueil
 $(document).ready(function(){
-    $(".last-five-products section").click(function(){
+    $(".last-five-products section, .swiper-slide").click(function(){
         var href = $(this).find("a").attr("href");
         //href = href.substring(1);
         $(".productLink").attr("href", window.location.origin + href);

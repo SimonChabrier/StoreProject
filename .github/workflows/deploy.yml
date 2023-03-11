@@ -16,7 +16,8 @@ jobs:
       with:
         ref: main
     - name: Merge develop branch into main branch
-      run: git merge --ff-only develop
+      run: |
+        git merge --ff-only develop
     - name: Push changes to main branch
       uses: ad-m/github-push-action@v0.6.0
       with:

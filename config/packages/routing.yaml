@@ -11,4 +11,4 @@ when@prod:
         router:
             strict_requirements: null
             # pour le reset password en prod
-            default_uri: 'https://storeproject.simschab.fr/'
+            # default_uri: 'https://storeproject.simschab.fr/'

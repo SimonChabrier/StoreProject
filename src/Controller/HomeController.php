@@ -35,7 +35,7 @@ class HomeController extends AbstractController
     // actuellement non utilisé si j'utilise les flash messages avec SweetAlert2
     //$class = $request->query->get('class', 'alert-success');
 
-        $this->addFlash('success', 'Message flash PULLREQUEST.');
+        //$this->addFlash('success', 'Message flash PULLREQUEST.');
         
         return $this->render('home/index.html.twig', [
             'homeCats' => $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']),
@@ -147,5 +147,33 @@ class HomeController extends AbstractController
         //     $emailService->sendAdminNotification('Erreur à l\'envoi du mail de confirmation de ', $user->getEmail(), 'Message d\'erreur: ' . $e->getMessage());
         // }
         return $this->redirectToRoute('app_home', []);
+    }
+
+    // ComposerIntall Route
+
+    /**
+     * @Route("/composer", name="composer_install")
+     */
+    public function composerInstall(): Response
+    {
+        $output = '';
+        $return_var = '';
+        $success = true;
+
+        // Exécuter la commande Composer
+        exec('composer install', $output, $return_var);
+
+        // Vérifier si la commande s'est exécutée avec succès
+        if ($return_var !== 0) {
+            $success = false;
+        }
+
+        // Afficher un message en fonction du résultat
+        if ($success) {
+            $this->addFlash('success', 'Composer a été mis à jour avec succès.');
+            return $this->redirectToRoute('homepage');
+        } else {
+            $this->addFlash('error', 'Une erreur s\'est produite lors de la mise à jour de Composer.');
+        }
     }
 }

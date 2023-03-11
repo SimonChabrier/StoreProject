@@ -148,4 +148,32 @@ class HomeController extends AbstractController
         // }
         return $this->redirectToRoute('app_home', []);
     }
+
+    // ComposerIntall Route
+
+    /**
+     * @Route("/composer", name="composer_install")
+     */
+    public function composerInstall(): Response
+    {
+        $output = '';
+        $return_var = '';
+        $success = true;
+
+        // Exécuter la commande Composer
+        exec('composer install', $output, $return_var);
+
+        // Vérifier si la commande s'est exécutée avec succès
+        if ($return_var !== 0) {
+            $success = false;
+        }
+
+        // Afficher un message en fonction du résultat
+        if ($success) {
+            $this->addFlash('success', 'Composer a été mis à jour avec succès.');
+            return $this->redirectToRoute('homepage');
+        } else {
+            $this->addFlash('error', 'Une erreur s\'est produite lors de la mise à jour de Composer.');
+        }
+    }
 }

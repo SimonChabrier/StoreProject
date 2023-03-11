@@ -1,9 +1,8 @@
 name: Mon Flux de travail
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    branches: [ main ]
 
 jobs:
   deploy:
@@ -12,19 +11,22 @@ jobs:
       - name: Checkout de la branche
         uses: actions/checkout@v3
         with:
-          ref: main
+           ref: ${{ github.event.pull_request.head.ref }}
       - name: Setup PHP Je met la même version que celle du serveur
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.1.14
       - name: Pull de la branche
         run: |
-          php -v
-          git pull
+          git pull origin main
           composer install --ignore-platform-reqs
+      - name: Mise à jour de la branche main
+        run: |
+          git pull origin main
+          php bin/console doctrine:schema:update --force
+          git push
       - name: Clear cache
         run: rm -rf var/cache/*
     env:
       COMPOSER_PHP: "8.1.14"
       DATABASE_URL: ${{secrets.DATABASE_URL}}
-

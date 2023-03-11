@@ -27,6 +27,6 @@ jobs:
           php -v
           git pull
           composer install --ignore-platform-reqs 
-          php bin/console cache:clear
+          rm -rf var/cache/*
     env:
       COMPOSER_PHP: "8.1.14"

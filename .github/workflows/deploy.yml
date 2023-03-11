@@ -1,7 +1,7 @@
 name: Deploy on dist
 
 on:
-  pull_request:
+  push:
     branches: [ main ]
 
 jobs:
@@ -11,8 +11,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.event.pull_request.base.ref }}
       - name: Update main branch
         run: |
           git config pull.ff true
-          git pull
+          git push

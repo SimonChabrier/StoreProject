@@ -19,6 +19,7 @@ jobs:
         with:
           ref: main
       - name: Pull de la branche
-        run: git pull
-      - name: Nettoyage du cche
-        run: bin/console cache:clear
+        run: |
+          git pull
+          composer install
+          php bin/console cache:clear --env=prod

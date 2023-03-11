@@ -3,16 +3,21 @@ name: Deploy on dist
 on:
   pull_request:
     branches: [ main ]
+    types: [ closed ]
 
 jobs:
-  build:
+  merge_job:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         with:
           ref: ${{ github.event.pull_request.head.ref }}
-      - name: Update main branch
+      - name: Update main branch on server
         run: |
-          git config pull.ff true
+          git config pull.ff only
+          git fetch origin main
+          git checkout main
+          git merge origin/main
           git push

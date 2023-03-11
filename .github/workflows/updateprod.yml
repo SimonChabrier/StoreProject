@@ -3,11 +3,6 @@ name: Mon Flux de travail
 on:
   push:
     branches:
-      - develop
-  pull_request:
-    types:
-      - closed
-    branches:
       - main
 
 jobs:

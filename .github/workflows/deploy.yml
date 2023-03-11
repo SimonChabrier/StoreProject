@@ -1,25 +1,18 @@
 name: Deploy on dist
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches:
       - main
 
 jobs:
-  update_main:
-    name: Update main branch
+  deploy:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
     steps:
-    - name: Checkout main branch
-      uses: actions/checkout@v3
-      with:
-        ref: main
-    - name: Merge develop branch into main branch
-      run: |
-        git merge --ff-only
-    - name: Push changes to main branch
-      uses: ad-m/github-push-action@v0.6.0
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: main
+      - name: Checkout de la branche
+        uses: actions/checkout@v3
+        with:
+           ref: ${{ github.event.pull_request.head.ref }}
+      - name: Update main branch
+        run: |
+          git pull origin main
+          git push

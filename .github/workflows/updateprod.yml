@@ -26,7 +26,7 @@ jobs:
         run: |
           php -v
           git pull
-          composer install
+          composer install --ignore-platform-reqs
           composer show symfonycasts/reset-password-bundle
           php bin/console cache:clear --env=prod
     env:

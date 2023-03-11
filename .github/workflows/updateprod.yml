@@ -23,3 +23,5 @@ jobs:
           git pull
           composer install
           php bin/console cache:clear --env=prod
+    env:
+      COMPOSER_PHP: "8.1.14"

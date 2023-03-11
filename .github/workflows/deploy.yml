@@ -17,4 +17,11 @@ jobs:
       - name: Update main branch
         run: |
           git config pull.ff true
+      - name: Fetch main branch from GitHub
+        run: |
+          git fetch origin main
+          git checkout main
+      - name: Merge changes into main
+        run: |
+          git merge --no-edit ${GITHUB_REF#refs/heads/}
           git push

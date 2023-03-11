@@ -24,7 +24,6 @@ jobs:
       - name: Update main branch
         run: |
           git pull origin main
-          php bin/console doctrine:schema:update --force
           git push
       - name: Clear cache
         run: rm -rf var/cache/*

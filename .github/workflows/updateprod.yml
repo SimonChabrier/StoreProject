@@ -28,6 +28,6 @@ jobs:
           git pull
           composer install --ignore-platform-reqs
           composer show symfonycasts/reset-password-bundle
-          php bin/console cache:clear --env=prod
+          php bin/console cache:clear --env=prod --env-file=.env.local
     env:
       COMPOSER_PHP: "8.1.14"

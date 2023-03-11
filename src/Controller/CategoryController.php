@@ -27,6 +27,7 @@ class CategoryController extends AbstractController
     {   
         
         dump($categoryRepository->findAllCatsOrderByListOrder());
+        dump($categoryRepository->findAllCatsOrderByListOrder());
 
         return $this->render('category/index.html.twig', [
             'categories' => $categoryRepository->findAllCatsOrderByListOrder(),

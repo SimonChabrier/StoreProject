@@ -15,8 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout de la branche
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: main
       - name: Pull de la branche
         run: git pull
+      - name: Nettoyage du cche
+        run: bin/console cache:clear

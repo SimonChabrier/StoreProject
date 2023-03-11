@@ -22,6 +22,7 @@ jobs:
         run: |
           git pull
           composer install
+          composer show symfonycasts/reset-password-bundle
           php bin/console cache:clear --env=prod
     env:
       COMPOSER_PHP: "8.1.14"

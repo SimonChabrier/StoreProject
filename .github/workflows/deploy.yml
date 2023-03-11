@@ -1,11 +1,8 @@
 name: Deploy on dist
 on:
   pull_request:
-  push: 
-    branches: 
-      - main
-    types:
-      - closed
+    branches: [ main ]
+    types : [ closed ]
 
 jobs:
   merge_job:

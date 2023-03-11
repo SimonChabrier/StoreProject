@@ -35,7 +35,7 @@ class HomeController extends AbstractController
     // actuellement non utilisé si j'utilise les flash messages avec SweetAlert2
     //$class = $request->query->get('class', 'alert-success');
 
-        //$this->addFlash('success', 'Message flash de test.');
+        $this->addFlash('success', 'Message flash de test.');
         
         return $this->render('home/index.html.twig', [
             'homeCats' => $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']),

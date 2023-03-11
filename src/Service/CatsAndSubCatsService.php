@@ -21,6 +21,7 @@ class CatsAndSubCatsService
 
     public function getOnlyCatsAndOnlySubCats()
     {   
+        dd('test');
         dump($this->em->getRepository(Category::class)->getOnlyCatAndOnlySubCat());
         return $this->em->getRepository(Category::class)->getOnlyCatAndOnlySubCat();
     }

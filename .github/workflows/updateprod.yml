@@ -18,6 +18,10 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: main
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1.14
       - name: Pull de la branche
         run: |
           php -v

@@ -26,8 +26,9 @@ jobs:
         run: |
           php -v
           git pull
-          composer install --ignore-platform-reqs 
+          composer install --ignore-platform-reqs
           php bin/console cache:clear --env=prod --env-file=.env.local
     env:
       COMPOSER_PHP: "8.1.14"
       DATABASE_URL: ${{vars.DATABASE_URL}}
+

@@ -25,7 +25,7 @@ class CategoryController extends AbstractController
      */
     public function index(CategoryRepository $categoryRepository): Response
     {   
-        dump($categoryRepository->findAllCatsOrderByListOrder());
+        
         dump($categoryRepository->findAllCatsOrderByListOrder());
 
         return $this->render('category/index.html.twig', [

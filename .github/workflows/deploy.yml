@@ -3,11 +3,9 @@ name: Deploy on dist
 on:
   pull_request:
     branches: [ main ]
-    types: [ closed ]
 
 jobs:
-  merge_job:
-    if: github.event.pull_request.merged == true
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -17,11 +15,4 @@ jobs:
       - name: Update main branch
         run: |
           git config pull.ff true
-      - name: Fetch main branch from GitHub
-        run: |
-          git fetch origin main
-          git checkout main
-      - name: Merge changes into main
-        run: |
-          git merge --no-edit ${GITHUB_REF#refs/heads/}
           git push

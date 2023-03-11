@@ -20,6 +20,7 @@ jobs:
           ref: main
       - name: Pull de la branche
         run: |
+          php -v
           git pull
           composer install
           composer show symfonycasts/reset-password-bundle

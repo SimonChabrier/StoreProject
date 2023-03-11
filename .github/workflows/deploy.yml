@@ -16,3 +16,4 @@ jobs:
       - name: Update main branch on server
         run: |
           git config pull.ff true
+          git pull

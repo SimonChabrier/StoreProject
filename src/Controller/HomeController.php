@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class HomeController extends AbstractController
 {   
@@ -156,30 +158,29 @@ class HomeController extends AbstractController
      * @Route("/composer", name="composer_install")
      */
     public function composerInstall(): Response
-    {
-        $output = '';
-        $return_var = '';
-        $success = true;
+    {   
+        // instanciation de la classe Process avec la commande à exécuter
+        $process = new Process(['composer', 'install', '--ignore-platform-reqs']);
+        $process->setWorkingDirectory('../');
+        // Exécution de la commande
+        $process->run();
 
-        // Exécuter la commande Composer
-        exec('composer install', $output, $return_var);
-
-        // Vérifier si la commande s'est exécutée avec succès
-        if ($return_var !== 0) {
-            $success = false;
-        }
-
-        // Afficher un message en fonction du résultat
-        if ($success) {
-            $this->addFlash('success', 'Composer a été mis à jour avec succès.');
-            return $this->redirectToRoute('homepage');
+        // Vérification du résultat
+        if ($process->isSuccessful()) {
+            $message = 'Composer a été mis à jour avec succès.';
+            $type = 'success';
         } else {
-            $this->addFlash('error', 'Une erreur s\'est produite lors de la mise à jour de Composer.');
+            $message = 'Une erreur s\'est produite lors de la mise à jour de Composer : ';
+            $type = 'error';
         }
+        
+        //dump($process->getOutput());
+        //dump($process->getErrorOutput());
+        //dump($message);
+        
+        // Définition du message flash final
+        $this->addFlash($type, $message);
 
-        dump($output);
-        return $this->render('home/index.html.twig', [
-            'output' => $output,
-        ]);
+        return $this->redirectToRoute('app_home');
     }
 }

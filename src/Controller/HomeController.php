@@ -10,6 +10,7 @@ use App\Repository\CategoryRepository;
 use App\Message\AccountCreatedNotification;
 use App\Repository\UserRepository;
 use DateTime;
+use SebastianBergmann\Environment\Console;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -175,5 +176,10 @@ class HomeController extends AbstractController
         } else {
             $this->addFlash('error', 'Une erreur s\'est produite lors de la mise à jour de Composer.');
         }
+
+        dump($output);
+        return $this->render('home/index.html.twig', [
+            'output' => $output,
+        ]);
     }
 }

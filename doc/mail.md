@@ -3,7 +3,7 @@ Voir messenger.yaml pour la configuration.
 
 # activer l'envoi de mail
 ```bash
-bin/console messenger:consume async
+bin/console messenger:consume async -vv
 ```
 
 # désactiver l'envoi de mail

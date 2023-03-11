@@ -134,7 +134,7 @@ class HomeController extends AbstractController
                 ],
             );
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            //dd($e->getMessage());
             $emailService->sendAdminNotification('Erreur à l\'envoi du mail de confirmation de ', $user->getEmail(), 'Message d\'erreur: ' . $e->getMessage());
         }
         

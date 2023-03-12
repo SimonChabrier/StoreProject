@@ -1,20 +1,24 @@
-name: Deploy on dist
+name: Deploy to Infomaniak
 
 on:
   push:
-    branches: [ develop ]
-  pull_request:
     branches: [ main ]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-      - name: Update main branch
-        run: |
-          git config pull.ff true
-          git push
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy to Infomaniak
+      uses: appleboy/ssh-action@master
+      with:
+        username: ${{ secrets.SSH_USERNAME }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        host: storeproject.simschab.fr
+        script: |
+          cd sites/storeproject.simschab.fr/
+          git pull
+          bin/console cache:clear

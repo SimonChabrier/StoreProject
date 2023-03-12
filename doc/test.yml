@@ -1,1 +1,55 @@
-# add a github action config to automatically update branch main on production with after last merge
+# using github action, ask production on Infomaniak mutualised server 
+# to update its main branch when a PR is merged on main
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Update main branch
+        run: |
+          git config pull.ff true
+          git push
+      - name: Deploy on dist
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /sites/storeproject
+            git checkout main
+            git pull
+      - name: clear cache
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /sites/storeproject
+            php bin/console cache:clear
+            composer2 install --no-dev --optimize-autoloader
+            php bin/console doctrine:migrations:migrate --no-interaction
+            php bin/console doctrine:fixtures:load --no-interaction
+            php bin/console cache:clear
+            php bin/console cache:warmup
+
+          
+
+
+
+
+
+

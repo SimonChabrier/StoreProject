@@ -12,8 +12,21 @@ bin/console messenger:stop-workers
 ```
 
 # pour le reset-password (voir https://symfony.com/doc/current/security/reset_password.html)
-- dans routing.yaml, ajouter
+- dans routing.yaml, ajouter le port sur lequl le serveur est lancé en local
+
 ```yaml
 default_uri: 'https://127.0.0.1:8000'
 ```
 pour que le lien de reset-password soit correct et ne contienne pas localhost si le serveur est lancé en local sur  https://127.0.0.1:8000/
+
+# lancer mailhog
+
+```bash
+mailhog
+```
+
+# pour voir les mails envoyés en local
+
+```bash
+http://localhost:8025/
+```

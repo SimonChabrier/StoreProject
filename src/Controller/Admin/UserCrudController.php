@@ -9,6 +9,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use Faker\Core\Number;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -27,6 +29,11 @@ class UserCrudController extends AbstractCrudController
             // TextField::new('firstName')
             //  ->setLabel('Prénom')
             //  ->setRequired(true),
+
+            // add id
+            NumberField::new('id')
+                ->setLabel('Id')
+                ->setRequired(true),
 
             TextField::new('email')
                 ->setLabel('Nom d\'utilisateur')

@@ -11,12 +11,17 @@ body {
 }
 
 * {
-  box-sizing: border-box !important;
+  box-sizing: border-box;
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-grow: 1;
+}
+
+.swal-icon--success__line::before, 
+.swal-icon--success__line::after {
+  box-sizing: inherit !important;
 }
 
 i {

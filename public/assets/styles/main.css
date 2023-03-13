@@ -9,12 +9,17 @@ body {
 }
 
 * {
-  box-sizing: border-box !important;
+  box-sizing: border-box;
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-grow: 1;
+}
+
+.swal-icon--success__line::before,
+.swal-icon--success__line::after {
+  box-sizing: inherit !important;
 }
 
 i {
@@ -395,7 +400,7 @@ aside {
   background-color: rgba(184, 176, 176, 0.05);
   padding: 20px !important;
   border-radius: 10px;
-  background-image: linear-gradient(90deg, hsl(0deg, 0%, 100%) 0%, hsl(344deg, 0%, 99%) 18%, hsl(344deg, 0%, 99%) 26%, hsl(344deg, 0%, 98%) 32%, hsl(344deg, 0%, 98%) 37%, hsl(344deg, 0%, 97%) 42%, hsl(344deg, 0%, 97%) 47%, hsl(344deg, 0%, 96%) 54%, hsl(344deg, 0%, 96%) 64%, hsl(0deg, 0%, 95%) 90%);
+  background-image: linear-gradient(90deg, hsl(0, 0%, 100%) 0%, hsl(344, 0%, 99%) 18%, hsl(344, 0%, 99%) 26%, hsl(344, 0%, 98%) 32%, hsl(344, 0%, 98%) 37%, hsl(344, 0%, 97%) 42%, hsl(344, 0%, 97%) 47%, hsl(344, 0%, 96%) 54%, hsl(344, 0%, 96%) 64%, hsl(0, 0%, 95%) 90%);
 }
 
 .aside > div {

@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Service\EmailService;
 use App\Security\EmailVerifier;
 use App\Form\RegistrationFormType;
+use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -61,8 +62,6 @@ class RegistrationController extends AbstractController
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
 
-           
-
             // do anything else you need here, like send an email
 
             return $userAuthenticator->authenticateUser(
@@ -80,37 +79,37 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/verify/email", name="app_verify_email")
      */
-    public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
+    public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $id = $request->get('id');
 
-        // si le user passe ici en étant connecté c'est qu'il a déjà validé son email
-        if ($this->getUser()) {
-            $this->addFlash('success', 'Votre adresse email est déjà validée.');
-            
-            $class = 'alert-warning';
-            // redirection vers la page d'accueil avec une variable retournée dans la querystring : ['class' => $class] donne ?class=alert-warning 
-            // dans l'url...je vais récupèrer sur la requête 
-            // sur le contrôleur HomeController et retourner à la vue pour gèrer la couleur de l'alerte
-            return $this->redirectToRoute('app_home', ['class' => $class], 301);
+        if (null === $id) {
+            return $this->redirectToRoute('app_register');
+        }
 
-            
+        $user = $userRepository->find($id);
+
+        if (null === $user) {
+            return $this->redirectToRoute('app_register');
+        }
+
+        // si le user a déjà vérifié son email, on le redirige vers la page d'accueil et on affiche un message flash
+        if ($user->isVerified() === true) {
+            $this->addFlash('warning', 'Votre email est déjà vérifié !');
+            return $this->redirectToRoute('app_home');
         }
 
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
-            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
+            $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
-            
-            // même chose je retourne une variable dans la querystring pour gèrer la couleur de l'alerte
-            $class = 'alert-danger';
+
+            $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
             return $this->redirectToRoute('app_register');
         }
 
-        $this->addFlash('success', 'Votre adresse email est bien validée.');
-        // même chose je retourne une variable dans la querystring pour gèrer la couleur de l'alerte
-        $class = 'alert-success';
-        return $this->redirectToRoute('app_home', ['class' => $class]);
+        // We redirect on home page after email verification and add dispay a flash message
+        $this->addFlash('success', 'Votre email a bien été vérifié !');
+        return $this->redirectToRoute('app_home');
     }
 }

@@ -46,7 +46,6 @@ class HomeController extends AbstractController
             //'class' => $class,
         ]);
     }
-
     /**
      * @Route("/paginate/{id}", name="app_paginate_products", methods={"GET", "POST"})
      */

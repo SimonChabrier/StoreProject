@@ -94,70 +94,50 @@ class HomeController extends AbstractController
     public function testMail(EmailService $emailService, UserRepository $ur): Response
     {   
 
-        // 3 Définir une route et une action de contrôleur pour déclencher l'envoi 
-        // de la notification de création de compte client. 
-        // Cette action de contrôleur placera un message messenger 
-        // correspondant dans la file d'attente pour être traité par un worker.
-
-        // la logique de l'envoi du mail qui utilise les Message et MessageHandler est déplacée dans le service EmailService
-        // pour alléger le controller.
+        // only admin can access this route
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         
         $user = $this->getUser();
-        $users = $ur->findAll();
+        // find 4 last users
+        $users = $ur->findBy([], ['id' => 'DESC'], 4, 0);
 
-        // envoi du mail de confirmation de création de compte
+        // envoi du mail en bouclant sur les utilisateurs
         foreach ($users as $user) {
-            $emailService->sendTemplateEmailNotification(
-                $this->adminEmail, 
-                $user->getEmail(), 
-                'Nouvelle notification de Sneaker-Shop', 
-                'email/base_email.html.twig', 
-                [   
-                    'title' => 'Titre du template depuis le controller',
-                    'username' => $user->getEmail(),
-                    'subject' => 'Sujet depuis le controller',
-                    'content' => 'Message depuis le controller',
-                ],
-            );
+
+            try {
+                $emailService->sendTemplateEmailNotification(
+                    $this->adminEmail, 
+                    $user->getEmail(), 
+                    'Nouvelle notification de Sneaker-Shop', 
+                    'email/base_email.html.twig', 
+                    [   
+                        'title' => 'Titre du template depuis le controller',
+                        'username' => $user->getEmail(),
+                        'subject' => 'Sujet depuis le controller',
+                        'content' => 'Message depuis le controller',
+                    ],
+                );
+            } catch (\Exception $e) {
+                //dd($e->getMessage());
+                $emailService->sendAdminNotification('Erreur à l\'envoi du mail de confirmation de ', $user->getEmail(), 'Message d\'erreur: ' . $e->getMessage());
+            }
         }
-
-
-        try {
-            $emailService->sendTemplateEmailNotification(
-                $this->adminEmail, 
-                $user->getEmail(), 
-                'Nouvelle notification de Sneaker-Shop', 
-                'email/base_email.html.twig', 
-                [   
-                    'title' => 'Titre du template depuis le controller',
-                    'email' => $user->getEmail(),
-                    'subject' => 'Sujet depuis le controller',
-                    'content' => 'Message depuis le controller',
-                ],
-            );
-        } catch (\Exception $e) {
-            //dd($e->getMessage());
-            $emailService->sendAdminNotification('Erreur à l\'envoi du mail de confirmation de ', $user->getEmail(), 'Message d\'erreur: ' . $e->getMessage());
-        }
-        
-
-        // try {
-        //     $emailService->sendAccountCreatedNotification($user->getEmail());
-        //     $this->addFlash('success', 'Un mail de confirmation a été envoyé à ' . $user->getEmail());
-        //     $emailService->sendAdminNotification('Nouveau compte client', $user->getEmail(), 'créé avec succès');
-        // } catch (\Exception $e) {
-        //     $emailService->sendAdminNotification('Erreur à l\'envoi du mail de confirmation de ', $user->getEmail(), 'Message d\'erreur: ' . $e->getMessage());
-        // }
+    
         return $this->redirectToRoute('app_home', []);
     }
 
-    // ComposerIntall Route
+    // exemple de route qui exécute une commande shell avec la classe Process de Symfony
+    // pour mettre à jour les dépendances Composer du projet
+    // cette route est accessible uniquement par les utilisateurs ayant le rôle ROLE_ADMIN
 
     /**
      * @Route("/composer", name="composer_install")
      */
     public function composerInstall(): Response
     {   
+        // only admin can access this route
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         // instanciation de la classe Process avec la commande à exécuter
         $process = new Process(['composer', 'install', '--ignore-platform-reqs']);
         $process->setWorkingDirectory('../');

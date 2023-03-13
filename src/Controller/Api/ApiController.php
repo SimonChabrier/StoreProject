@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ApiController extends AbstractController
 {
     /**
-     * @Route("/products", name="app_api")
+     * @Route("/products", name="app_api_products")
      */
     public function apiGet(ProductRepository $pr): Response
     {   
@@ -30,6 +30,20 @@ class ApiController extends AbstractController
             [   // count the number of products in stock
                 'info' => count($pr->findBy(['inStockQuantity' => true]))
             ], 
+            ['groups' => 'product:read']
+        );
+    }
+
+    // par id de category 
+    /**
+     * @Route("/products/{id}", name="app_api_product")
+     */
+    public function apiGetOne(Product $product): Response
+    {
+        return $this->json(
+            $product,
+            Response::HTTP_OK, 
+            [], 
             ['groups' => 'product:read']
         );
     }

@@ -68,3 +68,27 @@
     });
 
 </script>
+
+<script>
+const addImageToCollection = (e) => {
+    const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.image);
+    console.log(collectionHolder);
+    const liELmt = document.createElement('li');
+
+    liELmt.innerHTML = collectionHolder
+    .dataset
+    .prototype
+    .replace(
+        /__picture__/g,
+        collectionHolder.dataset.index
+    );
+
+    collectionHolder.appendChild(liELmt);
+    collectionHolder.dataset.index++;
+
+    };
+
+    document.querySelectorAll('.add_picture_link').forEach(btn => {
+        btn.addEventListener("click", addImageToCollection)
+    });
+</script>

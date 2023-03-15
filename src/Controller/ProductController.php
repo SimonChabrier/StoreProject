@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Picture;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
@@ -71,7 +72,30 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $productRepository->add($product, true);
+
+            // On récupère les images transmises
+            $pictures = $form->get('pictures')->getData();
+            
+            // On boucle sur les images
+            foreach($pictures as $picture){
+                // On génère un nouveau nom de fichier
+                $file = md5(uniqid()).'.'.$picture->guessExtension();
+                
+                // On copie le fichier dans le dossier uploads
+                $picture->move(
+                    $this->getParameter('images_directory'),
+                    $file
+                );
+                
+                // On crée l'image dans la base de données
+                $img = new Picture();
+                $img->setName($file);
+                $product->addPicture($img);
+            }
+
+            $manager->persist($product);
+            $manager->flush();
+            //$productRepository->add($product, true);
 
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }

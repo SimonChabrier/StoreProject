@@ -9,6 +9,7 @@ use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -72,12 +73,49 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $pictures = $form->get('pictures')->getData();    
 
-            // On récupère les images transmises
-            $pictures = $form->get('pictures')->getData();
-            
+            // si j'ai une seule image
+            if(count($pictures) === 1)
+            {
+                //je récupère le nom de l'image unique de la collection
+                $name = $pictures->current()->getFileName();
+                $picture = $pictures->current()->getFile();
+                $ext = $pictures->current()->getFile()->guessExtension();
+                // On génère un nouveau nom de fichier
+                $file = md5(uniqid()).'.'.$ext;
+                
+                // On copie le fichier dans le dossier uploads
+                $picture->move(
+                    $this->getParameter('images_directory'),
+                    $file
+                );
+
+                // On crée l'image dans la base de données
+                $img = new Picture();
+                $img->setName($name);
+                $img->setFileName($file);
+                $img->setProduct($product);
+                $manager->persist($img);
+
+                $product->addPicture($img);
+                $product->setName($product->getName());
+
+                // fluch the data
+                $manager->flush();
+
+                // redirect to the product edit page
+                return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+
+            }
             // On boucle sur les images
             foreach($pictures as $picture){
+
+                // get the file 
+                $name = $picture->getFileName();
+                $picture = $picture->getFile();
+                //$picture = $picture->getName();
+            
                 // On génère un nouveau nom de fichier
                 $file = md5(uniqid()).'.'.$picture->guessExtension();
                 
@@ -89,8 +127,13 @@ class ProductController extends AbstractController
                 
                 // On crée l'image dans la base de données
                 $img = new Picture();
-                $img->setName($file);
+                $img->setName($name);
+                $img->setFileName($file);
+                $img->setProduct($product);
+                $manager->persist($img);
+        
                 $product->addPicture($img);
+                $product->setName($product->getName());
             }
 
             $manager->persist($product);

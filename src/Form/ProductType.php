@@ -86,11 +86,22 @@ class ProductType extends AbstractType
                 'prototype' => true,
                 'label' => false,
             ])
-            ->add('pictures', FileType::class,[
+            // multiple file upload (works good)
+            // ->add('pictures', FileType::class,[
+            //     'label' => false,
+            //     'multiple' => true,
+            //     'mapped' => false,
+            //     'required' => false
+            // ])
+            // embed here PictureType using CollectionType
+            ->add('pictures', CollectionType::class, [
+                'entry_type' => PictureType::class,
+                'allow_add' => true,
+                'mapped' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'prototype' => true,
                 'label' => false,
-                'multiple' => true,
-                'mapped' => false,
-                'required' => false
             ])
         ;
     }

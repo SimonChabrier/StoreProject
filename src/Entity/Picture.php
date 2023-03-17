@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PictureRepository;
-use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @ORM\Entity(repositoryClass=PictureRepository::class)
@@ -24,17 +23,22 @@ class Picture
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="pictures")
-     */
-    private $product;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $fileName;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $alt;
 
-    private File $file;
+    /**
+     * @ORM\ManyToOne(
+     * targetEntity=Product::class,
+     * inversedBy="pictures")
+     */
+    private $product;
+
 
     public function getId(): ?int
     {
@@ -71,28 +75,21 @@ class Picture
     }
 
     public function setFileName(string $fileName): self
-    {
-        $this->fileName = $fileName;
+    {   
 
+        $this->fileName = $fileName;
+        
         return $this;
     }
 
-    /**
-     * Get the value of file
-     */ 
-    public function getFile()
+    public function getAlt(): ?string
     {
-        return $this->file;
+        return $this->alt;
     }
 
-    /**
-     * Set the value of file
-     *
-     * @return  self
-     */ 
-    public function setFile(File $file)
+    public function setAlt(?string $alt): self
     {
-        $this->file = $file;
+        $this->alt = $alt;
 
         return $this;
     }

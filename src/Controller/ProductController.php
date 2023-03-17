@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\UploadService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -31,13 +32,25 @@ class ProductController extends AbstractController
     /**
      * @Route("/new", name="app_product_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, ProductRepository $productRepository): Response
+    public function new(Request $request, ProductRepository $productRepository, EntityManagerInterface $manager, UploadService $uploadService): Response
     {
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            foreach ($form->get('pictures')->getData() as $i => $picture) {
+                // on récupère les fichiers uploadés
+                $picture = $uploadService->uploadPictures(
+                    // 'product' est le nom du form ProductType (on enlève juste Type au nom) qui est imbriqué et 'pictures' le nom du champ de type collection dans le form parent ProductType
+                    $request->files->get('product')['pictures'][$i],
+                    $picture,
+                    $product
+                );
+                $manager->persist($picture);
+            }
+
             $productRepository->add($product, true);
 
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
@@ -65,81 +78,25 @@ class ProductController extends AbstractController
     /**
      * @Route("/{id}/edit", name="app_product_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Product $product, ProductRepository $productRepository, EntityManagerInterface $manager): Response
+    public function edit(Request $request, Product $product, ProductRepository $productRepository, EntityManagerInterface $manager, UploadService $uploadService): Response
     {   
         $form = $this->createForm(ProductType::class, $product);
-        
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $pictures = $form->get('pictures')->getData();    
-
-            // si j'ai une seule image
-            if(count($pictures) === 1)
-            {
-                //je récupère le nom de l'image unique de la collection
-                $name = $pictures->current()->getFileName();
-                $picture = $pictures->current()->getFile();
-                $ext = $pictures->current()->getFile()->guessExtension();
-                // On génère un nouveau nom de fichier
-                $file = md5(uniqid()).'.'.$ext;
-                
-                // On copie le fichier dans le dossier uploads
-                $picture->move(
-                    $this->getParameter('images_directory'),
-                    $file
+            foreach ($form->get('pictures')->getData() as $i => $picture) {
+                // on récupère les fichiers uploadés
+                $picture = $uploadService->uploadPictures(
+                    // 'product' est le nom du formType imbriqué et 'pictures' le nom du champ de type collection dans le form parent
+                    $request->files->get('product')['pictures'][$i],
+                    $picture,
+                    $product
                 );
-
-                // On crée l'image dans la base de données
-                $img = new Picture();
-                $img->setName($name);
-                $img->setFileName($file);
-                $img->setProduct($product);
-                $manager->persist($img);
-
-                $product->addPicture($img);
-                $product->setName($product->getName());
-
-                // fluch the data
-                $manager->flush();
-
-                // redirect to the product edit page
-                return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
-
-            }
-            // On boucle sur les images
-            foreach($pictures as $picture){
-
-                // get the file 
-                $name = $picture->getFileName();
-                $picture = $picture->getFile();
-                //$picture = $picture->getName();
-            
-                // On génère un nouveau nom de fichier
-                $file = md5(uniqid()).'.'.$picture->guessExtension();
-                
-                // On copie le fichier dans le dossier uploads
-                $picture->move(
-                    $this->getParameter('images_directory'),
-                    $file
-                );
-                
-                // On crée l'image dans la base de données
-                $img = new Picture();
-                $img->setName($name);
-                $img->setFileName($file);
-                $img->setProduct($product);
-                $manager->persist($img);
-        
-                $product->addPicture($img);
-                $product->setName($product->getName());
+                $manager->persist($picture);
             }
 
-            $manager->persist($product);
-            $manager->flush();
-            //$productRepository->add($product, true);
-
+            $productRepository->add($product, true);
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }
 

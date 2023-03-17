@@ -96,12 +96,13 @@ class ProductType extends AbstractType
             // embed here PictureType using CollectionType
             ->add('pictures', CollectionType::class, [
                 'entry_type' => PictureType::class,
+                'entry_options' => ['label' => false],
                 'allow_add' => true,
-                'mapped' => true,
+                'mapped' => false,
                 'allow_delete' => true,
-                'by_reference' => false,
-                'prototype' => true,
-                'label' => false,
+                // 'by_reference' => false,
+                // 'prototype' => true,
+                // 'label' => 'Images',
             ])
         ;
     }

@@ -141,7 +141,9 @@ class Product
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="product", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Picture::class, 
+     * mappedBy="product", 
+     * cascade={"persist", "remove"})
      */
     private $pictures;
 

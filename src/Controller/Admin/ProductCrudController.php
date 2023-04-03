@@ -4,17 +4,14 @@ namespace App\Controller\Admin;
 
 use App\Entity\Brand;
 use App\Entity\Product;
-use App\Form\PictureType;
 use App\Form\ProductDataType;
-use Symfony\Component\Validator\Constraints\File;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 
 class ProductCrudController extends AbstractCrudController
 {   
@@ -83,15 +80,8 @@ class ProductCrudController extends AbstractCrudController
             CollectionField::new('productData', 'Données du produit')
             ->setEntryType(ProductDataType::class, [])
             ->setCustomOption('allow_add', true)
-            ->renderExpanded(true),
-
-            // use PicturesType to manage pictures
-            CollectionField::new('pictures', 'Photos')
-            ->setEntryType(PictureType::class, [])
-            ->setCustomOption('allow_add', true)
             ->renderExpanded(true)
-            // upload pictures addes in input file to the server
-            ->setFormTypeOption('by_reference', false)
+         
         ];
     }
 

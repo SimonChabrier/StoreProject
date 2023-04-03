@@ -8,16 +8,7 @@
     <h1>{{ product.name|title }}</h1>
     
     <div class="gallery">
-    {% for picture in product.pictures %}
-        {% if picture %}
-            {# get just last picture #}
-            {% if loop.last %}
-                <img class="last-five-picture" src="/uploads/files/pictures/{{ picture.getFilename }}" alt="{{ picture.alt }}" width >
-            {% endif %}
-        {% endif %}
-        {% else %}
-        <img class="last-five-picture" src="/assets/pictures/defaultSneakersPicture.webp" alt="" loading="lazy">
-        {% endfor %}
+    <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
     </div>
 
     <hr>

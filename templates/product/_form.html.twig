@@ -1,4 +1,10 @@
- {{ form_start(form) }}
+ {# {{ form_start(form) }} #}
+ {# add multipart to form start #}
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+    
+    {# Gestion des erreurs #}
+    {{ form_errors(form) }}
+
  {{ form_row(form.name) }}
  {{ form_row(form.buyPrice) }}
  {{ form_row(form.sellingPrice) }}
@@ -10,17 +16,33 @@
 
     {# Gestion de la collection - nécéssite le JS des balises script #}
 <hr>
-     <h3>Collection d'attributs produit</h3>
-    <button type="button" class="add_item_link btn btn-primary" data-collection="productData">Ajouter</button>
-    <button type="button" class="remove_item_link btn btn-danger" data-collection="productData">Supprimer</button>
+    <h3>Collection d'attributs produit</h3>
+    <button type="button" class="add_item_link btn btn-primary" data-collection="productData">
+        Ajouter
+    </button>
+    <button type="button" class="remove_item_link btn btn-danger" data-collection="productData">
+        Supprimer
+    </button>
 
     <ul class="productData"
     data-index="{{ form.productData|length > 0 ? form.productData|last.vars.name + 1 : 0 }}"
     data-prototype="{{ form_widget(form.productData.vars.prototype)|e('html_attr') }}"
     >
     </ul>
-
 <hr>
+    {# Gestion de la collection d'images sur la propriété pictures - nécéssite le JS des balises script #}
+    <h3>Collection d'images</h3>
+    <button type="button" class="add_picture_link btn btn-primary" data-image="add">
+        Ajouter</button>
+    <button type="button" class="remove_picture_link btn btn-danger" data-image="del">
+        Supprimer</button>
+
+     <div data-image="pictures" 
+    data-index="{{ form.pictures|length > 0 ? form.pictures|last.vars.fileName + 1 : 0 }}"
+    data-prototype="{{ form_widget(form.pictures.vars.prototype)|e('html_attr') }}"
+    >
+    </div>
+
     <button class="btn btn-success">{{ button_label|default('Enregistrer le produit') }}</button>
 
 {{ form_end(form) }}
@@ -67,4 +89,23 @@
         btn.addEventListener("click", removeFormFromCollection)
     });
 
+</script>
+
+<script>
+    // au clic sur le bouton ajouter on ajoute un input file dans le formulaire
+$('button[data-image="add"]').on('click', function() {
+    var $container = $('div[data-image="pictures"]');
+    var index = $container.children().length;
+    var template = $container.attr('data-prototype')
+        .replace(/__name__label__/g, 'Image n°' + (index+1))
+        .replace(/__name__/g,        index)
+    ;
+    var $prototype = $(template);
+    $container.append($prototype);
+});
+
+// au clic sur le bouton supprimer on supprime le dernier input file du formulaire
+$('button[data-image="del"]').on('click', function() {
+    $('div[data-image="pictures"]').children().last().remove();
+});
 </script>

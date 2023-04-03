@@ -17,7 +17,16 @@
         {% for product in categoryProducts %}
             <section class="swiper-slide">
                 <h6>{{ product.name|upper }}</h6>
-                <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="" loading="lazy">
+                {% for picture in product.pictures %}
+                    {% if picture %}
+                    {# get just last picture #}
+                        {% if loop.last %}
+                            <img class="last-five-picture" src="uploads/files/pictures/{{ picture.getFilename }}" alt="{{ picture.alt }}" width >
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    <img class="last-five-picture" src="/assets/pictures/defaultSneakersPicture.webp" alt="" loading="lazy">
+                {% endfor %}
                 <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
                 <span class="selling-price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span>
                 <div class="productInfo">
@@ -28,6 +37,7 @@
                         <span class="sous-categorie">Sous-categorie : {{ product.subCategory.name }}</span>
                     {% endif %}
                     <span class="type">Type : {{ product.productType }}</span>
+                    <span class="brand">Marque : {{ product.brand }}</span>
                 </div>
                 <div class="productInfoFooter">
                     {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
@@ -51,13 +61,23 @@
             {% for product in subCategoryproducts %}
                 <section>
                     <h6>{{ product.name|upper}}</h6>
-                    <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="..." loading="lazy">
+                    {% for picture in product.pictures %}
+                    {% if picture %}
+                        {# get just last picture #}
+                        {% if loop.last %}
+                            <img class="last-five-picture" src="uploads/files/pictures/{{ picture.getFilename }}" alt="{{ picture.alt }}" width >
+                        {% endif %}
+                    {% endif %}
+                    {% else %}
+                    <img class="last-five-picture" src="/assets/pictures/defaultSneakersPicture.webp" alt="" loading="lazy">
+                    {% endfor %}
                     <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
                     <span class="selling-price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span>
                     <div class="productInfo">
                         <span class="categorie">Categorie : {{ category.name }}</span>
                         <span class="sous-categorie">Sous-categorie : {{ subCategory.name }}</span>
                         <span class="type">Type : {{ product.productType }}</span>
+                        <span class="brand">Marque : {{ product.brand }}</span>
                     </div>
                     <div class="productInfoFooter">
                         {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}

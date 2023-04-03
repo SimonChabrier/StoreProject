@@ -462,6 +462,9 @@ aside {
 .last-five .catalog-price {
   position: absolute;
   font-size: 0.9rem;
+  background-color: white;
+  padding: 3px 5px;
+  border-radius: 3px;
 }
 .last-five .selling-price {
   background-color: black;
@@ -487,6 +490,10 @@ aside {
 }
 .productInfo .type {
   font-size: 0.8rem;
+  font-weight: 100;
+}
+.productInfo .brand {
+  font-size: 0.7rem;
   font-weight: 100;
 }
 

@@ -5,6 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PictureRepository;
 
+// add groups for serialization
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * @ORM\Entity(repositoryClass=PictureRepository::class)
  */
@@ -19,16 +22,19 @@ class Picture
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"product:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"product:read"})
      */
     private $fileName;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"product:read"})
      */
     private $alt;
 

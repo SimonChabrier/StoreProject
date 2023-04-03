@@ -144,6 +144,7 @@ class Product
      * @ORM\OneToMany(targetEntity=Picture::class, 
      * mappedBy="product", 
      * cascade={"persist", "remove"})
+     * @Groups({"product:read"})
      */
     private $pictures;
 

@@ -37,6 +37,7 @@
                         <span class="sous-categorie">Sous-categorie : {{ product.subCategory.name }}</span>
                     {% endif %}
                     <span class="type">Type : {{ product.productType }}</span>
+                    <span class="brand">Marque : {{ product.brand }}</span>
                 </div>
                 <div class="productInfoFooter">
                     {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
@@ -76,6 +77,7 @@
                         <span class="categorie">Categorie : {{ category.name }}</span>
                         <span class="sous-categorie">Sous-categorie : {{ subCategory.name }}</span>
                         <span class="type">Type : {{ product.productType }}</span>
+                        <span class="brand">Marque : {{ product.brand }}</span>
                     </div>
                     <div class="productInfoFooter">
                         {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}

@@ -28,6 +28,7 @@ class UploadService
     }
     /**
      * Upload d'une image unique
+     * Non utilisé actuellement
      *
      * @param file $file
      * @param Entity $pictureObjet

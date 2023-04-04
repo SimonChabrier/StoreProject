@@ -135,7 +135,7 @@ function filterProducts() {
             let selectedBrandsFilter = true;
             let selectedCategoriesFilter = true;
             
-            // comme min et max ne sont pas null par ddéfaut, on les prend en compte directement pour qu'il n'écrase pas les autres critères de recherche parce qu'il ne sont jamais false
+            // comme min et max ne sont pas null par défaut, on les prend en compte directement pour qu'il n'écrase pas les autres critères de recherche parce qu'il ne sont jamais false
             if(searchState.minPrice){
                minPriceFilter = product.sellingPrice >= minPrice;
             }
@@ -183,10 +183,14 @@ function createProductCard(product){
         let section = document.createElement('section')
         section.classList.add('result-card');
 
+        // si le produit a une image on l'affiche sinon on affiche l'image par défaut
+        let productMainPicture = '';
+        product[i].pictures[0]?.fileName != undefined ? productMainPicture = `/uploads/files/pictures/${product[i].pictures[0].fileName}" alt=${product[i].pictures[0].alt} title=${product[i].pictures[0].name}` : productMainPicture = '/assets/pictures/defaultSneakersPicture.webp';
+
         // product[i].subCategory.categories[0].name ici je récupère le no de la categorie à la quelle appartient la sous categorie du produit
         section.innerHTML = `
             <h6>${product[i].name}</h6>
-            <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
+            <img class="last-five-picture" src="${productMainPicture}">
             <span class="catalog-price"><del>${product[i].catalogPrice} €</del></span>
             <span class="selling-price">${product[i].sellingPrice} €</span>
             <div class="productInfo">
@@ -196,16 +200,15 @@ function createProductCard(product){
                 <span class="type">Type : ${product[i].productType.name}</span>
             </div>
             <div class="productInfoFooter">
-                                        <span>-9%</span> 
+                <span>-9%</span> 
                 <span class="productLink"><a href="/product/${product[i].id}">Détail</a></span>
             </div>
         `;
         searchResults.appendChild(section);
 
+        // lien vers la page produit ajouté au click sur la card produit pour cards produitsretournées par les résultats de recherche
         section.addEventListener('click', function(){
-            // ajout du lien vers la page produit pour les résultats de recherche
-            var href = $(this).find("a").attr("href");
-            //href = href.substring(1);
+            let href = $(this).find("a").attr("href");
             $(".productLink").attr("href", window.location.origin + href);
             window.open($(".productLink").attr("href"), "_self");
         });
@@ -220,6 +223,7 @@ function resetDivResults(){
     searchResults.innerHTML = '';
 }
 
+// display the number of results and the selected filters
 function countResults(count){
     let searchResults = document.getElementById('searchResults');
     let h6 = document.createElement('h6');

@@ -503,12 +503,13 @@ aside {
     object-position: center;
     margin: 15px 0 0 0;
   }
-
   .catalog-price {
     position: absolute;
     font-size: 0.9rem;
+    background-color: white;
+    padding: 3px 5px;
+    border-radius: 3px;
   }
-
   .selling-price {
     background-color: black;
     color: white;
@@ -534,6 +535,10 @@ aside {
   }
   .type {
     font-size: .8rem;
+    font-weight: 100;
+  }
+  .brand {
+    font-size: .7rem;
     font-weight: 100;
   }
 }

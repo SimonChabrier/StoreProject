@@ -48,9 +48,10 @@ class ProductController extends AbstractController
                     $picture,
                     $product
                 );
+                // on persiste les images au fur et à mesure
                 $manager->persist($picture);
             }
-
+            // on ajoute le produit en base de données
             $productRepository->add($product, true);
 
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
@@ -67,7 +68,6 @@ class ProductController extends AbstractController
      */
     public function show(Product $product, ProductRepository $pr): Response
     {   
-        //dump($product);
         
         return $this->render('product/show.html.twig', [
             'product' => $product,

@@ -25,9 +25,3 @@
 /json/
 
 /sauvegardeComposer
-
-/public/uploads/files/documents/*
-/public/uploads/files/pictures/*
-
-!/public/uploads/files/pictures/.gitkeep 
-!public/uploads/files/documents/.gitkeep 

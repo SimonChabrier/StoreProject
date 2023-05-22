@@ -47,4 +47,5 @@ services:
     #     arguments: ['@messenger.default_bus']
     App\Service\UploadService:
        arguments: ['@kernel', '%picDir%', '%docDir%']
-        
+    
+ 

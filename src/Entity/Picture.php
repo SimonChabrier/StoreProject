@@ -41,7 +41,9 @@ class Picture
     /**
      * @ORM\ManyToOne(
      * targetEntity=Product::class,
-     * inversedBy="pictures")
+     * inversedBy="pictures",
+     * cascade={"persist"}
+     * )
      */
     private $product;
 

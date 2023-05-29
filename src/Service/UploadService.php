@@ -53,20 +53,24 @@ class UploadService
      */
     public function uploadPictures(array $filesArray, $pictureObjet, $productObject): Object
     {   
-        foreach($filesArray as $files) {
 
-            $fileName = md5(uniqid()).'.'.$files->guessExtension();
-            $files->move($this->picDir, $fileName);
+        foreach($filesArray as $file) {
+
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            $file->move($this->picDir, $fileName);
             // A chaque itération, on initialise les propriétés de l'objet Picture avec les infos du formulaire
-            $pictureObjet->setProduct($productObject)
+            $pictureObjet
                          ->setName($pictureObjet->getName())
                          ->setAlt($pictureObjet->getAlt())
-                         ->setFileName($fileName);
+                         ->setFileName($fileName)
+                         ->setProduct($productObject);
         }
+       
         // A chaque itération, on retourne l'objet Picture initialisé avec un nom de fichier unique pour le stocker en BDD 
         // utlisé ensuite pour construire l'affichage du fichier dans la vue.
         return $pictureObjet;
     }
+
 
     public function uploadFile($file, $fileObject)
     {   

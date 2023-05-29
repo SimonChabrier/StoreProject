@@ -8,6 +8,7 @@ use App\Repository\ProductRepository;
 use App\Service\UploadService;
 
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityDeletedEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
@@ -33,7 +34,7 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
     {
         return [
             BeforeEntityPersistedEvent::class => ['createPicture'],
-            BeforeEntityUpdatedEvent ::class => ['setPicture']
+            BeforeEntityUpdatedEvent ::class => ['setPicture'],
         ];
     }
 

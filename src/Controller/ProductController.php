@@ -117,9 +117,11 @@ class ProductController extends AbstractController
 
         // delete the file from the server if it exists
         foreach ($product->getPictures() as $picture) {
-            $uploadService->deletePicture($picture);
+            $uploadService->deletePictures($picture);
         }
 
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
 }

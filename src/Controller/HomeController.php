@@ -9,6 +9,7 @@ use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
 use App\Message\AccountCreatedNotification;
 use App\Repository\UserRepository;
+use App\Repository\PictureRepository;
 use DateTime;
 use SebastianBergmann\Environment\Console;
 use Symfony\Component\HttpFoundation\Request;
@@ -160,6 +161,30 @@ class HomeController extends AbstractController
         // Définition du message flash final
         $this->addFlash($type, $message);
 
+        return $this->redirectToRoute('app_home');
+    }
+
+    /**
+     * @Route("/delete/pictures", name="app_product_delete_pictures")
+     */
+    public function unlinkAllPictures(PictureRepository $pr): Response
+    {   
+        $allPictures = [
+            glob('../public/uploads/files/pictures/*'),
+            glob('../public/uploads/files/pictures_150/*'),
+            glob('../public/uploads/files/pictures_250/*'),
+            glob('../public/uploads/files/pictures_400/*'),
+            glob('../public/uploads/files/pictures_1200/*'),
+            glob('../public/uploads/files/slider_1280/*'),
+        ];
+
+        foreach ($allPictures as $pictures) {
+            foreach ($pictures as $picture) {
+                unlink($picture);
+            }
+        }
+
+        $this->addFlash('success', 'Toutes les images ont été supprimées.');
         return $this->redirectToRoute('app_home');
     }
 }

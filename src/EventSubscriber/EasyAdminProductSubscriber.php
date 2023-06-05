@@ -171,7 +171,11 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         }
 
         foreach ($entity->getPictures() as $picture) {
-            $this->uploadService->deletePicture($picture);
+            // dump($picture);
+            // dump($entity->getPictures());
+            // dump($entity->getPictures()->contains($picture));
+            // dd($entity);
+            $this->uploadService->deletePictures($picture);
         }
 
     }

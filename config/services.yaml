@@ -8,6 +8,12 @@ parameters:
     picDir: '%kernel.project_dir%/public/uploads/files/pictures'
     docDir: '%kernel.project_dir%/public/uploads/files/documents'
 
+    picture150Dir:  '%kernel.project_dir%/public/uploads/files/pictures_150'
+    picture250Dir:  '%kernel.project_dir%/public/uploads/files/pictures_250'
+    picture400Dir:  '%kernel.project_dir%/public/uploads/files/pictures_400'
+    picture1200Dir: '%kernel.project_dir%/public/uploads/files/pictures_1200'
+    slider1280Dir:  '%kernel.project_dir%/public/uploads/files/slider_1280'
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -23,6 +29,11 @@ services:
             $projectDir: '%kernel.project_dir%'
             $picDir:      '%picDir%'
             $docDir:      '%docDir%'
+            $picture150Dir:  '%picture150Dir%'
+            $picture250Dir:  '%picture250Dir%'
+            $picture400Dir:  '%picture400Dir%'
+            $picture1200Dir: '%picture1200Dir%'
+            $slider1280Dir:  '%slider1280Dir%'
         
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -47,5 +58,9 @@ services:
     #     arguments: ['@messenger.default_bus']
     App\Service\UploadService:
        arguments: ['@kernel', '%picDir%', '%docDir%']
+    App\Service\ResizerService:
+       arguments: ['%picture150Dir%','%picture250Dir%', '%picture400Dir%', '%picture1200Dir%', '%slider1280Dir%']
+    App\Message\UpdateFileMessage:
+        arguments: ['%file', '%pictureObject']   
     
  

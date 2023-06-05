@@ -28,6 +28,17 @@
 
 /public/uploads/files/documents/*
 /public/uploads/files/pictures/*
+/public/uploads/files/pictures_150/*
+/public/uploads/files/pictures_250/*
+/public/uploads/files/pictures_400/*
+/public/uploads/files/pictures_1200/*
+/public/uploads/files/slider_1280/*
 
 !/public/uploads/files/pictures/.gitkeep 
 !public/uploads/files/documents/.gitkeep 
+!public/uploads/files/pictures_150/.gitkeep
+!public/uploads/files/pictures_250/.gitkeep
+!public/uploads/files/pictures_400/.gitkeep
+!public/uploads/files/pictures_1200/.gitkeep
+!public/uploads/files/slider_1280/.gitkeep
+

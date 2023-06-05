@@ -71,7 +71,6 @@ class UploadService
         return $pictureObjet;
     }
 
-
     public function uploadFile($file, $fileObject)
     {   
         $fileName = md5(uniqid()).'.'.$file->guessExtension();
@@ -96,5 +95,11 @@ class UploadService
         return $fileObject;
     }
 
-
+    public function deletePicture($picture)
+    {
+        // on récupère le nom du fichier
+        $fileName = $picture->getFileName();
+        // on supprime le fichier
+        unlink($this->picDir.'/'.$fileName);
+    }
 }

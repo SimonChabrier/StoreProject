@@ -8,11 +8,13 @@ use App\Repository\ProductRepository;
 use App\Service\UploadService;
 
 use Doctrine\ORM\EntityManagerInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityDeletedEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
+
+// A utiliser après supression de l'entité Picture pour supprimer les images du dossier uploads
+use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityDeletedEvent;
 
 class EasyAdminProductSubscriber implements EventSubscriberInterface
 {
@@ -35,17 +37,23 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         return [
             BeforeEntityPersistedEvent::class => ['createPicture'],
             BeforeEntityUpdatedEvent ::class => ['setPicture'],
+            AfterEntityDeletedEvent::class => ['deletePicture']
         ];
     }
 
+    /**
+     * Pour mettre à jour les images d'un produit
+     *
+     * @param [type] $event
+     * @return void
+     */
     public function setPicture($event)
     {   
 
-        //TODO ne rien faire si l'action n'est pas l'upload d'une image
         if(!$this->request->getCurrentRequest()->files->get('Product')) {
             return;
         }
-
+        // on récupère l'entité c'est à dire le produit
         $entity = $event->getEntityInstance();
 
         if (!($entity instanceof Product)) {
@@ -53,15 +61,19 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         }
 
         // on enlève les images qui n'ont pas de nom de fichier parce que EasyAdmin ajoute directement
-        // les images dans le tableau de l'entité même si elles ne sont pas uploadées
+        // les images à l'objet à la soumission du formulaire même si elles ne sont pas traitées par le service d'upload.
         foreach ($entity->getPictures() as $picture) {
             if ($picture->getFileName() === null) {
                 $entity->removePicture($picture);
             }
         }
-    
+        // dans un service ou listener on ne peut pas utiliser $this->request->files->get('Product')
+        // on doit récupèrer les données de la requête avec getCurrentRequest() parce que la requête
+        // est déjà passée quand on arrive dans le service.
+        // On injecte donc RequestStack au lieu de Request dans le constructeur
         $data = $this->request->getCurrentRequest()->files->get('Product');
 
+        // on boucle sur les images uploadées pour les traiter
         foreach ($data['pictures'] as $i => $picture) {
            
             if ($picture['file'] !== null) {
@@ -75,11 +87,8 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
                     $newPicture,
                     $entity
                 );
-                
-                
+                           
                 $newPicture->setFileName($picture->getFileName());
-
-                dump($newPicture);
 
                 $this->em->persist($newPicture);
                 // on donne à la picture de l'entité le nom du fichier uploadé
@@ -93,6 +102,12 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
 
     }
 
+    /**
+     * Pour créer les images d'un produit si le produit est nouveau
+     *
+     * @param [type] $event
+     * @return void
+     */
     public function createPicture($event)
     {   
 
@@ -129,8 +144,6 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
                 
                 $newPicture->setFileName($picture->getFileName());
 
-                dump($newPicture);
-
                 $this->em->persist($newPicture);
                 // on donne à la picture de l'entité le nom du fichier uploadé
                 $entity->addPicture($newPicture);
@@ -140,6 +153,26 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         $this->em->flush();
 
         $this->productRepository->add($entity, true);
+
+    }
+
+    /**
+     * Pour supprimer les images d'un produit
+     *
+     * @param [type] $event
+     * @return void
+     */
+    public function deletePicture($event)
+    { 
+        $entity = $event->getEntityInstance();
+
+        if (!($entity instanceof Product)) {
+            return;
+        }
+
+        foreach ($entity->getPictures() as $picture) {
+            $this->uploadService->deletePicture($picture);
+        }
 
     }
 

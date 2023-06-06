@@ -49,7 +49,7 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
      */
     public function setPicture($event)
     {   
-
+        
         if(!$this->request->getCurrentRequest()->files->get('Product')) {
             return;
         }
@@ -99,6 +99,15 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         $this->em->flush();
 
         $this->productRepository->add($entity, true);
+
+        // si on a supprimé une image depuis easyadmin
+        // on chercher les images dont la colonne product_id est désormais == à null
+        $pictures = $this->em->getRepository(Picture::class)->findBy(['product' => null]);
+        // on supprime les fichiers des dossiers et aussi les lignes de la table picture qui ont product_id == null
+        foreach ($pictures as $picture) {
+            $this->em->remove($picture);
+            $this->uploadService->deletePictures($picture);
+        }
 
     }
 
@@ -171,10 +180,6 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         }
 
         foreach ($entity->getPictures() as $picture) {
-            // dump($picture);
-            // dump($entity->getPictures());
-            // dump($entity->getPictures()->contains($picture));
-            // dd($entity);
             $this->uploadService->deletePictures($picture);
         }
 

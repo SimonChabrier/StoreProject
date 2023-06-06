@@ -203,7 +203,7 @@ class UploadService
         $allPictures = [
             // glob va chercher tous les fichiers dans les dossiers spécifiés et les stocker dans un tableau
             glob('../public/uploads/files/pictures/*'),
-            glob('../public/uploads/files/pictures_150/*'),
+            glob('../public/uploads/files/pictures_XS/*'),
             glob('../public/uploads/files/pictures_250/*'),
             glob('../public/uploads/files/pictures_400/*'),
             glob('../public/uploads/files/pictures_1200/*'),

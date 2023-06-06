@@ -12,7 +12,7 @@
         {% if picture %}
             {# get just last picture #}
             {% if loop.last %}
-                <img class="last-five-picture" src="/uploads/files/pictures/{{ picture.getFilename }}" alt="{{ picture.alt }}" >
+                <img class="last-five-picture" src="/uploads/files/pictures_400/{{ picture.getFilename }}" alt="{{ picture.alt }}" >
             {% endif %}
         {% endif %}
         {% else %}
@@ -23,28 +23,28 @@
     <div class="gallery_small">
     {% for picture in product.pictures %}
         {% if picture %}
-            <img class="picture_150" src="/uploads/files/pictures_150/{{ picture.getFilename }}" alt="{{ picture.alt }}" id="{{ picture.id }}" title="{{ picture.name }}" >
+            <img class="picture_XS" src="/uploads/files/pictures_XS/{{ picture.getFilename }}" alt="{{ picture.alt }}" id="{{ picture.id }}" title="{{ picture.name }}" >
         {% endif %}
     {% endfor %}
     </div>
 
-    <dialog id="dialog">
+    <dialog id="gallery_dialog" class="fade-dialog">
     </dialog>
 
     <hr>
 
     {% if product.category %}
-    <h5 style="text-transform: uppercase; font-weight:400; margin: 5px 0!important; padding: 0"><a href="{{ path('app_category_show', { 'id': product.category.id }) }}">Categorie :  {{ product.category|capitalize }}</a></h5>
+    <h5><a href="{{ path('app_category_show', { 'id': product.category.id }) }}">Categorie :  {{ product.category|capitalize }}</a></h5>
     {% else %}
     <h6> Aucune categorie renseigné pour ce produit </h6>
     {% endif %}
 
     {% if product.subCategory %}
-    <h6 style="text-transform: uppercase; font-weight:400; margin: 5px 0!important; padding: 0"><a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}">Sous-Categorie : {{ product.subCategory|capitalize }}</a></h6>
+    <h6><a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}">Sous-Categorie : {{ product.subCategory|capitalize }}</a></h6>
     {% endif %}
 
     {% if product.productType.name %}
-    <a style="text-transform: uppercase; font-weight:300; margin: 3px 0!important; padding: 0" href="{{ path('app_product_type_show', { 'id': product.productType.id }) }}">Type de produit :  {{ product.productType.name|capitalize }}</a>
+    <a href="{{ path('app_product_type_show', { 'id': product.productType.id }) }}">Type de produit :  {{ product.productType.name|capitalize }}</a>
     {% endif %}
 
     <hr>
@@ -209,12 +209,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ouvre l'image de la gallery gallery_small dans un modal en grand format
-const pictures = document.querySelectorAll('.picture_150');
-const dialog = document.getElementById('dialog');
+// fondu ouverture et fermeture géré en css avec transition et opacity 
+const pictures = document.querySelectorAll('.picture_XS');
+const dialog = document.getElementById('gallery_dialog');
 
 pictures.forEach(picture => {
     picture.addEventListener('click', () => {
+        
+        dialog.classList.add('open'); // On ajoute 'open' pour déclencher l'effet de fondu
         dialog.showModal();
+
         const img = document.createElement('img');
         img.src = '/uploads/files/pictures_1200/' + picture.src.split('/').pop();
         img.alt = picture.alt;
@@ -224,6 +228,7 @@ pictures.forEach(picture => {
 });
 
 dialog.addEventListener('click', () => {
+    dialog.classList.remove('open'); // On enlève 'open' pour fermer la modal avec effet de fondu
     dialog.close();
     dialog.innerHTML = '';
 });

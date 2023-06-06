@@ -865,3 +865,29 @@ section.result-card {
 .swiper-horizontal>.swiper-pagination-bullets.swiper-pagination-bullets-dynamic, .swiper-pagination-horizontal.swiper-pagination-bullets.swiper-pagination-bullets-dynamic {
   bottom: 0;
 }
+
+// modal pictures
+
+.fade-dialog {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.fade-dialog.open {
+  opacity: 1;
+}
+
+.picture_XS {
+  width: 95px;
+  height: 95px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.gallery_small {
+  display: flex;
+  max-width: 400px;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}

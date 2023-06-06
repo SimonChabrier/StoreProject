@@ -171,7 +171,7 @@ class HomeController extends AbstractController
     {   
         $allPictures = [
             glob('../public/uploads/files/pictures/*'),
-            glob('../public/uploads/files/pictures_150/*'),
+            glob('../public/uploads/files/pictures_XS/*'),
             glob('../public/uploads/files/pictures_250/*'),
             glob('../public/uploads/files/pictures_400/*'),
             glob('../public/uploads/files/pictures_1200/*'),

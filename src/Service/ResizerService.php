@@ -10,7 +10,7 @@ use App\Service\UploadService;
 class ResizerService 
 {   
     //private $picDir;
-    private $picture150Dir;
+    private $pictureXSDir;
     private $picture250Dir;
     private $picture400Dir;
     private $picture1200Dir;
@@ -18,7 +18,7 @@ class ResizerService
 
     public function __construct(
         //string $picDir,
-        string $picture150Dir, 
+        string $pictureXSDir, 
         string $picture250Dir, 
         string $picture400Dir, 
         string $picture1200Dir,
@@ -26,7 +26,7 @@ class ResizerService
         )
     {   
         //$this->picDir =         $picDir;
-        $this->picture150Dir =  $picture150Dir;
+        $this->pictureXSDir =  $pictureXSDir;
         $this->picture250Dir =  $picture250Dir;
         $this->picture400Dir =  $picture400Dir;
         $this->picture1200Dir = $picture1200Dir;
@@ -41,7 +41,7 @@ class ResizerService
         
         $dirs = [
             //$this->picDir,
-            $this->picture150Dir, 
+            $this->pictureXSDir, 
             $this->picture250Dir, 
             $this->picture400Dir, 
             $this->picture1200Dir, 
@@ -194,7 +194,7 @@ class ResizerService
             $img = self::getFileFormat($file);
 
             $sizeAndDirs = [
-                'picture150Dir' => [150, 150],
+                'pictureXSDir' => [95, 95],
                 'picture250Dir' => [250, 250],
                 'picture400Dir' => [400, 400],
                 'picture1200Dir' => [1200, 1200],

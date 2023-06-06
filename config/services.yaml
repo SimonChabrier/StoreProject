@@ -8,7 +8,7 @@ parameters:
     picDir: '%kernel.project_dir%/public/uploads/files/pictures'
     docDir: '%kernel.project_dir%/public/uploads/files/documents'
 
-    picture150Dir:  '%kernel.project_dir%/public/uploads/files/pictures_150'
+    pictureXSDir:  '%kernel.project_dir%/public/uploads/files/pictures_XS'
     picture250Dir:  '%kernel.project_dir%/public/uploads/files/pictures_250'
     picture400Dir:  '%kernel.project_dir%/public/uploads/files/pictures_400'
     picture1200Dir: '%kernel.project_dir%/public/uploads/files/pictures_1200'
@@ -29,7 +29,7 @@ services:
             $projectDir: '%kernel.project_dir%'
             $picDir:      '%picDir%'
             $docDir:      '%docDir%'
-            $picture150Dir:  '%picture150Dir%'
+            $pictureXSDir:  '%pictureXSDir%'
             $picture250Dir:  '%picture250Dir%'
             $picture400Dir:  '%picture400Dir%'
             $picture1200Dir: '%picture1200Dir%'
@@ -59,7 +59,7 @@ services:
     App\Service\UploadService:
        arguments: ['@kernel', '%picDir%', '%docDir%']
     App\Service\ResizerService:
-       arguments: ['%picture150Dir%','%picture250Dir%', '%picture400Dir%', '%picture1200Dir%', '%slider1280Dir%']
+       arguments: ['%pictureXSDir%','%picture250Dir%', '%picture400Dir%', '%picture1200Dir%', '%slider1280Dir%']
     App\Message\UpdateFileMessage:
         arguments: ['%file', '%pictureObject']   
     

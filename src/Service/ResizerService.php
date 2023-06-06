@@ -9,15 +9,15 @@ use App\Service\UploadService;
 
 class ResizerService 
 {   
+    //private $picDir;
     private $picture150Dir;
     private $picture250Dir;
     private $picture400Dir;
     private $picture1200Dir;
     private $slider1280Dir;
 
-    
-
     public function __construct(
+        //string $picDir,
         string $picture150Dir, 
         string $picture250Dir, 
         string $picture400Dir, 
@@ -25,6 +25,7 @@ class ResizerService
         string $slider1280Dir
         )
     {   
+        //$this->picDir =         $picDir;
         $this->picture150Dir =  $picture150Dir;
         $this->picture250Dir =  $picture250Dir;
         $this->picture400Dir =  $picture400Dir;
@@ -32,6 +33,24 @@ class ResizerService
         $this->slider1280Dir =  $slider1280Dir;
     }
 
+    /**
+     * Récupère les répertoires de stockage des images
+     * @return array
+     */
+    public function getDirs(){
+        
+        $dirs = [
+            //$this->picDir,
+            $this->picture150Dir, 
+            $this->picture250Dir, 
+            $this->picture400Dir, 
+            $this->picture1200Dir, 
+            $this->slider1280Dir
+        ];
+
+        return $dirs;
+    }
+    
     /**
      * Récupère le format de l'image et appelle la fonction adéquate
      * 
@@ -166,9 +185,9 @@ class ResizerService
 
     public function cropAndMoveAllPictures($file, $fileName, $quality)
     {   
-        // if(!$file instanceof UploadedFile) {
-        //     throw new Exception('Le fichier n\'est pas une image');
-        // }
+        if(!$file instanceof UploadedFile) {
+            throw new Exception('Le fichier n\'est pas une image');
+        }
 
         try {
 

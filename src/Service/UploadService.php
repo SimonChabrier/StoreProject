@@ -117,19 +117,18 @@ class UploadService
     public function uploadPictures(array $filesArray, $pictureObjet, $productObject): Object
     {   
         foreach($filesArray as $file) {
-
+            // on génère un nom de fichier unique pour le fichier webp qui sera créé
             $fileName = self::setUniqueName();
 
             self::moveAll($file, $fileName, 80);
-
             $file->move($this->picDir, $fileName);
             // A chaque itération, on initialise les propriétés de l'objet Picture avec les infos du formulaire
             $pictureObjet
-                         ->setName($pictureObjet->getName())
-                         ->setAlt($pictureObjet->getAlt())
-                         ->setProduct($productObject)
-                         //->setGallery($galleryObject)
-                         ->setFileName($fileName);
+                        ->setName($pictureObjet->getName())
+                        ->setAlt($pictureObjet->getAlt())
+                        ->setProduct($productObject)                        
+                        //->setGallery($galleryObject)
+                        ->setFileName($fileName);
         }
         // A chaque itération, on retourne l'objet Picture initialisé avec un nom de fichier unique pour le stocker en BDD 
         // utlisé ensuite pour construire l'affichage du fichier dans la vue.
@@ -160,17 +159,19 @@ class UploadService
      */
     public function uploadFiles(array $filesArray, $fileObject, $productObject)
     {   
-        foreach($filesArray as $files) {
-
-            $fileName = md5(uniqid()).'.'.$files->guessExtension();
-            $files->move($this->picDir, $fileName);
+        foreach($filesArray as $file) {
+            
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            $file->move($this->picDir, $fileName);
             // A chaque itération, on initialise les propriétés de l'objet File avec les infos du formulaire
             $fileObject
                         ->setProduct($productObject)
                         ->setName($fileObject->getName())
                         ->setInfo($fileObject->getInfo())
                         ->setFileName($fileName);
+                        
         }
+
         // A chaque itération, on retourne l'objet File initialisé avec un nom de fichier unique pour le stocker en BDD 
         // utlisé ensuite pour construire l'affichage du fichier dans la vue.
         return $fileObject;
@@ -193,7 +194,7 @@ class UploadService
         $this->resizerService->slider1280($file, $fileName, 50);
     }
 
-    // TODO a finaliser 
+    // TODO a améliorer sur la gestion des repertoires
     public function deletePictures($picture)
     {   
         // on récupère le nom du fichier à supprimer

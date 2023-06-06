@@ -12,7 +12,7 @@
         {% if picture %}
             {# get just last picture #}
             {% if loop.last %}
-                <img class="last-five-picture" src="/uploads/files/pictures/{{ picture.getFilename }}" alt="{{ picture.alt }}" width >
+                <img class="last-five-picture" src="/uploads/files/pictures/{{ picture.getFilename }}" alt="{{ picture.alt }}" >
             {% endif %}
         {% endif %}
         {% else %}
@@ -20,7 +20,19 @@
         {% endfor %}
     </div>
 
+    <div class="gallery_small">
+    {% for picture in product.pictures %}
+        {% if picture %}
+            <img class="picture_150" src="/uploads/files/pictures_150/{{ picture.getFilename }}" alt="{{ picture.alt }}" id="{{ picture.id }}" title="{{ picture.name }}" >
+        {% endif %}
+    {% endfor %}
+    </div>
+
+    <dialog id="dialog">
+    </dialog>
+
     <hr>
+
     {% if product.category %}
     <h5 style="text-transform: uppercase; font-weight:400; margin: 5px 0!important; padding: 0"><a href="{{ path('app_category_show', { 'id': product.category.id }) }}">Categorie :  {{ product.category|capitalize }}</a></h5>
     {% else %}
@@ -195,6 +207,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 });
+
+// ouvre l'image de la gallery gallery_small dans un modal en grand format
+const pictures = document.querySelectorAll('.picture_150');
+const dialog = document.getElementById('dialog');
+
+pictures.forEach(picture => {
+    picture.addEventListener('click', () => {
+        dialog.showModal();
+        const img = document.createElement('img');
+        img.src = '/uploads/files/pictures_1200/' + picture.src.split('/').pop();
+        img.alt = picture.alt;
+        img.title = picture.title;
+        dialog.appendChild(img);
+    });
+});
+
+dialog.addEventListener('click', () => {
+    dialog.close();
+    dialog.innerHTML = '';
+});
+
 </script>
 
 {% endblock %}

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Picture;
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Message\UpdateFileMessage;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\UploadService;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 /**
  * @Route("/product")
@@ -78,12 +81,22 @@ class ProductController extends AbstractController
     /**
      * @Route("/{id}/edit", name="app_product_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Product $product, ProductRepository $productRepository, EntityManagerInterface $manager, UploadService $uploadService): Response
+    public function edit(
+        Request $request, 
+        Product $product, 
+        ProductRepository $productRepository, 
+        EntityManagerInterface $manager, 
+        UploadService $uploadService,
+        MessageBusInterface $bus
+        ): Response
     {   
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+
+            //$filesArray = [];
 
             foreach ($form->get('pictures')->getData() as $i => $picture) {
                 // on récupère les fichiers uploadés
@@ -93,6 +106,23 @@ class ProductController extends AbstractController
                     $picture,
                     $product
                 );
+       
+                // on va utiliser Messenger pour repasser la main directement 
+                // au service UploadService qui va se charger de redimensionner les images
+                //$picture = new Picture();
+                    //dd($request->files->get('product')['pictures'][$i]['file']);
+
+                // $filesArray[] = file_get_contents($request->files->get('product')['pictures'][$i]['file']);
+
+                // $picture = $bus->dispatch(
+                //     new UpdateFileMessage(
+                //         $filesArray, // on sérialise l'objet Picture pour pouvoir le passer en paramètre du message
+                //         serialize($picture), // on sérialise l'objet Picture pour pouvoir le passer en paramètre du message
+                //         serialize($product) // on sérialise l'objet Product pour pouvoir le passer en paramètre du message
+                //     )
+                // );
+                
+       
                 $manager->persist($picture);
             }
 

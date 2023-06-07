@@ -67,15 +67,15 @@
 
     <h3> Liste des caractéristiques du produit </h3>
     <hr>
-        <ol>
+       
         {% if product.productData %}
-        {% for index, data in product.productData %}
-                <li>{{ data.key|capitalize }} : {{ data.value|capitalize }}</li>
-        {% endfor %}
+            {% for index, data in product.productData %}
+                <div>{{ data.key|capitalize }} : {{ data.value|capitalize }}</div>
+            {% endfor %}
         {% else %}
-            <li> Aucune caractéristique renseigné pour ce produit </li>
+            <div>Aucune caractéristique renseigné pour ce produit</div>
         {% endif %}
-        </ol>
+       
     <hr>
 
     <h3> Commentaires liés au produit </h3>
@@ -223,6 +223,7 @@ pictures.forEach(picture => {
         img.src = '/uploads/files/pictures_1200/' + picture.src.split('/').pop();
         img.alt = picture.alt;
         img.title = picture.title;
+        img.classList.add('gallery_dialog_img');
         dialog.appendChild(img);
     });
 });

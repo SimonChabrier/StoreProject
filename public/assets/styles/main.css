@@ -146,16 +146,7 @@ table th,
 table td {
   padding: 0.4rem !important;
   text-align: left;
-}
-table td {
   border: none !important;
-}
-table td:nth-child(1),
-table td:nth-child(2),
-table td:nth-child(3),
-table td:nth-child(6) {
-  width: 10%;
-  white-space: nowrap;
 }
 
 tr:nth-child(even) {
@@ -816,6 +807,10 @@ section.result-card {
   transition: opacity 0.3s ease-in-out;
 }
 
+dialog {
+  border-color: #c7c721;
+}
+
 .fade-dialog.open {
   opacity: 1;
 }
@@ -834,4 +829,9 @@ section.result-card {
   gap: 5px;
   flex-wrap: wrap;
   justify-content: flex-start;
+}
+
+img.gallery_dialog_img {
+  max-width: -webkit-fill-available;
+  width: 800px;
 }/*# sourceMappingURL=main.css.map */

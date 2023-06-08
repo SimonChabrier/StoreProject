@@ -84,7 +84,7 @@ class ProductType extends AbstractType
                     'allow_delete' => true,
                     'by_reference' => false,
                     'prototype' => true,
-                    'label' => 'Caractéristiques',
+                    'label' => false,
             ])
             // multiple file upload (works good)
             // ->add('pictures', FileType::class,[

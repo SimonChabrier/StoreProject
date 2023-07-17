@@ -216,22 +216,26 @@ const dialog = document.getElementById('gallery_dialog');
 pictures.forEach(picture => {
     picture.addEventListener('click', () => {
         
-        dialog.classList.add('open'); // On ajoute 'open' pour déclencher l'effet de fondu
+        dialog.classList.add('open'); 
+
         dialog.showModal();
 
         const img = document.createElement('img');
-        img.src = '/uploads/files/pictures_1200/' + picture.src.split('/').pop();
+        img.src = '/uploads/files/pictures/' + picture.src.split('/').pop();
         img.alt = picture.alt;
         img.title = picture.title;
         img.classList.add('gallery_dialog_img');
-        dialog.appendChild(img);
+        dialog.append(img);
     });
 });
 
 dialog.addEventListener('click', () => {
     dialog.classList.remove('open'); // On enlève 'open' pour fermer la modal avec effet de fondu
-    dialog.close();
-    dialog.innerHTML = '';
+    // timeout pour laisser le temps à la transition de se faire avant de fermer la modal
+    setTimeout(() => {
+        dialog.close();
+        dialog.innerHTML = '';
+    }, 500);
 });
 
 </script>

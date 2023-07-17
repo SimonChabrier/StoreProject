@@ -1,0 +1,21 @@
+framework:
+    workflows: 
+        picture_publishing:
+            type: 'state_machine'
+            marking_store:
+                type: 'method'
+                property: 'state' #methode de mon entité Picture
+            supports:
+                - App\Entity\Picture
+            initial_marking: new
+            places:
+                - new
+                - processing
+                - done
+            transitions:
+                process:
+                    from: new
+                    to: processing
+                done:
+                    from: processing
+                    to: done

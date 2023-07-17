@@ -79,12 +79,12 @@ class ProductType extends AbstractType
                 'expanded' => true,                
             ])
             ->add('productData', CollectionType::class, [
-                'entry_type' => ProductDataType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'prototype' => true,
-                'label' => false,
+                    'entry_type' => ProductDataType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                    'prototype' => true,
+                    'label' => false,
             ])
             // multiple file upload (works good)
             // ->add('pictures', FileType::class,[
@@ -95,14 +95,14 @@ class ProductType extends AbstractType
             // ])
             // embed here PictureType using CollectionType
             ->add('pictures', CollectionType::class, [
-                'entry_type' => PictureType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'mapped' => false,
-                'allow_delete' => true,
-                // 'by_reference' => false,
-                // 'prototype' => true,
-                // 'label' => 'Images',
+                    'entry_type' => PictureType::class,
+                    // 'entry_options' => ['label' => false],
+                    'allow_add' => true,
+                    'allow_delete' => true,                    
+                    'by_reference' => false,
+                    'prototype' => true,
+                    'label' => false,
+                    'mapped' => false,
             ])
         ;
     }

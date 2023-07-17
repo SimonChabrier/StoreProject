@@ -2,22 +2,24 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Service\JsonManager;
 use App\Service\EmailService;
+use Doctrine\ORM\EntityManager;
 use App\Message\AdminNotification;
+use App\Repository\UserRepository;
+use App\Repository\PictureRepository;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
-use App\Message\AccountCreatedNotification;
-use App\Repository\UserRepository;
-use DateTime;
+use Symfony\Component\Process\Process;
 use SebastianBergmann\Environment\Console;
+use App\Message\AccountCreatedNotification;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {   
@@ -160,6 +162,36 @@ class HomeController extends AbstractController
         // Définition du message flash final
         $this->addFlash($type, $message);
 
+        return $this->redirectToRoute('app_home');
+    }
+
+    /**
+     * @Route("/delete/pictures", name="app_product_delete_pictures")
+     */
+    public function unlinkAllPictures(PictureRepository $pr): Response
+    {   
+        $allPictures = [
+            glob('../public/uploads/files/pictures/*'),
+            glob('../public/uploads/files/pictures_XS/*'),
+            glob('../public/uploads/files/pictures_250/*'),
+            glob('../public/uploads/files/pictures_400/*'),
+            glob('../public/uploads/files/pictures_1200/*'),
+            glob('../public/uploads/files/slider_1280/*'),
+        ];
+
+        foreach ($allPictures as $pictures) {
+            foreach ($pictures as $picture) {
+                unlink($picture);
+            }
+        }
+
+        $pictures = $pr->findAll();
+        // on supprime les images de la base de données
+        foreach ($pictures as $picture) {
+            $pr->remove($picture);
+        }
+
+        $this->addFlash('success', 'Toutes les images ont été supprimées.');
         return $this->redirectToRoute('app_home');
     }
 }

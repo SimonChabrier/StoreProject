@@ -20,6 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 
 class HomeController extends AbstractController
 {   
@@ -42,7 +43,6 @@ class HomeController extends AbstractController
 
         //$this->addFlash('success', 'SSH.');
 
-        
         return $this->render('home/index.html.twig', [
             'homeCats' => $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']),
             //'class' => $class,
@@ -168,27 +168,41 @@ class HomeController extends AbstractController
     /**
      * @Route("/delete/pictures", name="app_product_delete_pictures")
      */
-    public function unlinkAllPictures(PictureRepository $pr): Response
+    public function unlinkAllPictures(PictureRepository $pr, Filesystem $filesystem): Response
     {   
-        $allPictures = [
-            glob('../public/uploads/files/pictures/*'),
-            glob('../public/uploads/files/pictures_XS/*'),
-            glob('../public/uploads/files/pictures_250/*'),
-            glob('../public/uploads/files/pictures_400/*'),
-            glob('../public/uploads/files/pictures_1200/*'),
-            glob('../public/uploads/files/slider_1280/*'),
+        // only admin can access this route
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $basePath = '../public/uploads/files/';
+
+        $directories = [
+            'pictures',
+            'pictures_XS',
+            'pictures_250',
+            'pictures_400',
+            'pictures_1200',
+            'slider_1280',
         ];
 
-        foreach ($allPictures as $pictures) {
-            foreach ($pictures as $picture) {
-                unlink($picture);
-            }
+         // Supprimer les fichiers
+        $filesToDelete = [];
+
+        foreach ($directories as $directory) {
+            $files = glob($basePath . $directory . '/*');
+            // on merge les tableaux pour avoir un seul tableau avec tous les fichiers à supprimer
+            // sinon on aurait un tableau par répertoire et il faudrait faire une boucle pour chaque répertoire
+            // pour fournir des chemins de fichiers à supprimer à la méthode remove de la classe Filesystem
+            $filesToDelete = array_merge($filesToDelete, $files);
         }
 
+        $filesystem->remove($filesToDelete);
+
+        // Supprimer les enregistrements de base de données
         $pictures = $pr->findAll();
-        // on supprime les images de la base de données
+
         foreach ($pictures as $picture) {
-            $pr->remove($picture);
+            // true pour que ça flush directement en base de données
+            $pr->remove($picture, true);
         }
 
         $this->addFlash('success', 'Toutes les images ont été supprimées.');

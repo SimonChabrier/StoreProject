@@ -10,6 +10,7 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
+                <th>Images</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -18,6 +19,16 @@
             <tr>
                 <td>{{ product.id }}</td>
                 <td>{{ product.name }}</td>
+                <td>
+                {% if product.pictures %}
+                    {% for picture in product.pictures %}
+                        {% if picture %}
+                            <img style="width:50px" src="/uploads/files/pictures_XS/{{ picture.getFilename }}" alt="{{ picture.alt }}" id="{{ picture.id }}" title="{{ picture.name }}" >
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <div> Aucune image associé pour ce produit </div>
+                {% endif %}
                 <td>
                     <a href="{{ path('app_product_show', {'id': product.id}) }}">Voir</a>
                     <a href="{{ path('app_product_edit', {'id': product.id}) }}">Modifier</a>

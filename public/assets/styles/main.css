@@ -146,16 +146,7 @@ table th,
 table td {
   padding: 0.4rem !important;
   text-align: left;
-}
-table td {
   border: none !important;
-}
-table td:nth-child(1),
-table td:nth-child(2),
-table td:nth-child(3),
-table td:nth-child(6) {
-  width: 10%;
-  white-space: nowrap;
 }
 
 tr:nth-child(even) {
@@ -809,4 +800,38 @@ section.result-card {
 
 .swiper-horizontal > .swiper-pagination-bullets.swiper-pagination-bullets-dynamic, .swiper-pagination-horizontal.swiper-pagination-bullets.swiper-pagination-bullets-dynamic {
   bottom: 0;
+}
+
+.fade-dialog {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+dialog {
+  border-color: #c7c721;
+}
+
+.fade-dialog.open {
+  opacity: 1;
+}
+
+.picture_XS {
+  width: 95px;
+  height: 95px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 5px;
+}
+
+.gallery_small {
+  display: flex;
+  max-width: 400px;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+img.gallery_dialog_img {
+  max-width: -webkit-fill-available;
+  width: 800px;
 }/*# sourceMappingURL=main.css.map */

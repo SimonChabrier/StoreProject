@@ -145,38 +145,27 @@ ol ul {
 table {
   border-collapse: collapse;
   width: 100%;
-  //margin: .5rem 0!important;
   overflow: hidden;
-  // box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 
   th,
   td {
     padding: 0.4rem !important;
     text-align: left;
-    // background-color: #161616 !important;
-    //color: #363434;
-  }
-
-  // no border on tr
-td {
     border: none !important;
   }
-
   // set td 1 2 and 3 width
-  td:nth-child(1),
-  td:nth-child(2),
-  td:nth-child(3),
-  td:nth-child(6) {
-    width: 10%;
-    white-space: nowrap;
-  }
+  // td:nth-child(1),
+  // td:nth-child(2),
+  // td:nth-child(3),
+  // td:nth-child(6) {
+  //   width: 10%;
+  //   white-space: nowrap;
+  // }
 }
 
-// colorize table rows 1/2 but not the header
-tr:nth-child(even) {
-  background-color: rgb(245, 245, 245) !important;
-  //color: rgb(255, 255, 255) !important;
-}
+  tr:nth-child(even) {
+    background-color: rgb(245, 245, 245) !important;
+  }
 
 button {
   margin: 10px 0 !important;
@@ -864,4 +853,40 @@ section.result-card {
 // calle les bullets du swiper en bas
 .swiper-horizontal>.swiper-pagination-bullets.swiper-pagination-bullets-dynamic, .swiper-pagination-horizontal.swiper-pagination-bullets.swiper-pagination-bullets-dynamic {
   bottom: 0;
+}
+
+// modal pictures
+
+.fade-dialog {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+
+}
+
+dialog {
+  border-color: #c7c721;
+}
+
+.fade-dialog.open {
+  opacity: 1;
+}
+
+.picture_XS {
+  width: 95px;
+  height: 95px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.gallery_small {
+  display: flex;
+  max-width: 400px;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+img.gallery_dialog_img {
+  max-width: -webkit-fill-available;
+  width: 800px;
 }

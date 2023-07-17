@@ -22,7 +22,7 @@
             <tr>
                 <td>{{ comment.id }}</td>
                 <td><a href="{{ path('app_product_show', {'id': comment.product.id}) }}">{{ comment.product.id }}</a></td>
-                <td><a href="{{ path('app_user_show', {'id': comment.id}) }}">{{ comment.author }}</a></td>
+                {# <td><a href="{{ path('app_user_show', {'id': comment.id}) }}">{{ comment.author }}</a></td> #}
                 <td>{{ comment.text }}</td>
                 <td>{{ comment.email }}</td>
                 <td>

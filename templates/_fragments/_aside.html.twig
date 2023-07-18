@@ -22,27 +22,30 @@
 <label for="text">Rechercher</label>
     <input type="text" name="text" id="text" class="form-control">
 <hr>
-    <div class="brandCheckboxes">
-        <h5><i class="bi bi-list-check"></i> Marques</h5>
-        <ol>
-        {% for brand in brands.getBrands() %}
-            <li><input type="checkbox" name="brand" value="{{ brand.name }}" class="brandCheckbox"> {{ brand.name }}</li>
-        {% endfor %}
-        </ol>
-    </div>
-<hr>
-    <div class="brandCheckboxes">
-        <h5><i class="bi bi-list-check"></i> Categories</h5>
-        <ol>
-        {% for cat in catsAndSubCats.getOnlyCatsAndOnlySubCats() %}
-        {{ cat.catName }}
-        {% for subCat in cat.subCategories %}
-            <li><input type="checkbox" name="category" value="{{ cat.catName }} {{ subCat.subCatName  }}" class="brandCheckbox"> {{ subCat.subCatName }}</li>
-        {% endfor %}
-        {% endfor %}
-        </ol>
+    <div class="filter_choices">
+        <div class="brandCheckboxes">
+            <h5><i class="bi bi-list-check"></i> Marques</h5>
+            <ol>
+            {% for brand in brands.getBrands() %}
+                <li><input type="checkbox" name="brand" value="{{ brand.name }}" class="brandCheckbox"> {{ brand.name }}</li>
+            {% endfor %}
+            </ol>
+        </div>
+    <hr>
+        <div class="brandCheckboxes">
+            <h5><i class="bi bi-list-check"></i> Categories</h5>
+            <ol>
+            {% for cat in catsAndSubCats.getOnlyCatsAndOnlySubCats() %}
+            {{ cat.catName }}
+            {% for subCat in cat.subCategories %}
+                <li><input type="checkbox" name="category" value="{{ cat.catName }} {{ subCat.subCatName  }}" class="brandCheckbox"> {{ subCat.subCatName }}</li>
+            {% endfor %}
+            {% endfor %}
+            </ol>
+        </div>
     </div>
 </div>
+
 
 </aside>
 

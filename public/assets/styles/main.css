@@ -26,6 +26,12 @@ i {
   margin-right: 10px !important;
 }
 
+.filter_choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 input.brandCheckbox {
   margin-right: 12px;
 }
@@ -50,15 +56,13 @@ button#reset_submit {
 }
 
 #sidebar {
-  width: 20%;
-  float: left;
-  margin-bottom: 30px;
+  width: 90%;
+  margin: 0 auto;
 }
 
 #main {
-  width: 80%;
-  float: right;
-  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
 }
 
 #footer {
@@ -405,9 +409,10 @@ aside {
 
 .block-content {
   display: flex;
-  padding-left: 30px;
-  width: 100%;
+  /* padding-left: 30px; */
+  width: 95%;
   flex-flow: column wrap;
+  margin: 0 auto;
 }
 
 .last-five section {
@@ -426,7 +431,7 @@ aside {
   text-transform: uppercase;
   transition: all 0.2s ease-in;
   margin: 20px 0;
-  width: 290px !important;
+  width: calc(25% - 30px);
   height: auto;
 }
 .last-five section:hover {
@@ -436,6 +441,7 @@ aside {
 .last-five .last-five-products {
   display: flex;
   flex-flow: row wrap;
+  justify-content: space-around;
   gap: 30px;
 }
 .last-five ol.last-five {
@@ -470,13 +476,14 @@ aside {
   align-items: flex-start;
   font-size: 1.1rem;
   position: relative;
+  text-align: left;
 }
 .productInfo .categorie {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 200;
 }
 .productInfo .sous-categorie {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 300;
 }
 .productInfo .type {
@@ -492,7 +499,6 @@ aside {
   position: absolute;
   top: 100px;
   transform: rotate(-8deg);
-  left: 0;
   top: 210px;
   background-color: #c7c721;
   padding: 3px 15px;
@@ -654,6 +660,7 @@ help.help-block {
      and display sidebar */
 .sidenav.active {
   left: 0;
+  z-index: 1000;
 }
 
 /* Close btn */
@@ -719,8 +726,8 @@ help.help-block {
 }
 
 .gallery {
-  height: 400px;
-  width: 400px;
+  height: auto;
+  width: 100%;
   margin: 20px 0 10px 0;
 }
 

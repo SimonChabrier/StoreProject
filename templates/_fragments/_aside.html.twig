@@ -34,14 +34,19 @@
     <hr>
         <div class="brandCheckboxes">
             <h5><i class="bi bi-list-check"></i> Categories</h5>
-            <ol>
             {% for cat in catsAndSubCats.getOnlyCatsAndOnlySubCats() %}
+            {# hr si c'est pas le première catégorie #}
+            {% if loop.index > 1 %}
+            <hr>
+            {% endif %}
             {{ cat.catName }}
+            <ol>
             {% for subCat in cat.subCategories %}
                 <li><input type="checkbox" name="category" value="{{ cat.catName }} {{ subCat.subCatName  }}" class="brandCheckbox"> {{ subCat.subCatName }}</li>
             {% endfor %}
             {% endfor %}
             </ol>
+            <hr>
         </div>
     </div>
 </div>

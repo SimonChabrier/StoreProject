@@ -26,6 +26,12 @@ i {
   margin-right: 10px !important;
 }
 
+.filter_choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 input.brandCheckbox {
   margin-right: 12px;
 }
@@ -50,15 +56,13 @@ button#reset_submit {
 }
 
 #sidebar {
-  width: 20%;
-  float: left;
-  margin-bottom: 30px;
+  width: 90%;
+  margin: 0 auto;
 }
 
 #main {
-  width: 80%;
-  float: right;
-  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
 }
 
 #footer {
@@ -654,6 +658,7 @@ help.help-block {
      and display sidebar */
 .sidenav.active {
   left: 0;
+  z-index: 1000;
 }
 
 /* Close btn */

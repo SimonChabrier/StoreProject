@@ -17,6 +17,13 @@
     <li><a href="{{ path('app.login') }}">Connexion</a></li>
     {% endif %} #}
   </ul>
+
+  <div id="sidebar" class="sidebar">
+            {% block sidebar %}
+                {% include '_fragments/_aside.html.twig' %} 
+            {% endblock %}
+        </div>
+        
 </div>
 
 <a href="#" id="openBtn">

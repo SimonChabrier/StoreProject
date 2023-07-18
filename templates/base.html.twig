@@ -65,19 +65,20 @@
                 {% include '_fragments/_nav.html.twig' %} 
                 {% include '_fragments/_slider.html.twig' %} 
             {% endblock %}
+        </div>
 
-        <div id="sidebar" class="sidebar">
+        {# <div id="sidebar" class="sidebar">
             {% block sidebar %}
                 {% include '_fragments/_aside.html.twig' %} 
             {% endblock %}
-        </div>
+        </div> #}
 
         <div id="main" class="main">
         
         {# searchResult #}
-        <div class="block-content">
-        <div id="searchResults" class="last-five">
-        </div>
+        <div class="block-content search_results">
+            <div id="searchResults" class="last-five">
+            </div>
         </div>
 
         {# content #}

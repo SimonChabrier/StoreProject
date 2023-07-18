@@ -31,6 +31,7 @@ i {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding: 0 0 20px 0;
 }
 input.brandCheckbox {
   margin-right: 12px;
@@ -55,8 +56,9 @@ button#reset_submit {
   position: relative;
 }
 
-#sidebar {
-  width: 90%;
+#filters {
+  // width: 95%;
+  height: 100%;
   margin: 0 auto;
 }
 
@@ -413,6 +415,7 @@ aside {
   flex-direction: column;
   min-height: 800px;
   height: 100%;
+  overflow: auto;
   background-color: rgb(184 176 176 / 5%);
   padding: 20px !important;
   // border-right: 1px solid #C6C720!important;
@@ -683,8 +686,9 @@ help.help-block {
   z-index: 1;
   top: 0;
   left: -350px;
-  background-color: #dfdfdf;
-  padding-top: 60px;
+  background-color:#818009;
+  // padding-top: 60px;
+  padding: 10px;
   transition: left 0.5s ease;
 }
 

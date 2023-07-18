@@ -5,20 +5,23 @@ namespace App\Controller\Admin;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class UserCrudController extends AbstractCrudController
 {
+    
     public static function getEntityFqcn(): string
     {
         return User::class;
     }
 
     public function configureFields(string $pageName): iterable
-    {
+    {   
         return [
             NumberField::new('id')
                 ->setLabel('Id')
@@ -27,13 +30,18 @@ class UserCrudController extends AbstractCrudController
                 // créer de bug car un id ne doit pas être modifié
                 ->setFormTypeOption('disabled', true),
             TextField::new('email')
-                ->setLabel('Nom d\'utilisateur')
+                ->setLabel('Identifiant')
                 ->setRequired(true),
+                DateField::new('createdAt')
+                ->setLabel('Incrit le')
+                ->setFormTypeOption('disabled', true),
             BooleanField::new('isVerified')
                 ->setLabel('Compte vérifié')
-                ->setRequired(true)
-                // masquer sur le formulaire
-                //->hideOnForm(),
+                ->setRequired(true),
+            // Pour afficher les rôles dans le formulaire utiliser un ArrayField sinon erreur    
+            ArrayField::new('roles')
+                ->hideOnIndex()
+                ->setLabel('Role'),
         ];
     }
 
@@ -66,7 +74,7 @@ class UserCrudController extends AbstractCrudController
     {
         return $filters
             ->add('email', 'text', [
-                'label' => 'Nom',
+                'label' => 'Identifiant',
             ])
             // ->add('firstName', 'text', [
             //     'label' => 'Prénom',

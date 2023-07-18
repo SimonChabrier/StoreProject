@@ -7,10 +7,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
-use Faker\Core\Number;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -22,25 +20,20 @@ class UserCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            // TextField::new('lastName')
-            //     ->setLabel('Nom')
-            //     ->setRequired(true),  
-
-            // TextField::new('firstName')
-            //  ->setLabel('Prénom')
-            //  ->setRequired(true),
-
-            // add id
             NumberField::new('id')
                 ->setLabel('Id')
-                ->setRequired(true),
-
+                ->setRequired(true)
+                // ATTENTION : ne pas rendre le champ modifiable pour ne pas 
+                // créer de bug car un id ne doit pas être modifié
+                ->setFormTypeOption('disabled', true),
             TextField::new('email')
                 ->setLabel('Nom d\'utilisateur')
                 ->setRequired(true),
             BooleanField::new('isVerified')
                 ->setLabel('Compte vérifié')
-                ->setRequired(true),
+                ->setRequired(true)
+                // masquer sur le formulaire
+                //->hideOnForm(),
         ];
     }
 

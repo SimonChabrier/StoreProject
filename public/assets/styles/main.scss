@@ -439,10 +439,10 @@ aside {
 
 .block-content {
   display: flex;
-  // flex-direction: column;
-  padding-left: 30px;
-  width: 100%;
-  flex-flow: column wrap;
+    /* padding-left: 30px; */
+    width: 95%;
+    flex-flow: column wrap;
+    margin: 0 auto;
 }
 
 .last-five {
@@ -469,7 +469,8 @@ aside {
     text-transform: uppercase;
     transition: all 0.2s ease-in;
     margin: 20px 0;
-    width: 290px!important;
+    // width: 290px!important;
+    width: calc(25% - 30px);
     height: auto;
 
     &:hover {
@@ -483,6 +484,7 @@ aside {
   .last-five-products {
     display: flex;
     flex-flow: row wrap;
+    justify-content: space-around;
     gap: 30px;
   }
 
@@ -518,13 +520,14 @@ aside {
   align-items: flex-start;
   font-size: 1.1rem;
   position: relative;
+  text-align: left;
 
   .categorie {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 200;
   }
   .sous-categorie {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 300;
   }
   .type {
@@ -541,7 +544,7 @@ aside {
   position: absolute;
   top: 100px;
   transform: rotate(-8deg);
-  left: 0;
+  // left: 0;
   top: 210px;
   background-color: #c7c721;
   padding: 3px 15px;
@@ -778,8 +781,8 @@ help.help-block {
 // fiche produit
 
 .gallery {
-height: 400px;
-width: 400px;
+height: auto;
+width: 100%;
 margin: 20px 0 10px 0;
 }
 

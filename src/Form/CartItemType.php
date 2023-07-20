@@ -15,7 +15,11 @@ class CartItemType extends AbstractType
     {
         $builder
             ->add('quantity', null, [
-                'label' => 'Quantité'
+                'label' => 'Quantité',
+                // ne pas autoriser les valeurs négatives
+                'attr' => [
+                    'min' => 0
+                ]
             ])
             ->add('remove', SubmitType::class, [
                 'label' => 'Supprimer'

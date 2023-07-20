@@ -25,6 +25,7 @@ class CartSessionStorage
 
     /**
      * @var string
+     * Le nom de la clé en session qui contient le panier courant
      */
     const CART_KEY_NAME = 'cart_id';
 
@@ -41,7 +42,7 @@ class CartSessionStorage
     }
 
     /**
-     * Gets the cart in session.
+     * Récupère le panier courant en session.
      *
      * @return Order|null
      */
@@ -54,7 +55,7 @@ class CartSessionStorage
     }
 
     /**
-     * Sets the cart in session.
+     * Ajoute le panier courant en session.
      *
      * @param Order $cart
      */
@@ -64,7 +65,7 @@ class CartSessionStorage
     }
 
     /**
-     * Returns the cart id.
+     * Retourne l'id du panier courant en session.
      *
      * @return int|null
      */
@@ -73,6 +74,11 @@ class CartSessionStorage
         return $this->getSession()->get(self::CART_KEY_NAME);
     }
 
+    /**
+     * Retourne la session.
+     *
+     * @return SessionInterface
+     */
     private function getSession(): SessionInterface
     {
         return $this->requestStack->getSession();

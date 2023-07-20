@@ -8,7 +8,7 @@ use App\Entity\OrderItem;
 
 /**
  * Class OrderFactory
- * @package App\Factory
+ * @package App\Service\Order
  */
 class OrderFactory
 {
@@ -41,6 +41,14 @@ class OrderFactory
     {
         $item = new OrderItem();
         $item->setProduct($product);
+        // si la quantité est négative, on la met à 0
+        if ($item->getQuantity() < 0) {
+            $item->setQuantity(0);
+        }
+        // TODO vérifier l'état des stocks avant de créer l'item.
+        // $product->setinStockQuantity($product->getinStockQuantity() - $item->getQuantity());
+
+        // sinon on met la quantité du produit
         $item->setQuantity(1);
 
         return $item;

@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class CartManager
- * @package App\Manager
+ * @package App\Service\Cart
  */
 class CartManager
 {
@@ -53,7 +53,7 @@ class CartManager
     public function getCurrentCart(): Order
     {
         $cart = $this->cartSessionStorage->getCart();
-
+        // si le panier n'existe pas en session, on le crée
         if (!$cart) {
             $cart = $this->cartFactory->create();
         }
@@ -68,10 +68,10 @@ class CartManager
      */
     public function save(Order $cart): void
     {
-        // Persist in database
+        // On sauve en BDD
         $this->entityManager->persist($cart);
         $this->entityManager->flush();
-        // Persist in session
+        // On sauve en session
         $this->cartSessionStorage->setCart($cart);
     }
 }

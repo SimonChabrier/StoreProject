@@ -32,7 +32,14 @@
     </dialog>
 
     <hr>
-
+    <form class="mt-4 mb-4 p-4 bg-light product_quatinty_form" method="post">
+        <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <input type="number" class="form-control" id="quantity">
+        </div>
+        <button class="btn btn-warning">Ajouter au panier</button>
+    </form>
+   
     {% if product.category %}
     <h5><a href="{{ path('app_category_show', { 'id': product.category.id }) }}">Categorie :  {{ product.category|capitalize }}</a></h5>
     {% else %}

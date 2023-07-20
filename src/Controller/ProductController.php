@@ -79,7 +79,6 @@ class ProductController extends AbstractController
     ): Response
     {   
         $form = $this->createForm(AddToCartType::class);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

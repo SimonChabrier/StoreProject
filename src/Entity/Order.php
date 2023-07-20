@@ -76,20 +76,16 @@ class Order
         return $this->items;
     }
 
-    // public function addItem(OrderItem $item): self
-    // {
-    //     if (!$this->items->contains($item)) {
-    //         $this->items[] = $item;
-    //         $item->setOrderRef($this);
-    //     }
-
-    //     return $this;
-    // }
-
+    /**
+     * On ajoute un item à la commande.
+     * Si l'item existe déjà, on met à jour la quantité.
+     *
+     * @param OrderItem $item
+     * @return $this
+     */
     public function addItem(OrderItem $item): self
     {   
         foreach ($this->getItems() as $existingItem) {
-            // si l'item existe déjà, on met à jour la quantité
             if ($existingItem->equals($item)) {
                 $existingItem->setQuantity(
                     $existingItem->getQuantity() + $item->getQuantity()
@@ -104,6 +100,12 @@ class Order
         return $this;
     }
 
+    /**
+     * On supprime un item de la commande.
+     *
+     * @param OrderItem $item
+     * @return $this
+     */
     public function removeItem(OrderItem $item): self
     {
         if ($this->items->removeElement($item)) {

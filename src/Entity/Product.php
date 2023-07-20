@@ -11,8 +11,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 // add groups for serialization
 use Symfony\Component\Serializer\Annotation\Groups;
 
-
-
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */

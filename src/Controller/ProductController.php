@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\Picture;
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Form\AddToCartType;
+use App\Service\UploadService;
+use App\Service\Cart\CartManager;
 use App\Message\UpdateFileMessage;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,7 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\UploadService;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -67,14 +69,45 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_product_show", methods={"GET"})
+     * @Route("/{id}", name="app_product_show", methods={"GET", "POST"})
      */
-    public function show(Product $product, ProductRepository $pr): Response
+    public function show(
+        Product $product, 
+        ProductRepository $pr, 
+        Request $request, 
+        CartManager $cartManager
+    ): Response
     {   
-        
+        $form = $this->createForm(AddToCartType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $item = $form->getData();
+            $item->setProduct($product);
+
+            $cart = $cartManager->getCurrentCart();
+            $cart
+                ->addItem($item)
+                ->setUpdatedAt(new \DateTime());
+
+            $cartManager->save($cart);
+
+            // add flash message
+            $this->addFlash('success', 'Le produit a bien été ajouté au panier');
+            // retourner à la page du produit après ajout au panier
+            return $this->render('product/show.html.twig', [
+                'product' => $product,
+                'relatedProducts' => $pr->relatedProducts($product->getSubCategory()->getId()),
+                'form' => $form->createView()
+            ]);
+            //return $this->redirectToRoute('product/show.html.twig', ['id' => $product->getId()]);
+        }
+
         return $this->render('product/show.html.twig', [
             'product' => $product,
             'relatedProducts' => $pr->relatedProducts($product->getSubCategory()->getId()),
+            'form' => $form->createView()
         ]);
     }
 

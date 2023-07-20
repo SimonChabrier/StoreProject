@@ -31,14 +31,26 @@
     <dialog id="gallery_dialog" class="fade-dialog">
     </dialog>
 
-    <hr>
-    <form class="mt-4 mb-4 p-4 bg-light product_quatinty_form" method="post">
+<hr>
+
+    <div class="col-md-12 mb-4">
+        {{ form_start(form, {'attr': {'class': 'mt-4 p-4 bg-light'}}) }}
         <div class="form-group">
-            <label for="quantity">Quantity</label>
-            <input type="number" class="form-control" id="quantity">
+            {{ form_label(form.quantity) }}
+            {{ form_widget(form.quantity, {
+                'attr': {
+                    'class': 'form-control ' ~ (form.quantity.vars.valid ? '' : 'is-invalid')
+                }
+            }) }}
+            <div class="invalid-feedback">
+                {{ form_errors(form.quantity) }}
+            </div>
         </div>
-        <button class="btn btn-warning">Ajouter au panier</button>
-    </form>
+        {{ form_widget(form.add, {'attr': {'class': 'btn btn-warning w-25'}}) }}
+        {{ form_end(form) }}
+    </div>
+
+ <hr>
    
     {% if product.category %}
     <h5><a href="{{ path('app_category_show', { 'id': product.category.id }) }}">Categorie :  {{ product.category|capitalize }}</a></h5>

@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container mt-4">
-        <h1>Your Cart</h1>
+        <h1>Votre panier</h1>
         {% if cart.items.count > 0 %}
             <div class="row mt-4">
                 <!-- List of items -->
@@ -12,7 +12,7 @@
                 {{ form_start(form) }}
                 <div class="card">
                     <div class="card-header bg-dark text-white d-flex">
-                        <h5>Items</h5>
+                        <h5>Produits</h5>
                         <div class="ml-auto">
                             {{ form_widget(form.save, {'attr': {'class': 'btn btn-warning'}}) }}
                             {{ form_widget(form.clear, {'attr': {'class': 'btn btn-light'}}) }}
@@ -63,7 +63,7 @@
                 <!-- Summary -->
                 <div class="col-md-4">
                     <div class="card mt-4 mt-md-0">
-                        <h5 class="card-header bg-dark text-white">Summary</h5>
+                        <h5 class="card-header bg-dark text-white">Total</h5>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex justify-content-between">
                                 <div><b>Total</b></div>
@@ -71,14 +71,14 @@
                             </li>
                         </ul>
                         <div class="card-body">
-                            <a href="#" class="btn btn-warning w-100">Checkout</a>
+                            <a href="#" class="btn btn-warning w-100">Commander</a>
                         </div>
                     </div>
                 </div>
             </div>
         {% else %}
             <div class="alert alert-info">
-                Your cart is empty. Go to the <a href="{{ path('app_home') }}">product list</a>.
+                Votre panier est vide. Retour à la <a href="{{ path('app_home') }}">liste des produits</a>.
             </div>
         {% endif %}
     </div>

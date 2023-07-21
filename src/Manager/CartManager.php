@@ -70,23 +70,11 @@ class CartManager
      * @param Order      $cart
      * @param OrderItem  $item
      */
-    public function removeItemFromCart(Order $cart, OrderItem $item): void
+    public function deleteItem(Order $cart, OrderItem $item): void
     {   
-
         // Remove the item from the cart
         $cart->removeItem($item);
         $this->save($cart);
-
-        // // Remove the item from the database
-        // $this->entityManager->remove($item);
-
-        // // remove the item from the session
-        // $this->cartSessionStorage->removeItemFromSession($item);
-
-        // // if the cart is empty, remove it from the database and session
-        // if ($cart->getItems()->isEmpty()) {
-        //     $this->removeCartFromDataBaseAndSession();
-        // }
     }
 
     public function removeCartFromDataBaseAndSession(): void
@@ -102,10 +90,5 @@ class CartManager
         $this->entityManager->flush();
         // on supprime le panier de la session
         $this->cartSessionStorage->clearCart();
-    }
-
-    public function updateItemFromCart(Order $cart, OrderItem $item) : void
-    {
-        $this->save($cart);
     }
 }

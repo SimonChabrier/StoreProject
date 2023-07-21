@@ -126,10 +126,7 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-
             //$filesArray = [];
-
             foreach ($form->get('pictures')->getData() as $i => $picture) {
                 // on récupère les fichiers uploadés
                 $picture = $uploadService->uploadPictures(

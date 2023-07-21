@@ -1,13 +1,13 @@
 <?php
 
-namespace App\EventSubscriber;
+namespace App\Form\EventListener;
 
 use App\Entity\Order;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-class ClearCartSubscriber implements EventSubscriberInterface
+class RemoveCartItemListener implements EventSubscriberInterface
 {
     /**
      * {@inheritDoc}
@@ -18,7 +18,7 @@ class ClearCartSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Removes all items from the cart when the clear button is clicked.
+     * Removes items from the cart based on the data sent from the user.
      */
     public function postSubmit(FormEvent $event): void
     {
@@ -29,12 +29,12 @@ class ClearCartSubscriber implements EventSubscriberInterface
             return;
         }
 
-        // Is the clear button clicked?
-        if (!$form->get('clear')->isClicked()) {
-            return;
+        // Removes items from the cart
+        foreach ($form->get('items')->all() as $child) {
+            if ($child->get('remove')->isClicked()) {
+                $cart->removeItem($child->getData());
+                break;
+            }
         }
-
-        // Clears the cart
-        $cart->removeItems();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Cart;
+namespace App\Storage;
 
 use App\Entity\Order;
 use App\Repository\OrderRepository;
@@ -25,15 +25,11 @@ class CartSessionStorage
 
     /**
      * @var string
-     * Le nom de la clé en session qui contient le panier courant
      */
-    const CART_KEY_NAME = 'cart_id';
+    public const CART_KEY_NAME = 'cart_id';
 
     /**
      * CartSessionStorage constructor.
-     *
-     * @param RequestStack $requestStack
-     * @param OrderRepository $cartRepository
      */
     public function __construct(RequestStack $requestStack, OrderRepository $cartRepository)
     {
@@ -42,22 +38,18 @@ class CartSessionStorage
     }
 
     /**
-     * Récupère le panier courant en session.
-     *
-     * @return Order|null
+     * Gets the cart in session.
      */
     public function getCart(): ?Order
     {
         return $this->cartRepository->findOneBy([
             'id' => $this->getCartId(),
-            'status' => Order::STATUS_CART
+            'status' => Order::STATUS_CART,
         ]);
     }
 
     /**
-     * Ajoute le panier courant en session.
-     *
-     * @param Order $cart
+     * Sets the cart in session.
      */
     public function setCart(Order $cart): void
     {
@@ -65,20 +57,13 @@ class CartSessionStorage
     }
 
     /**
-     * Retourne l'id du panier courant en session.
-     *
-     * @return int|null
+     * Returns the cart id.
      */
     private function getCartId(): ?int
     {
         return $this->getSession()->get(self::CART_KEY_NAME);
     }
 
-    /**
-     * Retourne la session.
-     *
-     * @return SessionInterface
-     */
     private function getSession(): SessionInterface
     {
         return $this->requestStack->getSession();

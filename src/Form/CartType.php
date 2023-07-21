@@ -4,8 +4,8 @@ namespace App\Form;
 
 use App\Entity\Order;
 use Symfony\Component\Form\AbstractType;
-use App\EventSubscriber\RemoveCartItemSubscriber;
-use App\EventSubscriber\ClearCartSubscriber;
+use App\Form\EventListener\ClearCartListener;
+use App\Form\EventListener\RemoveCartItemListener;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -32,8 +32,8 @@ class CartType extends AbstractType
             ]);
         
         // on ajoute le subscriber au formulaire 
-        $builder->addEventSubscriber(new RemoveCartItemSubscriber());
-        $builder->addEventSubscriber(new ClearCartSubscriber());
+        $builder->addEventSubscriber(new RemoveCartItemListener());
+        $builder->addEventSubscriber(new ClearCartListener());
     }
 
     public function configureOptions(OptionsResolver $resolver)

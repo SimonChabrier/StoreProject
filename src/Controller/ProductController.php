@@ -7,7 +7,7 @@ use App\Entity\Product;
 use App\Form\ProductType;
 use App\Form\AddToCartType;
 use App\Service\UploadService;
-use App\Service\Cart\CartManager;
+use App\Manager\CartManager;
 use App\Message\UpdateFileMessage;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;

@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Entity\Order;
+use App\Entity\OrderItem;
 use App\Factory\OrderFactory;
 use App\Storage\CartSessionStorage;
 use Doctrine\ORM\EntityManagerInterface;
@@ -43,7 +44,7 @@ class CartManager
     public function getCurrentCart(): Order
     {
         $cart = $this->cartSessionStorage->getCart();
-
+        // si le panier n'existe pas en session, on le crée
         if (!$cart) {
             $cart = $this->cartFactory->create();
         }
@@ -55,11 +56,39 @@ class CartManager
      * Persists the cart in database and session.
      */
     public function save(Order $cart): void
-    {
-        // Persist in database
+    {   
+        // database
         $this->entityManager->persist($cart);
         $this->entityManager->flush();
-        // Persist in session
+        // session
         $this->cartSessionStorage->setCart($cart);
+    }
+
+    /**
+     * Removes an item from the cart (database and session).
+     *
+     * @param Order      $cart
+     * @param OrderItem  $item
+     */
+    public function removeItemFromCart(Order $cart, OrderItem $item): void
+    {
+        // Remove the item from the cart
+        $cart->removeItem($item);
+        $this->save($cart);
+    }
+
+    public function removeCartFromDataBaseAndSession(): void
+    {   
+        // on récupère le panier en session
+        $cart = $this->cartSessionStorage->getCart();
+
+        if(!$cart) {
+            return;
+        }
+        // on supprime le panier de la base de données
+        $this->entityManager->remove($cart);
+        $this->entityManager->flush();
+        // on supprime le panier de la session
+        $this->cartSessionStorage->clearCart();
     }
 }

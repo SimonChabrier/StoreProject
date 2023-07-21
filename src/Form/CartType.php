@@ -3,23 +3,27 @@
 namespace App\Form;
 
 use App\Entity\Order;
+use App\Manager\CartManager;
+use App\Storage\CartSessionStorage; 
 use Symfony\Component\Form\AbstractType;
 use App\Form\EventListener\ClearCartListener;
-use App\Form\EventListener\RemoveCartItemListener;
 use Symfony\Component\Form\FormBuilderInterface;
+use App\Form\EventListener\RemoveCartItemListener;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 
 // Formulaire de la page panier pour modifier la quantité et supprimer un produit
 class CartType extends AbstractType
 {
-    private $session;
+    private $cartSessionStorage;
+    private $cartManager;
 
-    public function __construct(SessionInterface $session)
+    public function __construct(CartSessionStorage $cartSessionStorage, CartManager $cartManager)
     {
-        $this->session = $session;
+        $this->cartSessionStorage = $cartSessionStorage;
+        $this->cartManager = $cartManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -51,7 +55,7 @@ class CartType extends AbstractType
 
     private function addSubscribers(FormBuilderInterface $builder): void
     {
-        $builder->addEventSubscriber(new RemoveCartItemListener($this->session));
-        $builder->addEventSubscriber(new ClearCartListener($this->session));
+        $builder->addEventSubscriber(new RemoveCartItemListener($this->cartSessionStorage, $this->cartManager));
+        $builder->addEventSubscriber(new ClearCartListener($this->cartManager));
     }
 }

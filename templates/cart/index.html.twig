@@ -48,7 +48,7 @@
                                                 {{ form_errors(item.quantity) }}
                                             </div>
                                         </div>
-                                        {{ form_widget(item.remove, {'attr': {'class': 'btn btn-dark btn-sm'}}) }}
+                                        {{ form_widget(item.remove, {'attr': {'class': 'btn btn-dark btn-sm remove_btn'}}) }}
                                     </div>
                                 </div>
                                 <div class="flex-fill mr-2 text-right">
@@ -82,4 +82,18 @@
             </div>
         {% endif %}
     </div>
+
+    {# bloc de cript  #}
+
+    {# <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Remove item
+            document.querySelectorAll('.remove_btn').forEach(function(button) {
+                button.addEventListener('click', function(e) {
+                        window.location.reload();
+                    });
+            });
+        });
+    </script> #}
+
 {% endblock %}

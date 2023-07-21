@@ -44,10 +44,8 @@ class ClearCartListener implements EventSubscriberInterface
 
         // Clears the cart
         $cart->removeItems();
-        // Clear the cart from the database
-        $this->cartManager->removeCartFromDataBaseAndSession();
-        // Clear the cart from the session
-        // $this->cartSessionStorage->clearCart();
+        // Clear the cart from the database and the session
+        $this->cartManager->save($cart);
     }
 }
 

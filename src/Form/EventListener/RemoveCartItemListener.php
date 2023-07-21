@@ -42,12 +42,12 @@ class RemoveCartItemListener implements EventSubscriberInterface
         // Removes items from the cart
         foreach ($form->get('items')->all() as $child) {
             if ($child->get('remove')->isClicked()) {
-                $this->cartManager->removeItemFromCart($cart, $child->getData());
+                $this->cartManager->deleteItem($cart, $child->getData());
                 break;
             }
             // si save est cliqué sur un item, on met à jour la quantité de l'item
             if ($form->get('save')->isClicked()) {
-                $this->cartManager->updateItemFromCart($cart, $child->getData());
+                $this->cartManager->save($cart, $child->getData());
                 break;
             }
         }

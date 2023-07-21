@@ -39,13 +39,15 @@ class RemoveCartItemListener implements EventSubscriberInterface
             return;
         }
 
-        // Removes items from the cart
+        // On récupère tous les formulaires imbriqués dans le formulaire CartType pour le champ items
         foreach ($form->get('items')->all() as $child) {
             if ($child->get('remove')->isClicked()) {
                 $this->cartManager->deleteItem($cart, $child->getData());
                 break;
             }
-            // si save est cliqué sur un item, on met à jour la quantité de l'item
+            // sur le formulaire parent on récupère le bouton save
+            // si save est cliqué on met à jour la quantité de chaque item
+            // save = bouton mettre à jour le panier.
             if ($form->get('save')->isClicked()) {
                 $this->cartManager->save($cart, $child->getData());
                 break;

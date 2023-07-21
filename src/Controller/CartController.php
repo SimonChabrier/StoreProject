@@ -15,7 +15,8 @@ class CartController extends AbstractController
      * @Route("/cart", name="app_cart")
      */
     public function index(CartManager $cartManager, Request $request): Response
-    {
+    {   
+
         $cart = $cartManager->getCurrentCart();
         $form = $this->createForm(CartType::class, $cart);
 

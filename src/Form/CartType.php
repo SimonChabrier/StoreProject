@@ -10,11 +10,18 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 // Formulaire de la page panier pour modifier la quantité et supprimer un produit
 class CartType extends AbstractType
 {
+    private $session;
+
+    public function __construct(SessionInterface $session)
+    {
+        $this->session = $session;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -31,9 +38,8 @@ class CartType extends AbstractType
                 'label' => 'Vider le panier'
             ]);
         
-        // on ajoute le subscriber au formulaire 
-        $builder->addEventSubscriber(new RemoveCartItemListener());
-        $builder->addEventSubscriber(new ClearCartListener());
+        // Appel de la méthode statique pour ajouter les EventSubscriber au formulaire 
+        $this->addSubscribers($builder);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -41,5 +47,11 @@ class CartType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Order::class,
         ]);
+    }
+
+    private function addSubscribers(FormBuilderInterface $builder): void
+    {
+        $builder->addEventSubscriber(new RemoveCartItemListener($this->session));
+        $builder->addEventSubscriber(new ClearCartListener($this->session));
     }
 }

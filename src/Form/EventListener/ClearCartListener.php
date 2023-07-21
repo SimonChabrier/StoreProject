@@ -3,12 +3,20 @@
 namespace App\Form\EventListener;
 
 use App\Entity\Order;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ClearCartListener implements EventSubscriberInterface
-{
+{   
+    private $session;
+
+    public function __construct(SessionInterface $session)
+    {
+        $this->session = $session;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -36,5 +44,8 @@ class ClearCartListener implements EventSubscriberInterface
 
         // Clears the cart
         $cart->removeItems();
+
+         // Clear the session after processing the form
+         $this->session->clear();
     }
 }

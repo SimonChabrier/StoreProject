@@ -28,7 +28,8 @@ class Order
      *      targetEntity=OrderItem::class, 
      *      mappedBy="orderRef", 
      *      cascade={"persist", "remove"}, 
-     *      orphanRemoval=true
+     *      orphanRemoval=true,
+     *      fetch="EAGER"
      *  )
      */
     private $items;
@@ -113,7 +114,6 @@ class Order
                 $item->setOrderRef(null);
             }
         }
-
         return $this;
     }
 

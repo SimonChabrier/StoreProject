@@ -3,6 +3,7 @@
 namespace App\Storage;
 
 use App\Entity\Order;
+use App\Entity\OrderItem;
 use App\Repository\OrderRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -68,4 +69,28 @@ class CartSessionStorage
     {
         return $this->requestStack->getSession();
     }
+
+    /**
+     * Removes the cart from session.
+     */
+    public function clearCart(): void
+    {
+        $this->getSession()->remove(self::CART_KEY_NAME);
+    }
+
+    /**
+     * Removes one item from the session.
+     * If it is removed from the cart, it is also removed from the session.
+     *
+     * @param OrderItem $item
+     */
+    public function removeItemFromSession(OrderItem $item): void
+    {
+        $cart = $this->getCart();
+        if ($cart !== null) {
+            $cart->removeItem($item);
+            $this->setCart($cart);
+        }
+    }
+
 }

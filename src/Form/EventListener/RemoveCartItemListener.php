@@ -3,19 +3,21 @@
 namespace App\Form\EventListener;
 
 use App\Entity\Order;
-use Symfony\Component\Console\Helper\Dumper;
+use App\Manager\CartManager;
+use App\Storage\CartSessionStorage; 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class RemoveCartItemListener implements EventSubscriberInterface
 {   
-    private $session;
+    private $cartSessionStorage;
+    private $cartManager;
 
-    public function __construct(SessionInterface $session)
+    public function __construct(CartSessionStorage $cartSessionStorage, CartManager $cartManager)
     {
-        $this->session = $session;
+        $this->cartSessionStorage = $cartSessionStorage;
+        $this->cartManager = $cartManager;
     }
     
     /**
@@ -42,6 +44,8 @@ class RemoveCartItemListener implements EventSubscriberInterface
         foreach ($form->get('items')->all() as $child) {
             if ($child->get('remove')->isClicked()) {
                 $cart->removeItem($child->getData());  // Remove the item from the cart
+                $this->cartSessionStorage->removeItemFromSession($child->getData());
+                $this->cartManager->removeItemFromCart($cart, $child->getData());
                 break;
             }
         }

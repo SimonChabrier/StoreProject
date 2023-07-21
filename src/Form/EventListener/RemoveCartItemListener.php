@@ -14,9 +14,8 @@ class RemoveCartItemListener implements EventSubscriberInterface
     private $cartSessionStorage;
     private $cartManager;
 
-    public function __construct(CartSessionStorage $cartSessionStorage, CartManager $cartManager)
+    public function __construct(CartManager $cartManager)
     {
-        $this->cartSessionStorage = $cartSessionStorage;
         $this->cartManager = $cartManager;
     }
     
@@ -43,8 +42,6 @@ class RemoveCartItemListener implements EventSubscriberInterface
         // Removes items from the cart
         foreach ($form->get('items')->all() as $child) {
             if ($child->get('remove')->isClicked()) {
-                $cart->removeItem($child->getData());  // Remove the item from the cart
-                $this->cartSessionStorage->removeItemFromSession($child->getData());
                 $this->cartManager->removeItemFromCart($cart, $child->getData());
                 break;
             }

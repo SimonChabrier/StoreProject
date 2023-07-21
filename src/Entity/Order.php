@@ -2,13 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\OrderRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\OrderRepository;
 use Gedmo\Mapping\Annotation as Gedmo;
-use phpDocumentor\Reflection\Types\Self_;
+use Doctrine\Common\Collections\Collection;
 // add groups for serialization
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -16,7 +15,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Table(name="`order`")
  */
 class Order
-{
+{   
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -112,8 +111,6 @@ class Order
             // set the owning side to null (unless already changed)
             if ($item->getOrderRef() === $this) {
                 $item->setOrderRef(null);
-                // remove the item from the entity
-                $this->items->removeElement($item);
             }
         }
 

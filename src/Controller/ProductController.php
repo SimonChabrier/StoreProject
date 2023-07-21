@@ -94,13 +94,9 @@ class ProductController extends AbstractController
 
             // add flash message
             $this->addFlash('success', 'Le produit a bien été ajouté au panier');
-            // retourner à la page du produit après ajout au panier
-            return $this->render('product/show.html.twig', [
-                'product' => $product,
-                'relatedProducts' => $pr->relatedProducts($product->getSubCategory()->getId()),
-                'form' => $form->createView()
-            ]);
-            //return $this->redirectToRoute('product/show.html.twig', ['id' => $product->getId()]);
+
+            // on redirige vers la page produit pour éviter de renvoyer le formulaire en cas de rafraichissement de la page
+            return $this->redirectToRoute('app_product_show', ['id' => $product->getId()]);
         }
 
         return $this->render('product/show.html.twig', [

@@ -55,7 +55,7 @@ class CartType extends AbstractType
 
     private function addSubscribers(FormBuilderInterface $builder): void
     {
-        $builder->addEventSubscriber(new RemoveCartItemListener($this->cartSessionStorage, $this->cartManager));
+        $builder->addEventSubscriber(new RemoveCartItemListener($this->cartManager));
         $builder->addEventSubscriber(new ClearCartListener($this->cartManager));
     }
 }

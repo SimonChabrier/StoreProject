@@ -76,19 +76,4 @@ class CartManager
         $cart->removeItem($item);
         $this->save($cart);
     }
-
-    public function removeCartFromDataBaseAndSession(): void
-    {   
-        // on récupère le panier en session
-        $cart = $this->cartSessionStorage->getCart();
-
-        if(!$cart) {
-            return;
-        }
-        // on supprime le panier de la base de données
-        $this->entityManager->remove($cart);
-        $this->entityManager->flush();
-        // on supprime le panier de la session
-        $this->cartSessionStorage->clearCart();
-    }
 }

@@ -4,10 +4,12 @@ namespace App\Form;
 
 use App\Entity\Order;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\EventSubscriber\RemoveCartItemSubscriber;
+use App\EventSubscriber\ClearCartSubscriber;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 
 // Formulaire de la page panier pour modifier la quantité et supprimer un produit
@@ -28,6 +30,10 @@ class CartType extends AbstractType
             ->add('clear', SubmitType::class, [
                 'label' => 'Vider le panier'
             ]);
+        
+        // on ajoute le subscriber au formulaire 
+        $builder->addEventSubscriber(new RemoveCartItemSubscriber());
+        $builder->addEventSubscriber(new ClearCartSubscriber());
     }
 
     public function configureOptions(OptionsResolver $resolver)

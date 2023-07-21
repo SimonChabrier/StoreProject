@@ -6,6 +6,7 @@ use App\Entity\OrderItem;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 // Formulaire de la page panier pour modifier la quantité et supprimer un produit
@@ -24,8 +25,6 @@ class CartItemType extends AbstractType
             ->add('remove', SubmitType::class, [
                 'label' => 'Supprimer'
             ])
-            // ->add('product')
-            // ->add('orderRef')
         ;
     }
 

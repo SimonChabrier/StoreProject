@@ -79,9 +79,9 @@ class CartManager
         if($cart->removeItem($item)){
             $this->entityManager->remove($item);
             $this->entityManager->flush();
-
-            $this->save($cart);
         }
+
+        $this->save($cart);
         
     }
 

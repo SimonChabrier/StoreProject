@@ -45,6 +45,7 @@ class CartManager
     {
         $cart = $this->cartSessionStorage->getCart();
         // si le panier n'existe pas en session, on le crée
+        
         if (!$cart) {
             $cart = $this->cartFactory->create();
         }
@@ -57,11 +58,12 @@ class CartManager
      */
     public function save(Order $cart): void
     {   
-        // session
-        $this->cartSessionStorage->setCart($cart);
         // database
         $this->entityManager->persist($cart);
         $this->entityManager->flush();
+        // session placer après le flush pour avoir l'id du panier
+        // sinon on a une erreur car le panier n'a pas d'id
+        $this->cartSessionStorage->setCart($cart);
         
     }
 

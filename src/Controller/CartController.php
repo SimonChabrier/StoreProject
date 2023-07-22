@@ -36,5 +36,6 @@ class CartController extends AbstractController
             'cart' => $cart,
             'form' => $form->createView(),
         ]);
+        
     }
 }

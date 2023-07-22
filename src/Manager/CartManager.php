@@ -57,11 +57,12 @@ class CartManager
      */
     public function save(Order $cart): void
     {   
+        // session
+        $this->cartSessionStorage->setCart($cart);
         // database
         $this->entityManager->persist($cart);
         $this->entityManager->flush();
-        // session
-        $this->cartSessionStorage->setCart($cart);
+        
     }
 
     /**
@@ -73,7 +74,13 @@ class CartManager
     public function deleteItem(Order $cart, OrderItem $item): void
     {   
         // Remove the item from the cart
-        $cart->removeItem($item);
-        $this->save($cart);
+        if($cart->removeItem($item)){
+            $this->entityManager->remove($item);
+            $this->entityManager->flush();
+
+            $this->save($cart);
+        }
+        
     }
+
 }

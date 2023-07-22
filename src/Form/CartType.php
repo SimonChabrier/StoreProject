@@ -42,7 +42,7 @@ class CartType extends AbstractType
                 'label' => 'Vider le panier'
             ]);
         
-        // Appel de la méthode statique pour ajouter les EventSubscriber au formulaire 
+        // Appel des EventSubscriber au formulaire 
         $this->addSubscribers($builder);
     }
 

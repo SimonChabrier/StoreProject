@@ -21,6 +21,9 @@ class CartController extends AbstractController
         // on peut aussi utiliser un eventSubscriber pour mettre à jour le panier sans recharger la page
 
         $cart = $cartManager->getCurrentCart();
+dump($cart);
+// dump session cart
+dump($request->getSession()->all());
         $form = $this->createForm(CartType::class, $cart);
 
         $form->handleRequest($request);

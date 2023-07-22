@@ -31,8 +31,27 @@
     <dialog id="gallery_dialog" class="fade-dialog">
     </dialog>
 
-    <hr>
+<hr>
 
+    <div class="col-md-12 mb-4">
+        {{ form_start(form, {'attr': {'class': 'mt-4 p-4 bg-light'}}) }}
+        <div class="form-group">
+            {{ form_label(form.quantity) }}
+            {{ form_widget(form.quantity, {
+                'attr': {
+                    'class': 'form-control ' ~ (form.quantity.vars.valid ? '' : 'is-invalid')
+                }
+            }) }}
+            <div class="invalid-feedback">
+                {# {{ form_errors(form.quantity) }} #}
+            </div>
+        </div>
+        {{ form_widget(form.add, {'attr': {'class': 'btn btn-warning w-25'}}) }}
+        {{ form_end(form) }}
+    </div>
+
+ <hr>
+   
     {% if product.category %}
     <h5><a href="{{ path('app_category_show', { 'id': product.category.id }) }}">Categorie :  {{ product.category|capitalize }}</a></h5>
     {% else %}

@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\Picture;
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Form\AddToCartType;
+use App\Service\UploadService;
+use App\Manager\CartManager;
 use App\Message\UpdateFileMessage;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,7 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\UploadService;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -67,14 +69,40 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_product_show", methods={"GET"})
+     * @Route("/{id}", name="app_product_show", methods={"GET", "POST"})
      */
-    public function show(Product $product, ProductRepository $pr): Response
+    public function show(
+        Product $product, 
+        ProductRepository $pr, 
+        Request $request, 
+        CartManager $cartManager
+    ): Response
     {   
-        
+        $form = $this->createForm(AddToCartType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $item = $form->getData();
+            $item->setProduct($product);
+
+            $cart = $cartManager->getCurrentCart();
+            $cart
+                ->addItem($item)
+                ->setUpdatedAt(new \DateTime());
+
+            $cartManager->save($cart);
+
+            // add flash message
+            $this->addFlash('success', 'Le produit a bien été ajouté au panier');
+
+            // on redirige vers la page produit pour éviter de renvoyer le formulaire en cas de rafraichissement de la page
+            return $this->redirectToRoute('app_product_show', ['id' => $product->getId()]);
+        }
+
         return $this->render('product/show.html.twig', [
             'product' => $product,
             'relatedProducts' => $pr->relatedProducts($product->getSubCategory()->getId()),
+            'form' => $form->createView()
         ]);
     }
 
@@ -94,10 +122,7 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-
             //$filesArray = [];
-
             foreach ($form->get('pictures')->getData() as $i => $picture) {
                 // on récupère les fichiers uploadés
                 $picture = $uploadService->uploadPictures(

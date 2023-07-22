@@ -4,14 +4,12 @@ namespace App\Form\EventListener;
 
 use App\Entity\Order;
 use App\Manager\CartManager;
-use App\Storage\CartSessionStorage; 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class RemoveCartItemListener implements EventSubscriberInterface
 {   
-    private $cartSessionStorage;
     private $cartManager;
 
     public function __construct(CartManager $cartManager)
@@ -49,7 +47,7 @@ class RemoveCartItemListener implements EventSubscriberInterface
             // si save est cliqué on met à jour la quantité de chaque item
             // save = bouton mettre à jour le panier.
             if ($form->get('save')->isClicked()) {
-                $this->cartManager->save($cart, $child->getData());
+                $this->cartManager->save($cart);
                 break;
             }
         }

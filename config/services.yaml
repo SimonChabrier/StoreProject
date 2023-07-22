@@ -61,6 +61,7 @@ services:
     App\Service\ResizerService:
        arguments: ['%pictureXSDir%','%picture250Dir%', '%picture400Dir%', '%picture1200Dir%', '%slider1280Dir%']
     App\Message\UpdateFileMessage:
-        arguments: ['%file', '%pictureObject']   
+        arguments: ['%file', '%pictureObject']
+       
     
  

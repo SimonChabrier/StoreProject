@@ -17,12 +17,10 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 // Formulaire de la page panier pour modifier la quantité et supprimer un produit
 class CartType extends AbstractType
 {
-    private $cartSessionStorage;
     private $cartManager;
 
-    public function __construct(CartSessionStorage $cartSessionStorage, CartManager $cartManager)
+    public function __construct(CartManager $cartManager)
     {
-        $this->cartSessionStorage = $cartSessionStorage;
         $this->cartManager = $cartManager;
     }
 

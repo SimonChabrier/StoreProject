@@ -41,6 +41,8 @@ class RemoveCartItemListener implements EventSubscriberInterface
         foreach ($form->get('items')->all() as $child) {
             if ($child->get('remove')->isClicked()) {
                 $this->cartManager->deleteItem($cart, $child->getData());
+                // méthode originale déclaré dans l'entité mais elle ne supprime pas l'item de la BDD 
+                // $cart->removeItem($child->getData());
                 break;
             }
             // sur le formulaire parent on récupère le bouton save

@@ -59,6 +59,18 @@ class CartManager
     public function save(Order $cart): void
     {   
         // database
+
+        //TODO vérifier si le panier est vide alors on supprime le panier de la BDD
+        if($cart->getItems()->isEmpty()){
+            $this->entityManager->remove($cart);
+            $this->entityManager->flush();
+
+            // on supprime aussi le panier de la session
+            $this->cartSessionStorage->removeCart();
+
+            return;
+        }
+
         $this->entityManager->persist($cart);
         $this->entityManager->flush();
         // session placer après le flush pour avoir l'id du panier

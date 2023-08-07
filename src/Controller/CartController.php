@@ -17,8 +17,7 @@ class CartController extends AbstractController
     public function index(CartManager $cartManager, Request $request): Response
     {   
 
-        // si on clique sur supprimer un item il faut recharger la page pour que le panier se mette à jour
-        // on peut aussi utiliser un eventSubscriber pour mettre à jour le panier sans recharger la page
+        //dump($request->getSession()->get('cart_id'));
 
         $cart = $cartManager->getCurrentCart();
         $form = $this->createForm(CartType::class, $cart);

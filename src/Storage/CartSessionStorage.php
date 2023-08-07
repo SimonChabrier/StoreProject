@@ -68,4 +68,12 @@ class CartSessionStorage
     {
         return $this->requestStack->getSession();
     }
+
+    /**
+     * Removes the cart from session.
+     */
+    public function removeCart(): void
+    {
+        $this->getSession()->remove(self::CART_KEY_NAME);
+    }
 }

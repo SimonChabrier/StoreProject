@@ -58,6 +58,8 @@
                         {% endfor %}
                     </ul>
                 </div>
+                {# ajouter csrf token sinon ça ne marche pas quand on supprime un produit et on a une erreur #}
+                {{ form_row(form._token) }}
                 {{ form_end(form, {'render_rest': false}) }}
             </div>
                 <!-- Summary -->

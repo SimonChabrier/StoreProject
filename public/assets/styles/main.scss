@@ -831,6 +831,15 @@ width: 100%;
   color: #c7c721;
 }
 
+.picture_XS {
+  width: 95px!important;
+  height: 95px;
+  -o-object-fit: cover;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
 .price {
   font-size: 1.2rem;
   font-weight: 300;

@@ -11,6 +11,7 @@ body {
   max-width: 1600px;
   margin: 0 auto!important;
   font-weight: 300!important;
+  width: 95%;
 }
 
 * {
@@ -184,7 +185,14 @@ table {
 
 button {
   margin: 10px 0 !important;
-  width: 100%;
+  width: 100%!important;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  width: 100%!important;
 }
 
 .form-container {
@@ -449,10 +457,7 @@ aside {
 }
 
 .block-content {
-  display: flex;
-    /* padding-left: 30px; */
-    width: 95%;
-    flex-flow: column wrap;
+    width: 100%;
     margin: 0 auto;
 }
 
@@ -795,7 +800,7 @@ help.help-block {
 .gallery {
 height: auto;
 width: 100%;
-margin: 20px 0 10px 0;
+//margin: 20px 0 10px 0;
 }
 
 .gallery img {
@@ -910,4 +915,23 @@ dialog {
 img.gallery_dialog_img {
   max-width: -webkit-fill-available;
   width: 800px;
+}
+
+.product_header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 20px;
+  //border: 1px solid blue;
+  width: 100%;
+}
+
+.product_info {
+  //border: 1px solid red;
+  width: 100%;
+}
+
+.product_info_comp {
+  //border: 1px solid #52522e;
+  width: 100%;
 }

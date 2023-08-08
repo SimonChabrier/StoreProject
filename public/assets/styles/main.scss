@@ -1,6 +1,12 @@
 // importer la feuille de style responsive
 // @import "responsive";
 
+// barre de symfony debug
+.sf-toolbarreset .hide-button {
+  width: 36px!important;
+  margin: 0!important;
+}
+
 body {
   // background: rgb(255, 255, 255) !important;
   text-align: left !important;

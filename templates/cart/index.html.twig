@@ -6,7 +6,7 @@
     <div class="container mt-4">
         <h1>Votre panier</h1>
         {% if cart.items.count > 0 %}
-            <div class="row mt-4">
+            <div class="row mt-2">
                 <!-- List of items -->
                 <div class="col-md-8">
                 {{ form_start(form) }}
@@ -31,9 +31,9 @@
                                     {% endif %}
                                     {% else %}
                                     <img class="last-five-picture" src="/assets/pictures/defaultSneakersPicture.webp" alt="" loading="lazy" width="150">
-                                    {% endfor %}
-                                    
+                                    {% endfor %} 
                                 </div>
+
                                 <div class="flex-fill mr-2">
                                     <h5 class="mt-0 mb-0">{{ item.vars.data.product.name }}</h5>
                                     {# <small>{{ item.vars.data.product.description[:50] }}...</small> #}
@@ -51,6 +51,7 @@
                                         {{ form_widget(item.remove, {'attr': {'class': 'btn btn-dark btn-sm remove_btn'}}) }}
                                     </div>
                                 </div>
+
                                 <div class="flex-fill mr-2 text-right">
                                     <b>{{ item.vars.data.product.sellingPrice }} €</b>
                                 </div>
@@ -62,7 +63,7 @@
                 {{ form_row(form._token) }}
                 {{ form_end(form, {'render_rest': false}) }}
             </div>
-                <!-- Summary -->
+                <!-- Total panier -->
                 <div class="col-md-4">
                     <div class="card mt-4 mt-md-0">
                         <h5 class="card-header bg-dark text-white">Total</h5>
@@ -79,7 +80,7 @@
                 </div>
             </div>
         {% else %}
-            <div class="alert alert-info">
+            <div class="alert alert-info mt-2">
                 Votre panier est vide. Retour à la <a href="{{ path('app_home') }}">liste des produits</a>.
             </div>
         {% endif %}

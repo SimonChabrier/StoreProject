@@ -1,0 +1,28 @@
+@media (max-width: 576px) {
+  .last-five section {
+    width: calc(100% - 15px);
+  }
+}
+@media (max-width: 768px) {
+  .userbar {
+    flex-direction: column;
+  }
+  .logo {
+    margin-bottom: 15px;
+    flex-direction: column;
+  }
+  .sitename h1 {
+    margin: inherit;
+  }
+  .last-five section {
+    width: calc(100% - 15px) !important;
+  }
+}
+@media (max-width: 992px) {
+  .last-five section {
+    width: calc(50% - 30px);
+  }
+  .navbar-expand-lg {
+    padding: 15px 5px !important;
+  }
+}/*# sourceMappingURL=responsive.css.map */

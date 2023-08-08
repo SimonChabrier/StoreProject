@@ -1,0 +1,63 @@
+// media query breakpoints for scree sizes and devices 
+
+// Extra small devices (portrait phones, less than 576px)
+// No media query for `xs` since this is the default in Bootstrap
+
+@media (max-width: 576px) { 
+    // Small devices (landscape phones, 576px and up)
+    // .container {
+    //     max-width: 540px;
+    // }
+    .last-five section {
+        width: calc(100% - 15px);
+    }
+    
+ }
+
+@media (max-width: 768px) { 
+    // Medium devices (tablets, 768px and up)
+    // .container {
+    //     max-width: 720px;
+    // }
+    .userbar {
+        flex-direction: column;
+    }
+    .logo {
+        margin-bottom: 15px;
+        flex-direction: column;
+    }
+    .sitename h1 {
+        margin: inherit; 
+    }
+    .last-five section {
+        width: calc(100% - 15px)!important;
+    }
+ }
+
+
+@media (max-width: 992px) { 
+    // Large devices (desktops, 992px and up)
+    // .container {
+    //     max-width: 960px;
+    // }
+    .last-five section {
+        width: calc(50% - 30px);
+    }
+
+    .navbar-expand-lg {
+        padding: 15px 5px !important;
+    }
+ }
+
+@media (max-width: 1200px) { 
+    // Extra large devices (large desktops, 1200px and up)
+    // .container {
+    //     max-width: 1140px;
+    // }
+    // .last-five section {
+    //     width: calc(25% - 30px);
+    // }
+ }
+
+
+ 

@@ -89,39 +89,40 @@
 </div>
 
 <div class="product_info_comp">
-    <h3> Liste des caractéristiques du produit </h3>
+    <h3> Caractéristiques du produit :</h3>
     <hr>
        
         {% if product.productData %}
             {% for index, data in product.productData %}
-                <div>{{ data.key|capitalize }} : {{ data.value|capitalize }}</div>
+                <div>
+                    {{ data.key|capitalize }} : {{ data.value|capitalize }}
+                </div>
             {% endfor %}
         {% else %}
             <div>Aucune caractéristique renseigné pour ce produit</div>
         {% endif %}
-       
     <hr>
-
-    <h3> Commentaires liés au produit </h3>
+    <h3> Commentaires :</h3>
     <hr>
+    {% if product.comments|length == 0 %}
+        <div>Aucun commentaire pour ce produit</div>
+    <hr>
+    {% else %}
     {% for index, comment in product.comments %}
-        <ol>
-            <h6><li><i class="bi bi-person-circle"></i> {{ comment.author|upper }}</li></h6>
-            <li><i class="bi bi-chat-square-text-fill"></i> {{ comment.text }}</li>
-        </ol>
+        <div>
+            <span><h6><i class="bi bi-person-circle"></i> {{ comment.author|upper }}</h6></span>
+            <span><p><i class="bi bi-chat-square-text-fill"></i> {{ comment.text }}</p></span>
+        </div>
+    <hr>
     {% endfor %}
-    
-    <a href="{{ path('app_product_index') }}">Retour à la liste</a>
+    {% endif %}
 
+    {# <a href="{{ path('app_product_index') }}">Retour à la liste</a>
     <a href="{{ path('app_product_edit', {'id': product.id}) }}">Modifier</a>
-
-    {{ include('product/_delete_form.html.twig') }}
+    {{ include('product/_delete_form.html.twig') }} #}
     </div>
     
-    
-    
     {# liked products #}
-    <hr>
     <div class="last-five swiper">
     <h3>Produits similaires à {{ product.name }} dans {{ product.subCategory.name }}</h3>
     <div class="last-five-products-related swiper-wrapper">

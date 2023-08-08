@@ -4,10 +4,11 @@
 
 {% block content %}
 
+<h1 class="mb-2">{{ product.name|title }}</h1>
 
-    <h1>{{ product.name|title }}</h1>
+<div class="product_header">
     
-    <div class="gallery">
+    <div class="col-md-7 gallery">
     {% for picture in product.pictures %}
         {% if picture %}
             {# get just last picture #}
@@ -18,7 +19,6 @@
         {% else %}
         <img class="last-five-picture" src="/assets/pictures/defaultSneakersPicture.webp" alt="" loading="lazy">
         {% endfor %}
-    </div>
 
     <div class="gallery_small">
     {% for picture in product.pictures %}
@@ -27,13 +27,49 @@
         {% endif %}
     {% endfor %}
     </div>
+    </div>
 
-    <dialog id="gallery_dialog" class="fade-dialog">
-    </dialog>
+    <div class="product_info col-md-4">
+    {% if product.category %}
+    <h5><a href="{{ path('app_category_show', { 'id': product.category.id }) }}">Categorie :  {{ product.category|capitalize }}</a></h5>
+    <hr>
+    {% else %}
+    <h6> Aucune categorie renseigné pour ce produit </h6>
+    <hr>
+    {% endif %}
 
-<hr>
+    {% if product.subCategory %}
+    <h6><a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}">Sous-Categorie : {{ product.subCategory|capitalize }}</a></h6>
+    <hr>
+    {% else %}
+    <h6> Aucune sous-categorie renseigné pour ce produit </h6>
+    <hr>
+    {% endif %}
 
-    <div class="col-md-12 mb-4">
+    {% if product.productType.name %}
+    <a href="{{ path('app_product_type_show', { 'id': product.productType.id }) }}">Type de produit :  {{ product.productType.name|capitalize }}</a>
+    <hr>
+    {% else %}
+    <h6> Aucun type de produit renseigné pour ce produit </h6>
+    <hr>
+    {% endif %}
+        <div class="last-five">
+        <h3 class="mb-2"> Propriétés du produit </h3>
+            <ol>
+                <li>Id : {{ product.id }}</li>
+                <li>Nom : {{ product.name }}</li>
+                <li>Stock : {{ product.inStockQuantity }}</li>
+                <li>Visible : {{ (product.visibility) ? 'Oui' : 'Non' }}</li>
+                <li>Prix catalogue : <span class="catalogPrice"><del>{{ product.catalogPrice|round(0) }} €</del></span></li>
+                {% set discount = (product.catalogPrice - product.sellingPrice|round(0) ) / product.catalogPrice * 100 %}
+                <li>Réduction : <span class="dicountPrice">{{ discount|round(0) }} % </span></li> 
+                <li>Prix : <span class="price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span></li>
+                <li>Marque : {{ product.brand }}</li>
+            </ol>
+        </div>
+    <hr>
+    <div class="last-five">
+    <h3> Ajouter au panier </h3>
         {{ form_start(form, {'attr': {'class': 'mt-4 p-4 bg-light'}}) }}
         <div class="form-group">
             {{ form_label(form.quantity) }}
@@ -48,75 +84,45 @@
         </div>
         {{ form_widget(form.add, {'attr': {'class': 'btn btn-warning'}}) }}
         {{ form_end(form) }}
+        <a href="{{ url('app_cart') }}" class="btn btn-primary mt-4">Voir mon panier</a>
     </div>
+</div>
 
- <hr>
-   
-    {% if product.category %}
-    <h5><a href="{{ path('app_category_show', { 'id': product.category.id }) }}">Categorie :  {{ product.category|capitalize }}</a></h5>
-    {% else %}
-    <h6> Aucune categorie renseigné pour ce produit </h6>
-    {% endif %}
-
-    {% if product.subCategory %}
-    <h6><a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}">Sous-Categorie : {{ product.subCategory|capitalize }}</a></h6>
-    {% endif %}
-
-    {% if product.productType.name %}
-    <a href="{{ path('app_product_type_show', { 'id': product.productType.id }) }}">Type de produit :  {{ product.productType.name|capitalize }}</a>
-    {% endif %}
-
-    <hr>
-    <div class="last-five">
-    <h3> Propriétés du produit </h3>
-    <hr>
-        <ol>
-            <li>Id : {{ product.id }}</li>
-            <li>Nom : {{ product.name }}</li>
-            <li>Stock : {{ product.inStockQuantity }}</li>
-            <li>Visible : {{ (product.visibility) ? 'Oui' : 'Non' }}</li>
-            <li>Prix catalogue : <span class="catalogPrice"><del>{{ product.catalogPrice|round(0) }} €</del></span></li>
-            {% set discount = (product.catalogPrice - product.sellingPrice|round(0) ) / product.catalogPrice * 100 %}
-            <li>Réduction : <span class="dicountPrice">{{ discount|round(0) }} % </span></li> 
-            <li>Prix : <span class="price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span></li>
-            <li>Marque : {{ product.brand }}</li>
-        </ol>
-
-    <hr>
-
-    <h3> Liste des caractéristiques du produit </h3>
+<div class="product_info_comp">
+    <h3> Caractéristiques du produit :</h3>
     <hr>
        
         {% if product.productData %}
             {% for index, data in product.productData %}
-                <div>{{ data.key|capitalize }} : {{ data.value|capitalize }}</div>
+                <div>
+                    {{ data.key|capitalize }} : {{ data.value|capitalize }}
+                </div>
             {% endfor %}
         {% else %}
             <div>Aucune caractéristique renseigné pour ce produit</div>
         {% endif %}
-       
     <hr>
-
-    <h3> Commentaires liés au produit </h3>
+    <h3> Commentaires :</h3>
     <hr>
+    {% if product.comments|length == 0 %}
+        <div>Aucun commentaire pour ce produit</div>
+    <hr>
+    {% else %}
     {% for index, comment in product.comments %}
-        <ol>
-            <h6><li><i class="bi bi-person-circle"></i> {{ comment.author|upper }}</li></h6>
-            <li><i class="bi bi-chat-square-text-fill"></i> {{ comment.text }}</li>
-        </ol>
+        <div>
+            <span><h6><i class="bi bi-person-circle"></i> {{ comment.author|upper }}</h6></span>
+            <span><p><i class="bi bi-chat-square-text-fill"></i> {{ comment.text }}</p></span>
+        </div>
+    <hr>
     {% endfor %}
-    
-    <a href="{{ path('app_product_index') }}">Retour à la liste</a>
+    {% endif %}
 
+    {# <a href="{{ path('app_product_index') }}">Retour à la liste</a>
     <a href="{{ path('app_product_edit', {'id': product.id}) }}">Modifier</a>
-
-    {{ include('product/_delete_form.html.twig') }}
+    {{ include('product/_delete_form.html.twig') }} #}
     </div>
     
-    
-    
     {# liked products #}
-    <hr>
     <div class="last-five swiper">
     <h3>Produits similaires à {{ product.name }} dans {{ product.subCategory.name }}</h3>
     <div class="last-five-products-related swiper-wrapper">
@@ -151,6 +157,8 @@
          {# <div class="swiper-scrollbar"></div> #}
     </div>
 
+    <dialog id="gallery_dialog" class="fade-dialog">
+    </dialog>
 
 {% block stylesheets %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>

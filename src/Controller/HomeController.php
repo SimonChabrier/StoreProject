@@ -2,23 +2,15 @@
 
 namespace App\Controller;
 
-use DateTime;
-use App\Service\JsonManager;
 use App\Service\EmailService;
-use Doctrine\ORM\EntityManager;
-use App\Message\AdminNotification;
 use App\Repository\UserRepository;
 use App\Repository\PictureRepository;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
 use Symfony\Component\Process\Process;
-use SebastianBergmann\Environment\Console;
-use App\Message\AccountCreatedNotification;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -31,9 +23,9 @@ class HomeController extends AbstractController
         $this->adminEmail = $adminEmail;
     }
     /**
-     * @Route("/", name="app_home", methods={"GET", "POST"})
+     * @Route("/", name="app_home")
      */
-    public function index(CategoryRepository $categoryRepository): Response
+    public function index(CategoryRepository $categoryRepository, ProductRepository $productRepository): Response
     {
     // je récupère la classe de l'alerte qui est définie dans RegistrationController
     // et qui est passée en paramètre dans l'url de la requête avec redirectToRoute
@@ -42,6 +34,8 @@ class HomeController extends AbstractController
     //$class = $request->query->get('class', 'alert-success');
 
         //$this->addFlash('success', 'SSH.');
+        
+        //dump($productRepository->findLastProduct(10));
 
         return $this->render('home/index.html.twig', [
             'homeCats' => $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']),
@@ -49,7 +43,7 @@ class HomeController extends AbstractController
         ]);
     }
     /**
-     * @Route("/paginate/{id}", name="app_paginate_products", methods={"GET", "POST"})
+     * @Route("/paginate/{id}", name="app_paginate_products")
      */
     public function paginateProducts(ProductRepository $pr, Request $request, $id): Response
    {

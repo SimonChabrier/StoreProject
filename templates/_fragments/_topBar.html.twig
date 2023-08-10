@@ -18,7 +18,6 @@
 <p class="username">{{ app.user.email }}</p>
 </section>
 {% else %}
-{# si app.user.email n'est pas défini alors on utilise la valeur de défaut #}
 <section class="topicon">
 <a href="{{ path('app_login') }}" title="{{ app.user.email | default('Connection') }}" title=" {{ app.user.email | default('Connection') }}">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-square" viewBox="0 0 24 24">
@@ -31,7 +30,7 @@
 
 
 {% if app.user %}
-{# user account à gérer #}
+{# TODO user account à gérer accès détail du compte #}
 {% else %}
 {# user registration #}
 <section class="topicon">
@@ -45,7 +44,7 @@
 {% endif %}
 
 
-{# si l'utilisateur est admin alors on affiche un lien vers l'admin panel avec un icon de roue dentée #}
+{# admin panel#}
 {% if app.user and is_granted('ROLE_ADMIN') %}
 <section class="topicon">
 <a href="{{ path('app_admin') }}" title="Admin panel">
@@ -56,7 +55,6 @@
 </a>
 </section>
 {% endif %}
-
 
 
 {# reset password #}

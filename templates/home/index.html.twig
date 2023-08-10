@@ -11,7 +11,7 @@
 {# affiche les produits de chaque category #}
 <div class="last-five swiper">
 {% for category in homeCats %}
-    <h2>{{ category.name|upper }}</h2>
+    <a href="{{ path('app_category_show', {'id': category.id}) }}"><h2>{{ category.name|upper }}</h2></a>
     {% set categoryProducts = category.products|slice(0, 4) %}
     <div class="swiper-wrapper">
         {% for product in categoryProducts %}
@@ -54,7 +54,7 @@
 
 <div class="last-five">
     {% for subCategory in category.subCategories %}
-        <h3>{{ category.name|upper }} - {{ subCategory.name|upper }}</h3>
+        <a href="{{ path('app_sub_category_show', {'id': subCategory.id}) }}"><h3>{{ category.name|upper }} - {{ subCategory.name|upper }}</h3></a>
 
         <div class="last-five-products">
         {% set subCategoryproducts = subCategory.products|slice(0, 4) %}

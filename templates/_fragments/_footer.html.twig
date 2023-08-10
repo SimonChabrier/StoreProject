@@ -31,18 +31,20 @@
                 <h6 class="text-uppercase fw-bold mb-4">SNEAKERS SHOP :</h6>
 
               <div class="navbar-collapse" id="footer_navbarNavDropdown">
-                    <div class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         {% for cat in catsAndSubCats.getOnlyCatsAndOnlySubCats() %}      
-                            <div class="nav-item dropdown">
+                            <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown{{ cat.catId }}" role="button" aria-expanded="false">{{ cat.catName }}</a>
-                                <div class="dropdown-menu slide" aria-labelledby="navbarDropdown{{ cat.catId }}">
+                                <ul class="dropdown-menu slide" aria-labelledby="navbarDropdown{{ cat.catId }}">
                                     {% for subCat in cat.subCategories %}
+                                    <li>
                                         <a class="dropdown-item" href="{{ path('app_sub_category_show', {'id': subCat.subCatId}) }}">{{ subCat.subCatName }}</a>
+                                    </li>
                                     {% endfor %}
-                                </div>
-                            </div>
+                                </ul>
+                            </li>
                         {% endfor %}
-                    </div>
+                    </ul>
                 </div>
 
 

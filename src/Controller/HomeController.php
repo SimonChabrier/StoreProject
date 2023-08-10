@@ -77,16 +77,17 @@ class HomeController extends AbstractController
             'currentPage' => $currentPage,
             'perPage' => $perPage,
         ]);
+        // TODO retourner du json pour l'ajax
    }
 
-   // search route
+   // TODO search route
    /**
     * @Route("/search", name="app_search", methods={"GET", "POST"})
     */
 
     public function search(): Response
     {
-        return $this->render('_fragments/_jsSearch.html.twig', []);
+        return $this->render('_fragments/_searchResults.html.twig', []);
     }
 
     // test mail route
@@ -172,6 +173,8 @@ class HomeController extends AbstractController
     {   
         // only admin can access this route
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        // TODO ne supprimer que les images qui ne sont pas utilisées par un produit ou une catégorie ou un slider 
 
         $basePath = '../public/uploads/files/';
 

@@ -59,6 +59,7 @@ class Category
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"product:read"})
      */
     private $showOnHome = true;
 

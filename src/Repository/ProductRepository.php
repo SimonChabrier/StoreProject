@@ -179,6 +179,18 @@ class ProductRepository extends ServiceEntityRepository
             return $query->getResult();
     }
 
+    public function findLastProduct(int $count): array
+    {
+        $query = $this->createQueryBuilder('p')
+
+                ->select('p')
+                ->orderBy('p.id', 'DESC')
+                ->setMaxResults($count)
+                ->getQuery();
+
+            return $query->getResult();
+    }
+
 
 //    /**
 //     * @return Product[] Returns an array of Product objects

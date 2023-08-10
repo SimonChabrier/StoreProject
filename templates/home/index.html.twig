@@ -11,8 +11,8 @@
 {# affiche les produits de chaque category #}
 <div class="last-five swiper">
 {% for category in homeCats %}
-    <h2>{{ category.name|upper }}</h2>
-    {% set categoryProducts = category.products|slice(0, 4) %}
+    <a href="{{ path('app_category_show', {'id': category.id}) }}"><h2>{{ category.name|upper }}</h2></a>
+    {% set categoryProducts = category.products|slice(0, 4)|reverse %}
     <div class="swiper-wrapper">
         {% for product in categoryProducts %}
             <section class="swiper-slide">
@@ -54,10 +54,11 @@
 
 <div class="last-five">
     {% for subCategory in category.subCategories %}
-        <h3>{{ category.name|upper }} - {{ subCategory.name|upper }}</h3>
+        <a href="{{ path('app_sub_category_show', {'id': subCategory.id}) }}"><h3>{{ category.name|upper }} - {{ subCategory.name|upper }}</h3></a>
 
         <div class="last-five-products">
-        {% set subCategoryproducts = subCategory.products|slice(0, 4) %}
+        {# reverse pour afficher les derniers produits en premier  #}
+        {% set subCategoryproducts = subCategory.products|slice(0, 4)|reverse %}
             {% for product in subCategoryproducts %}
                 <section>
                     <h6>{{ product.name|upper}}</h6>

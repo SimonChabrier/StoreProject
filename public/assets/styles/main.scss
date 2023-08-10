@@ -419,6 +419,10 @@ label {
   flex-wrap: wrap;
 }
 
+.last-five a {
+  text-decoration: none;
+} 
+
 .page-container {
   display: flex;
   flex-direction: row;
@@ -513,8 +517,10 @@ aside {
   }
 
   img.last-five-picture {
-    width: 200px;
-    height: 200px;
+    // width: 200px;
+    // height: 200px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     object-position: center;
     margin: 15px 0 0 0;

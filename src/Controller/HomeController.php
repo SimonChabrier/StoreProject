@@ -29,22 +29,29 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(CategoryRepository $categoryRepository, ProductRepository $productRepository): Response
+    public function index(
+        CategoryRepository $categoryRepository, 
+        ProductRepository $productRepository
+        ): Response
     {   
 
         // Récupérer le cache
         $cacheItem = $this->cache->getItem('home_data');
-
-        // dump pour me dire si les données sont en cache ou pas
+        dump($cacheItem);
         dump($cacheItem->isHit());
-
+        dump($cacheItem->get());
         // Si les données sont en cache, les retourner directement
         if ($cacheItem->isHit()) {
             $data = $cacheItem->get();
         } else {
             // on récupère les catégories qui ont showOnHome = true
             $categories = $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
+            
+            // on rafraîchit le fichier json des produits pour le filtre de recherche
+            // $products = $productRepository->findAll();
+            // $jsonManager->jsonFileInit($products, 'product:read', 'product.json', 'json');
             // on va stocker les données dans un tableau
+            
             $data = [];
             // on boucle sur les catégories
             foreach ($categories as $category) {
@@ -54,6 +61,32 @@ class HomeController extends AbstractController
                     'products' => [],
                     'subCategories' => [],
                 ];
+                // on ajoute les produits si il y a des produits à la racine de la catégorie
+                foreach ($category->getProducts() as $product) {
+                    $productData = [
+                        'id' => $product->getId(),
+                        'name' => $product->getName(),
+                        'pictures' => [], // on ne récupère que la première image du tableau : $product->getPictures()[0
+                        'catalogPrice' => $product->getCatalogPrice(),
+                        'sellingPrice' => $product->getSellingPrice(),
+                        'subCategory' => $product->getSubCategory(),
+                        'productType' => $product->getProductType()->getName(),
+                        'brand' => $product->getBrand()->getName()
+                    ];
+                    // récupèrer les images du produit
+                    foreach ($product->getPictures() as $picture) {
+                        // on a besoin du nom du alt et du fileName
+                        $productData['pictures'][] = [
+                            'id' => $picture->getId(),
+                            'alt' => $picture->getAlt(),
+                            'fileName' => $picture->getFileName(),
+                        ];
+                    }
+                    // on stocke les produits dans le tableau : 'products' => [], de la catégorie
+                    $categoryData['products'][] = $productData;      
+                }
+
+
                 // on récupère tous les produits de la catégorie (pour nous c'est pour la partie "Nouveautés" qui a des produits à sa racine)
                 $categoryProducts = $productRepository->findBy(['category' => $category->getId(), 'visibility' => 'true'], ['id' => 'DESC'], 4);
                 
@@ -67,8 +100,7 @@ class HomeController extends AbstractController
                         'sellingPrice' => $product->getSellingPrice(),
                         'subCategory' => $product->getSubCategory(),
                         'productType' => $product->getProductType()->getName(),
-                        'brand' => $product->getBrand()->getName(),
-                        // Ajoutez d'autres données de produit nécessaires
+                        'brand' => $product->getBrand()->getName()
                     ];
                     // récupèrer les images du produit
                     foreach ($product->getPictures() as $picture) {

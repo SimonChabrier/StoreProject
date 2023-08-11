@@ -35,6 +35,9 @@ class HomeController extends AbstractController
         // Récupérer le cache
         $cacheItem = $this->cache->getItem('home_data');
 
+        // dump pour me dire si les données sont en cache ou pas
+        dump($cacheItem->isHit());
+
         // Si les données sont en cache, les retourner directement
         if ($cacheItem->isHit()) {
             $data = $cacheItem->get();
@@ -124,7 +127,12 @@ class HomeController extends AbstractController
             $this->cache->save($cacheItem);
             }
 
-            return $this->render('home/index_cache.html.twig', [
+            // si les données sont en cache, on les récupère, sinon on les récupère de la BDD
+            $cacheItem->isHit() ? $data = $cacheItem->get() : $data = $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
+            // si les données sont en cache, on affiche le template adapté aux tableaux, sinon on affiche le template adpaté aux objets.
+            $cacheItem->isHit() ? $template = 'home/index_cache.html.twig' : $template = 'home/index.html.twig';    
+
+            return $this->render($template, [
                 'homeCats' => $data,
             ]);
     }

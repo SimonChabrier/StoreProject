@@ -164,6 +164,11 @@ class SubCategory
 
     public function __toString()
     {   
+        // pour ne pas avoir d'erreur quand on contruit les données pour le cache
+        // on retourne une chaine vide si le nom de la sous catégorie est null
+        if ($this->name == null) {
+            return '';
+        }
         return $this->name;
     }
 

@@ -39,7 +39,6 @@ class SubCategory
      * @ORM\ManyToMany(
      *      targetEntity=Category::class, 
      *      inversedBy="subCategories",
-     *      fetch="EAGER",
      *      cascade={"persist"}
      *  )
      * @Groups({"product:read"})
@@ -49,8 +48,7 @@ class SubCategory
     /**
      * @ORM\OneToMany(
      *      targetEntity=Product::class, 
-     *      mappedBy="subCategory", 
-     *      fetch="EAGER"
+     *      mappedBy="subCategory"
      *  )
      * 
      */

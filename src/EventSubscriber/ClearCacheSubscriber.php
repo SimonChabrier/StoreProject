@@ -32,7 +32,6 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
     {
         return [
             Events::preUpdate,
-            Events::postPersist,
         ];
     }
 
@@ -46,10 +45,12 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
             
             $this->invalidateCache();
 
-            // on supprime le fichier json pour le recréer avec les nouvelles données à jour
+            // on supprime le fichier json existant qui n'est plus à jour 
+            // car on a modifié une entité
             $products = $this->productRepository->findAll();
             $jsonFileName = 'product.json';
             
+            // et si jsonFileDelete renvoie true on recrée le fichier json avec les nouvelles données
             if($this->jsonManager->jsonFileDelete($jsonFileName)) {
                 $this->jsonManager->jsonFileInit(
                     $products, 'product:read', 
@@ -60,22 +61,7 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
         }
     }
 
-    public function postPersist(LifecycleEventArgs $args)
-    {
-        $entity = $args->getObject();
-
-        // Exclure les entités Order et OrderItem du cache
-        if (!$entity instanceof Order && !$entity instanceof OrderItem) {
-            
-            $this->invalidateCache();
-
-            // $jsonFileName = 'product.json';
-            // $this->jsonManager->jsonFileDelete($jsonFileName);
-
-           
-        }
-    }
-
+  
     // Méthode pour invalider le cache
     private function invalidateCache()
     {   

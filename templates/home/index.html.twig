@@ -3,181 +3,110 @@
 {% block content %}
 
 <div class="last-five searchResults">
-{# résultats de la recherche #}
-{% include '_fragments/_searchResults.html.twig' %} 
+    {# résultats de la recherche #}
+    {% include '_fragments/_searchResults.html.twig' %}
 </div>
 
-
-{# affiche les produits de chaque category #}
+{# Affiche les produits de chaque catégorie #}
 <div class="last-five swiper">
-{% for category in homeCats %}
-    <a href="{{ path('app_category_show', {'id': category.id}) }}"><h2>{{ category.name|upper }}</h2></a>
-    {% set categoryProducts = category.products|slice(0, 4)|reverse %}
-    <div class="swiper-wrapper">
-        {% for product in categoryProducts %}
-            <section class="swiper-slide">
-                <h6>{{ product.name|upper }}</h6>
-                {% for picture in product.pictures %}
-                    {% if picture %}
-                    {# get just last picture #}
-                        {% if loop.last %}
-                            <img class="last-five-picture" src="uploads/files/pictures/{{ picture.getFilename }}" alt="{{ picture.alt }}" width >
-                        {% endif %}
-                    {% endif %}
-                {% else %}
-                    <img class="last-five-picture" src="/assets/pictures/defaultSneakersPicture.webp" alt="" loading="lazy">
-                {% endfor %}
-                <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
-                <span class="selling-price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span>
-                <div class="productInfo">
-                    {% if product.category is not empty %}
-                    <span class="categorie">Categorie : {{ category.name }}</span>
-                    {% endif %}
-                    {% if product.subCategory is not empty %}
-                        <span class="sous-categorie">Sous-categorie : {{ product.subCategory.name }}</span>
-                    {% endif %}
-                    <span class="type">Type : {{ product.productType }}</span>
-                    <span class="brand">Marque : {{ product.brand }}</span>
-                </div>
-                <div class="productInfoFooter">
-                    {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
-                    <span>-{{ discount|round }}%</span> 
-                    <span class="productLink"><a href="{{ path('app_product_show', {'id': product.id}) }}">Détail</a></span>
-                </div>
-            </section>
-        {% endfor %}
-        </div>
-    <div class="swiper-pagination"></div>
-</div>
-
-{# affiche les produits de chaque sous category #}
-
-<div class="last-five">
-    {% for subCategory in category.subCategories %}
-        <a href="{{ path('app_sub_category_show', {'id': subCategory.id}) }}"><h3>{{ category.name|upper }} - {{ subCategory.name|upper }}</h3></a>
-
-        <div class="last-five-products">
-        {# reverse pour afficher les derniers produits en premier  #}
-        {% set subCategoryproducts = subCategory.products|slice(0, 4)|reverse %}
-            {% for product in subCategoryproducts %}
-                <section>
-                    <h6>{{ product.name|upper}}</h6>
-                    {% for picture in product.pictures %}
-                    {% if picture %}
-                        {# get just last picture #}
-                        {% if loop.last %}
-                            <img class="last-five-picture" src="uploads/files/pictures/{{ picture.getFilename }}" alt="{{ picture.alt }}" width >
-                        {% endif %}
-                    {% endif %}
-                    {% else %}
-                    <img class="last-five-picture" src="/assets/pictures/defaultSneakersPicture.webp" alt="" loading="lazy">
-                    {% endfor %}
+    {% for category in homeCats %}
+        <a href="{{ path('app_category_show', {'id': category.id}) }}"><h2>{{ category.name|upper }}</h2></a>
+        <div class="swiper-wrapper">
+            {% set categoryProducts = category.products|slice(0, 4)|reverse %}
+            {% for product in categoryProducts %}
+                <section class="swiper-slide">
+                    <h6>{{ product.name|upper }}</h6>
+                    {% set lastPicture = product.pictures|last %}
+                    <img class="last-five-picture" src="{{ lastPicture ? 'uploads/files/pictures/' ~ lastPicture.getFilename : '/assets/pictures/defaultSneakersPicture.webp' }}" alt="{{ lastPicture ? lastPicture.alt : '' }}" loading="lazy">
                     <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
                     <span class="selling-price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span>
                     <div class="productInfo">
-                        <span class="categorie">Categorie : {{ category.name }}</span>
-                        <span class="sous-categorie">Sous-categorie : {{ subCategory.name }}</span>
+                        <span class="categorie">Catégorie : {{ category.name }}</span>
+                        {% if product.subCategory is not empty %}
+                            <span class="sous-categorie">Sous-catégorie : {{ product.subCategory.name }}</span>
+                        {% endif %}
                         <span class="type">Type : {{ product.productType }}</span>
                         <span class="brand">Marque : {{ product.brand }}</span>
                     </div>
                     <div class="productInfoFooter">
-                        {% set discount = (product.catalogPrice - product.sellingPrice ) / product.catalogPrice * 100 %}
-                        <span>-{{ discount|round }}%</span> 
+                        {% set discount = ((product.catalogPrice - product.sellingPrice) / product.catalogPrice * 100)|round %}
+                        <span>-{{ discount }}%</span>
                         <span class="productLink"><a href="{{ path('app_product_show', {'id': product.id}) }}">Détail</a></span>
                     </div>
                 </section>
             {% endfor %}
         </div>
+        <div class="swiper-pagination"></div>
+        
+        {# Affiche les produits de chaque sous-catégorie #}
+        {% for subCategory in category.subCategories %}
+            <a href="{{ path('app_sub_category_show', {'id': subCategory.id}) }}"><h3>{{ category.name|upper }} - {{ subCategory.name|upper }}</h3></a>
+            <div class="last-five-products">
+                {% set subCategoryProducts = subCategory.products|slice(0, 4)|reverse %}
+                {% for product in subCategoryProducts %}
+                    <section>
+                        <h6>{{ product.name|upper }}</h6>
+                        {% set lastPicture = product.pictures|last %}
+                        <img class="last-five-picture" src="{{ lastPicture ? 'uploads/files/pictures/' ~ lastPicture.getFilename : '/assets/pictures/defaultSneakersPicture.webp' }}" alt="{{ lastPicture ? lastPicture.alt : '' }}" loading="lazy">
+                        <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
+                        <span class="selling-price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span>
+                        <div class="productInfo">
+                            <span class="categorie">Catégorie : {{ category.name }}</span>
+                            <span class="sous-categorie">Sous-catégorie : {{ subCategory.name }}</span>
+                            <span class="type">Type : {{ product.productType }}</span>
+                            <span class="brand">Marque : {{ product.brand }}</span>
+                        </div>
+                        <div class="productInfoFooter">
+                            {% set discount = ((product.catalogPrice - product.sellingPrice) / product.catalogPrice * 100)|round %}
+                            <span>-{{ discount }}%</span>
+                            <span class="productLink"><a href="{{ path('app_product_show', {'id': product.id}) }}">Détail</a></span>
+                        </div>
+                    </section>
+                {% endfor %}
+            </div>
+        {% endfor %}
     {% endfor %}
-{% endfor %}
 </div>
+
 
 {% block stylesheets %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
 {% endblock %}
 
 {% block javascripts %}
-    {# https://swiperjs.com/get-started #}
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const swiper = new Swiper('.swiper', {
-    // use arrows to navigate
-    navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-    },
-    pagination: {
-        el: '.swiper-pagination',
-        type: 'bullets',
-        clickable: true,
-        dynamicBullets: true,
-        dynamicMainBullets: 5,
-    },
-
-    //effect: 'fade',
-    //fadeEffect: {
-    //crossFade: true
-    //},
-
-    // Optional parameters
-    slidesPerView: 4,
-    direction: 'horizontal',
-    //spaceBetween: 10,
-    
-    autoplay: {
-        delay: 5000,
-        // stop slide autoplay when user click on it
-        disableOnInteraction: true,
-    },
-
-    transitionEffect: 'slide',
-
-    loop: true,
-    centeredSlides: true,
-
-    // theme color
-    // scrollbar: {
-    //     el: '.swiper-scrollbar',
-    //     draggable: true,
-    //     dragSize: 100,
-    //     snapOnRelease: true,
-    //     hide: false,
-    //     },
-
-    // Responsive breakpoints
-    breakpoints: {
-        // when window width is >= 320px
-        320: {
-        slidesPerView: 1,
-        spaceBetween: 10
-        },
-        // when window width is >= 480px
-        480: {
-        slidesPerView: 2,
-        spaceBetween: 20
-        },
-        // when window width is >= 640px
-        640: {
-        slidesPerView: 3,
-        spaceBetween: 30
-        },
-        1024: {
-        slidesPerView: 4,
-        spaceBetween: 40
-        }
-    }
-    });
-});
-</script>
-
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const swiper = new Swiper('.swiper', {
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    type: 'bullets',
+                    clickable: true,
+                    dynamicBullets: true,
+                    dynamicMainBullets: 5,
+                },
+                slidesPerView: 4,
+                direction: 'horizontal',
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: true,
+                },
+                transitionEffect: 'slide',
+                loop: true,
+                centeredSlides: true,
+                breakpoints: {
+                    320: { slidesPerView: 1 },
+                    480: { slidesPerView: 2 },
+                    640: { slidesPerView: 3 },
+                    1024: { slidesPerView: 4 },
+                },
+            });
+        });
+    </script>
 {% endblock %}
 
-{% endblock %} 
-
-
-
-
-
-
+{% endblock %}

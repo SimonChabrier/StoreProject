@@ -25,36 +25,36 @@ class ApiController extends AbstractController
      */
     public function apiGetCategories(CategoryRepository $categoryRepository, ProductRepository $productRepository): Response
     {    
-        // on récupère les catégories qui ont showOnHome = true
-        $cats = $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
-        // on va stocker les données dans un tableau
-        $data = [];
-        
-        // on boucle sur les catégories
-        foreach ($cats as $category) {
-            $subCategories = $category->getSubCategories();
+            // on récupère les catégories qui ont showOnHome = true
+            $cats = $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
+            // on va stocker les données dans un tableau
+            $data = [];
             
-            // on va stocker les données de la catégorie dans un tableau
-            $categoryData = [
-                'id' => $category->getId(),
-                'name' => $category->getName(),
-                'subCategories' => [],
-            ];
-            // on boucle sur les sous-catégories
-            foreach ($subCategories as $sub) {
-                $products = $productRepository->findBy(['subCategory' => $sub->getId(), 'visibility' => 'true'], ['id' => 'DESC'], 4);
-                // on va stocker les données de la sous-catégorie dans un tableau
-                $subCategoryData = [
-                    'id' => $sub->getId(),
-                    'name' => $sub->getName(),
-                    'products' => $products,
+            // on boucle sur les catégories
+            foreach ($cats as $category) {
+                $subCategories = $category->getSubCategories();
+                
+                // on va stocker les données de la catégorie dans un tableau
+                $categoryData = [
+                    'id' => $category->getId(),
+                    'name' => $category->getName(),
+                    'subCategories' => [],
                 ];
-                // on ajoute les données de la sous-catégorie au tableau de la catégorie
-                $categoryData['subCategories'][] = $subCategoryData;
+                // on boucle sur les sous-catégories
+                foreach ($subCategories as $sub) {
+                    $products = $productRepository->findBy(['subCategory' => $sub->getId(), 'visibility' => 'true'], ['id' => 'DESC'], 4);
+                    // on va stocker les données de la sous-catégorie dans un tableau
+                    $subCategoryData = [
+                        'id' => $sub->getId(),
+                        'name' => $sub->getName(),
+                        'products' => $products,
+                    ];
+                    // on ajoute les données de la sous-catégorie au tableau de la catégorie
+                    $categoryData['subCategories'][] = $subCategoryData;
+                }
+                // on ajoute les données de la catégorie au tableau des données
+                $data[] = $categoryData;
             }
-            // on ajoute les données de la catégorie au tableau des données
-            $data[] = $categoryData;
-        }
     
             return $this->json(
                 $data,

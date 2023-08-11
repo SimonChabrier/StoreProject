@@ -104,8 +104,7 @@ class Product
     /**
      * @ORM\OneToMany(
      *      targetEntity=Comment::class, 
-     *      mappedBy="product", 
-     *      fetch="EXTRA_LAZY", 
+     *      mappedBy="product",
      *      cascade={"remove"}
      *  )
      * @Groups({"product:read"})

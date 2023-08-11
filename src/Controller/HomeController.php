@@ -35,9 +35,6 @@ class HomeController extends AbstractController
 
         // $this->addFlash('success', 'SSH.');
         
-
- 
-
         return $this->render('home/index.html.twig', [
             'homeCats' => $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']),
             //'class' => $class,

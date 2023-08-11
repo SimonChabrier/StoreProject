@@ -59,6 +59,13 @@ class JsonManager extends AbstractController
         return json_decode($jsonFile, true);
     }
 
+    public function jsonFileDelete($fileName)
+    {
+        $publicDirectory = $this->getParameter('kernel.project_dir').'/public';
+        unlink($publicDirectory.'/json/'.$fileName);
+        return true;
+    }
+
     /**
      * Add to the json file 
      *

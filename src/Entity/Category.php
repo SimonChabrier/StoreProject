@@ -35,8 +35,7 @@ class Category
     /**
      * @ORM\ManyToMany(
      *      targetEntity=SubCategory::class, 
-     *      mappedBy="categories", 
-     *      fetch="EAGER"
+     *      mappedBy="categories"
      *  )
      * 
      */
@@ -50,8 +49,7 @@ class Category
     /**
      * @ORM\OneToMany(
      *      targetEntity=Product::class, 
-     *      mappedBy="category", 
-     *      fetch="EAGER"
+     *      mappedBy="category"
      *  )
      * 
      */

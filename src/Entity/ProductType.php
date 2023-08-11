@@ -34,8 +34,7 @@ class ProductType
      * @ORM\OneToMany(
      *      targetEntity=Product::class, 
      *      mappedBy="productType", 
-     *      cascade={"persist"}, 
-     *      fetch="EAGER"
+     *      cascade={"persist"}
      *  )
      * 
      */

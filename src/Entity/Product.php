@@ -34,7 +34,7 @@ class Product
      * @ORM\ManyToOne(
      *      targetEntity=Category::class, 
      *      inversedBy="products", 
-     *      fetch="EAGER"
+
      *  )
      * @Groups({"product:read"})
      */
@@ -44,7 +44,6 @@ class Product
      * @ORM\ManyToOne(
      *      targetEntity=SubCategory::class, 
      *      inversedBy="products", 
-     *      fetch="EAGER",
      *      cascade={"persist"}
      *  )
      * @Groups({"product:read"})
@@ -95,8 +94,7 @@ class Product
      * @ORM\ManyToOne(
      *      targetEntity=ProductType::class, 
      *      inversedBy="products", 
-     *      cascade={"persist"}, 
-     *      fetch="EAGER"
+     *      cascade={"persist"}
      *  )
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"product:read"})

@@ -6,7 +6,7 @@ use App\Entity\Picture;
 use App\Entity\Product;
 use App\Repository\ProductRepository;
 use App\Service\UploadService;
-
+use App\Service\JsonManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -26,14 +26,16 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
     private $em;
     private $productRepository;
     private $cache;
+    private $jsonManager;
 
-    public function __construct(UploadService $uploadService, RequestStack $request, EntityManagerInterface $em, ProductRepository $productRepository, AdapterInterface $cache)
+    public function __construct(UploadService $uploadService, RequestStack $request, EntityManagerInterface $em, ProductRepository $productRepository, AdapterInterface $cache, JsonManager $jsonManager)
     {
         $this->uploadService = $uploadService;
         $this->request = $request;
         $this->em = $em;
         $this->productRepository = $productRepository;
         $this->cache = $cache;
+        $this->jsonManager = $jsonManager;
 
     }
 
@@ -173,6 +175,8 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
 
         // on vide le cache
         $this->cache->clear();
+        // on met à jour le fichier json
+        $this->updateJson();
 
     }
 
@@ -196,7 +200,15 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
 
         // on vide le cache
         $this->cache->clear();
+        // on met à jour le fichier json
+        $this->updateJson();
 
+    }
+
+    public function updateJson()
+    {
+        $products = $this->productRepository->findAll();
+        $this->jsonManager->jsonFileInit($products, 'product:read', 'product.json', 'json');
     }
 
 }

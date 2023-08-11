@@ -7,8 +7,9 @@
     {% include '_fragments/_searchResults.html.twig' %}
 </div>
 
+{# no cache #}
 {# Affiche les produits de chaque catégorie #}
-{# <div class="last-five swiper">
+<div class="last-five swiper">
     {% for category in homeCats %}
         <a href="{{ path('app_category_show', {'id': category.id}) }}"><h2>{{ category.name|upper }}</h2></a>
         <div class="swiper-wrapper">
@@ -65,78 +66,7 @@
             </div>
         {% endfor %}
     {% endfor %}
-</div> #}
-
-<div class="last-five swiper">
-    {% for category in homeCats %}
-        <a href="{{ path('app_category_show', {'id': category['id']}) }}"><h2>{{ category['name']|upper }}</h2></a>
-        <div class="swiper-wrapper">
-            {% set categoryProducts = [] %}
-
-
-            {% for subCategory in category['subCategories'] %}
-                {% set subCategoryProducts = subCategory['products']|slice(0, 4)|reverse %}
-                {% set categoryProducts = categoryProducts|merge(subCategoryProducts) %}
-            {% endfor %}
-
-
-            {% for product in categoryProducts %}
-                <section class="swiper-slide">
-                    <h6>{{ product['name']|upper }}</h6>
-                    {% set lastPicture = product['pictures']|last %}
-                    <img class="last-five-picture" src="{{ lastPicture ? 'uploads/files/pictures/' ~ lastPicture.getFilename : '/assets/pictures/defaultSneakersPicture.webp' }}" alt="{{ lastPicture ? lastPicture.alt : '' }}" loading="lazy">
-                    <span class="catalog-price"><del>{{ product['catalogPrice'] }} €</del></span>
-                    <span class="selling-price">{{ product['sellingPrice']|number_format(0, ',', ' ') }} €</span>
-                    <div class="productInfo">
-                        <span class="categorie">Catégorie : {{ category['name'] }}</span>
-                        {% if product['subCategory'] is not empty %}
-                            <span class="sous-categorie">Sous-catégorie : {{ product['subCategory'].getName()}}</span>
-                        {% endif %}
-                        <span class="type">Type : {{ product['productType'] }}</span>
-                        <span class="brand">Marque : {{ product['brand'] }}</span>
-                    </div>
-                    <div class="productInfoFooter">
-                        {% set discount = ((product['catalogPrice'] - product['sellingPrice']) / product['catalogPrice'] * 100)|round %}
-                        <span>-{{ discount }}%</span>
-                        <span class="productLink"><a href="{{ path('app_product_show', {'id': product['id']}) }}">Détail</a></span>
-                    </div>
-                </section>
-            {% endfor %}
-        </div>
-        <div class="swiper-pagination"></div>
-        
-        {% for subCategory in category['subCategories'] %}
-            <a href="{{ path('app_sub_category_show', {'id': subCategory['id']}) }}"><h3>{{ category['name']|upper }} - {{ subCategory['name']|upper }}</h3></a>
-            <div class="last-five-products">
-                {% set subCategoryProducts = subCategory['products']|slice(0, 4)|reverse %}
-                {% for product in subCategoryProducts %}
-                    <section>
-                        <h6>{{ product['name']|upper }}</h6>
-                        {% set lastPicture = product['pictures']|last %}
-                        <img class="last-five-picture" src="{{ lastPicture ? 'uploads/files/pictures/' ~ lastPicture.getFilename : '/assets/pictures/defaultSneakersPicture.webp' }}" alt="{{ lastPicture ? lastPicture.alt : '' }}" loading="lazy">
-                        <span class="catalog-price"><del>{{ product['catalogPrice'] }} €</del></span>
-                        <span class="selling-price">{{ product['sellingPrice']|number_format(0, ',', ' ') }} €</span>
-                        <div class="productInfo">
-                            <span class="categorie">Catégorie : {{ category['name'] }}</span>
-                            <span class="sous-categorie">Sous-catégorie : {{ subCategory['name'] }}</span>
-                            <span class="type">Type : {{ product['productType']}}</span>
-                            <span class="brand">Marque : {{ product['brand']}}</span>
-                        </div>
-                        <div class="productInfoFooter">
-                            {% set discount = ((product['catalogPrice'] - product['sellingPrice']) / product['catalogPrice'] * 100)|round %}
-                            <span>-{{ discount }}%</span>
-                            <span class="productLink"><a href="{{ path('app_product_show', {'id': product['id']}) }}">Détail</a></span>
-                        </div>
-                    </section>
-                {% endfor %}
-            </div>
-        {% endfor %}
-    {% endfor %}
 </div>
-
-
-
-
 
 
 {% block stylesheets %}

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Product;
+use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,11 +18,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @Route("/api")
  */
 class ApiController extends AbstractController
-{
+{   
+
+
+    // all categories 
+    /**
+     * @Route("/categories", name="app_api_categories")
+     */
+    public function apiGetCategories(CategoryRepository $categoryRepository): Response
+    {   
+        return $this->json(
+            $this->getDoctrine()->getRepository('App:Category')->findAll(),
+            Response::HTTP_OK, 
+            [], 
+            ['groups' => 'category:read']
+        );
+    }
+
     /**
      * @Route("/products", name="app_api_products")
      */
-    public function apiGet(ProductRepository $pr): Response
+    public function apiGetProducts(ProductRepository $pr): Response
     {   
         return $this->json(
             // find in  products inStockQuantity = true or > 0
@@ -38,7 +55,7 @@ class ApiController extends AbstractController
     /**
      * @Route("/products/{id}", name="app_api_product")
      */
-    public function apiGetOne(Product $product): Response
+    public function apiGetProduct(Product $product): Response
     {
         return $this->json(
             $product,

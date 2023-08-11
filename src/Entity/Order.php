@@ -28,8 +28,7 @@ class Order
      *      targetEntity=OrderItem::class, 
      *      mappedBy="orderRef", 
      *      cascade={"persist", "remove"}, 
-     *      orphanRemoval=true,
-     *      fetch="EAGER"
+     *      orphanRemoval=true
      *  )
      */
     private $items;

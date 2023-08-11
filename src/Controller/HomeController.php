@@ -20,12 +20,12 @@ class HomeController extends AbstractController
     private $adminEmail;
     private $cache;
 
-
     public function __construct($adminEmail, AdapterInterface $cache)
     {
         $this->adminEmail = $adminEmail;
         $this->cache = $cache;
     }
+
     /**
      * @Route("/", name="app_home")
      */
@@ -38,16 +38,36 @@ class HomeController extends AbstractController
         if ($cacheItem->isHit()) {
             $data = $cacheItem->get();
         } else {
+            // on récupère les catégories qui ont showOnHome = true
             $categories = $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
+            // on va stocker les données dans un tableau
             $data = [];
-
+            // on boucle sur les catégories
             foreach ($categories as $category) {
                 $categoryData = [
                     'id' => $category->getId(),
                     'name' => $category->getName(),
+                    'products' => [],
                     'subCategories' => [],
                 ];
-
+                // on récupère tous les produits de la catégorie (pour nous c'est pour la partie "Nouveautés" qui a des produits à sa racine)
+                $categoryProducts = $productRepository->findBy(['category' => $category->getId(), 'visibility' => 'true'], ['id' => 'DESC'], 4);
+                // on boucle sur les produits de la catégorie pour les ajouter dans le tableau : 'products' => [], de la catégorie
+                foreach ($categoryProducts as $product) {
+                    $productData = [
+                        'id' => $product->getId(),
+                        'name' => $product->getName(),
+                        'pictures' => $product->getPictures(),
+                        'catalogPrice' => $product->getCatalogPrice(),
+                        'sellingPrice' => $product->getSellingPrice(),
+                        'subCategory' => $product->getSubCategory(),
+                        'productType' => $product->getProductType()->getName(),
+                        'brand' => $product->getBrand()->getName(),
+                        // Ajoutez d'autres données de produit nécessaires
+                    ];
+                    $categoryData['products'][] = $productData;
+                }
+                // on récupère les sous-catégories de chaque catégorie
                 foreach ($category->getSubCategories() as $subCategory) {
                     $subCategoryData = [
                         'id' => $subCategory->getId(),
@@ -55,7 +75,9 @@ class HomeController extends AbstractController
                         'products' => [],
                     ];
 
+                    // on récupère les produits de chaque sous-catégorie
                     $products = $productRepository->findBy(['subCategory' => $subCategory->getId(), 'visibility' => 'true'], ['id' => 'DESC'], 4);
+                    // on boucle sur les produits de chaque sous-catégorie pour les ajouter dans le tableau : 'products' => [], de la sous-catégorie
                     foreach ($products as $product) {
                         $productData = [
                             'id' => $product->getId(),
@@ -66,23 +88,29 @@ class HomeController extends AbstractController
                             'subCategory' => $product->getSubCategory(),
                             'productType' => $product->getProductType()->getName(),
                             'brand' => $product->getBrand()->getName(),
-                            // Ajoutez d'autres données de produit nécessaires
                         ];
+                        // on stocke les produits dans le tableau : 'products' => [], de la sous-catégorie
                         $subCategoryData['products'][] = $productData;
                     }
-
+                    // on stocke les sous-catégories dans le tableau : 'subCategories' => [], de la catégorie
                     $categoryData['subCategories'][] = $subCategoryData;
                 }
-
+                // on met tout dans le tableau $data
                 $data[] = $categoryData;
             }
 
             // Mettre les données en cache pendant une durée spécifique (par exemple, 1 heure)
             $cacheItem->set($data)->expiresAfter(3600);
+            // Enregistrer les données en cache
             $this->cache->save($cacheItem);
             }
 
-            return $this->render('home/index.html.twig', [
+            // si j'ai du cache j'utilise le template index_cache.html.twig sinon index.html.twig
+            $cacheItem->isHit() ? $template = 'home/index_cache.html.twig' : $template = 'home/index.html.twig';    
+
+            return $this->render($template, [
+                // si pas de cache utiliser : $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']),
+                // et décommenter le template
                 'homeCats' => $data,
             ]);
     }

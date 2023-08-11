@@ -57,11 +57,15 @@ services:
     # App\Message\EmailNotification:
     #     arguments: ['@messenger.default_bus']
     App\Service\UploadService:
-       arguments: ['@kernel', '%picDir%', '%docDir%']
+        arguments: ['@kernel', '%picDir%', '%docDir%']
     App\Service\ResizerService:
-       arguments: ['%pictureXSDir%','%picture250Dir%', '%picture400Dir%', '%picture1200Dir%', '%slider1280Dir%']
+        arguments: ['%pictureXSDir%','%picture250Dir%', '%picture400Dir%', '%picture1200Dir%', '%slider1280Dir%']
     App\Message\UpdateFileMessage:
-        arguments: ['%file', '%pictureObject']
-       
-    
- 
+        arguments: ['%file', '%pictureObject']         
+    App\EventSubscriber\ClearCacheSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber }
+        arguments:
+            - '@cache.app'
+            - '@App\Service\JsonManager'
+            - '@App\Repository\ProductRepository'

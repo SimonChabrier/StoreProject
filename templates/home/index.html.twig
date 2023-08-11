@@ -106,6 +106,19 @@
                 },
             });
         });
+
+    // fetch /api/categories
+
+    const endPoint = window.location.origin + '/api/categories';
+
+    async function logMovies() {
+    const response = await fetch(endPoint);
+    const movies = await response.json();
+    console.log(movies);
+    }
+
+    logMovies();
+
     </script>
 {% endblock %}
 

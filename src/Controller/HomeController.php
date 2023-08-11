@@ -35,23 +35,7 @@ class HomeController extends AbstractController
 
         // $this->addFlash('success', 'SSH.');
         
-        // dump($productRepository->findLastProduct(10));
-        // dump($categoryRepository->testSql());
 
-        //TODO piste pour afficher les sous-catégories sur la page d'accueil
-        // 50 query contre 95 avec la méthode actuelle
-        // $homeCats = $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
-
-        // $filteredResults = [];
-        // foreach ($homeCats as $category) {
-        //     foreach ($category->getSubCategories() as $subCategory) {
-        //         $products = $productRepository->findBy(['subCategory' => $subCategory->getId(), 'visibility' => 'true'], ['id' => 'DESC'], 4);
-        //         if (!empty($products)) {
-        //             $filteredResults[$subCategory->getId()] = $products;
-        //         }
-        //     }
-        // }
-        // dump($filteredResults);
  
 
         return $this->render('home/index.html.twig', [

@@ -28,8 +28,8 @@
             {% for product in categoryProducts %}
                 <section class="swiper-slide">
                     <h6>{{ product['name']|upper }}</h6>
-                    {% set lastPicture = product['pictures']|last %}
-                    <img class="last-five-picture" src="{{ lastPicture ? 'uploads/files/pictures/' ~ lastPicture.getFilename : '/assets/pictures/defaultSneakersPicture.webp' }}" alt="{{ lastPicture ? lastPicture.alt : '' }}" loading="lazy">
+                     {% set lastPicture = product.pictures|last %}
+                    <img class="last-five-picture" src="{{ lastPicture ? 'uploads/files/pictures/' ~ lastPicture['fileName'] : '/assets/pictures/defaultSneakersPicture.webp' }}" alt="{{ lastPicture ? lastPicture['alt'] : '' }}" loading="lazy">
                     <span class="catalog-price"><del>{{ product['catalogPrice'] }} €</del></span>
                     <span class="selling-price">{{ product['sellingPrice']|number_format(0, ',', ' ') }} €</span>
                     <div class="productInfo">
@@ -57,8 +57,8 @@
                 {% for product in subCategoryProducts %}
                     <section>
                         <h6>{{ product['name']|upper }}</h6>
-                        {% set lastPicture = product['pictures']|last %}
-                        <img class="last-five-picture" src="{{ lastPicture ? 'uploads/files/pictures/' ~ lastPicture.getFilename : '/assets/pictures/defaultSneakersPicture.webp' }}" alt="{{ lastPicture ? lastPicture.alt : '' }}" loading="lazy">
+                        {% set lastPicture = product.pictures|last %}
+                        <img class="last-five-picture" src="{{ lastPicture ? 'uploads/files/pictures/' ~ lastPicture['fileName'] : '/assets/pictures/defaultSneakersPicture.webp' }}" alt="{{ lastPicture ? lastPicture['alt'] : '' }}" loading="lazy">
                         <span class="catalog-price"><del>{{ product['catalogPrice'] }} €</del></span>
                         <span class="selling-price">{{ product['sellingPrice']|number_format(0, ',', ' ') }} €</span>
                         <div class="productInfo">

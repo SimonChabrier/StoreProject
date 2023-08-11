@@ -16,19 +16,24 @@ use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 // A utiliser après supression de l'entité Picture pour supprimer les images du dossier uploads
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityDeletedEvent;
 
+// Pour vider le cache après modification d'un produit
+use Symfony\Component\Cache\Adapter\AdapterInterface;
+
 class EasyAdminProductSubscriber implements EventSubscriberInterface
 {
     private $uploadService;
     private $request;
     private $em;
     private $productRepository;
+    private $cache;
 
-    public function __construct(UploadService $uploadService, RequestStack $request, EntityManagerInterface $em, ProductRepository $productRepository)
+    public function __construct(UploadService $uploadService, RequestStack $request, EntityManagerInterface $em, ProductRepository $productRepository, AdapterInterface $cache)
     {
         $this->uploadService = $uploadService;
         $this->request = $request;
         $this->em = $em;
         $this->productRepository = $productRepository;
+        $this->cache = $cache;
 
     }
 
@@ -109,6 +114,9 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
             $this->uploadService->deletePictures($picture);
         }
 
+        // on vide le cache
+        $this->cache->clear();
+
     }
 
     /**
@@ -163,6 +171,9 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
 
         $this->productRepository->add($entity, true);
 
+        // on vide le cache
+        $this->cache->clear();
+
     }
 
     /**
@@ -182,6 +193,9 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         foreach ($entity->getPictures() as $picture) {
             $this->uploadService->deletePictures($picture);
         }
+
+        // on vide le cache
+        $this->cache->clear();
 
     }
 

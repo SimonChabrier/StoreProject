@@ -23,7 +23,7 @@ class HomeController extends AbstractController
     private $cache;
     
     const CACHE_KEY = 'home_data';
-    const CACHE_DURATION = 0;
+    const CACHE_DURATION = 3600;
     const TEMPLATE_CACHE = 'home/index_cache.html.twig';
     const TEMPLATE_OBJECTS = 'home/index.html.twig';
 

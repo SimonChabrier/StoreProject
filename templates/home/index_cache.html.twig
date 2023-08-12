@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
-
 {% block content %}
-{# {{ dump(homeCats) }} #}
+
 <div class="last-five searchResults">
     {# résultats de la recherche #}
     {% include '_fragments/_searchResults.html.twig' %}
@@ -13,12 +12,13 @@
         
         <div class="swiper-wrapper">
             {% if category['products'] is not empty and category['name'] == 'Nouveautés' %}
-                {% set newProducts = category['products']|slice(0, 4)|reverse %}
+                {% set categoryProducts = category['products']|slice(0, 4)|reverse %}
             {% else %}
-                {% set newProducts = [] %} 
+            {# on ne veut pas afficher ailleur que dans le slider les produit de la catégorie nouveautés #}
+                {% set categoryProducts = [] %} 
             {% endif %}
 
-            {% for product in newProducts %}
+            {% for product in categoryProducts %}
                 <section class="swiper-slide">
                      {% include '_fragments/_product_array.html.twig' %} 
                 </section>
@@ -32,7 +32,7 @@
                 {% set subCategoryProducts = subCategory['products']|slice(0, 4)|reverse %}
                 {% for product in subCategoryProducts %}
                     <section>
-                        {% include '_fragments/_product_arrayhtml.twig' %} 
+                        {% include '_fragments/_product_array.html.twig' %} 
                     </section>
                 {% endfor %}
             </div>

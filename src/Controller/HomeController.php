@@ -53,10 +53,12 @@ class HomeController extends AbstractController
                     'products' => '',
                     'subCategories' => [],
                 ];
-                // on ajoute les produits si il y a des produits à la racine de la catégorie
-                // on stocke les produits dans le tableau : 'products' => [], de la catégorie
-                $categoryData['products'] = $this->setProductData($category->getProducts());     
-
+                // on récupère les produits de chaque catégorie si elle en a uniquement pour ne pas avoir d'erreur dans la vue
+                $categoryProducts = $category->getProducts();
+                if($categoryProducts) {
+                    // on stocke le tableau des produits retourné par la méthode setProductData dans la variable $categoryData['products']
+                    $categoryData['products'] = $this->setProductData($categoryProducts);
+                }
                 // on récupère les sous-catégories de chaque catégorie
                 foreach ($category->getSubCategories() as $subCategory) {
                     $subCategoryData = [
@@ -64,11 +66,13 @@ class HomeController extends AbstractController
                         'name' => $subCategory->getName(),
                         'products' => '',
                     ];
-
                     // on récupère les produits de chaque sous-catégorie
                     $subCategoryProducts = $productRepository->findBy(['subCategory' => $subCategory->getId(), 'visibility' => 'true'], ['id' => 'DESC'], 4);
-                    // on stocke les produits dans le tableau : 'products' => [], de la sous-catégorie
-                    $subCategoryData['products'] = $this->setProductData($subCategoryProducts);
+                    // si la sous catégorie à des produits
+                    if($subCategoryProducts){
+                        // on stocke le tableau des produits retourné par la méthode setProductData dans la variable $subCategoryData['products']
+                        $subCategoryData['products'] = $this->setProductData($subCategoryProducts);
+                    }
                     // on stocke les sous-catégories dans le tableau : 'subCategories' => [], de la catégorie
                     $categoryData['subCategories'][] = $subCategoryData;
                 }

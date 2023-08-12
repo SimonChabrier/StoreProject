@@ -31,13 +31,13 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            Events::preUpdate,
+            Events::postPersist,
         ];
     }
 
-    public function preUpdate(LifecycleEventArgs $args)
+    public function postPersist(LifecycleEventArgs $args)
     {   
-
+        //dd('ici');
         $entity = $args->getObject();
 
         // Exclure les entités Order et OrderItem du cache

@@ -17,7 +17,6 @@ class JsonManager extends AbstractController
         $this->serializer = $serializer;
     }
 
-
     /**
      * Check if the json file exist
      * Get the json file creation date

@@ -19,7 +19,11 @@ class HomeController extends AbstractController
 {
     private $adminEmail;
     private $cache;
+    
+    const CACHE_KEY = 'home_data';
     const CACHE_DURATION = 3600;
+    const TEMPLATE_CACHE = 'home/index_cache.html.twig';
+    const TEMPLATE_OBJECTS = 'home/index.html.twig';
 
     public function __construct($adminEmail, AdapterInterface $cache)
     {
@@ -37,63 +41,66 @@ class HomeController extends AbstractController
     {   
 
         // Récupérer le cache
-        $cacheItem = $this->cache->getItem('home_data');
+        $cacheItem = $this->cache->getItem(self::CACHE_KEY);
+        $isCacheHit = $cacheItem->isHit();
         // Si les données sont en cache, les retourner directement
         if ($cacheItem->isHit()) {
-            $data = $cacheItem->get();
+            $viewData = $cacheItem->get();
         } else {
             // on récupère les catégories qui ont showOnHome = true
             $categories = $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
             
-            $data = [];
-            // on boucle sur les catégories
-            foreach ($categories as $category) {
-                $categoryData = [
-                    'id' => $category->getId(),
-                    'name' => $category->getName(),
-                    'products' => '',
-                    'subCategories' => [],
-                ];
-                // on récupère les produits de chaque catégorie si elle en a uniquement pour ne pas avoir d'erreur dans la vue
-                $categoryProducts = $category->getProducts();
-                if($categoryProducts) {
-                    // on stocke le tableau des produits retourné par la méthode setProductData dans la variable $categoryData['products']
-                    $categoryData['products'] = $this->setProductData($categoryProducts);
-                }
-                // on récupère les sous-catégories de chaque catégorie
-                foreach ($category->getSubCategories() as $subCategory) {
-                    $subCategoryData = [
-                        'id' => $subCategory->getId(),
-                        'name' => $subCategory->getName(),
-                        'products' => '',
-                    ];
-                    // on récupère les produits de chaque sous-catégorie
-                    $subCategoryProducts = $productRepository->findBy(['subCategory' => $subCategory->getId(), 'visibility' => 'true'], ['id' => 'DESC'], 4);
-                    // si la sous catégorie à des produits
-                    if($subCategoryProducts){
-                        // on stocke le tableau des produits retourné par la méthode setProductData dans la variable $subCategoryData['products']
-                        $subCategoryData['products'] = $this->setProductData($subCategoryProducts);
-                    }
-                    // on stocke les sous-catégories dans le tableau : 'subCategories' => [], de la catégorie
-                    $categoryData['subCategories'][] = $subCategoryData;
-                }
-                // on met tout dans le tableau $data
-                $data[] = $categoryData;
-            }
+            $dataToCache = [];
 
-            // Mettre les données en cache pendant une durée spécifique (par exemple, 1 heure)
-            $cacheItem->set($data)->expiresAfter(self::CACHE_DURATION);
-            // Enregistrer les données en cache
-            $this->cache->save($cacheItem);
+                // on boucle sur les catégories
+                foreach ($categories as $category) {
+                    $categoryData = [
+                        'id' => $category->getId(),
+                        'name' => $category->getName(),
+                        'products' => '',
+                        'subCategories' => [],
+                    ];
+                    // on récupère les produits de chaque catégorie si elle en a uniquement pour ne pas avoir d'erreur dans la vue
+                    $categoryProducts = $category->getProducts();
+                    if($categoryProducts) {
+                        // on stocke le tableau des produits retourné par la méthode setProductData dans la variable $categoryData['products']
+                        $categoryData['products'] = $this->setProductData($categoryProducts);
+                    }
+                    // on récupère les sous-catégories de chaque catégorie
+                    foreach ($category->getSubCategories() as $subCategory) {
+                        $subCategoryData = [
+                            'id' => $subCategory->getId(),
+                            'name' => $subCategory->getName(),
+                            'products' => '',
+                        ];
+                        // on récupère les produits de chaque sous-catégorie
+                        $subCategoryProducts = $productRepository->findBy(['subCategory' => $subCategory->getId(), 'visibility' => 'true'], ['id' => 'DESC'], 4);
+                        // si la sous catégorie à des produits
+                        if($subCategoryProducts){
+                            // on stocke le tableau des produits retourné par la méthode setProductData dans la variable $subCategoryData['products']
+                            $subCategoryData['products'] = $this->setProductData($subCategoryProducts);
+                        }
+                        // on stocke les sous-catégories dans le tableau : 'subCategories' => [], de la catégorie
+                        $categoryData['subCategories'][] = $subCategoryData;
+                    }
+                    // on met tout dans le tableau $data
+                    $dataToCache[] = $categoryData;
+                }
+
+                // Mettre les données en cache pendant une durée spécifique (par exemple, 1 heure)
+                $cacheItem->set($dataToCache)->expiresAfter(self::CACHE_DURATION);
+                // Enregistrer les données en cache
+                $this->cache->save($cacheItem);
+                // fin du else
             }
 
             // si les données sont en cache, on les récupère, sinon on les récupère de la BDD
-            $cacheItem->isHit() ? $data = $cacheItem->get() : $data = $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
+            $viewData = $isCacheHit ? $viewData : $categoryRepository->findBy(['showOnHome' => true], ['listOrder' => 'ASC']);
             // si les données sont en cache, on affiche le template adapté aux tableaux, sinon on affiche le template adpaté aux objets.
-            $cacheItem->isHit() ? $template = 'home/index_cache.html.twig' : $template = 'home/index.html.twig';    
+            $template = $isCacheHit ? self::TEMPLATE_CACHE : self::TEMPLATE_OBJECTS;
 
             return $this->render($template, [
-                'homeCats' => $data,
+                'homeCats' => $viewData,
             ]);
     }
 

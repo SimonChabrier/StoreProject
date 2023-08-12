@@ -23,7 +23,7 @@
 ## DS_Store ##
 .DS_Store
 
-/public/json/product.json
+/public/json/*
 !/public/json/.gitkeep 
 
 /sauvegardeComposer

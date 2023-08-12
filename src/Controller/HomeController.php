@@ -16,7 +16,7 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
-{   
+{
     private $adminEmail;
     private $cache;
 
@@ -30,28 +30,23 @@ class HomeController extends AbstractController
      * @Route("/", name="app_home")
      */
     public function index(
-        CategoryRepository $categoryRepository, 
+        CategoryRepository $categoryRepository,
         ProductRepository $productRepository
-        ): Response
-    {   
-
+    ): Response {
         // Récupérer le cache
         $cacheItem = $this->cache->getItem('home_data');
-        dump($cacheItem);
-        dump($cacheItem->isHit());
-        dump($cacheItem->get());
+
         // Si les données sont en cache, les retourner directement
         if ($cacheItem->isHit()) {
             $data = $cacheItem->get();
+            // on rend la page avec le template adapté aux tableaux 
+            return $this->render('home/index_cache.html.twig', [
+                'homeCats' => $data,
+            ]);
         } else {
             // on récupère les catégories qui ont showOnHome = true
             $categories = $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
-            
-            // on rafraîchit le fichier json des produits pour le filtre de recherche
-            // $products = $productRepository->findAll();
-            // $jsonManager->jsonFileInit($products, 'product:read', 'product.json', 'json');
-            // on va stocker les données dans un tableau
-            
+            // on initialise le tableau qui va contenir les données
             $data = [];
             // on boucle sur les catégories
             foreach ($categories as $category) {
@@ -83,13 +78,13 @@ class HomeController extends AbstractController
                         ];
                     }
                     // on stocke les produits dans le tableau : 'products' => [], de la catégorie
-                    $categoryData['products'][] = $productData;      
+                    $categoryData['products'][] = $productData;
                 }
 
 
                 // on récupère tous les produits de la catégorie (pour nous c'est pour la partie "Nouveautés" qui a des produits à sa racine)
                 $categoryProducts = $productRepository->findBy(['category' => $category->getId(), 'visibility' => 'true'], ['id' => 'DESC'], 4);
-                
+
                 // on boucle sur les produits de la catégorie pour les ajouter dans le tableau : 'products' => [], de la catégorie
                 foreach ($categoryProducts as $product) {
                     $productData = [
@@ -112,7 +107,7 @@ class HomeController extends AbstractController
                         ];
                     }
                     // on stocke les produits dans le tableau : 'products' => [], de la catégorie
-                    $categoryData['products'][] = $productData;      
+                    $categoryData['products'][] = $productData;
                 }
                 // on récupère les sous-catégories de chaque catégorie
                 foreach ($category->getSubCategories() as $subCategory) {
@@ -146,8 +141,8 @@ class HomeController extends AbstractController
                         // on stocke les produits dans le tableau : 'products' => [], de la sous-catégorie
                         $subCategoryData['products'][] = $productData;
                     }
-                        // on stocke les sous-catégories dans le tableau : 'subCategories' => [], de la catégorie
-                        $categoryData['subCategories'][] = $subCategoryData;
+                    // on stocke les sous-catégories dans le tableau : 'subCategories' => [], de la catégorie
+                    $categoryData['subCategories'][] = $subCategoryData;
                 }
                 // on met tout dans le tableau $data
                 $data[] = $categoryData;
@@ -157,24 +152,19 @@ class HomeController extends AbstractController
             $cacheItem->set($data)->expiresAfter(3600);
             // Enregistrer les données en cache
             $this->cache->save($cacheItem);
-            }
-
-            // si les données sont en cache, on les récupère, sinon on les récupère de la BDD
-            $cacheItem->isHit() ? $data = $cacheItem->get() : $data = $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
-            // si les données sont en cache, on affiche le template adapté aux tableaux, sinon on affiche le template adpaté aux objets.
-            $cacheItem->isHit() ? $template = 'home/index_cache.html.twig' : $template = 'home/index.html.twig';    
-
-            return $this->render($template, [
+            // on rend la page avec le template adapté aux objets
+            return $this->render('home/index.html.twig', [
                 'homeCats' => $data,
             ]);
+        }
     }
 
     /**
      * @Route("/paginate/{id}", name="app_paginate_products")
      */
     public function paginateProducts(ProductRepository $pr, Request $request, $id): Response
-   {
-         // use doctrine query offset and limit to paginate
+    {
+        // use doctrine query offset and limit to paginate
 
         // set the number of items per page
         $perPage = 20;
@@ -185,13 +175,13 @@ class HomeController extends AbstractController
         // get the total number of pages without float
         $totalPage = ceil($totalPage / $perPage);
         // get the current page
-        $currentPage = $id;  
+        $currentPage = $id;
         // get the offset
         $offset = ($currentPage - 1) * $perPage;
         // get the results
         //$results = $pr->findBy([], ['id' => 'ASC'], $perPage, $offset);
         $results = $pr->findPaginateProducts($perPage, $offset);
-       
+
         return $this->render('home/productPagination.html.twig', [
             'products' => $results,
             'pageCount' => $totalPage,
@@ -199,12 +189,12 @@ class HomeController extends AbstractController
             'perPage' => $perPage,
         ]);
         // TODO retourner du json pour l'ajax
-   }
+    }
 
-   // TODO search route
-   /**
-    * @Route("/search", name="app_search", methods={"GET", "POST"})
-    */
+    // TODO search route
+    /**
+     * @Route("/search", name="app_search", methods={"GET", "POST"})
+     */
 
     public function search(): Response
     {
@@ -216,11 +206,11 @@ class HomeController extends AbstractController
      * @Route("/test", name="app_test", methods={"GET", "POST"})
      */
     public function testMail(EmailService $emailService, UserRepository $ur): Response
-    {   
+    {
 
         // only admin can access this route
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        
+
         $user = $this->getUser();
         // find 4 last users
         $users = $ur->findBy([], ['id' => 'DESC'], 4, 0);
@@ -230,11 +220,11 @@ class HomeController extends AbstractController
 
             try {
                 $emailService->sendTemplateEmailNotification(
-                    $this->adminEmail, 
-                    $user->getEmail(), 
-                    'Nouvelle notification de Sneaker-Shop', 
-                    'email/base_email.html.twig', 
-                    [   
+                    $this->adminEmail,
+                    $user->getEmail(),
+                    'Nouvelle notification de Sneaker-Shop',
+                    'email/base_email.html.twig',
+                    [
                         'title' => 'Titre du template depuis le controller',
                         'username' => $user->getEmail(),
                         'subject' => 'Sujet depuis le controller',
@@ -246,7 +236,7 @@ class HomeController extends AbstractController
                 $emailService->sendAdminNotification('Erreur à l\'envoi du mail de confirmation de ', $user->getEmail(), 'Message d\'erreur: ' . $e->getMessage());
             }
         }
-    
+
         return $this->redirectToRoute('app_home', []);
     }
 
@@ -258,7 +248,7 @@ class HomeController extends AbstractController
      * @Route("/composer", name="composer_install")
      */
     public function composerInstall(): Response
-    {   
+    {
         // only admin can access this route
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
@@ -276,7 +266,7 @@ class HomeController extends AbstractController
             $message = 'Une erreur s\'est produite lors de la mise à jour de Composer : ';
             $type = 'error';
         }
-        
+
         //dump($process->getOutput());
         //dump($process->getErrorOutput());
         //dump($message);
@@ -291,7 +281,7 @@ class HomeController extends AbstractController
      * @Route("/delete/pictures", name="app_product_delete_pictures")
      */
     public function unlinkAllPictures(PictureRepository $pr, Filesystem $filesystem): Response
-    {   
+    {
         // only admin can access this route
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
@@ -308,7 +298,7 @@ class HomeController extends AbstractController
             'slider_1280',
         ];
 
-         // Supprimer les fichiers
+        // Supprimer les fichiers
         $filesToDelete = [];
 
         foreach ($directories as $directory) {

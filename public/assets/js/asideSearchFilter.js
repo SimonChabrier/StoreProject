@@ -184,19 +184,22 @@ function createProductCard(product){
         let section = document.createElement('section')
         section.classList.add('result-card');
 
+
         // Affiche la dernière image du produit qui est contenu dans le tableau pictures du produit
-        // C'est ce qu'on fait dans Twig avec la fonction last()
-        let productMainPicture = '';
-        if (product[i].pictures.length > 0) {
-            const lastPicture = product[i].pictures[product[i].pictures.length - 1];
-            console.log(lastPicture);
-            productMainPicture = `/uploads/files/pictures/${lastPicture.fileName}" alt=${lastPicture.alt} title=${lastPicture.name}`;
-        } else {
-            productMainPicture = '/assets/pictures/defaultSneakersPicture.webp';
-        }
-        // Affiche la première image du produit qui est contenu dans le tableau pictures du produit
+        // C'est ce qu'on fait dans Twig avec le filtre last()
         // let productMainPicture = '';
-        // product[i].pictures[0]?.fileName != undefined ? productMainPicture = `/uploads/files/pictures/${product[i].pictures[0].fileName}" alt=${product[i].pictures[0].alt} title=${product[i].pictures[0].name}` : productMainPicture = '/assets/pictures/defaultSneakersPicture.webp';
+        // if (product[i].pictures.length > 0) {
+        //     const lastPicture = product[i].pictures[product[i].pictures.length - 1];
+        //     console.log(lastPicture);
+        //     productMainPicture = `/uploads/files/pictures/${lastPicture.fileName}" alt=${lastPicture.alt} title=${lastPicture.name}`;
+        // } else {
+        //     productMainPicture = '/assets/pictures/defaultSneakersPicture.webp';
+        // }
+
+        // Affiche la première image du produit qui est contenu dans le tableau pictures du produit
+        // C'est ce qu'on fait dans Twig avec le filtre first()
+        let productMainPicture = '';
+        product[i].pictures[0]?.fileName != undefined ? productMainPicture = `/uploads/files/pictures/${product[i].pictures[0].fileName}" alt=${product[i].pictures[0].alt} title=${product[i].pictures[0].name}` : productMainPicture = '/assets/pictures/defaultSneakersPicture.webp';
 
         // product[i].subCategory.categories[0].name ici je récupère le no de la categorie à la quelle appartient la sous categorie du produit
         section.innerHTML = `

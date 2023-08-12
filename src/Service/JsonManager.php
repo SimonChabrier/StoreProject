@@ -36,10 +36,10 @@ class JsonManager extends AbstractController
     /**
      * Create a json file from object or objects
      *
-     * @param [type] $object
-     * @param [type] $context
-     * @param [type] $fileName
-     * @param [type] $format
+     * @param [Entity] $object
+     * @param [string] $context
+     * @param [string] $fileName
+     * @param [string] $format
      * @return void
      */
     public function jsonFileInit($object, $context, $fileName, $format)

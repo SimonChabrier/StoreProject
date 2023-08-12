@@ -3,65 +3,54 @@
 Namespace App\EventSubscriber;
 
 use App\Entity\Order;
-use Doctrine\ORM\Events;
 use App\Entity\OrderItem;
-use App\Service\JsonManager;
-use App\Repository\ProductRepository;
+use App\Service\ClearCacheService;
+use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Doctrine\Common\EventSubscriber as DoctrineEventSubscriber; 
 
 class ClearCacheSubscriber implements DoctrineEventSubscriber
 {
-    private $cache;
-    private $jsonManager;
-    private $productRepository;
+    private $clearCacheService;
+
+    const CACHE_KEY = 'home_data';
 
     public function __construct(
-        AdapterInterface $cache, 
-        JsonManager $jsonManager, 
-        ProductRepository $productRepository
-        )
+        ClearCacheService $clearCacheService
+    )
     {
-        $this->cache = $cache;
-        $this->jsonManager = $jsonManager;
-        $this->productRepository = $productRepository;
+        $this->clearCacheService = $clearCacheService;
     }
 
     public function getSubscribedEvents()
     {
         return [
             Events::postPersist,
+            Events::postUpdate,
         ];
     }
 
+    // met à jour le cache et le json après la création d'une entité
     public function postPersist(LifecycleEventArgs $args)
     {   
-        //dd('ici');
         $entity = $args->getObject();
 
         // Exclure les entités Order et OrderItem du cache
         if (!$entity instanceof Order && !$entity instanceof OrderItem) {
-            
-            $this->invalidateCache();
-
-            // on supprime le fichier json existant qui n'est plus à jour 
-            // car on a modifié une entité
-            $products = $this->productRepository->findAll();
-            $jsonFileName = 'product.json';
-            
-                $this->jsonManager->jsonFileInit(
-                    $products, 'product:read', 
-                    $jsonFileName, 
-                    'json'
-                );
+            // On supprime le cache et on refait le json
+            $this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
         }
     }
 
-  
-    // Méthode pour invalider le cache
-    private function invalidateCache()
+    // met à jour le cache après une modification d'entité
+    public function postUpdate(LifecycleEventArgs $args)
     {   
-        $this->cache->deleteItem('home_data');
+        $entity = $args->getObject();
+
+        // Exclure les entités Order et OrderItem du cache
+        if (!$entity instanceof Order && !$entity instanceof OrderItem) {
+            // On supprime le cache et on refait le json
+            $this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
+        }
     }
 }

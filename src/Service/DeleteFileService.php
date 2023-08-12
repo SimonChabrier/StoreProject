@@ -2,8 +2,7 @@
 
 namespace App\Service;
 
-use App\Repository\ProductRepository;
-use App\Service\JsonManager;
+use App\Service\ClearCacheService;
 use App\Repository\PictureRepository;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
@@ -13,8 +12,7 @@ class DeleteFileService
     private $fileSystem;
     private $pictureRepository;
     private $cache;
-    private $jsonManager;
-    private $productRepository;
+    private $clearCacheService;
 
     const BASE_PATH = '../public/uploads/files/';
     const CACHE_KEY = 'home_data';
@@ -23,21 +21,17 @@ class DeleteFileService
         Filesystem $fileSystem, 
         PictureRepository $pictureRepository, 
         AdapterInterface $cache, 
-        JsonManager $jsonManager,
-        ProductRepository $productRepository
+        ClearCacheService $clearCacheService
         )
     {   
         $this->fileSystem = $fileSystem;
         $this->pictureRepository = $pictureRepository;
         $this->cache = $cache;
-        $this->jsonManager = $jsonManager;
-        $this->productRepository = $productRepository;
+        $this->clearCacheService = $clearCacheService;
     }
     
     public function deleteAllPictures()
     {
-        $cacheItem = $this->cache->getItem(self::CACHE_KEY);
-        $isCacheHit = $cacheItem->isHit();
 
         $directories = [
             'pictures',
@@ -78,21 +72,9 @@ class DeleteFileService
 
         // on vérifie que le nombre de fichiers supprimés correspond bien au nombre d'enregistrements supprimés et au nombre de fichiers locaux
         if ($deletedPictureCount === $databasePicturesCount && $deletedPictureCount === $localFileCount) {
-
-            $products = $this->productRepository->findAll();
-            $jsonFileName = 'product.json';
-                
-                $this->jsonManager->jsonFileInit(
-                    $products, 'product:read', 
-                    $jsonFileName, 
-                    'json'
-                );
-
-            // on vide le cache pour que les images soient bien supprimées
-            $isCacheHit ? $this->cache->deleteItem(self::CACHE_KEY) : null;
-
+            // on supprime le cache et on refait le json
+            $this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
             return true;
-
         } else {
             throw new \Exception('Erreur lors de la suppression des images');
         }

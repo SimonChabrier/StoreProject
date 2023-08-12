@@ -23,7 +23,7 @@ class HomeController extends AbstractController
     private $cache;
     
     const CACHE_KEY = 'home_data';
-    const CACHE_DURATION = 3600;
+    const CACHE_DURATION = 0;
     const TEMPLATE_CACHE = 'home/index_cache.html.twig';
     const TEMPLATE_OBJECTS = 'home/index.html.twig';
 
@@ -45,7 +45,7 @@ class HomeController extends AbstractController
         // Récupérer le cache
         $cacheItem = $this->cache->getItem(self::CACHE_KEY);
         $isCacheHit = $cacheItem->isHit();
-dump($isCacheHit);
+
         // Si les données sont en cache, les retourner directement
         if ($cacheItem->isHit()) {
             $viewData = $cacheItem->get();
@@ -118,13 +118,15 @@ dump($isCacheHit);
         $productsData = [];
 
         foreach ($products as $product) {
+
             $productData = [
                 'id' => $product->getId(),
                 'name' => $product->getName(),
+                'category' => $product->getCategory() ? $product->getCategory()->getName() : null,
                 'pictures' => [], // on ne récupère que la première image du tableau : $product->getPictures()[0
                 'catalogPrice' => $product->getCatalogPrice(),
                 'sellingPrice' => $product->getSellingPrice(),
-                'subCategory' => $product->getSubCategory(),
+                'subCategory' => $product->getSubCategory()->getName(),
                 'productType' => $product->getProductType()->getName(),
                 'brand' => $product->getBrand()->getName()
             ];

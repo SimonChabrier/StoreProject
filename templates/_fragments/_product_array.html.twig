@@ -1,0 +1,16 @@
+<h6>{{ product['name']|upper }}</h6>
+{% set lastPicture = product.pictures|first %}
+<img class="last-five-picture" src="{{ lastPicture ? 'uploads/files/pictures/' ~ lastPicture['fileName'] : '/assets/pictures/defaultSneakersPicture.webp' }}" alt="{{ lastPicture ? lastPicture['alt'] : '' }}" loading="lazy">
+<span class="catalog-price"><del>{{ product['catalogPrice'] }} €</del></span>
+<span class="selling-price">{{ product['sellingPrice']|number_format(0, ',', ' ') }} €</span>
+<div class="productInfo">
+    <span class="categorie">Catégorie : {{ category['name'] }}</span>
+    <span class="sous-categorie">Sous-catégorie : {{ product['subCategory']}}</span>
+    <span class="type">Type : {{ product['productType']}}</span>
+    <span class="brand">Marque : {{ product['brand']}}</span>
+</div>
+<div class="productInfoFooter">
+    {% set discount = ((product['catalogPrice'] - product['sellingPrice']) / product['catalogPrice'] * 100)|round %}
+    <span>-{{ discount }}%</span>
+    <span class="productLink"><a href="{{ path('app_product_show', {'id': product['id']}) }}">Détail</a></span>
+</div>

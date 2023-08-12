@@ -30,61 +30,36 @@ class HomeController extends AbstractController
      * @Route("/", name="app_home")
      */
     public function index(
-        CategoryRepository $categoryRepository,
+        CategoryRepository $categoryRepository, 
         ProductRepository $productRepository
-    ): Response {
+        ): Response
+    {   
+
         // Récupérer le cache
         $cacheItem = $this->cache->getItem('home_data');
-
         // Si les données sont en cache, les retourner directement
         if ($cacheItem->isHit()) {
             $data = $cacheItem->get();
-            // on rend la page avec le template adapté aux tableaux 
-            return $this->render('home/index_cache.html.twig', [
-                'homeCats' => $data,
-            ]);
         } else {
             // on récupère les catégories qui ont showOnHome = true
             $categories = $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
-            // on initialise le tableau qui va contenir les données
+            
             $data = [];
             // on boucle sur les catégories
             foreach ($categories as $category) {
                 $categoryData = [
                     'id' => $category->getId(),
                     'name' => $category->getName(),
-                    'products' => [],
+                    'products' => '',
                     'subCategories' => [],
                 ];
                 // on ajoute les produits si il y a des produits à la racine de la catégorie
-                foreach ($category->getProducts() as $product) {
-                    $productData = [
-                        'id' => $product->getId(),
-                        'name' => $product->getName(),
-                        'pictures' => [], // on ne récupère que la première image du tableau : $product->getPictures()[0
-                        'catalogPrice' => $product->getCatalogPrice(),
-                        'sellingPrice' => $product->getSellingPrice(),
-                        'subCategory' => $product->getSubCategory(),
-                        'productType' => $product->getProductType()->getName(),
-                        'brand' => $product->getBrand()->getName()
-                    ];
-                    // récupèrer les images du produit
-                    foreach ($product->getPictures() as $picture) {
-                        // on a besoin du nom du alt et du fileName
-                        $productData['pictures'][] = [
-                            'id' => $picture->getId(),
-                            'alt' => $picture->getAlt(),
-                            'fileName' => $picture->getFileName(),
-                        ];
-                    }
-                    // on stocke les produits dans le tableau : 'products' => [], de la catégorie
-                    $categoryData['products'][] = $productData;
-                }
-
+                // on stocke les produits dans le tableau : 'products' => [], de la catégorie
+                $categoryData['products'] = $this->setProductData($category->getProducts());     
 
                 // on récupère tous les produits de la catégorie (pour nous c'est pour la partie "Nouveautés" qui a des produits à sa racine)
                 $categoryProducts = $productRepository->findBy(['category' => $category->getId(), 'visibility' => 'true'], ['id' => 'DESC'], 4);
-
+                
                 // on boucle sur les produits de la catégorie pour les ajouter dans le tableau : 'products' => [], de la catégorie
                 foreach ($categoryProducts as $product) {
                     $productData = [
@@ -107,7 +82,7 @@ class HomeController extends AbstractController
                         ];
                     }
                     // on stocke les produits dans le tableau : 'products' => [], de la catégorie
-                    $categoryData['products'][] = $productData;
+                    $categoryData['products'][] = $productData;      
                 }
                 // on récupère les sous-catégories de chaque catégorie
                 foreach ($category->getSubCategories() as $subCategory) {
@@ -141,8 +116,8 @@ class HomeController extends AbstractController
                         // on stocke les produits dans le tableau : 'products' => [], de la sous-catégorie
                         $subCategoryData['products'][] = $productData;
                     }
-                    // on stocke les sous-catégories dans le tableau : 'subCategories' => [], de la catégorie
-                    $categoryData['subCategories'][] = $subCategoryData;
+                        // on stocke les sous-catégories dans le tableau : 'subCategories' => [], de la catégorie
+                        $categoryData['subCategories'][] = $subCategoryData;
                 }
                 // on met tout dans le tableau $data
                 $data[] = $categoryData;
@@ -152,11 +127,46 @@ class HomeController extends AbstractController
             $cacheItem->set($data)->expiresAfter(3600);
             // Enregistrer les données en cache
             $this->cache->save($cacheItem);
-            // on rend la page avec le template adapté aux objets
-            return $this->render('home/index.html.twig', [
+            }
+
+            // si les données sont en cache, on les récupère, sinon on les récupère de la BDD
+            $cacheItem->isHit() ? $data = $cacheItem->get() : $data = $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
+            // si les données sont en cache, on affiche le template adapté aux tableaux, sinon on affiche le template adpaté aux objets.
+            $cacheItem->isHit() ? $template = 'home/index_cache.html.twig' : $template = 'home/index.html.twig';    
+
+            return $this->render($template, [
                 'homeCats' => $data,
             ]);
+    }
+
+    public function setProductData($products)
+    {    
+        $productsData = [];
+
+        foreach ($products as $product) {
+            $productData = [
+                'id' => $product->getId(),
+                'name' => $product->getName(),
+                'pictures' => [], // on ne récupère que la première image du tableau : $product->getPictures()[0
+                'catalogPrice' => $product->getCatalogPrice(),
+                'sellingPrice' => $product->getSellingPrice(),
+                'subCategory' => $product->getSubCategory(),
+                'productType' => $product->getProductType()->getName(),
+                'brand' => $product->getBrand()->getName()
+            ];
+            // récupèrer les images du produit
+            foreach ($product->getPictures() as $picture) {
+                // on a besoin du nom du alt et du fileName
+                $productData['pictures'][] = [
+                    'id' => $picture->getId(),
+                    'alt' => $picture->getAlt(),
+                    'fileName' => $picture->getFileName(),
+                ];
+            }
+            // on stocke les produits dans le tableau : 'products' => [], de la catégorie
+            $productsData[] = $productData;
         }
+        return $productsData;
     }
 
     /**

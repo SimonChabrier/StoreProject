@@ -57,67 +57,20 @@ class HomeController extends AbstractController
                 // on stocke les produits dans le tableau : 'products' => [], de la catégorie
                 $categoryData['products'] = $this->setProductData($category->getProducts());     
 
-                // on récupère tous les produits de la catégorie (pour nous c'est pour la partie "Nouveautés" qui a des produits à sa racine)
-                $categoryProducts = $productRepository->findBy(['category' => $category->getId(), 'visibility' => 'true'], ['id' => 'DESC'], 4);
-                
-                // on boucle sur les produits de la catégorie pour les ajouter dans le tableau : 'products' => [], de la catégorie
-                foreach ($categoryProducts as $product) {
-                    $productData = [
-                        'id' => $product->getId(),
-                        'name' => $product->getName(),
-                        'pictures' => [], // on ne récupère que la première image du tableau : $product->getPictures()[0
-                        'catalogPrice' => $product->getCatalogPrice(),
-                        'sellingPrice' => $product->getSellingPrice(),
-                        'subCategory' => $product->getSubCategory(),
-                        'productType' => $product->getProductType()->getName(),
-                        'brand' => $product->getBrand()->getName()
-                    ];
-                    // récupèrer les images du produit
-                    foreach ($product->getPictures() as $picture) {
-                        // on a besoin du nom du alt et du fileName
-                        $productData['pictures'][] = [
-                            'id' => $picture->getId(),
-                            'alt' => $picture->getAlt(),
-                            'fileName' => $picture->getFileName(),
-                        ];
-                    }
-                    // on stocke les produits dans le tableau : 'products' => [], de la catégorie
-                    $categoryData['products'][] = $productData;      
-                }
                 // on récupère les sous-catégories de chaque catégorie
                 foreach ($category->getSubCategories() as $subCategory) {
                     $subCategoryData = [
                         'id' => $subCategory->getId(),
                         'name' => $subCategory->getName(),
-                        'products' => [],
+                        'products' => '',
                     ];
 
                     // on récupère les produits de chaque sous-catégorie
-                    $products = $productRepository->findBy(['subCategory' => $subCategory->getId(), 'visibility' => 'true'], ['id' => 'DESC'], 4);
-                    // on boucle sur les produits de chaque sous-catégorie pour les ajouter dans le tableau : 'products' => [], de la sous-catégorie
-                    foreach ($products as $product) {
-                        $productData = [
-                            'id' => $product->getId(),
-                            'name' => $product->getName(),
-                            'pictures' => [],
-                            'catalogPrice' => $product->getCatalogPrice(),
-                            'sellingPrice' => $product->getSellingPrice(),
-                            'subCategory' => $product->getSubCategory(),
-                            'productType' => $product->getProductType()->getName(),
-                            'brand' => $product->getBrand()->getName(),
-                        ];
-                        foreach ($product->getPictures() as $picture) {
-                            $productData['pictures'][] = [
-                                'id' => $picture->getId(),
-                                'alt' => $picture->getAlt(),
-                                'fileName' => $picture->getFileName(),
-                            ];
-                        }
-                        // on stocke les produits dans le tableau : 'products' => [], de la sous-catégorie
-                        $subCategoryData['products'][] = $productData;
-                    }
-                        // on stocke les sous-catégories dans le tableau : 'subCategories' => [], de la catégorie
-                        $categoryData['subCategories'][] = $subCategoryData;
+                    $subCategoryProducts = $productRepository->findBy(['subCategory' => $subCategory->getId(), 'visibility' => 'true'], ['id' => 'DESC'], 4);
+                    // on stocke les produits dans le tableau : 'products' => [], de la sous-catégorie
+                    $subCategoryData['products'] = $this->setProductData($subCategoryProducts);
+                    // on stocke les sous-catégories dans le tableau : 'subCategories' => [], de la catégorie
+                    $categoryData['subCategories'][] = $subCategoryData;
                 }
                 // on met tout dans le tableau $data
                 $data[] = $categoryData;

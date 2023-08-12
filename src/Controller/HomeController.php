@@ -19,6 +19,7 @@ class HomeController extends AbstractController
 {
     private $adminEmail;
     private $cache;
+    const CACHE_DURATION = 3600;
 
     public function __construct($adminEmail, AdapterInterface $cache)
     {
@@ -81,7 +82,7 @@ class HomeController extends AbstractController
             }
 
             // Mettre les données en cache pendant une durée spécifique (par exemple, 1 heure)
-            $cacheItem->set($data)->expiresAfter(3600);
+            $cacheItem->set($data)->expiresAfter(self::CACHE_DURATION);
             // Enregistrer les données en cache
             $this->cache->save($cacheItem);
             }

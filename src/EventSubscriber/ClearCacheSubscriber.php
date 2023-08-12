@@ -50,14 +50,11 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
             $products = $this->productRepository->findAll();
             $jsonFileName = 'product.json';
             
-            // et si jsonFileDelete renvoie true on recrée le fichier json avec les nouvelles données
-            if($this->jsonManager->jsonFileDelete($jsonFileName)) {
                 $this->jsonManager->jsonFileInit(
                     $products, 'product:read', 
                     $jsonFileName, 
                     'json'
                 );
-            }
         }
     }
 

@@ -78,16 +78,15 @@ class DeleteFileService
 
         // on vérifie que le nombre de fichiers supprimés correspond bien au nombre d'enregistrements supprimés et au nombre de fichiers locaux
         if ($deletedPictureCount === $databasePicturesCount && $deletedPictureCount === $localFileCount) {
-            
-            //TODO faire un méthode globale on refait le fichier json
+
             $products = $this->productRepository->findAll();
             $jsonFileName = 'product.json';
-
-            $this->jsonManager->jsonFileInit(
-                $products, 'product:read', 
-                $jsonFileName, 
-                'json'
-            );
+                
+                $this->jsonManager->jsonFileInit(
+                    $products, 'product:read', 
+                    $jsonFileName, 
+                    'json'
+                );
 
             // on vide le cache pour que les images soient bien supprimées
             $isCacheHit ? $this->cache->deleteItem(self::CACHE_KEY) : null;

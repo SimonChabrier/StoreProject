@@ -43,7 +43,11 @@ class JsonManager extends AbstractController
      * @return void
      */
     public function jsonFileInit($object, $context, $fileName, $format)
-    {
+    {   
+        // supprimer le fichier json existant qui n'est plus à jour
+        // car on a modifié une entité
+        $this->jsonFileDelete($fileName);
+
         $object = $this->serializer->serialize($object, $format, ['groups' => $context]);
         file_put_contents($fileName, $object);
         $publicDirectory = $this->getParameter('kernel.project_dir').'/public';

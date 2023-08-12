@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
-
 {% block content %}
-{# {{ dump(homeCats) }} #}
+
 <div class="last-five searchResults">
     {# résultats de la recherche #}
     {% include '_fragments/_searchResults.html.twig' %}
@@ -10,41 +9,18 @@
 <div class="last-five swiper">
     {% for category in homeCats %}
         <a href="{{ path('app_category_show', {'id': category['id']}) }}"><h2>{{ category['name']|upper }}</h2></a>
+        
         <div class="swiper-wrapper">
-        {# si la category a des produits Eg "nouveautés"  #}
-            {% if category['products'] is not empty %}
+            {% if category['products'] is not empty and category['name'] == 'Nouveautés' %}
                 {% set categoryProducts = category['products']|slice(0, 4)|reverse %}
             {% else %}
-            {# sinon c'est qu'elle n'a pas de produits et donc on va chercher les produits de ses sous-catégories et on vide le tableau categoryProducts
-            pour ne pas que les produits qui sont dans le slider se retourvent aussi ailleurs et créent un bug de slide en permettant à d'autres zones du
-            template de slider #}
+            {# on ne veut pas afficher ailleur que dans le slider les produit de la catégorie nouveautés #}
                 {% set categoryProducts = [] %} 
-                {# ensuite on boucle sur les sous-catégories de la catégorie en cours et on rempli le tableau categoryProducts avec les produits de chaque sous-catégorie #}
-                {% for subCategory in category['subCategories'] %}
-                    {% set subCategoryProducts = subCategory['products']|slice(0, 4)|reverse %}
-                {% endfor %}
             {% endif %}
 
             {% for product in categoryProducts %}
                 <section class="swiper-slide">
-                    <h6>{{ product['name']|upper }}</h6>
-                     {% set lastPicture = product.pictures|first %}
-                    <img class="last-five-picture" src="{{ lastPicture ? 'uploads/files/pictures/' ~ lastPicture['fileName'] : '/assets/pictures/defaultSneakersPicture.webp' }}" alt="{{ lastPicture ? lastPicture['alt'] : '' }}" loading="lazy">
-                    <span class="catalog-price"><del>{{ product['catalogPrice'] }} €</del></span>
-                    <span class="selling-price">{{ product['sellingPrice']|number_format(0, ',', ' ') }} €</span>
-                    <div class="productInfo">
-                        <span class="categorie">Catégorie : {{ category['name'] }}</span>
-                        {% if product['subCategory'] is not empty %}
-                            <span class="sous-categorie">Sous-catégorie : {{ product['subCategory'].getName()}}</span>
-                        {% endif %}
-                        <span class="type">Type : {{ product['productType'] }}</span>
-                        <span class="brand">Marque : {{ product['brand'] }}</span>
-                    </div>
-                    <div class="productInfoFooter">
-                        {% set discount = ((product['catalogPrice'] - product['sellingPrice']) / product['catalogPrice'] * 100)|round %}
-                        <span>-{{ discount }}%</span>
-                        <span class="productLink"><a href="{{ path('app_product_show', {'id': product['id']}) }}">Détail</a></span>
-                    </div>
+                     {% include '_fragments/_product_array.html.twig' %} 
                 </section>
             {% endfor %}
         </div>
@@ -56,31 +32,13 @@
                 {% set subCategoryProducts = subCategory['products']|slice(0, 4)|reverse %}
                 {% for product in subCategoryProducts %}
                     <section>
-                        <h6>{{ product['name']|upper }}</h6>
-                        {% set lastPicture = product.pictures|first %}
-                        <img class="last-five-picture" src="{{ lastPicture ? 'uploads/files/pictures/' ~ lastPicture['fileName'] : '/assets/pictures/defaultSneakersPicture.webp' }}" alt="{{ lastPicture ? lastPicture['alt'] : '' }}" loading="lazy">
-                        <span class="catalog-price"><del>{{ product['catalogPrice'] }} €</del></span>
-                        <span class="selling-price">{{ product['sellingPrice']|number_format(0, ',', ' ') }} €</span>
-                        <div class="productInfo">
-                            <span class="categorie">Catégorie : {{ category['name'] }}</span>
-                            <span class="sous-categorie">Sous-catégorie : {{ subCategory['name'] }}</span>
-                            <span class="type">Type : {{ product['productType']}}</span>
-                            <span class="brand">Marque : {{ product['brand']}}</span>
-                        </div>
-                        <div class="productInfoFooter">
-                            {% set discount = ((product['catalogPrice'] - product['sellingPrice']) / product['catalogPrice'] * 100)|round %}
-                            <span>-{{ discount }}%</span>
-                            <span class="productLink"><a href="{{ path('app_product_show', {'id': product['id']}) }}">Détail</a></span>
-                        </div>
+                        {% include '_fragments/_product_array.html.twig' %} 
                     </section>
                 {% endfor %}
             </div>
         {% endfor %}
     {% endfor %}
 </div>
-
-
-
 
 {% block stylesheets %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>

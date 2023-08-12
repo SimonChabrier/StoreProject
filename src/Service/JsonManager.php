@@ -17,7 +17,6 @@ class JsonManager extends AbstractController
         $this->serializer = $serializer;
     }
 
-
     /**
      * Check if the json file exist
      * Get the json file creation date
@@ -37,14 +36,18 @@ class JsonManager extends AbstractController
     /**
      * Create a json file from object or objects
      *
-     * @param [type] $object
-     * @param [type] $context
-     * @param [type] $fileName
-     * @param [type] $format
+     * @param [Entity] $object
+     * @param [string] $context
+     * @param [string] $fileName
+     * @param [string] $format
      * @return void
      */
     public function jsonFileInit($object, $context, $fileName, $format)
-    {
+    {   
+        // supprimer le fichier json existant qui n'est plus à jour
+        // car on a modifié une entité
+        $this->jsonFileDelete($fileName);
+
         $object = $this->serializer->serialize($object, $format, ['groups' => $context]);
         file_put_contents($fileName, $object);
         $publicDirectory = $this->getParameter('kernel.project_dir').'/public';

@@ -65,7 +65,3 @@ services:
     App\EventSubscriber\ClearCacheSubscriber:
         tags:
             - { name: doctrine.event_subscriber }
-        arguments:
-            - '@cache.app'
-            - '@App\Service\JsonManager'
-            - '@App\Repository\ProductRepository'

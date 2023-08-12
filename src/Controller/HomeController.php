@@ -3,22 +3,29 @@
 namespace App\Controller;
 
 use App\Service\EmailService;
+use App\Service\DeleteFileService;
 use App\Repository\UserRepository;
-use App\Repository\PictureRepository;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Console\Helper\Dumper;
 
 class HomeController extends AbstractController
-{   
+{
     private $adminEmail;
     private $cache;
+    
+    const CACHE_KEY = 'home_data';
+    const CACHE_DURATION = 3600;
+    const TEMPLATE_CACHE = 'home/index_cache.html.twig';
+    const TEMPLATE_OBJECTS = 'home/index.html.twig';
 
     public function __construct($adminEmail, AdapterInterface $cache)
     {
@@ -36,145 +43,115 @@ class HomeController extends AbstractController
     {   
 
         // Récupérer le cache
-        $cacheItem = $this->cache->getItem('home_data');
-        dump($cacheItem);
-        dump($cacheItem->isHit());
-        dump($cacheItem->get());
+        $cacheItem = $this->cache->getItem(self::CACHE_KEY);
+        $isCacheHit = $cacheItem->isHit();
+
         // Si les données sont en cache, les retourner directement
         if ($cacheItem->isHit()) {
-            $data = $cacheItem->get();
+            $viewData = $cacheItem->get();
         } else {
             // on récupère les catégories qui ont showOnHome = true
             $categories = $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
             
-            // on rafraîchit le fichier json des produits pour le filtre de recherche
-            // $products = $productRepository->findAll();
-            // $jsonManager->jsonFileInit($products, 'product:read', 'product.json', 'json');
-            // on va stocker les données dans un tableau
-            
-            $data = [];
-            // on boucle sur les catégories
-            foreach ($categories as $category) {
-                $categoryData = [
-                    'id' => $category->getId(),
-                    'name' => $category->getName(),
-                    'products' => [],
-                    'subCategories' => [],
-                ];
-                // on ajoute les produits si il y a des produits à la racine de la catégorie
-                foreach ($category->getProducts() as $product) {
-                    $productData = [
-                        'id' => $product->getId(),
-                        'name' => $product->getName(),
-                        'pictures' => [], // on ne récupère que la première image du tableau : $product->getPictures()[0
-                        'catalogPrice' => $product->getCatalogPrice(),
-                        'sellingPrice' => $product->getSellingPrice(),
-                        'subCategory' => $product->getSubCategory(),
-                        'productType' => $product->getProductType()->getName(),
-                        'brand' => $product->getBrand()->getName()
+            $dataToCache = [];
+
+                // on boucle sur les catégories
+                foreach ($categories as $category) {
+                    $categoryData = [
+                        'id' => $category->getId(),
+                        'name' => $category->getName(),
+                        'products' => '',
+                        'subCategories' => [],
                     ];
-                    // récupèrer les images du produit
-                    foreach ($product->getPictures() as $picture) {
-                        // on a besoin du nom du alt et du fileName
-                        $productData['pictures'][] = [
-                            'id' => $picture->getId(),
-                            'alt' => $picture->getAlt(),
-                            'fileName' => $picture->getFileName(),
-                        ];
+                    // on récupère les produits de chaque catégorie si elle en a uniquement pour ne pas avoir d'erreur dans la vue
+                    $categoryProducts = $category->getProducts();
+                    if($categoryProducts) {
+                        // on stocke le tableau des produits retourné par la méthode setProductData dans la variable $categoryData['products']
+                        $categoryData['products'] = $this->setProductData($categoryProducts);
                     }
-                    // on stocke les produits dans le tableau : 'products' => [], de la catégorie
-                    $categoryData['products'][] = $productData;      
-                }
-
-
-                // on récupère tous les produits de la catégorie (pour nous c'est pour la partie "Nouveautés" qui a des produits à sa racine)
-                $categoryProducts = $productRepository->findBy(['category' => $category->getId(), 'visibility' => 'true'], ['id' => 'DESC'], 4);
-                
-                // on boucle sur les produits de la catégorie pour les ajouter dans le tableau : 'products' => [], de la catégorie
-                foreach ($categoryProducts as $product) {
-                    $productData = [
-                        'id' => $product->getId(),
-                        'name' => $product->getName(),
-                        'pictures' => [], // on ne récupère que la première image du tableau : $product->getPictures()[0
-                        'catalogPrice' => $product->getCatalogPrice(),
-                        'sellingPrice' => $product->getSellingPrice(),
-                        'subCategory' => $product->getSubCategory(),
-                        'productType' => $product->getProductType()->getName(),
-                        'brand' => $product->getBrand()->getName()
-                    ];
-                    // récupèrer les images du produit
-                    foreach ($product->getPictures() as $picture) {
-                        // on a besoin du nom du alt et du fileName
-                        $productData['pictures'][] = [
-                            'id' => $picture->getId(),
-                            'alt' => $picture->getAlt(),
-                            'fileName' => $picture->getFileName(),
+                    // on récupère les sous-catégories de chaque catégorie
+                    foreach ($category->getSubCategories() as $subCategory) {
+                        $subCategoryData = [
+                            'id' => $subCategory->getId(),
+                            'name' => $subCategory->getName(),
+                            'products' => '',
                         ];
-                    }
-                    // on stocke les produits dans le tableau : 'products' => [], de la catégorie
-                    $categoryData['products'][] = $productData;      
-                }
-                // on récupère les sous-catégories de chaque catégorie
-                foreach ($category->getSubCategories() as $subCategory) {
-                    $subCategoryData = [
-                        'id' => $subCategory->getId(),
-                        'name' => $subCategory->getName(),
-                        'products' => [],
-                    ];
-
-                    // on récupère les produits de chaque sous-catégorie
-                    $products = $productRepository->findBy(['subCategory' => $subCategory->getId(), 'visibility' => 'true'], ['id' => 'DESC'], 4);
-                    // on boucle sur les produits de chaque sous-catégorie pour les ajouter dans le tableau : 'products' => [], de la sous-catégorie
-                    foreach ($products as $product) {
-                        $productData = [
-                            'id' => $product->getId(),
-                            'name' => $product->getName(),
-                            'pictures' => [],
-                            'catalogPrice' => $product->getCatalogPrice(),
-                            'sellingPrice' => $product->getSellingPrice(),
-                            'subCategory' => $product->getSubCategory(),
-                            'productType' => $product->getProductType()->getName(),
-                            'brand' => $product->getBrand()->getName(),
-                        ];
-                        foreach ($product->getPictures() as $picture) {
-                            $productData['pictures'][] = [
-                                'id' => $picture->getId(),
-                                'alt' => $picture->getAlt(),
-                                'fileName' => $picture->getFileName(),
-                            ];
+                        // on récupère les produits de chaque sous-catégorie
+                        $subCategoryProducts = $productRepository->findBy(['subCategory' => $subCategory->getId(), 'visibility' => 'true'], ['id' => 'DESC'], 4);
+                        // si la sous catégorie à des produits
+                        if($subCategoryProducts){
+                            // on stocke le tableau des produits retourné par la méthode setProductData dans la variable $subCategoryData['products']
+                            $subCategoryData['products'] = $this->setProductData($subCategoryProducts);
                         }
-                        // on stocke les produits dans le tableau : 'products' => [], de la sous-catégorie
-                        $subCategoryData['products'][] = $productData;
-                    }
                         // on stocke les sous-catégories dans le tableau : 'subCategories' => [], de la catégorie
                         $categoryData['subCategories'][] = $subCategoryData;
+                    }
+                    // on met tout dans le tableau $data
+                    $dataToCache[] = $categoryData;
                 }
-                // on met tout dans le tableau $data
-                $data[] = $categoryData;
-            }
 
-            // Mettre les données en cache pendant une durée spécifique (par exemple, 1 heure)
-            $cacheItem->set($data)->expiresAfter(3600);
-            // Enregistrer les données en cache
-            $this->cache->save($cacheItem);
+                // Mettre les données en cache pendant une durée spécifique (par exemple, 1 heure)
+                $cacheItem->set($dataToCache)->expiresAfter(self::CACHE_DURATION);
+                // Enregistrer les données en cache
+                $this->cache->save($cacheItem);
+                // fin du else
             }
 
             // si les données sont en cache, on les récupère, sinon on les récupère de la BDD
-            $cacheItem->isHit() ? $data = $cacheItem->get() : $data = $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
+            $viewData = $isCacheHit ? $viewData : $categoryRepository->findBy(['showOnHome' => true], ['listOrder' => 'ASC']);
             // si les données sont en cache, on affiche le template adapté aux tableaux, sinon on affiche le template adpaté aux objets.
-            $cacheItem->isHit() ? $template = 'home/index_cache.html.twig' : $template = 'home/index.html.twig';    
+            $template = $isCacheHit ? self::TEMPLATE_CACHE : self::TEMPLATE_OBJECTS;
 
             return $this->render($template, [
-                'homeCats' => $data,
+                'homeCats' => $viewData,
             ]);
+    }
+    /**
+     * Pour chaque produit, on récupère les données dont on a besoin et on les stocke dans un tableau
+     * le cache ne peut pas stocker les objets Doctrine, il faut donc les transformer en tableau
+     * sinon on a une erreur de type : "Object of class App\Entity\Product could not be converted to string"
+     * Si on ajoute à la récumèration des données une serialization pour les mettre en cache et une deserialization pour les afficher
+     * on va consommer plus de ressources serveur pour rien, donc on ne le fait pas.
+     */
+    public function setProductData($products): array
+    {    
+        $productsData = [];
+
+        foreach ($products as $product) {
+
+            $productData = [
+                'id' => $product->getId(),
+                'name' => $product->getName(),
+                'category' => $product->getCategory() ? $product->getCategory()->getName() : null,
+                'pictures' => [], // on ne récupère que la première image du tableau : $product->getPictures()[0
+                'catalogPrice' => $product->getCatalogPrice(),
+                'sellingPrice' => $product->getSellingPrice(),
+                'subCategory' => $product->getSubCategory()->getName(),
+                'productType' => $product->getProductType()->getName(),
+                'brand' => $product->getBrand()->getName()
+            ];
+            // récupèrer les images du produit
+            foreach ($product->getPictures() as $picture) {
+                // on a besoin du nom du alt et du fileName
+                $productData['pictures'][] = [
+                    'id' => $picture->getId(),
+                    'alt' => $picture->getAlt(),
+                    'fileName' => $picture->getFileName(),
+                ];
+            }
+            // on stocke les produits dans le tableau : 'products' => [], de la catégorie
+            $productsData[] = $productData;
+        }
+        return $productsData;
     }
 
     /**
      * @Route("/paginate/{id}", name="app_paginate_products")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function paginateProducts(ProductRepository $pr, Request $request, $id): Response
-   {
-         // use doctrine query offset and limit to paginate
+    {
+        // use doctrine query offset and limit to paginate
 
         // set the number of items per page
         $perPage = 20;
@@ -185,13 +162,13 @@ class HomeController extends AbstractController
         // get the total number of pages without float
         $totalPage = ceil($totalPage / $perPage);
         // get the current page
-        $currentPage = $id;  
+        $currentPage = $id;
         // get the offset
         $offset = ($currentPage - 1) * $perPage;
         // get the results
         //$results = $pr->findBy([], ['id' => 'ASC'], $perPage, $offset);
         $results = $pr->findPaginateProducts($perPage, $offset);
-       
+
         return $this->render('home/productPagination.html.twig', [
             'products' => $results,
             'pageCount' => $totalPage,
@@ -199,12 +176,13 @@ class HomeController extends AbstractController
             'perPage' => $perPage,
         ]);
         // TODO retourner du json pour l'ajax
-   }
+    }
 
-   // TODO search route
-   /**
-    * @Route("/search", name="app_search", methods={"GET", "POST"})
-    */
+    // TODO search route
+    /**
+     * @Route("/search", name="app_search", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
+     */
 
     public function search(): Response
     {
@@ -214,13 +192,14 @@ class HomeController extends AbstractController
     // test mail route
     /**
      * @Route("/test", name="app_test", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function testMail(EmailService $emailService, UserRepository $ur): Response
-    {   
+    {
 
         // only admin can access this route
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        
+
         $user = $this->getUser();
         // find 4 last users
         $users = $ur->findBy([], ['id' => 'DESC'], 4, 0);
@@ -230,11 +209,11 @@ class HomeController extends AbstractController
 
             try {
                 $emailService->sendTemplateEmailNotification(
-                    $this->adminEmail, 
-                    $user->getEmail(), 
-                    'Nouvelle notification de Sneaker-Shop', 
-                    'email/base_email.html.twig', 
-                    [   
+                    $this->adminEmail,
+                    $user->getEmail(),
+                    'Nouvelle notification de Sneaker-Shop',
+                    'email/base_email.html.twig',
+                    [
                         'title' => 'Titre du template depuis le controller',
                         'username' => $user->getEmail(),
                         'subject' => 'Sujet depuis le controller',
@@ -246,7 +225,7 @@ class HomeController extends AbstractController
                 $emailService->sendAdminNotification('Erreur à l\'envoi du mail de confirmation de ', $user->getEmail(), 'Message d\'erreur: ' . $e->getMessage());
             }
         }
-    
+
         return $this->redirectToRoute('app_home', []);
     }
 
@@ -256,9 +235,10 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/composer", name="composer_install")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function composerInstall(): Response
-    {   
+    {
         // only admin can access this route
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
@@ -276,7 +256,7 @@ class HomeController extends AbstractController
             $message = 'Une erreur s\'est produite lors de la mise à jour de Composer : ';
             $type = 'error';
         }
-        
+
         //dump($process->getOutput());
         //dump($process->getErrorOutput());
         //dump($message);
@@ -289,47 +269,16 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/delete/pictures", name="app_product_delete_pictures")
+     * @IsGranted("ROLE_ADMIN")
      */
-    public function unlinkAllPictures(PictureRepository $pr, Filesystem $filesystem): Response
-    {   
-        // only admin can access this route
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
-        // TODO ne supprimer que les images qui ne sont pas utilisées par un produit ou une catégorie ou un slider 
-
-        $basePath = '../public/uploads/files/';
-
-        $directories = [
-            'pictures',
-            'pictures_XS',
-            'pictures_250',
-            'pictures_400',
-            'pictures_1200',
-            'slider_1280',
-        ];
-
-         // Supprimer les fichiers
-        $filesToDelete = [];
-
-        foreach ($directories as $directory) {
-            $files = glob($basePath . $directory . '/*');
-            // on merge les tableaux pour avoir un seul tableau avec tous les fichiers à supprimer
-            // sinon on aurait un tableau par répertoire et il faudrait faire une boucle pour chaque répertoire
-            // pour fournir des chemins de fichiers à supprimer à la méthode remove de la classe Filesystem
-            $filesToDelete = array_merge($filesToDelete, $files);
+    public function unlinkAllPictures(DeleteFileService $deleteFileService): Response
+    {
+        if($deleteFileService->deleteAllPictures()) {
+            $this->addFlash('success', 'Toutes les images ont été supprimées.');
+        } else {
+            $this->addFlash('error', 'Une erreur s\'est produite lors de la suppression des images.');
         }
 
-        $filesystem->remove($filesToDelete);
-
-        // Supprimer les enregistrements de base de données
-        $pictures = $pr->findAll();
-
-        foreach ($pictures as $picture) {
-            // true pour que ça flush directement en base de données
-            $pr->remove($picture, true);
-        }
-
-        $this->addFlash('success', 'Toutes les images ont été supprimées.');
         return $this->redirectToRoute('app_home');
     }
 }

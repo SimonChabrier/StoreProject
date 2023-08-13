@@ -15,7 +15,7 @@
         
         <div class="swiper-wrapper">
             {% if category['products'] is not empty and category['name'] == 'Nouveautés' %}
-                {% set categoryProducts = category['products']|slice(0, 4)|reverse %}
+                {% set categoryProducts = category['products']|slice(-4)|reverse %}
             {% else %}
             {# on ne veut pas afficher ailleur que dans le slider les produit de la catégorie nouveautés #}
                 {% set categoryProducts = [] %} 
@@ -32,7 +32,7 @@
         {% for subCategory in category['subCategories'] %}
             <a href="{{ path('app_sub_category_show', {'id': subCategory['id']}) }}"><h3>{{ category['name']|upper }} - {{ subCategory['name']|upper }}</h3></a>
             <div class="last-five-products">
-                {% set subCategoryProducts = subCategory['products']|slice(0, 4)|reverse %}
+                {% set subCategoryProducts = subCategory['products']|slice(-4) %}
                 {% for product in subCategoryProducts %}
                     <section>
                         {% include '_fragments/_product_array.html.twig' %} 
@@ -52,7 +52,7 @@
         <div class="swiper-wrapper">
             {# si la category a des produits Eg "nouveautés"  #}
             {% if category.products is not empty and category.name == 'Nouveautés' %}
-                {% set categoryProducts = category.products|slice(0, 4)|reverse %}
+                {% set categoryProducts = category.products|slice(-4)|reverse %}
             {% else %}
             {# Ensuite on va chercher les produits des sous-catégories et on vide le categoryProducts parce qu'on n gère pas 
             l'affichage des produits à la racine de la categorie en dehors du slider donc on vide le tableau #}
@@ -74,7 +74,7 @@
         {% for subCategory in category.subcategories %}
             <a href="{{ path('app_sub_category_show', {'id': subCategory.id}) }}"><h3>{{ category.name|upper }} - {{ subCategory.name|upper }}</h3></a>
             <div class="last-five-products">
-                {% set subCategoryProducts = subCategory.products|slice(0, 4)|reverse %}
+                {% set subCategoryProducts = subCategory.products|slice(-4)|reverse %}
                 {% for product in subCategoryProducts %}
                     <section>
                         {% include '_fragments/_product_object.html.twig' %} 

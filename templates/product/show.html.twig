@@ -2,6 +2,21 @@
 
 {% block title %}Product{% endblock %}
 
+{# on fait les metas pour la fiche product  #}
+{% block og_tags %}
+    <meta property="og:title" content="{{ product.name|title }}">
+    <meta property="og:description" content="Description du Produit">
+    {% for picture in product.pictures %}
+        {% if picture %}
+            {% if loop.last %}
+                <meta property="og:image" content="/uploads/files/pictures_400/{{ picture.getFilename }}">
+            {% endif %}
+        {% endif %}
+        {% else %}
+        <meta property="og:image" content="/assets/pictures/defaultSneakersPicture.webp">
+        {% endfor %}
+{% endblock og_tags %}
+
 {% block content %}
 
 <h1 class="mb-2">{{ product.name|title }}</h1>

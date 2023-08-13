@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/product/type")
@@ -27,6 +28,7 @@ class ProductTypeController extends AbstractController
 
     /**
      * @Route("/new", name="app_product_type_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request, ProductTypeRepository $productTypeRepository): Response
     {
@@ -59,6 +61,7 @@ class ProductTypeController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="app_product_type_edit", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, ProductType $productType, ProductTypeRepository $productTypeRepository): Response
     {
@@ -79,6 +82,7 @@ class ProductTypeController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_product_type_delete", methods={"POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, ProductType $productType, ProductTypeRepository $productTypeRepository): Response
     {

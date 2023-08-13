@@ -8,7 +8,7 @@
     <meta property="og:description" content="Description du Produit">
     {% for picture in product.pictures %}
         {% if picture %}
-            {% if loop.last %}
+            {% if loop.first %}
                 <meta property="og:image" content="/uploads/files/pictures_400/{{ picture.getFilename }}">
             {% endif %}
         {% endif %}
@@ -27,13 +27,13 @@
     {% for picture in product.pictures %}
         {% if picture %}
             {# get just last picture #}
-            {% if loop.last %}
+            {% if loop.first %}
                 <img class="last-five-picture" src="/uploads/files/pictures_400/{{ picture.getFilename }}" alt="{{ picture.alt }}" >
             {% endif %}
         {% endif %}
         {% else %}
         <img class="last-five-picture" src="/assets/pictures/defaultSneakersPicture.webp" alt="" loading="lazy">
-        {% endfor %}
+    {% endfor %}
 
     <div class="gallery_small">
     {% for picture in product.pictures %}
@@ -144,7 +144,16 @@
     {% for product in relatedProducts %}
             <section class="swiper-slide">
                 <h6>{{ product.name|upper }}</h6>
-                <img class="last-five-picture" src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
+                {% for picture in product.pictures %}
+                    {% if picture %}
+                        {# get just last picture #}
+                        {% if loop.last %}
+                            <img class="last-five-picture" src="/uploads/files/pictures_400/{{ picture.getFilename }}" alt="{{ picture.alt }}" >
+                        {% endif %}
+                    {% endif %}
+                    {% else %}
+                    <img class="last-five-picture" src="/assets/pictures/defaultSneakersPicture.webp" alt="" loading="lazy">
+                {% endfor %}
                 <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
                 <span class="selling-price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span>
                 <div class="productInfo">
@@ -167,9 +176,6 @@
         {% endfor %}
         </div>
         <div class="swiper-pagination"></div>
-        {# <div class="swiper-button-prev"></div> #}
-        {# <div class="swiper-button-next"></div> #}
-         {# <div class="swiper-scrollbar"></div> #}
     </div>
 
     <dialog id="gallery_dialog" class="fade-dialog">

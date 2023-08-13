@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/sub/category")
@@ -27,6 +28,7 @@ class SubCategoryController extends AbstractController
 
     /**
      * @Route("/new", name="app_sub_category_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request, SubCategoryRepository $subCategoryRepository): Response
     {
@@ -60,6 +62,7 @@ class SubCategoryController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="app_sub_category_edit", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, SubCategory $subCategory, SubCategoryRepository $subCategoryRepository): Response
     {
@@ -80,6 +83,7 @@ class SubCategoryController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_sub_category_delete", methods={"POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, SubCategory $subCategory, SubCategoryRepository $subCategoryRepository): Response
     {

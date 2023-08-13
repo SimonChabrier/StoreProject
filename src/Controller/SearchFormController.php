@@ -2,13 +2,8 @@
 
 namespace App\Controller;
 
-# src/Controller/SearchFormController.php
-
-namespace App\Controller;
-
 use App\Service\SearchFormService;
 use App\Repository\ProductRepository;
-use Symfony\Component\Form\FormError;
 use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

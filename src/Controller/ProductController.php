@@ -2,22 +2,19 @@
 
 namespace App\Controller;
 
-use App\Entity\Picture;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Form\AddToCartType;
 use App\Service\UploadService;
 use App\Manager\CartManager;
-use App\Message\UpdateFileMessage;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/product")
@@ -36,6 +33,7 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/new", name="app_product_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request, ProductRepository $productRepository, EntityManagerInterface $manager, UploadService $uploadService): Response
     {
@@ -69,7 +67,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_product_show", methods={"GET", "POST"})
+     * @Route("/{id}", name="app_product_show")
      */
     public function show(
         Product $product, 
@@ -108,6 +106,7 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="app_product_edit", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(
         Request $request, 
@@ -163,6 +162,7 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_product_delete", methods={"POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Product $product, ProductRepository $productRepository, UploadService $uploadService): Response
     {

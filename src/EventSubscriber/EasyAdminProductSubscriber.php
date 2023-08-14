@@ -52,44 +52,48 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
      */
     public function setPicture($event)
     {   
-        $current_request = $this->request->getCurrentRequest();
-        // si on n'a pas de fichier uploadé on ne fait rien
-        if (!$current_request->files->get('Product')) {
-            return;
-        }
+
         // on récupère l'entité c'est à dire le produit
         $product = $event->getEntityInstance();
-
         if (!($product instanceof Product)) {
             return;
         }
+        // et on nettoie les données soumises par le formulaire pour supprimer les images qui n'ont pas encore de nom de fichier
+        // car si les données sont soummises elles ne sont pas encore traités par le service d'upload
+        // donc à ce moment là elles n'ont pas encore de nom de fichier.
+        $this->cleanSubmitedFormPictures($product);
 
-        // on enlève les images qui n'ont pas de nom de fichier parce que EasyAdmin ajoute directement
-        // les images à l'objet à la soumission du formulaire même si elles ne sont pas traitées par le service d'upload.
-        foreach ($product->getPictures() as $picture) {
-            if ($picture->getFileName() === null) {
-                $product->removePicture($picture);
-            }
-        }
+        // on récupère la requête courante pour avoir accès aux données du formulaire
         // dans un service ou listener on ne peut pas utiliser $this->request->files->get('Product')
         // on doit récupèrer les données de la requête avec getCurrentRequest() parce que la requête
         // est déjà passée quand on arrive dans le service.
-        $request_data = $current_request->files->get('Product');
-        $productPictures = $current_request->get('Product')['pictures'];
-
+        $current_request = $this->request->getCurrentRequest();
+        
+        // si on n'a pas de fichier uploadé on ne fait rien et on nettoie les images orphelines
+        if (!isset($current_request->files->get('Product')['pictures'])) {
+            // on supprimer les images orphelines
+            $this->deleteOrphansPictures();
+            return;
+        } else {
+            // sur la requête on récupère les fichiers uploadés
+            $submited_files = $current_request->files->get('Product')['pictures'];
+             // sur la requête on récupère les données soumises par le formulaire (alt et name)
+            $submited_data = $current_request->get('Product')['pictures'];
+        }
+        
         // on boucle sur les images uploadées pour les traiter
-        foreach ($request_data['pictures'] as $i => $pictureFile) {
+        foreach ($submited_files as $i => $submited_file) {
            
-            if ($pictureFile['file'] !== null) {
+            if ($submited_file['file'] !== null) {
 
-                [$name, $alt] = [$productPictures[$i]['name'], $productPictures[$i]['alt']];
+                [$name, $alt] = [$submited_data[$i]['name'], $submited_data[$i]['alt']];
                 
                 $newPicture = new Picture();
                 $newPicture->setName($name);
                 $newPicture->setAlt($alt);
 
                 $picture = $this->uploadService->uploadPictures(
-                    $pictureFile,
+                    $submited_file,
                     $newPicture,
                     $product
                 );
@@ -107,7 +111,7 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         $this->productRepository->add($product, true);
 
         // on supprimer les images orphelines
-        $this->deleteOrphansPictures();
+        // $this->deleteOrphansPictures();
 
     }
 
@@ -143,6 +147,18 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         foreach ($orphan_pictures as $orphan_picture) {
             $this->em->remove($orphan_picture);
             $this->uploadService->deletePictures($orphan_picture);
+        }
+    }
+
+    // nettoyer la soumission du formulaire
+    public function cleanSubmitedFormPictures($product)
+    {
+        // on enlève les images qui n'ont pas de nom de fichier parce que EasyAdmin ajoute directement
+        // les images à l'objet à la soumission du formulaire et elles ne sont pas encore traitées par le service d'upload.
+        foreach ($product->getPictures() as $picture) {
+            if ($picture->getFileName() === null) {
+                $product->removePicture($picture);
+            }
         }
     }
 }

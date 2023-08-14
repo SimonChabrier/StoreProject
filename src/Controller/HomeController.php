@@ -15,7 +15,7 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Console\Helper\Dumper;
+
 
 class HomeController extends AbstractController
 {
@@ -23,9 +23,7 @@ class HomeController extends AbstractController
     private $cache;
     
     const CACHE_KEY = 'home_data';
-    const CACHE_DURATION = 3600;
-    const TEMPLATE_CACHE = 'home/index_cache.html.twig';
-    const TEMPLATE_OBJECTS = 'home/index.html.twig';
+    const CACHE_DURATION = 0;
 
     public function __construct($adminEmail, AdapterInterface $cache)
     {
@@ -100,10 +98,12 @@ class HomeController extends AbstractController
             // si les données sont en cache, on les récupère, sinon on les récupère de la BDD
             $viewData = $isCacheHit ? $viewData : $categoryRepository->findBy(['showOnHome' => true], ['listOrder' => 'ASC']);
             // si les données sont en cache, on affiche le template adapté aux tableaux, sinon on affiche le template adpaté aux objets.
-            $template = $isCacheHit ? self::TEMPLATE_CACHE : self::TEMPLATE_OBJECTS;
+            //$template = $isCacheHit ? self::TEMPLATE_CACHE : self::TEMPLATE_OBJECTS;
+            $template = $isCacheHit ? true : false;
 
-            return $this->render($template, [
+            return $this->render('home/index.html.twig', [
                 'homeCats' => $viewData,
+                'template' => $template,
             ]);
     }
     /**

@@ -38,9 +38,9 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            BeforeEntityPersistedEvent::class => ['createPicture'],
-            BeforeEntityUpdatedEvent ::class => ['setPicture'],
-            AfterEntityDeletedEvent::class => ['deletePicture']
+            BeforeEntityPersistedEvent::class => ['setPicture'], // après création d'un produit
+            BeforeEntityUpdatedEvent ::class => ['setPicture'], // après modification d'un produit
+            AfterEntityDeletedEvent::class => ['deletePicture'] // après suppression d'un produit
         ];
     }
 
@@ -57,30 +57,29 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
             return;
         }
         // on récupère l'entité c'est à dire le produit
-        $entity = $event->getEntityInstance();
+        $product = $event->getEntityInstance();
 
-        if (!($entity instanceof Product)) {
+        if (!($product instanceof Product)) {
             return;
         }
 
         // on enlève les images qui n'ont pas de nom de fichier parce que EasyAdmin ajoute directement
         // les images à l'objet à la soumission du formulaire même si elles ne sont pas traitées par le service d'upload.
-        foreach ($entity->getPictures() as $picture) {
+        foreach ($product->getPictures() as $picture) {
             if ($picture->getFileName() === null) {
-                $entity->removePicture($picture);
+                $product->removePicture($picture);
             }
         }
         // dans un service ou listener on ne peut pas utiliser $this->request->files->get('Product')
         // on doit récupèrer les données de la requête avec getCurrentRequest() parce que la requête
         // est déjà passée quand on arrive dans le service.
-        // On injecte donc RequestStack au lieu de Request dans le constructeur
         $data = $this->request->getCurrentRequest()->files->get('Product');
         $productPictures = $this->request->getCurrentRequest()->get('Product')['pictures'];
 
         // on boucle sur les images uploadées pour les traiter
-        foreach ($data['pictures'] as $i => $picture) {
+        foreach ($data['pictures'] as $i => $pictureFile) {
            
-            if ($picture['file'] !== null) {
+            if ($pictureFile['file'] !== null) {
 
                 [$name, $alt] = [$productPictures[$i]['name'], $productPictures[$i]['alt']];
                 
@@ -89,94 +88,31 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
                 $newPicture->setAlt($alt);
 
                 $picture = $this->uploadService->uploadPictures(
-                    $picture,
+                    $pictureFile,
                     $newPicture,
-                    $entity
+                    $product
                 );
                            
                 $newPicture->setFileName($picture->getFileName());
 
                 $this->em->persist($newPicture);
                 // on donne à la picture de l'entité le nom du fichier uploadé
-                $entity->addPicture($newPicture);
+                $product->addPicture($newPicture);
             }
         }
 
         $this->em->flush();
 
-        $this->productRepository->add($entity, true);
+        $this->productRepository->add($product, true);
 
-        // si on a supprimé une image depuis easyadmin
-        // on chercher les images dont la colonne product_id est désormais == à null
-        $pictures = $this->em->getRepository(Picture::class)->findBy(['product' => null]);
-        // on supprime les fichiers des dossiers et aussi les lignes de la table picture qui ont product_id == null
-        foreach ($pictures as $picture) {
-            $this->em->remove($picture);
-            $this->uploadService->deletePictures($picture);
-        }
-
-    }
-
-    /**
-     * Pour créer les images d'un produit si le produit est nouveau
-     *
-     * @param [type] $event
-     * @return void
-     */
-    public function createPicture($event)
-    {   
-
-        $entity = $event->getEntityInstance();
-
-        if (!($entity instanceof Product)) {
-            return;
-        }
-
-        // on enlève les images qui n'ont pas de nom de fichier parce que EasyAdmin ajoute directement
-        // les images dans le tableau de l'entité même si elles ne sont pas uploadées
-        foreach ($entity->getPictures() as $picture) {
-            if ($picture->getFileName() === null) {
-                $entity->removePicture($picture);
-            }
-        }
-    
-        $data = $this->request->getCurrentRequest()->files->get('Product');
-        $productPictures = $this->request->getCurrentRequest()->get('Product')['pictures'];
-
-        foreach ($data['pictures'] as $i => $picture) {
-           
-            if ($picture['file'] !== null) {
-
-                [$name, $alt] = [$productPictures[$i]['name'], $productPictures[$i]['alt']];
-                
-                $newPicture = new Picture();
-                $newPicture->setName($name);
-                $newPicture->setAlt($alt);
-
-                $picture = $this->uploadService->uploadPictures(
-                    $picture,
-                    $newPicture,
-                    $entity
-                );
-                
-                
-                $newPicture->setFileName($picture->getFileName());
-
-                $this->em->persist($newPicture);
-                // on donne à la picture de l'entité le nom du fichier uploadé
-                $entity->addPicture($newPicture);
-            }
-        }
-
-        $this->em->flush();
-
-        $this->productRepository->add($entity, true);
+        // on supprimer les images orphelines
+        $this->deleteOrphansPictures();
 
     }
 
     /**
      * Pour supprimer les images d'un produit
-     *
+     * lors de la suppression du produit
      * @param [type] $event
      * @return void
      */
@@ -192,6 +128,20 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
             $this->uploadService->deletePictures($picture);
         }
 
+    }
 
+    /**
+     * Supprimer les images orphelines
+     * qui ne sont pas liées à un produit 
+     *
+     * @return void
+     */
+    public function deleteOrphansPictures()
+    {
+        $orphan_pictures = $this->em->getRepository(Picture::class)->findBy(['product' => null]);
+        foreach ($orphan_pictures as $orphan_picture) {
+            $this->em->remove($orphan_picture);
+            $this->uploadService->deletePictures($orphan_picture);
+        }
     }
 }

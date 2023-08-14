@@ -14,8 +14,6 @@ use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Workflow\Exception\LogicException;
 
-use function PHPSTORM_META\map;
-
 class UploadService
 {   
     // certaines propriétés sont ajoutés ici parce que comme elles sont bindées dans services.yaml
@@ -109,18 +107,19 @@ class UploadService
     /**
      * Upload d'une collection d'images en synchrone sans Messenger
      *
-     * @param array $filesArray
+     * @param array $filesArray of UploadedFile type
      * @param Entity $pictureObjet
      * @param Entity $productObject
      * @return Picture
      */
-    public function uploadPictures(array $filesArray, $pictureObjet, $productObject): Object
+    public function uploadPictures(array $files, $pictureObjet, $productObject): Object
     {   
-        foreach($filesArray as $file) {
+        foreach($files as $file) {
             // on génère un nom de fichier unique pour le fichier webp qui sera créé
             $fileName = self::setUniqueName();
-
+            // on stocke le fichier dans les 4 dossiers de stockage des images
             self::moveAll($file, $fileName, 80);
+            // on stocke le fichier original dans le dossier $picDir
             $file->move($this->picDir, $fileName);
             // A chaque itération, on initialise les propriétés de l'objet Picture avec les infos du formulaire
             $pictureObjet
@@ -174,6 +173,7 @@ class UploadService
 
         // A chaque itération, on retourne l'objet File initialisé avec un nom de fichier unique pour le stocker en BDD 
         // utlisé ensuite pour construire l'affichage du fichier dans la vue.
+        
         return $fileObject;
     }
 

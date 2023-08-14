@@ -15,11 +15,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 // A utiliser après supression de l'entité Picture pour supprimer les images du dossier uploads
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityDeletedEvent;
 
-//TODO il fut améliorer la supression des images orphelines. 
-// la requête courante retourne les images du produit. Donc actuellement on ne nettoie les images
-// orphelines que si le produit n'a pas d'images. Il faudrait nettoyer les images orphelines à chaque fois
-// qu'on met à jour un produit. Pour ça il faut récupérer les images du produit avant la mise à jour et les comparer
-
 class EasyAdminProductSubscriber implements EventSubscriberInterface
 {
     private $uploadService;
@@ -74,44 +69,43 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         // est déjà passée quand on arrive dans le service.
         $current_request = $this->request->getCurrentRequest();
 
-        // si la requête ne contient pas  fichiers uploadés on nettoie les images orphelines et on sort
-        if (!isset($current_request->files->get('Product')['pictures'])) {
-            $this->deleteOrphansPictures();
-            return;
-        }
+        if (isset($current_request->files->get('Product')['pictures'])) {
+            // sur la requête on récupère les fichiers uploadés
+            $submited_files = $current_request->files->get('Product')['pictures'];
+            // sur la requête on récupère les données soumises par le formulaire (alt et name)
+            $submited_data = $current_request->get('Product')['pictures'];
 
-        // sur la requête on récupère les fichiers uploadés
-        $submited_files = $current_request->files->get('Product')['pictures'];
-        // sur la requête on récupère les données soumises par le formulaire (alt et name)
-        $submited_data = $current_request->get('Product')['pictures'];
+            // on boucle sur les images uploadées pour les traiter
+            foreach ($submited_files as $i => $submited_file) {
 
-        // on boucle sur les images uploadées pour les traiter
-        foreach ($submited_files as $i => $submited_file) {
+                if ($submited_file['file'] !== null) {
 
-            if ($submited_file['file'] !== null) {
+                    [$name, $alt] = [$submited_data[$i]['name'], $submited_data[$i]['alt']];
 
-                [$name, $alt] = [$submited_data[$i]['name'], $submited_data[$i]['alt']];
+                    $newPicture = new Picture();
+                    $newPicture->setName($name);
+                    $newPicture->setAlt($alt);
 
-                $newPicture = new Picture();
-                $newPicture->setName($name);
-                $newPicture->setAlt($alt);
+                    $picture = $this->uploadService->uploadPictures(
+                        $submited_file,
+                        $newPicture,
+                        $product
+                    );
 
-                $picture = $this->uploadService->uploadPictures(
-                    $submited_file,
-                    $newPicture,
-                    $product
-                );
+                    $newPicture->setFileName($picture->getFileName());
 
-                $newPicture->setFileName($picture->getFileName());
-
-                $this->em->persist($newPicture);
-                // on donne à la picture de l'entité le nom du fichier uploadé
-                $product->addPicture($newPicture);
+                    $this->em->persist($newPicture);
+                    // on donne à la picture de l'entité le nom du fichier uploadé
+                    $product->addPicture($newPicture);
+                }
             }
         }
 
         $this->em->flush();
         $this->productRepository->add($product, true);
+
+        $this->deleteOrphansPictures();
+
     }
 
     /**

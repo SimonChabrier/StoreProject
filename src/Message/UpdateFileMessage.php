@@ -5,34 +5,42 @@ namespace App\Message;
 
 class UpdateFileMessage
 {
-    private $file;
-    private $pictureObject;
-    private $productObject;
+    private $name;
+    private $alt;
+    private $realPath;
+    private $product;
 
     public function __construct(
-        array $file, 
-        string $pictureObject,
-        string $productObject
+        string $name,
+        string $alt,
+        string $realPath,
+        $product
     ) {
-        $this->file = $file;
-        $this->pictureObject = $pictureObject;
-        $this->productObject = $productObject;
+        $this->name = $name;
+        $this->alt = $alt;
+        $this->realPath = $realPath;
+        $this->product = $product;
+        
     }
 
-    public function getFile(): array
+    public function getName(): string
     {   
-        return $this->file;
+        return $this->name;
+    }
+    public function getAlt(): string
+    {   
+        return $this->alt;
+    }
+    public function getRealPath()
+    {
+        return $this->realPath;
+    }
+    public function getProduct()
+    {   
+        return $this->product;
     }
 
-    public function getPictureObject(): string
-    {   
-        return $this->pictureObject;
-    }
 
-    public function getProductObject(): string
-    {   
-        return $this->productObject;
-    }
     
 
 }

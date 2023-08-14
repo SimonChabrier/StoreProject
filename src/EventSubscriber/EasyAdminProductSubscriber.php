@@ -52,8 +52,9 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
      */
     public function setPicture($event)
     {   
-        
-        if(!$this->request->getCurrentRequest()->files->get('Product')) {
+        $current_request = $this->request->getCurrentRequest();
+        // si on n'a pas de fichier uploadé on ne fait rien
+        if(!$this->$current_request->files->get('Product')) {
             return;
         }
         // on récupère l'entité c'est à dire le produit
@@ -73,11 +74,11 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         // dans un service ou listener on ne peut pas utiliser $this->request->files->get('Product')
         // on doit récupèrer les données de la requête avec getCurrentRequest() parce que la requête
         // est déjà passée quand on arrive dans le service.
-        $data = $this->request->getCurrentRequest()->files->get('Product');
-        $productPictures = $this->request->getCurrentRequest()->get('Product')['pictures'];
+        $request_data = $current_request->files->get('Product');
+        $productPictures = $current_request->get('Product')['pictures'];
 
         // on boucle sur les images uploadées pour les traiter
-        foreach ($data['pictures'] as $i => $pictureFile) {
+        foreach ($request_data['pictures'] as $i => $pictureFile) {
            
             if ($pictureFile['file'] !== null) {
 

@@ -75,15 +75,18 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         // est déjà passée quand on arrive dans le service.
         // On injecte donc RequestStack au lieu de Request dans le constructeur
         $data = $this->request->getCurrentRequest()->files->get('Product');
+        $productPictures = $this->request->getCurrentRequest()->get('Product')['pictures'];
 
         // on boucle sur les images uploadées pour les traiter
         foreach ($data['pictures'] as $i => $picture) {
            
             if ($picture['file'] !== null) {
+
+                [$name, $alt] = [$productPictures[$i]['name'], $productPictures[$i]['alt']];
                 
                 $newPicture = new Picture();
-                $newPicture->setName($this->request->getCurrentRequest()->get('Product')['pictures'][$i]['name']);
-                $newPicture->setAlt($this->request->getCurrentRequest()->get('Product')['pictures'][$i]['alt']);
+                $newPicture->setName($name);
+                $newPicture->setAlt($alt);
 
                 $picture = $this->uploadService->uploadPictures(
                     $picture,
@@ -138,14 +141,17 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         }
     
         $data = $this->request->getCurrentRequest()->files->get('Product');
+        $productPictures = $this->request->getCurrentRequest()->get('Product')['pictures'];
 
         foreach ($data['pictures'] as $i => $picture) {
            
             if ($picture['file'] !== null) {
+
+                [$name, $alt] = [$productPictures[$i]['name'], $productPictures[$i]['alt']];
                 
                 $newPicture = new Picture();
-                $newPicture->setName($this->request->getCurrentRequest()->get('Product')['pictures'][$i]['name']);
-                $newPicture->setAlt($this->request->getCurrentRequest()->get('Product')['pictures'][$i]['alt']);
+                $newPicture->setName($name);
+                $newPicture->setAlt($alt);
 
                 $picture = $this->uploadService->uploadPictures(
                     $picture,

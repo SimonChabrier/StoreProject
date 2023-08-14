@@ -26,26 +26,33 @@ class UpdateFileMessageHandler implements MessageHandlerInterface
 
     public function updateFile($message)
     {   
-        // // convertir le code du fichier en fichier
-        // $decoded_file = base64_decode($message->getFileContent());
-        // // faire un tableau et mettre le file content à la clé 'file'
-        // $file = [
-        //     'file' => $decoded_file
-        // ];
+        // On déserialise le tableau associatif qui a été sérialisé dans le contrôleur
+        // $fileInfo = unserialize($message->getRealPAth());
 
-        // Convertir le code du fichier en binaire
-   $fileInfo = unserialize($message->getRealPAth());
+        // $uploadedFile = new UploadedFile(
+        //     $fileInfo['tmp_name'],
+        //     $fileInfo['name'],
+        //     $fileInfo['type'],
+        //     $fileInfo['size'],
+        //     false,
+        //     true // Changez ici pour true si le fichier a été téléchargé via HTTP
+        // );
+
+        // je reçoit des données brutes pour le fichier il faut les traiter avant de les envoyer à la méthode processAndUploadPicture
+        $fileInfo = unserialize($message->getRealPath());
+        // je recréer un objet UploadedFile à partir des données brutes
+        $uploadedFile = new UploadedFile(
+            $fileInfo['path'],
+            $fileInfo['originalName'],
+            $fileInfo['mimeType'],
+            $fileInfo['error'],
+            $fileInfo['test'],
+        );
+
 
     // Créer un objet UploadedFile simulé (c'est-à-dire un tableau associatif avec la clé 'file')
     $fileData = [
-        'file' => new UploadedFile(
-            $fileInfo['tmp_name'], // le chemin du fichier
-            $fileInfo['name'], // le nom du fichier
-            $fileInfo['type'], // le type du fichier
-            $fileInfo['size'], // la taille du fichier
-            false, // le code d'erreur fourni par le client
-            false // si le fichier a été téléchargé via HTTP ou pas
-        )
+        'file' => $$uploadedFile, 
     ];
 
         $picture = $this->uploadService->processAndUploadPicture(

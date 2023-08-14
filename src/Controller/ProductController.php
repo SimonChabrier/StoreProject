@@ -144,17 +144,24 @@ class ProductController extends AbstractController
                     return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
                 
                 } else {
+                    
+                    //TODO ça ne va pas parce que le traitement de messenger est async
+                    // et le fichier temporaires est supprimé avant que le message soit traité
+                    // il faut trouver un moyen de ne pas supprimer le fichier temporaire
+                    // ou stocker le fichier temporaire dans un dossier temporaire
+                    // puis le supprimer après le traitement du message...
+
                     // on envoie un message à la file d'attente
-                    $file = $request->files->get('product')['pictures'][$i]['file'];
-                    $realPath = $file->getRealPath();
+                    $file = $request->files->get('product')['pictures'][$i]['file'];                   
+                    // on récupère les infos du fichier
                     $fileInfo = [
-                        'tmp_name' => $realPath,
-                        'name' => $file->getClientOriginalName(),
-                        'type' => $file->getClientMimeType(),
-                        'size' => $file->getSize(),
-                        // ajouter la taille et d'autres informations si besoin
+                        'path' => $file->getPathname(),
+                        'originalName' => $file->getClientOriginalName(),
+                        'mimeType' => $file->getMimeType(),
+                        'error' => $file->getError(),
+                        'test' => false
                     ];
-                                
+
                     $bus->dispatch(
                         new UpdateFileMessage(
                             $name,

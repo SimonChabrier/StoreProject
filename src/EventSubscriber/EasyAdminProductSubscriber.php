@@ -137,19 +137,9 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
     {
         $orphan_pictures = $this->em->getRepository(Picture::class)->findBy(['product' => null]);
 
-        $orphan_pictures_count = count($orphan_pictures);
-        $orphan_pictures_deleted_count = 0;
-
         foreach ($orphan_pictures as $orphan_picture) {
             $this->em->remove($orphan_picture);
             $this->uploadService->deletePictures($orphan_picture);
-            $orphan_pictures_deleted_count++;
-        }
-
-        if ($orphan_pictures_count === $orphan_pictures_deleted_count) {
-            return true;
-        } else {
-            throw new \Exception('Erreur lors de la suppression des images orphelines');
         }
     }
 

@@ -37,9 +37,9 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            BeforeEntityPersistedEvent::class => ['setPicture'], // après création d'un produit
-            BeforeEntityUpdatedEvent::class => ['setPicture'], // après modification d'un produit
-            AfterEntityDeletedEvent::class => ['deletePicture'] // après suppression d'un produit
+            BeforeEntityPersistedEvent::class => ['setProductPictures'], // après création d'un produit
+            BeforeEntityUpdatedEvent::class => ['setProductPictures'], // après modification d'un produit
+            AfterEntityDeletedEvent::class => ['deletePicturesForDeletedProduct'] // après suppression d'un produit
         ];
     }
 
@@ -49,7 +49,7 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
      * @param [type] $event
      * @return void
      */
-    public function setPicture($event)
+    public function setProductPictures($event)
     {
 
         // on récupère l'entité c'est à dire le produit
@@ -104,7 +104,7 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         $this->em->flush();
         $this->productRepository->add($product, true);
 
-        $this->deleteOrphansPictures();
+        $this->deleteProductOrphansPictures();
 
     }
 
@@ -114,7 +114,7 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
      * @param [type] $event
      * @return void
      */
-    public function deletePicture($event)
+    public function deletePicturesForDeletedProduct($event)
     {
         $entity = $event->getEntityInstance();
 
@@ -133,7 +133,7 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
      *
      * @return void
      */
-    public function deleteOrphansPictures()
+    public function deleteProductOrphansPictures()
     {
         $orphan_pictures = $this->em->getRepository(Picture::class)->findBy(['product' => null]);
 

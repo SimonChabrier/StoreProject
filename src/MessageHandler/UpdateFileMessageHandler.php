@@ -26,10 +26,11 @@ class UpdateFileMessageHandler implements MessageHandlerInterface
 
     public function updateFile($message)
     {   
-        return $this->uploadService->uploadPictures(
+        return $this->uploadService->processAndUploadPicture(
+            unserialize($message->getPictureObject()->getName()),
+            unserialize($message->getPictureObject()->getAlt()),
             $message->getFile(), 
-            unserialize($message->getPictureObject()),
-            unserialize($message->getProductObject())
+            unserialize($message->getPictureObject())
         );
     }
 

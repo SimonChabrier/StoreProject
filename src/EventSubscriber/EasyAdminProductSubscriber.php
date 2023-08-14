@@ -54,7 +54,7 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
     {   
         $current_request = $this->request->getCurrentRequest();
         // si on n'a pas de fichier uploadé on ne fait rien
-        if(!$this->$current_request->files->get('Product')) {
+        if (!$current_request->files->get('Product')) {
             return;
         }
         // on récupère l'entité c'est à dire le produit

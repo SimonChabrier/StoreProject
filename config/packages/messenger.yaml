@@ -10,7 +10,7 @@ framework:
                     use_notify: true
                     check_delayed_interval: 60000
                 retry_strategy:
-                    max_retries: 3
+                    max_retries: 0
                     multiplier: 2
                     max_delay: 0
                     # https://symfony.com/doc/current/messenger.html#retry-strategy

@@ -44,13 +44,15 @@ class ProductController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             foreach ($form->get('pictures')->getData() as $i => $picture) {
+
                 // on récupère les fichiers uploadés
-                $picture = $uploadService->uploadPictures(
-                    // 'product' est le nom du form ProductType (on enlève juste Type au nom) qui est imbriqué et 'pictures' le nom du champ de type collection dans le form parent ProductType
-                    $request->files->get('product')['pictures'][$i],
-                    $picture,
-                    $product
-                );
+                // 'product' est le nom du formType imbriqué et 'pictures' le nom du champ de type collection dans le form parent
+                $alt = $request->request->get('product')['pictures'][$i]['alt'];
+                $name = $request->request->get('product')['pictures'][$i]['name'];
+                $file = $request->files->get('product')['pictures'][$i];
+                
+                $picture = $uploadService->processAndUploadPicture($alt, $name, $file, $product);
+            
                 // on persiste les images au fur et à mesure
                 $manager->persist($picture);
             }
@@ -124,12 +126,12 @@ class ProductController extends AbstractController
             //$filesArray = [];
             foreach ($form->get('pictures')->getData() as $i => $picture) {
                 // on récupère les fichiers uploadés
-                $picture = $uploadService->uploadPictures(
-                    // 'product' est le nom du formType imbriqué et 'pictures' le nom du champ de type collection dans le form parent
-                    $request->files->get('product')['pictures'][$i],
-                    $picture,
-                    $product
-                );
+                // 'product' est le nom du formType imbriqué et 'pictures' le nom du champ de type collection dans le form parent
+                $alt = $request->request->get('product')['pictures'][$i]['alt'];
+                $name = $request->request->get('product')['pictures'][$i]['name'];
+                $file = $request->files->get('product')['pictures'][$i];
+                
+                $picture = $uploadService->processAndUploadPicture($alt, $name, $file, $product);
        
                 // on va utiliser Messenger pour repasser la main directement 
                 // au service UploadService qui va se charger de redimensionner les images

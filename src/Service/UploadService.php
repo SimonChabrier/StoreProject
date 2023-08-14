@@ -104,35 +104,29 @@ class UploadService
         }
     }
 
-    /**
-     * Upload d'une collection d'images en synchrone sans Messenger
-     *
-     * @param array $filesArray of UploadedFile type
-     * @param Entity $pictureObjet
-     * @param Entity $productObject
-     * @return Picture
-     */
-    public function uploadPictures(array $files, $pictureObjet, $productObject): Object
-    {   
-        foreach($files as $file) {
-            // on génère un nom de fichier unique pour le fichier webp qui sera créé
-            $fileName = self::setUniqueName();
-            // on stocke le fichier dans les 4 dossiers de stockage des images
-            self::moveAll($file, $fileName, 80);
-            // on stocke le fichier original dans le dossier $picDir
-            $file->move($this->picDir, $fileName);
-            // A chaque itération, on initialise les propriétés de l'objet Picture avec les infos du formulaire
-            $pictureObjet
-                        ->setName($pictureObjet->getName())
-                        ->setAlt($pictureObjet->getAlt())
-                        ->setProduct($productObject)                        
-                        //->setGallery($galleryObject)
-                        ->setFileName($fileName);
-        }
-        // A chaque itération, on retourne l'objet Picture initialisé avec un nom de fichier unique pour le stocker en BDD 
-        // utlisé ensuite pour construire l'affichage du fichier dans la vue.
-        return $pictureObjet;
+
+    //TODO
+    public function processAndUploadPicture(string $name,string $alt, $fileData, $product): Picture
+    {
+        $fileName = $this->setUniqueName();
+        $this->moveAll($fileData, $fileName, 80);
+        $this->moveOriginalFile($fileData, $fileName);
+        
+        $picture = new Picture();
+        $picture
+            ->setName($name)
+            ->setAlt($alt)
+            ->setProduct($product)
+            ->setFileName($fileName);
+        // on retourne l'objet Picture initialisé avec un nom de fichier unique pour le stocker en BDD
+        return $picture;
     }
+
+    private function moveOriginalFile($fileData, $fileName): void
+    {
+        $fileData['file']->move($this->picDir, $fileName);
+    }
+
     
     /**
      * Uploade d'un fichier unique
@@ -187,11 +181,11 @@ class UploadService
      * @param String $fileName (nom du fichier unique généré qui set setfileName() de l'objet Picture pour le stocker en BDD et l'utiliser pour construire l'affichage dans la vue)
      * @return void
      */
-    public function moveAll($file, $fileName)
+    public function moveAll($fileData, $fileName)
     {   
         // on redimensionne l'image et stcoke en local avec le service ResizerService
-        $this->resizerService->cropAndMoveAllPictures($file, $fileName, 80);
-        $this->resizerService->slider1280($file, $fileName, 50);
+        $this->resizerService->cropAndMoveAllPictures($fileData['file'], $fileName, 80);
+        $this->resizerService->slider1280($fileData['file'], $fileName, 50);
     }
 
     // TODO a améliorer sur la gestion des repertoires

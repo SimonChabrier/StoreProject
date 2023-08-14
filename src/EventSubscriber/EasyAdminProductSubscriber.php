@@ -141,7 +141,6 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
      */
     public function deleteOrphansPictures()
     {
-        //dd('deleteOrphansPictures');
         $orphan_pictures = $this->em->getRepository(Picture::class)->findBy(['product' => null]);
 
         $orphan_pictures_count = count($orphan_pictures);
@@ -152,6 +151,7 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
             $this->uploadService->deletePictures($orphan_picture);
             $orphan_pictures_deleted_count++;
         }
+
         if ($orphan_pictures_count === $orphan_pictures_deleted_count) {
             return true;
         } else {
@@ -159,7 +159,12 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         }
     }
 
-    // nettoyer la soumission du formulaire
+    /**
+     * nettoyer la soumission du formulaire
+     *
+     * @param Entity $product
+     * @return void
+     */
     public function cleanSubmitedFormPictures($product)
     {
         // on enlève les images qui n'ont pas de nom de fichier parce que EasyAdmin ajoute directement

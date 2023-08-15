@@ -44,22 +44,8 @@ class JsonManager extends AbstractController
      */
     public function jsonFileInit($object, $context, $fileName, $format)
     {   
-        // supprimer le fichier json existant qui n'est plus à jour
-        // car on a modifié une entité
-        // if ($this->checkJsonFile($fileName)) {
-        //     $fileCreationDate = $this->checkJsonFile($fileName);
-        //     $fileCreationDate = date('Y-m-d H:i:s', $fileCreationDate);
-        //     $fileCreationDate = new \DateTime($fileCreationDate);
-        //     $now = new \DateTime();
-        //     $interval = $now->diff($fileCreationDate);
-        //     $interval = $interval->format('%i');
-        //     if ($interval > 1) {
-        //         $this->jsonFileDelete($fileName);
-        //     }
-        //     $this->jsonFileDelete($fileName);
-        // }
-
-//$this->jsonFileDelete($fileName);
+// todo pose problème si on utilise messenger il faudra utiliser le workflow ou le post persit pour créer le fichier json
+$this->jsonFileDelete($fileName);
         
         // TODO à isoler dans une fonction checkJsonDirectory pour initialiser le repertoire json
         $publicDirectory = $this->getParameter('kernel.project_dir').'/public';

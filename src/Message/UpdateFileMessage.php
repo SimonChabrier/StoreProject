@@ -7,18 +7,18 @@ class UpdateFileMessage
 {
     private $name = 'nom par défaut';
     private $alt = 'alt par défaut';
-    private $product;
+    private $productId;
     private $tempFileName;
 
     public function __construct(
         string $name,
         string $alt,
-        $product,
+        int $productId,
         $tempFileName
     ) {
         $this->name = $name;
         $this->alt = $alt;
-        $this->product = $product;
+        $this->productId = $productId;
         $this->tempFileName = $tempFileName;
     }
 
@@ -30,9 +30,9 @@ class UpdateFileMessage
     {   
         return $this->alt;
     }
-    public function getProduct()
+    public function getProductId()
     {   
-        return $this->product;
+        return $this->productId;
     }
     public function getTempFileName()
     {   

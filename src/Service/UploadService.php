@@ -108,25 +108,34 @@ class UploadService
 
     //TODO
     public function processAndUploadPicture(string $name,string $alt, $fileData, $product): Picture
-    {
-        $fileName = $this->setUniqueName();
-        $this->moveAll($fileData, $fileName, 80);
-        //$this->moveOriginalFile($fileData, $fileName);
-                
+    {   
+        // si messenger alors $product est un ID sinon c'est un objet Product mais findOneBy va le trouver dans les 2 cas
+        // je sui sobligé de faire comme ça pour le moment en utilisant messenger
+        $product = $this->manager->getRepository(Product::class)->findOneBy(['id' => $product]);
+      
+        if(!$product) {
+            throw new \Exception('Le produit n\'existe pas');
+        } else {
+
+            $fileName = $this->setUniqueName();
+            $this->moveAll($fileData, $fileName, 80);
+            $this->moveOriginalFile($fileData, $fileName);
+
             // Crée une nouvelle instance de Picture
             $picture = new Picture();
             $picture
                 ->setName($name)
                 ->setAlt($alt)
-                ->setFileName($fileName)
-                ->setProduct($product);
+                ->setFileName($fileName);
+            // Associez l'entité Picture au produit
+            $picture->setProduct($product);
 
-            // on persite et on flush
+            // Persistez et flushiez l'entité Picture
             $this->manager->persist($picture);
-            $productRepository = $this->manager->getRepository(Product::class);
-            $productRepository->add($product, true);
-            // si pas messenger on retourne l'objet picture
+            $this->manager->flush();
+
             return $picture;
+        }
     }
 
     public function moveOriginalFile($fileData, $fileName): void

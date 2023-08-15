@@ -5,18 +5,18 @@ namespace App\Message;
 
 class UpdateFileMessage
 {
-    private $name;
-    private $alt;
-    private $id;
+    private $name = 'nom par défaut';
+    private $alt = 'alt par défaut';
+    private $product;
 
     public function __construct(
         string $name,
         string $alt,
-        int $id
+        $product
     ) {
         $this->name = $name;
         $this->alt = $alt;
-        $this->id = $id;
+        $this->product = $product;
     }
 
     public function getName(): string
@@ -27,8 +27,8 @@ class UpdateFileMessage
     {   
         return $this->alt;
     }
-    public function getProductId()
+    public function getProduct()
     {   
-        return $this->id;
+        return $this->product;
     }
 }

@@ -34,7 +34,7 @@ class Product
      * @ORM\ManyToOne(
      *      targetEntity=Category::class, 
      *      inversedBy="products", 
-
+     *      cascade={"persist"}
      *  )
      * @Groups({"product:read"})
      */
@@ -118,7 +118,11 @@ class Product
     private $productData = [];
 
     /**
-     * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="products")
+     * @ORM\ManyToOne(
+     * targetEntity=Brand::class, 
+     * inversedBy="products",
+     * cascade={"persist"}
+     * )
      * @Groups({"product:read"})
      */
     private $brand;

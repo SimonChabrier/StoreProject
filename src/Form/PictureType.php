@@ -17,11 +17,13 @@ class PictureType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom de l\'image',
-                'required' => true,
+                'required' => false,
+                'empty_data' => 'image du produit',
             ])
             ->add('alt', TextType::class, [
                 'label' => 'Description de l\'image',
-                'required' => true,
+                'required' => false,
+                'empty_data' => 'description de l\'image',
             ])
             // non mapped, juste pour créer un input récupérer le fichier dans le controller
             // https://symfonycasts.com/screencast/symfony-uploads/upload-in-form

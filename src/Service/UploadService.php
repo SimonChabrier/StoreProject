@@ -116,11 +116,17 @@ $this->moveAll($fileData, $fileName, 80);
         $picture
             ->setName($name)
             ->setAlt($alt)
-            ->setProduct($product)
+            //->setProduct($product->getid())
             ->setFileName($fileName);
-// TODO test pour messenger
+// TODO problème ça recrée un nouveau produit à chaque fois au lieu de mettre à jour le produit existant
         // on persiste le produit
         $this->manager->persist($picture);
+        $this->manager->flush();
+
+        // on ajoute la picture au produit
+        $product->addPicture($picture);
+        // on persiste le produit
+        $this->manager->persist($product);
         $this->manager->flush();
 
         // on retourne l'objet Picture initialisé avec un nom de fichier unique pour le stocker en BDD
@@ -132,11 +138,10 @@ $this->moveAll($fileData, $fileName, 80);
         $fileData['file']->move($this->picDir, $fileName);
     }
 
-    public function createTempFile($fileData, $fileName)
+    public function createTempFile($fileData)
     {
         $fileName = $this->setUniqueName();
         $fileData['file']->move($this->picDir, $fileName);
-        
         return $fileName;
     }
 

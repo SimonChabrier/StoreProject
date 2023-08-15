@@ -148,17 +148,22 @@ class ProductController extends AbstractController
                     // on utilise Messenger pour traiter les images uploadées en asynchrone
 
                     // on récupère le fichier uploadé
-                    $file = $request->files->get('product')['pictures'][$i]; 
+                    $file = $request->files->get('product')['pictures'][$i];                     
                     // je déplace le fichier dans le dossier des images originales 
-                    $name = $uploadService->createTempFile($file, $name);
-                    
-                    $bus->dispatch(
-                        new UpdateFileMessage(
-                            $name,
-                            $alt,
-                            serialize($product)
-                        )
-                    );
+                    $tempFileName = $uploadService->createTempFile($file);
+
+                    if($tempFileName){
+                        $bus->dispatch(
+                            new UpdateFileMessage(
+                                $name,
+                                $alt,
+                                serialize($product),
+                                $tempFileName,
+                            )
+                        );
+                    } else {
+                        $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
+                    }
                 }  
                 
                 return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);

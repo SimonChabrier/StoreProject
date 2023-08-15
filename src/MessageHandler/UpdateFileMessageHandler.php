@@ -26,7 +26,7 @@ class UpdateFileMessageHandler implements MessageHandlerInterface
     public function updateFile($message)
     {   
         // On récupère le fichier dans le repertoire des fichiers originaux en cherchant avec son nom unique
-        $tempFile = $this->uploadService->getTempFile($message->getName());
+        $tempFile = $this->uploadService->getTempFile($message->getTempFileName());
         // on récumère le produit avec son id pour pouvoir lui ajouter l'image
         //$product = $this->entityManager->find('App\Entity\Product', $message->getProductId());
 
@@ -43,7 +43,7 @@ class UpdateFileMessageHandler implements MessageHandlerInterface
 
         if($picture) {
             // on supprime le fichier original
-            // $this->uploadService->deleteTempFile($tempFile);
+            //$this->uploadService->deleteTempFile($tempFile);
         }
     }
 }

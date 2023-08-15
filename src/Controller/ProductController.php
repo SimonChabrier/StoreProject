@@ -11,6 +11,7 @@ use App\Service\UploadService;
 use App\Message\UpdateFileMessage;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,7 +25,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ProductController extends AbstractController
 {   
 
-    const USE_MESSAGE_BUS = false;
+    const USE_MESSAGE_BUS = true;
 
     /**
      * @Route("/", name="app_product_index", methods={"GET"})
@@ -57,7 +58,7 @@ class ProductController extends AbstractController
                 $file = $request->files->get('product')['pictures'][$i];
                 
                 $picture = $uploadService->processAndUploadPicture($alt, $name, $file, $product);
-            
+
                 // on persiste les images au fur et à mesure
                 $manager->persist($picture);
             }
@@ -121,7 +122,8 @@ class ProductController extends AbstractController
         ProductRepository $productRepository, 
         EntityManagerInterface $manager, 
         UploadService $uploadService,
-        MessageBusInterface $bus
+        MessageBusInterface $bus,   
+        SerializerInterface $serializer
         ): Response
     {   
         $form = $this->createForm(ProductType::class, $product);
@@ -137,22 +139,20 @@ class ProductController extends AbstractController
                 $file = $request->files->get('product')['pictures'][$i];
                 
                 if(!self::USE_MESSAGE_BUS){
-                    $picture = $uploadService->processAndUploadPicture($alt, $name, $file, $product);
-                    // $manager->persist($picture);
-                    // $productRepository->add($product, true);
+                    $uploadService->processAndUploadPicture($alt, $name, $file, $product);
                     return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
                 } else {
-                    
+                    // TODO a debugger
                     // on utilise Messenger pour traiter les images uploadées en asynchrone                    
                     // je déplace le fichier dans le dossier des images originales 
                     $tempFileName = $uploadService->createTempFile($file);
-
+        
                     if($tempFileName){
                         $bus->dispatch(
                             new UpdateFileMessage(
                                 $name,
                                 $alt,
-                                serialize($product),
+                                $product->getId(),
                                 $tempFileName,
                             )
                         );

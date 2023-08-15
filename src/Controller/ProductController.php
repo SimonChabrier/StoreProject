@@ -146,6 +146,8 @@ class ProductController extends AbstractController
                 } else {
                     
                     // on envoie un message à la file d'attente
+
+                    // on récupère le fichier uploadé
                     $file = $request->files->get('product')['pictures'][$i]['file']; 
                     // je donne directement le nom unique au fichier pour éviter de le créer dans le service d'upload
                     $name = $uploadService->setUniqueName();

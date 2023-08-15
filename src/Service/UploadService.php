@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Picture;
+use App\Entity\Product;
 use App\Service\ResizerService;
 
 use Symfony\Component\Workflow\Marking;
@@ -109,28 +110,23 @@ class UploadService
     public function processAndUploadPicture(string $name,string $alt, $fileData, $product): Picture
     {
         $fileName = $this->setUniqueName();
-$this->moveAll($fileData, $fileName, 80);
-//$this->moveOriginalFile($fileData, $fileName);
-        
-        $picture = new Picture();
-        $picture
-            ->setName($name)
-            ->setAlt($alt)
-            //->setProduct($product->getid())
-            ->setFileName($fileName);
-// TODO problème ça recrée un nouveau produit à chaque fois au lieu de mettre à jour le produit existant
-        // on persiste le produit
-        $this->manager->persist($picture);
-        $this->manager->flush();
+        $this->moveAll($fileData, $fileName, 80);
+        //$this->moveOriginalFile($fileData, $fileName);
+                
+            // Crée une nouvelle instance de Picture
+            $picture = new Picture();
+            $picture
+                ->setName($name)
+                ->setAlt($alt)
+                ->setFileName($fileName)
+                ->setProduct($product);
 
-        // on ajoute la picture au produit
-        $product->addPicture($picture);
-        // on persiste le produit
-        $this->manager->persist($product);
-        $this->manager->flush();
-
-        // on retourne l'objet Picture initialisé avec un nom de fichier unique pour le stocker en BDD
-        return $picture;
+            // on persite et on flush
+            $this->manager->persist($picture);
+            $productRepository = $this->manager->getRepository(Product::class);
+            $productRepository->add($product, true);
+            // si pas messenger on retourne l'objet picture
+            return $picture;
     }
 
     public function moveOriginalFile($fileData, $fileName): void

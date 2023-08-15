@@ -10,12 +10,12 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 class UpdateFileMessageHandler implements MessageHandlerInterface
 {   
     private $uploadService;
-    //private $entityManager;
+    private $entityManager;
 
     public function __construct(UploadService $uploadService, EntityManagerInterface $entityManager)
     {   
         $this->uploadService = $uploadService;
-        //$this->entityManager = $entityManager;
+        $this->entityManager = $entityManager;
     }
 
     public function __invoke(UpdateFileMessage $message)
@@ -44,6 +44,7 @@ class UpdateFileMessageHandler implements MessageHandlerInterface
         if($picture) {
             // on supprime le fichier original
             //$this->uploadService->deleteTempFile($tempFile);
+    
         }
     }
 }

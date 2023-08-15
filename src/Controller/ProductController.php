@@ -24,7 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ProductController extends AbstractController
 {   
 
-    const USE_MESSAGE_BUS = true;
+    const USE_MESSAGE_BUS = false;
 
     /**
      * @Route("/", name="app_product_index", methods={"GET"})
@@ -128,7 +128,7 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //$filesArray = [];
+
             foreach ($form->get('pictures')->getData() as $i => $picture) {
                 // on récupère les fichiers uploadés
                 // 'product' est le nom du formType imbriqué et 'pictures' le nom du champ de type collection dans le form parent
@@ -137,18 +137,13 @@ class ProductController extends AbstractController
                 $file = $request->files->get('product')['pictures'][$i];
                 
                 if(!self::USE_MESSAGE_BUS){
-
                     $picture = $uploadService->processAndUploadPicture($alt, $name, $file, $product);
-                    $manager->persist($picture);
-                    $productRepository->add($product, true);
+                    // $manager->persist($picture);
+                    // $productRepository->add($product, true);
                     return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
-                
                 } else {
                     
-                    // on utilise Messenger pour traiter les images uploadées en asynchrone
-
-                    // on récupère le fichier uploadé
-                    $file = $request->files->get('product')['pictures'][$i];                     
+                    // on utilise Messenger pour traiter les images uploadées en asynchrone                    
                     // je déplace le fichier dans le dossier des images originales 
                     $tempFileName = $uploadService->createTempFile($file);
 

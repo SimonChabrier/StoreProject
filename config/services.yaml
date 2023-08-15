@@ -65,3 +65,5 @@ services:
     App\EventSubscriber\ClearCacheSubscriber:
         tags:
             - { name: doctrine.event_subscriber }
+
+        

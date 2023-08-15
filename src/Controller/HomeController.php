@@ -268,7 +268,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/delete/pictures", name="app_product_delete_pictures")
+     * @Route("/delete/pictures", name="app_delete_all_pictures")
      * @IsGranted("ROLE_ADMIN")
      */
     public function unlinkAllPictures(DeleteFileService $deleteFileService): Response

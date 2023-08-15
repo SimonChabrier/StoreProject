@@ -38,7 +38,7 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
         // Exclure les entités Order et OrderItem du cache
         if (!$entity instanceof Order && !$entity instanceof OrderItem) {
             // On supprime le cache et on refait le json
-            $this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
+//$this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
         }
     }
 
@@ -50,7 +50,7 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
         // Exclure les entités Order et OrderItem du cache
         if (!$entity instanceof Order && !$entity instanceof OrderItem) {
             // On supprime le cache et on refait le json
-            $this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
+//$this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
         }
     }
 }

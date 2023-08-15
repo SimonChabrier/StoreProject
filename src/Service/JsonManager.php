@@ -59,19 +59,23 @@ class JsonManager extends AbstractController
         //     $this->jsonFileDelete($fileName);
         // }
 
-        $this->jsonFileDelete($fileName);
-  
-        $object = $this->serializer->serialize($object, $format, ['groups' => $context]);
-        file_put_contents($fileName, $object);
+//$this->jsonFileDelete($fileName);
+        
+        // TODO à isoler dans une fonction checkJsonDirectory pour initialiser le repertoire json
         $publicDirectory = $this->getParameter('kernel.project_dir').'/public';
-
         if (!file_exists($publicDirectory.'/json')) {
             mkdir($publicDirectory.'/json', 0777, true);
         }
 
+        
+        $object = $this->serializer->serialize($object, $format, ['groups' => $context]);
+        
+        file_put_contents($fileName, $object);
+        
         rename($publicDirectory.'/'.$fileName, $publicDirectory.'/json/'.$fileName);
 
         $jsonFile =  file_get_contents($publicDirectory.'/json/'.$fileName);
+        
         return json_decode($jsonFile, true);
     }
 

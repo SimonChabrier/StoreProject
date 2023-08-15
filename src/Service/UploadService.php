@@ -105,13 +105,12 @@ class UploadService
         }
     }
 
-
     //TODO
     public function processAndUploadPicture(string $name,string $alt, $fileData, $product): Picture
     {
         $fileName = $this->setUniqueName();
-        $this->moveAll($fileData, $fileName, 80);
-        $this->moveOriginalFile($fileData, $fileName);
+$this->moveAll($fileData, $fileName, 80);
+//$this->moveOriginalFile($fileData, $fileName);
         
         $picture = new Picture();
         $picture
@@ -119,6 +118,11 @@ class UploadService
             ->setAlt($alt)
             ->setProduct($product)
             ->setFileName($fileName);
+// TODO test pour messenger
+        // on persiste le produit
+        $this->manager->persist($picture);
+        $this->manager->flush();
+
         // on retourne l'objet Picture initialisé avec un nom de fichier unique pour le stocker en BDD
         return $picture;
     }
@@ -131,28 +135,33 @@ class UploadService
     public function createTempFile($fileData, $fileName)
     {
         $fileName = $this->setUniqueName();
-        $fileData->move($this->picDir, $fileName);
+        $fileData['file']->move($this->picDir, $fileName);
+        
         return $fileName;
     }
 
-    public function getOriginalFile($fileName)
+    public function getTempFile($fileName)
     {   
         $picture = $this->picDir.'/'.$fileName;
         // on recrée un objet UploadedFile à partir du fichier original pour le passer au service ResizerService dans le format attendu.
-        $picture = new UploadedFile($picture, $fileName, null, null, true);
-        return ['file' => $picture];
-
-
-        // retourne le chemin du fichier original
-        //return $this->picDir.'/'.$fileName;
-        // on le retourne dans un tableau à la clé 'file' pour pouvoir l'utiliser dans le service ResizerService
-        //return ['file' => $this->picDir.'/'.$fileName];
+        if($picture){
+            $picture = new UploadedFile($picture, $fileName, null, null, true);
+            return ['file' => $picture];
+        } else {
+            // exception
+            throw new \Exception('Le fichier n\'existe pas');
+        }
     }
 
-    public function deleteOriginalFile($fileName)
+    public function deleteTempFile($fileName)
     {   
         // supprime le fichier original
-        unlink($this->picDir.'/'.$fileName);
+        if($fileName){
+            unlink($this->picDir.'/'.$fileName);
+        } else {
+            // exception
+            throw new \Exception('Le fichier n\'existe pas');
+        }
     }
     
     /**

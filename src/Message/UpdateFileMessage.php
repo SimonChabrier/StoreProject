@@ -31,8 +31,4 @@ class UpdateFileMessage
     {   
         return $this->id;
     }
-
-
-    
-
 }

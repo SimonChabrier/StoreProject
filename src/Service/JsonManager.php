@@ -46,8 +46,21 @@ class JsonManager extends AbstractController
     {   
         // supprimer le fichier json existant qui n'est plus à jour
         // car on a modifié une entité
-        $this->jsonFileDelete($fileName);
+        // if ($this->checkJsonFile($fileName)) {
+        //     $fileCreationDate = $this->checkJsonFile($fileName);
+        //     $fileCreationDate = date('Y-m-d H:i:s', $fileCreationDate);
+        //     $fileCreationDate = new \DateTime($fileCreationDate);
+        //     $now = new \DateTime();
+        //     $interval = $now->diff($fileCreationDate);
+        //     $interval = $interval->format('%i');
+        //     if ($interval > 1) {
+        //         $this->jsonFileDelete($fileName);
+        //     }
+        //     $this->jsonFileDelete($fileName);
+        // }
 
+        $this->jsonFileDelete($fileName);
+  
         $object = $this->serializer->serialize($object, $format, ['groups' => $context]);
         file_put_contents($fileName, $object);
         $publicDirectory = $this->getParameter('kernel.project_dir').'/public';
@@ -63,7 +76,12 @@ class JsonManager extends AbstractController
     }
 
     public function jsonFileDelete($fileName)
-    {
+    {   
+        // vérifier si le fichier json existe
+        if(!$this->checkJsonFile($fileName)) {
+            return false;
+        }
+        // si oui le supprimer
         $publicDirectory = $this->getParameter('kernel.project_dir').'/public';
         unlink($publicDirectory.'/json/'.$fileName);
         return true;

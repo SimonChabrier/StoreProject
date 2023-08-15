@@ -40,12 +40,13 @@ class UpdateFileMessageHandler implements MessageHandlerInterface
         // on récumère le produit avec son id pour pouvoir lui ajouter l'image
         $product = $this->entityManager->getRepository('App:Product')->find($message->getProductId());
         
-        // Persist and flush the entity
+        // on persiste l'image
         $this->entityManager->persist($picture);
-        //$this->entityManager->flush();
-
-        // on lui ajoute l'image
+        // on ajoute l'image au produit
         $product->addPicture($picture);
+        // on persiste le produit
+        $this->entityManager->persist($product);
+        // on enregistre en base de données
         $this->entityManager->flush();
     }
 }

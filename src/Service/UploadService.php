@@ -128,10 +128,31 @@ class UploadService
         $fileData['file']->move($this->picDir, $fileName);
     }
 
+    public function createTempFile($fileData, $fileName)
+    {
+        $fileName = $this->setUniqueName();
+        $fileData->move($this->picDir, $fileName);
+        return $fileName;
+    }
+
     public function getOriginalFile($fileName)
     {   
+        $picture = $this->picDir.'/'.$fileName;
+        // on recrée un objet UploadedFile à partir du fichier original pour le passer au service ResizerService dans le format attendu.
+        $picture = new UploadedFile($picture, $fileName, null, null, true);
+        return ['file' => $picture];
+
+
         // retourne le chemin du fichier original
-        return $this->picDir.'/'.$fileName;
+        //return $this->picDir.'/'.$fileName;
+        // on le retourne dans un tableau à la clé 'file' pour pouvoir l'utiliser dans le service ResizerService
+        //return ['file' => $this->picDir.'/'.$fileName];
+    }
+
+    public function deleteOriginalFile($fileName)
+    {   
+        // supprime le fichier original
+        unlink($this->picDir.'/'.$fileName);
     }
     
     /**

@@ -24,7 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ProductController extends AbstractController
 {   
 
-    const USE_MESSAGE_BUS = false;
+    const USE_MESSAGE_BUS = true;
 
     /**
      * @Route("/", name="app_product_index", methods={"GET"})
@@ -145,14 +145,12 @@ class ProductController extends AbstractController
                 
                 } else {
                     
-                    // on envoie un message à la file d'attente
+                    // on utilise Messenger pour traiter les images uploadées en asynchrone
 
                     // on récupère le fichier uploadé
                     $file = $request->files->get('product')['pictures'][$i]['file']; 
-                    // je donne directement le nom unique au fichier pour éviter de le créer dans le service d'upload
-                    $name = $uploadService->setUniqueName();
                     // je déplace le fichier dans le dossier des images originales 
-                    $uploadService->moveOriginalFile($file, $name);
+                    $name = $uploadService->createTempFile($file, $name);
                     
                     $bus->dispatch(
                         new UpdateFileMessage(

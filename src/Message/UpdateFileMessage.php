@@ -7,20 +7,16 @@ class UpdateFileMessage
 {
     private $name;
     private $alt;
-    private $realPath;
-    private $product;
+    private $id;
 
     public function __construct(
         string $name,
         string $alt,
-        string $realPath,
-        $product
+        int $id
     ) {
         $this->name = $name;
         $this->alt = $alt;
-        $this->realPath = $realPath;
-        $this->product = $product;
-        
+        $this->id = $id;
     }
 
     public function getName(): string
@@ -31,13 +27,9 @@ class UpdateFileMessage
     {   
         return $this->alt;
     }
-    public function getRealPath()
-    {
-        return $this->realPath;
-    }
-    public function getProduct()
+    public function getProductId()
     {   
-        return $this->product;
+        return $this->id;
     }
 
 

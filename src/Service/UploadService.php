@@ -7,6 +7,7 @@ use App\Service\ResizerService;
 
 use Symfony\Component\Workflow\Marking;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpParser\Builder\Function_;
 use Symfony\Component\Workflow\Registry;
 use Symfony\Component\Workflow\Workflow;
 
@@ -122,11 +123,16 @@ class UploadService
         return $picture;
     }
 
-    private function moveOriginalFile($fileData, $fileName): void
+    public function moveOriginalFile($fileData, $fileName): void
     {
         $fileData['file']->move($this->picDir, $fileName);
     }
 
+    public function getOriginalFile($fileName)
+    {   
+        // retourne le chemin du fichier original
+        return $this->picDir.'/'.$fileName;
+    }
     
     /**
      * Uploade d'un fichier unique

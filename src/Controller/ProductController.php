@@ -145,29 +145,18 @@ class ProductController extends AbstractController
                 
                 } else {
                     
-                    //TODO ça ne va pas parce que le traitement de messenger est async
-                    // et le fichier temporaires est supprimé avant que le message soit traité
-                    // il faut trouver un moyen de ne pas supprimer le fichier temporaire
-                    // ou stocker le fichier temporaire dans un dossier temporaire
-                    // puis le supprimer après le traitement du message...
-
                     // on envoie un message à la file d'attente
-                    $file = $request->files->get('product')['pictures'][$i]['file'];                   
-                    // on récupère les infos du fichier
-                    $fileInfo = [
-                        'path' => $file->getPathname(),
-                        'originalName' => $file->getClientOriginalName(),
-                        'mimeType' => $file->getMimeType(),
-                        'error' => $file->getError(),
-                        'test' => false
-                    ];
-
+                    $file = $request->files->get('product')['pictures'][$i]['file']; 
+                    // je donne directement le nom unique au fichier pour éviter de le créer dans le service d'upload
+                    $name = $uploadService->setUniqueName();
+                    // je déplace le fichier dans le dossier des images originales 
+                    $uploadService->moveOriginalFile($file, $name);
+                    
                     $bus->dispatch(
                         new UpdateFileMessage(
                             $name,
                             $alt,
-                            serialize($fileInfo),
-                            serialize($product)
+                            $product->getId()
                         )
                     );
                 }  

@@ -26,44 +26,26 @@ class UpdateFileMessageHandler implements MessageHandlerInterface
 
     public function updateFile($message)
     {   
-        // On déserialise le tableau associatif qui a été sérialisé dans le contrôleur
-        // $fileInfo = unserialize($message->getRealPAth());
+        // On récupère le fichier dans le repertoire des fichiers originaux en cherchant avec son nom unique
 
-        // $uploadedFile = new UploadedFile(
-        //     $fileInfo['tmp_name'],
-        //     $fileInfo['name'],
-        //     $fileInfo['type'],
-        //     $fileInfo['size'],
-        //     false,
-        //     true // Changez ici pour true si le fichier a été téléchargé via HTTP
-        // );
-
-        // je reçoit des données brutes pour le fichier il faut les traiter avant de les envoyer à la méthode processAndUploadPicture
-        $fileInfo = unserialize($message->getRealPath());
-        // je recréer un objet UploadedFile à partir des données brutes
-        $uploadedFile = new UploadedFile(
-            $fileInfo['path'],
-            $fileInfo['originalName'],
-            $fileInfo['mimeType'],
-            $fileInfo['error'],
-            $fileInfo['test'],
-        );
-
-
-    // Créer un objet UploadedFile simulé (c'est-à-dire un tableau associatif avec la clé 'file')
-    $fileData = [
-        'file' => $$uploadedFile, 
-    ];
+        $uniqueFileName = $this->uploadService->getOriginalFile($message->getName());
 
         $picture = $this->uploadService->processAndUploadPicture(
             $message->getName(),
             $message->getAlt(),
-            $fileData,
+            $uniqueFileName,
             unserialize($message->getProduct())
         );
 
+        // on récumère le produit avec son id pour pouvoir lui ajouter l'image
+        $product = $this->entityManager->getRepository('App:Product')->find($message->getProductId());
+        
         // Persist and flush the entity
         $this->entityManager->persist($picture);
+        //$this->entityManager->flush();
+
+        // on lui ajoute l'image
+        $product->addPicture($picture);
         $this->entityManager->flush();
     }
 }

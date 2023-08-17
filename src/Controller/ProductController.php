@@ -9,7 +9,6 @@ use App\Manager\CartManager;
 use App\Service\UploadService;
 use App\Message\UpdateFileMessage;
 use App\Repository\ProductRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,33 +41,57 @@ class ProductController extends AbstractController
     public function new(
         Request $request,
         ProductRepository $productRepository,
-        UploadService $uploadService
+        UploadService $uploadService,
+        MessageBusInterface $bus
     ): Response {
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             // on ajoute le produit en base de données avec le flag $flush à true pour flusher
             $productRepository->add($product, true);
+            // on récupère la valeur du champ pictures du formulaire imbriqué 'pictures' pour évaluer si il y a une image ou pas
+            $formAsPicture = $form->get('pictures')->getData();
+ 
+            if (empty($formAsPicture)) {
+                $this->addFlash('success', 'Le produit a bien été ajouté');
+                return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+            }
 
-            if($form->get('pictures')->getData() !== null) {
+            if ($formAsPicture !== null) {
                 // on récupère les fichiers uploadés dans le formulaire imbriqué 'pictures'
                 foreach ($form->get('pictures')->getData() as $i => $picture) {
 
-                    $alt = $request->request->get('product')['pictures'][$i]['alt'] ?? null;
-                    $name = $request->request->get('product')['pictures'][$i]['name'] ?? null;
-                    $file = $request->files->get('product')['pictures'][$i] ?? null;
-
-                    if ($file !== null) {
+                $alt = $picture->getAlt();
+                $name = $picture->getName();
+                $file = $request->files->get('product')['pictures'][$i]['file'];
+                    // si traitement synchrone
+                    if ($file !== null && !self::USE_MESSAGE_BUS) {
                         $uploadService->processAndUploadPicture($alt, $name, $file, $product);
+                    } else { // si traitement asynchrone
+                        $tempFileName = $uploadService->createTempFile($file);
+
+                        if ($tempFileName) {
+                            $bus->dispatch(
+                                new UpdateFileMessage(
+                                    $name,
+                                    $alt,
+                                    $product->getId(),
+                                    $tempFileName,
+                                )
+                            );
+                            
+                            $this->addFlash('success', 'Le produit a été ajouté, les images sont en cours de traitement');
+                            return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+
+                        } else {
+                            $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
+                        }
                     }
                 }
             }
-            
-            $this->addFlash('success', 'Le produit a bien été ajouté');
-            return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('product/new.html.twig', [
@@ -135,9 +158,9 @@ class ProductController extends AbstractController
                 // 'product' est le nom du formType de Product 
                 // 'pictures' le nom du champ de type collection dans le form parent 
                 // c'est sur cette propriété qu'on imbrique le form PictureType
-                $alt = $request->request->get('product')['pictures'][$i]['alt'];
-                $name = $request->request->get('product')['pictures'][$i]['name'];
-                $file = $request->files->get('product')['pictures'][$i];
+                $alt = $picture->getAlt();
+                $name = $picture->getName();
+                $file = $request->files->get('product')['pictures'][$i]['file'];
 
                 if (!self::USE_MESSAGE_BUS) {
                     $uploadService->processAndUploadPicture($alt, $name, $file, $product);
@@ -160,9 +183,9 @@ class ProductController extends AbstractController
                         $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
                     }
                 }
-
-                return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
             }
+
+            return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('product/edit.html.twig', [

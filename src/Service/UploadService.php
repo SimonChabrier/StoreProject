@@ -101,7 +101,7 @@ class UploadService
     }
 
     //TODO
-    public function processAndUploadPicture(string $name,string $alt, $fileData, $product): Picture
+    public function processAndUploadPicture(string $name,string $alt, $filesData, $product): Picture
     {   
         // si messenger alors $product est un ID sinon c'est un objet Product mais findOneBy va le trouver dans les 2 cas
         // je sui sobligé de faire comme ça pour le moment en utilisant messenger
@@ -111,36 +111,39 @@ class UploadService
             throw new \Exception('Le produit n\'existe pas');
         } else {
 
-            $fileName = $this->setUniqueName();
-            $this->moveAll($fileData, $fileName, 80);
-            $this->moveOriginalFile($fileData, $fileName);
+            foreach($filesData as $fileData) {
+                // on génère un nom de fichier unique pour le fichier webp qui sera créé
+                $fileName = $this->setUniqueName();
+                $this->moveAll($fileData, $fileName, 80);
+                $this->moveOriginalFile($fileData, $fileName);
 
-            // Crée une nouvelle instance de Picture
-            $picture = new Picture();
-            $picture
-                ->setName($name)
-                ->setAlt($alt)
-                ->setFileName($fileName);
-            // Associez l'entité Picture au produit
-            $picture->setProduct($product);
+                // Crée une nouvelle instance de Picture
+                $picture = new Picture();
+                $picture
+                    ->setName($name)
+                    ->setAlt($alt)
+                    ->setFileName($fileName);
+                // Associez l'entité Picture au produit
+                $picture->setProduct($product);
 
-            // Persistez et flushiez l'entité Picture
-            $this->manager->persist($picture);
+                // Persistez et flushiez l'entité Picture
+                $this->manager->persist($picture);
+            }
+            
             $this->manager->flush();
-
             return $picture;
         }
     }
 
     public function moveOriginalFile($fileData, $fileName): void
-    {
-        $fileData['file']->move($this->picDir, $fileName);
+    {   
+        $fileData->move($this->picDir, $fileName);
     }
 
     public function createTempFile($fileData)
     {
         $fileName = $this->setUniqueName();
-        $fileData['file']->move($this->picDir, $fileName);
+        $fileData->move($this->picDir, $fileName);
         return $fileName;
     }
 
@@ -224,8 +227,8 @@ class UploadService
     public function moveAll($fileData, $fileName)
     {   
         // on redimensionne l'image et stcoke en local avec le service ResizerService
-        $this->resizerService->cropAndMoveAllPictures($fileData['file'], $fileName, 80);
-        $this->resizerService->slider1280($fileData['file'], $fileName, 50);
+        $this->resizerService->cropAndMoveAllPictures($fileData, $fileName, 80);
+        $this->resizerService->slider1280($fileData, $fileName, 50);
     }
 
     // TODO a améliorer sur la gestion des repertoires

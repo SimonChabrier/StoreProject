@@ -82,16 +82,14 @@ class ProductController extends AbstractController
                                     $tempFileName,
                                 )
                             );
-                            
-                            $this->addFlash('success', 'Le produit a été ajouté, les images sont en cours de traitement');
-                            return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
-
                         } else {
                             $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
                         }
                     }
-                }
+                }  
             }
+                $this->addFlash('success', 'Le produit a été ajouté, les images sont en cours de traitement');
+                return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('product/new.html.twig', [

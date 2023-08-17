@@ -185,6 +185,7 @@ class ResizerService
 
     public function cropAndMoveAllPictures($file, $fileName, $quality)
     {   
+
         if(!$file instanceof UploadedFile) {
             throw new Exception('Le fichier n\'est pas une image');
         }
@@ -207,7 +208,7 @@ class ResizerService
             }
 
         } catch (Exception $e) {
-                throw new Exception('Problème lors du redimensionnement de l\'image ' . $e->getMessage());
+                throw new Exception('Problème lors du redimensionnement de l\'image : ' . $e->getMessage());
             }
     }
 

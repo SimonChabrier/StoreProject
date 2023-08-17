@@ -113,10 +113,13 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+    
 const sucessMessage = "{{ app.session.flashbag.get('success')|first }}";
 const errorMessage = "{{ app.session.flashbag.get('error')|first }}";
 const warningMessage = "{{ app.session.flashbag.get('warning')|first }}";
+    
     if (sucessMessage) {
+        //TODO il faudra dynamiser les messages
         swal("C'est tout bon !", sucessMessage, "success", {
         button: "Ok",
     });

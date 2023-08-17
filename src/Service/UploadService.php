@@ -6,15 +6,9 @@ use App\Entity\Picture;
 use App\Entity\Product;
 use App\Service\ResizerService;
 
-use Symfony\Component\Workflow\Marking;
 use Doctrine\ORM\EntityManagerInterface;
-use PhpParser\Builder\Function_;
 use Symfony\Component\Workflow\Registry;
-use Symfony\Component\Workflow\Workflow;
-
-use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Workflow\Exception\LogicException;
 
 class UploadService
 {   

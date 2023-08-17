@@ -5,8 +5,8 @@ namespace App\Message;
 
 class UpdateFileMessage
 {
-    private $name = 'nom par défaut';
-    private $alt = 'alt par défaut';
+    private $name;
+    private $alt;
     private $productId;
     private $tempFileName;
 

@@ -51,6 +51,7 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
      */
     public function setProductPictures($event)
     {
+        //TODO faire en async avec messenger...
 
         // on récupère l'entité c'est à dire le produit
         $product = $event->getEntityInstance();

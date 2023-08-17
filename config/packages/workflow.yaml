@@ -10,12 +10,12 @@ framework:
             initial_marking: new
             places:
                 - new
-                - processing
+                - process
                 - done
             transitions:
                 process:
                     from: new
-                    to: processing
+                    to: process
                 done:
-                    from: processing
+                    from: process
                     to: done

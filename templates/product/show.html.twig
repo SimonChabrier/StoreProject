@@ -28,11 +28,11 @@
         {% if picture %}
             {# get just last picture #}
             {% if loop.first %}
-                <img class="last-five-picture" src="/uploads/files/pictures_400/{{ picture.getFilename }}" alt="{{ picture.alt }}" >
+                <img class="last-five-picture" src="/uploads/files/pictures_400/{{ picture.getFilename }}" alt="{{ picture.alt }}" title="{{ picture.name }}" >
             {% endif %}
         {% endif %}
         {% else %}
-        <img class="last-five-picture" src="/assets/pictures/defaultSneakersPicture.webp" alt="" loading="lazy">
+        <img class="last-five-picture" src="/assets/pictures/defaultSneakersPicture.webp" alt="image de chaussure" loading="lazy">
     {% endfor %}
 
     <div class="gallery_small">

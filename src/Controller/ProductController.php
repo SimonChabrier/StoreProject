@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Picture;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Form\AddToCartType;
@@ -11,7 +10,6 @@ use App\Service\UploadService;
 use App\Message\UpdateFileMessage;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,7 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  * @Route("/product")
  */
 class ProductController extends AbstractController
-{   
+{
 
     const USE_MESSAGE_BUS = true;
 
@@ -41,30 +39,35 @@ class ProductController extends AbstractController
      * @Route("/new", name="app_product_new", methods={"GET", "POST"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function new(Request $request, ProductRepository $productRepository, EntityManagerInterface $manager, UploadService $uploadService): Response
-    {
+    public function new(
+        Request $request,
+        ProductRepository $productRepository,
+        UploadService $uploadService
+    ): Response {
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            foreach ($form->get('pictures')->getData() as $i => $picture) {
-
-                // on récupère les fichiers uploadés
-                // 'product' est le nom du formType imbriqué et 'pictures' le nom du champ de type collection dans le form parent
-                $alt = $request->request->get('product')['pictures'][$i]['alt'];
-                $name = $request->request->get('product')['pictures'][$i]['name'];
-                $file = $request->files->get('product')['pictures'][$i];
-                
-                $picture = $uploadService->processAndUploadPicture($alt, $name, $file, $product);
-
-                // on persiste les images au fur et à mesure
-                $manager->persist($picture);
-            }
-            // on ajoute le produit en base de données
+            
+            // on ajoute le produit en base de données avec le flag $flush à true pour flusher
             $productRepository->add($product, true);
 
+            if($form->get('pictures')->getData() !== null) {
+                // on récupère les fichiers uploadés dans le formulaire imbriqué 'pictures'
+                foreach ($form->get('pictures')->getData() as $i => $picture) {
+
+                    $alt = $request->request->get('product')['pictures'][$i]['alt'] ?? null;
+                    $name = $request->request->get('product')['pictures'][$i]['name'] ?? null;
+                    $file = $request->files->get('product')['pictures'][$i] ?? null;
+
+                    if ($file !== null) {
+                        $uploadService->processAndUploadPicture($alt, $name, $file, $product);
+                    }
+                }
+            }
+            
+            $this->addFlash('success', 'Le produit a bien été ajouté');
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -74,16 +77,16 @@ class ProductController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/{id}", name="app_product_show")
      */
     public function show(
-        Product $product, 
-        ProductRepository $pr, 
-        Request $request, 
+        Product $product,
+        ProductRepository $pr,
+        Request $request,
         CartManager $cartManager
-    ): Response
-    {   
+    ): Response {
         $form = $this->createForm(AddToCartType::class);
         $form->handleRequest($request);
 
@@ -117,37 +120,34 @@ class ProductController extends AbstractController
      * @IsGranted("ROLE_ADMIN")
      */
     public function edit(
-        Request $request, 
-        Product $product, 
-        ProductRepository $productRepository, 
-        EntityManagerInterface $manager, 
+        Request $request,
+        Product $product,
         UploadService $uploadService,
-        MessageBusInterface $bus,   
-        SerializerInterface $serializer
-        ): Response
-    {   
+        MessageBusInterface $bus
+    ): Response {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             foreach ($form->get('pictures')->getData() as $i => $picture) {
-                // on récupère les fichiers uploadés
-                // 'product' est le nom du formType imbriqué et 'pictures' le nom du champ de type collection dans le form parent
+                //  on récupère les fichiers uploadés dans le formulaire imbriqué 'pictures'
+                // 'product' est le nom du formType de Product 
+                // 'pictures' le nom du champ de type collection dans le form parent 
+                // c'est sur cette propriété qu'on imbrique le form PictureType
                 $alt = $request->request->get('product')['pictures'][$i]['alt'];
                 $name = $request->request->get('product')['pictures'][$i]['name'];
                 $file = $request->files->get('product')['pictures'][$i];
-                
-                if(!self::USE_MESSAGE_BUS){
+
+                if (!self::USE_MESSAGE_BUS) {
                     $uploadService->processAndUploadPicture($alt, $name, $file, $product);
                     return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
                 } else {
                     // TODO a debugger
                     // on utilise Messenger pour traiter les images uploadées en asynchrone                    
-                    // je déplace le fichier dans le dossier des images originales 
                     $tempFileName = $uploadService->createTempFile($file);
-        
-                    if($tempFileName){
+
+                    if ($tempFileName) {
                         $bus->dispatch(
                             new UpdateFileMessage(
                                 $name,
@@ -159,8 +159,8 @@ class ProductController extends AbstractController
                     } else {
                         $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
                     }
-                }  
-                
+                }
+
                 return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
             }
         }
@@ -177,7 +177,7 @@ class ProductController extends AbstractController
      */
     public function delete(Request $request, Product $product, ProductRepository $productRepository, UploadService $uploadService): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
             $productRepository->remove($product, true);
         }
 
@@ -188,6 +188,4 @@ class ProductController extends AbstractController
 
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
     }
-
-
 }

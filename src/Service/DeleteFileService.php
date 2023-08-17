@@ -53,14 +53,18 @@ class DeleteFileService
             $filesToDelete = array_merge($filesToDelete, $files);
         }
 
+        // le nombre total de fichiers à supprimer dans les répertoires locaux
         $localFileCount = count($filesToDelete);
-
+        // on supprime les fichiers
         $this->fileSystem->remove($filesToDelete);
 
         // Supprimer les enregistrements de base de données
         $pictures = $this->pictureRepository->findAll();
+
+        // le nombre total d'enregistrements de fichiers base de données
         $databasePicturesCount = count($pictures);
 
+        // on initialise un compteur pour compter le nombre de fichiers supprimés
         $deletedPictureCount = 0;
 
         foreach ($pictures as $picture) {
@@ -70,8 +74,9 @@ class DeleteFileService
             $deletedPictureCount++;
         }
 
-        // on vérifie que le nombre de fichiers supprimés correspond bien au nombre d'enregistrements supprimés et au nombre de fichiers locaux
-        if ($deletedPictureCount === $databasePicturesCount && $deletedPictureCount === $localFileCount) {
+        // on vérifie qu'on a fait autant de tour de boucle de supression qu'il y a des fichier en BDD avec $deletedPictureCount === $databasePicturesCount
+        // on vérifie aussi que chaque fichier enregistré en BDD était bien dans chaque répertoire local avec $localFileCount === $databasePicturesCount * count($directories)
+        if ($deletedPictureCount === $databasePicturesCount && $localFileCount === $databasePicturesCount * count($directories)) {
             // on supprime le cache et on refait le json
             $this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
             return true;

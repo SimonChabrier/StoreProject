@@ -77,6 +77,7 @@ class DeleteFileService
             $this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
             return true;
         } else {
+            // TODO gèrer une redirection ou un flash message ou un bouton pour revenir en arrière....
             throw new \Exception('Erreur lors de la suppression des images');
         }
         

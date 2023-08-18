@@ -179,7 +179,15 @@ class ResizerService
         }
     }
 
-    public function cropAndMoveAllPictures($file, $fileName, $quality)
+    /**
+     * Crop l'image et la déplace dans les différents dossiers
+     *
+     * @param UploadedFile $file
+     * @param String $fileName
+     * @param Int $quality
+     * @return bool true si l'image a bien été créée pou rmettre à jour le workflow sinon false
+     */
+    public function cropAndMoveAllPictures($file, $fileName, $quality): bool
     {   
 
         if(!$file instanceof UploadedFile) {
@@ -201,6 +209,12 @@ class ResizerService
             foreach ($sizeAndDirs as $dir => $size) {
                 $newImg = self::cropAndAlign($img, $size[0], $size[1], 'center', 'middle');
                 imagewebp($newImg, $this->{$dir} . '/' . $fileName, $quality);
+            }
+            // si chaque image a bien été créée on retourne true
+            if(file_exists($this->pictureXSDir . '/' . $fileName) && file_exists($this->picture250Dir . '/' . $fileName) && file_exists($this->picture400Dir . '/' . $fileName) && file_exists($this->picture1200Dir . '/' . $fileName)) {
+                return true;
+            } else {
+                throw new Exception('Une erreur est survenue lors de la création des images');
             }
 
         } catch (Exception $e) {

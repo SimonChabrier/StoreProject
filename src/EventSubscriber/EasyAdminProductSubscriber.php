@@ -79,13 +79,13 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
             // on boucle sur les images uploadées pour les traiter
             foreach ($submited_files as $i => $submited_file) {
                 if ($submited_file['file'] !== null) {
-                    [$name, $alt] = [$submited_data[$i]['name'], $submited_data[$i]['alt']];
-                    // on utilise le service d'upload pour traiter et uploader l'image
-                    // il nous retourne l'objet Picture créé
-                    $newPicture = $this->uploadService->uploadProductPictures($name, $alt, $submited_file, $product);
-                    
-                    $this->em->persist($newPicture);
-                    $product->addPicture($newPicture);
+                    // on destructe le tableau pour récupérer les données de chaque image
+                    [$name, $alt, $file] = [$submited_data[$i]['name'], $submited_data[$i]['alt'], $submited_file['file']];
+                    // on crée un fichier temporaire pour pouvoir le traiter
+                    $tempFileName = $this->uploadService->createTempFile($file);
+                    $tempFile = $this->uploadService->getTempFile($tempFileName);
+                    // on utilise le service d'upload pour traiter les images uploadées
+                    $this->uploadService->uploadProductPictures($name, $alt, $tempFile, $product);
                 }
             }
         }

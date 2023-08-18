@@ -4,12 +4,10 @@ namespace App\Service;
 
 use Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Mime\MimeTypes;
-use App\Service\UploadService;
 
 class ResizerService 
 {   
-    //private $picDir;
+
     private $pictureXSDir;
     private $picture250Dir;
     private $picture400Dir;
@@ -17,7 +15,6 @@ class ResizerService
     private $slider1280Dir;
 
     public function __construct(
-        //string $picDir,
         string $pictureXSDir, 
         string $picture250Dir, 
         string $picture400Dir, 
@@ -25,7 +22,6 @@ class ResizerService
         string $slider1280Dir
         )
     {   
-        //$this->picDir =         $picDir;
         $this->pictureXSDir =  $pictureXSDir;
         $this->picture250Dir =  $picture250Dir;
         $this->picture400Dir =  $picture400Dir;
@@ -40,7 +36,6 @@ class ResizerService
     public function getDirs(){
         
         $dirs = [
-            //$this->picDir,
             $this->pictureXSDir, 
             $this->picture250Dir, 
             $this->picture400Dir, 
@@ -86,7 +81,8 @@ class ResizerService
      * @param string $verticalAlign
      * @return void
      */
-    public function cropAndAlign($img, $cropWidth, $cropHeight, $horizontalAlign = 'center', $verticalAlign = 'middle') {
+    public function cropAndAlign($img, $cropWidth, $cropHeight, $horizontalAlign = 'center', $verticalAlign = 'middle')
+    {
                 
         // on récupère les dimensions de l'image originale
         $width = imagesx($img);
@@ -228,8 +224,8 @@ class ResizerService
         }
         
         try {
-        $img = self::getFileFormat($file);
-        imagewebp(self::cropAndAlign($img, 1600, 300, 'center', 'middle'), $this->slider1280Dir . '/' . $fileName, $quality);
+            $img = self::getFileFormat($file);
+            imagewebp(self::cropAndAlign($img, 1600, 300, 'center', 'middle'), $this->slider1280Dir . '/' . $fileName, $quality);
         } catch (Exception $e) {
             throw new Exception('Problème lors du redimensionnement de l\'image ' . $e->getMessage());
         }

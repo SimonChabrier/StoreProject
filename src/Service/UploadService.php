@@ -75,13 +75,16 @@ class UploadService
     }
 
     /**
-     * Upload d'une image unique depuis le controller Home en Asynchrone avec Messenger
+     * Création de l'image originale à partir des donnés binaires du fichier.
+     * Utilisé en synchrone directement dans le ProductController 
+     * Utilisé en  asynchrone dans UpdateFileMessageHandler.
+     * 
      * La string de l'image est transmise par le message UpdateFileMessageHandler
      * 
      * @param string $file
      * @param Entity $pictureObjet
      */
-    public function uploadOriginalPicture(string $file, string $originalName): string
+    public function saveOriginalFile(string $file, string $originalName): string
     {   
         $fileName = $originalName . '_' . $this->setUniqueName();
         // on transmet un string au format binary qui est converti en ressource GD
@@ -98,51 +101,30 @@ class UploadService
         // on retourne le nom du fichier pour l'utiliser dans toute la suite processus de redimentionnement
         return $fileName . '.webp'; // TODO à utiliser pour créer l'objet Picture dans la méthode $this->createPicture()
     }
-    /**
-     * Crée un fichier temporaire
-     *
-     * @param UploadedFile $file
-     * @return String
-     */
-    public function createTempFile($file)
-    {
-        // on récupère le nom du fichier original sans l'extension
-        //$originalFileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        // on génère un nom de fichier unique et on ajoute l'extension .webp
-        //$fileName = $originalFileName . '_' . $this->setUniqueName() . '.webp';
-        // on déplace le fichier dans le dossier temporaire
-        //$file->move($this->picDir, $fileName);
-        // on retourne le nom du fichier pour l'utiliser dans toute la suite processus de redimentionnement
-        //return $fileName;
-    }
 
     /**
      * Upload d'images pour les produits (ajout et édition)
-     * 
+     * Utilisé en synchrone directement dans le ProductController 
+     * Utilisé en  asynchrone dans UpdateFileMessageHandler.
      * @param string $name
      * @param string $alt
      * @param UploadFile $files
      * @param Entity $product (objet Product ou ID si messenger)
      */
-    public function uploadProductPictures(string $name, string $alt, string $fileName, $product): void
+    public function createProductPicture(string $name, string $alt, string $fileName, $product): void
     {   
-        $files = $this->getTempFile($fileName);
+        $files = $this->getOriginalFile($fileName);
 
         foreach ($files as $file) {
-            // ici on travaille sur le fichier qu'on recrée dans getTempFile()
-            //$fileName = $file->getClientOriginalName();
-            // on déplace le fichier original dans le dossier pictures
-            //$this->moveOriginalFile($file, $fileName);
-            // on crée un objet Picture
+
             $picture = $this->createPicture($name, $alt, $fileName, $product);
+            
             if($picture) {
                 // on met à jour le workflow de l'entité Picture
                 $this->updateWorkflowAndFlush($picture, 'process');
             }
             // on envoie le fichier original au service ResizerService pour le redimentionner et le déplacer dans les différents dossiers
-            // on déplace le fichier original dans tous les dossiers de stockage des images
            $this->sendToResizerService($file, $fileName);
-
         }
     }
 
@@ -196,6 +178,26 @@ class UploadService
     }
 
     /**
+     * Crée un fichier temporaire
+     *
+     * @param UploadedFile $file
+     * @return String
+     */
+    public function createTempFile($file)
+    {
+        // on récupère le nom du fichier original sans l'extension
+        //$originalFileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        // on génère un nom de fichier unique et on ajoute l'extension .webp
+        //$fileName = $originalFileName . '_' . $this->setUniqueName() . '.webp';
+        // on déplace le fichier dans le dossier temporaire
+        //$file->move($this->picDir, $fileName);
+        // on retourne le nom du fichier pour l'utiliser dans toute la suite processus de redimentionnement
+        //return $fileName;
+    }
+
+    
+
+    /**
      * Déplace le fichier original dans le dossier pictures
      *
      * @param UploadedFile $file
@@ -215,7 +217,7 @@ class UploadService
      * @param String $fileName
      * @return array
      */
-    public function getTempFile($fileName) : array
+    public function getOriginalFile($fileName) : array
     {   
         $file = $this->picDir . '/' . $fileName;
         // on recrée un objet UploadedFile à partir du fichier original pour le passer au service ResizerService dans le format attendu.
@@ -303,7 +305,7 @@ class UploadService
      * 
      * @return void
      */
-    public function deletePictures($file)
+    public function deletePicture($file)
     {   
         // on récupère le nom du fichier à supprimer
         $fileName = $file->getFileName();

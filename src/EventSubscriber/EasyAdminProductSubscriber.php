@@ -86,8 +86,8 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
                 $tempFileName = $this->uploadService->createTempFile($file);
                 
                 if (!self::USE_MESSAGE_BUS) {
-                    $tempFile = $this->uploadService->getTempFile($tempFileName);
-                    $this->uploadService->uploadProductPictures($name, $alt, $tempFile, $product);
+                    $tempFile = $this->uploadService->getOriginalFile($tempFileName);
+                    $this->uploadService->createProductPicture($name, $alt, $tempFile, $product);
                 } else {
                     if ($tempFileName) {
                         $this->bus->dispatch(
@@ -127,7 +127,7 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         }
 
         foreach ($entity->getPictures() as $picture) {
-            $this->uploadService->deletePictures($picture);
+            $this->uploadService->deletePicture($picture);
         }
     }
 
@@ -143,7 +143,7 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
 
         foreach ($orphan_pictures as $orphan_picture) {
             $this->em->remove($orphan_picture);
-            $this->uploadService->deletePictures($orphan_picture);
+            $this->uploadService->deletePicture($orphan_picture);
         }
     }
 

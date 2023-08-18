@@ -22,7 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ProductController extends AbstractController
 {
 
-    const USE_MESSAGE_BUS = true;
+    const USE_MESSAGE_BUS = false;
 
     /**
      * @Route("/", name="app_product_index", methods={"GET"})

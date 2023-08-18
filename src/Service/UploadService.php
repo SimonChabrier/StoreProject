@@ -98,7 +98,7 @@ class UploadService
         }
         // le fichier est crée dans le dossier pictures
         // on retourne le nom du fichier pour l'utiliser dans toute la suite processus de redimentionnement
-        return $fileName . '.webp'; // TODO à utiliser pour créer l'objet Picture dans la méthode $this->createPictureEntity()
+        return $fileName;
     }
 
     /**
@@ -188,11 +188,18 @@ class UploadService
         $file = $this->picDir . '/' . $fileName;
         // on recrée un objet UploadedFile à partir du fichier original pour le passer au service ResizerService dans le format attendu.
         if($file){
+            //return $this->createUploadFile($file, $fileName);
             $file = new UploadedFile($file, $fileName, null, null, true);
             return ['file' => $file];
         } else {
             throw new \Exception('Le fichier ' . $fileName . ' n\'existe pas');
         }
+    }
+
+    public function createUploadFile($file, $fileName)
+    {
+        $file = new UploadedFile($file, $fileName, null, null, true);
+        return ['file' => $file];
     }
 
     /**

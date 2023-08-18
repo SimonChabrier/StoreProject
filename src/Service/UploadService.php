@@ -89,10 +89,16 @@ class UploadService
             $fileName = $file->getClientOriginalName();
             // on déplace le fichier original dans le dossier pictures
             $this->moveOriginalFile($file, $fileName);
-            // on déplace le fichier original dans tous les dossiers de stockage des images
-            $this->sendToResizerService($file, $fileName);
             // on crée un objet Picture
-            $this->createPicture($name, $alt, $fileName, $product);
+            $picture = $this->createPicture($name, $alt, $fileName, $product);
+            if($picture) {
+                // on met à jour le workflow de l'entité Picture
+                $this->updateWorkflowAndFlush($picture, 'process');
+            }
+            // on envoie le fichier original au service ResizerService pour le redimentionner et le déplacer dans les différents dossiers
+            // on déplace le fichier original dans tous les dossiers de stockage des images
+           $this->sendToResizerService($file, $fileName);
+
         }
     }
 
@@ -108,7 +114,6 @@ class UploadService
      */
     public function sendToResizerService($file, $fileName)
     {   
-        // on redimensionne l'image et stcoke en local avec le service ResizerService
         $this->resizerService->cropAndMoveAllPictures($file, $fileName, 80);
         $this->resizerService->slider1280($file, $fileName, 50);
     }
@@ -120,9 +125,9 @@ class UploadService
      * @param String $alt
      * @param String $fileName
      * @param Entity $product (objet Product ou ID si messenger)
-     * @return void
+     * @return Entity $picture
      */
-    public function createPicture(string $name, string $alt, string $fileName, $product): void
+    public function createPicture(string $name, string $alt, string $fileName, $product): picture
     {   
         // On ne recherche pas le produit si c'est déjà un objet Product qui est reçu (ajout synchrone)
         // SI on reçoit un Id de produit, on recherche le produit en BDD (messenger - ajout asynchrone)
@@ -142,7 +147,8 @@ class UploadService
             ->setProduct($product);
 
         $this->manager->persist($picture);
-        $this->updateWorkflowAndFlush($picture, 'process');
+        
+        return $picture;
     }
 
     /**

@@ -5,7 +5,6 @@ namespace App\Service;
 use App\Entity\Picture;
 use App\Entity\Product;
 use App\Service\ResizerService;
-use App\Service\ClearCacheService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Workflow\Registry;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -20,7 +19,6 @@ class UploadService
     private $manager;
     private $workflows;
     private $resizerService;
-    private $cacheService;
 
 
     public function __construct(
@@ -29,8 +27,7 @@ class UploadService
             string $docDir, 
             ResizerService $resizerService,
             EntityManagerInterface $manager,
-            Registry $workflows,
-            ClearCacheService $cacheService
+            Registry $workflows
         )
     {
         $this->adminEmail =     $adminEmail;
@@ -39,7 +36,6 @@ class UploadService
         $this->resizerService = $resizerService;
         $this->manager =        $manager;
         $this->workflows =      $workflows;
-        $this->cacheService =   $cacheService;
     }
 
     /**
@@ -52,7 +48,7 @@ class UploadService
     public function setUniqueName() : string
     {   
         // on utlise un hashage md5 simple pour générer un nom de fichier unique
-        return md5 (uniqid());
+        return md5 (uniqid()) . '.webp';
     }
 
     /**
@@ -73,8 +69,7 @@ class UploadService
         try {
            $this->manager->flush();                        
         } catch (\Exception $e) {
-            // Log or handle the exception appropriately
-            throw $e;
+            throw new \Exception('Erreur lors de la mise à jour du workflow' . $e->getMessage());
         }
     }
 
@@ -88,13 +83,13 @@ class UploadService
      * @param string $file
      * @param Entity $pictureObjet
      */
-    public function saveOriginalFile(string $file, string $originalName): string
+    public function saveOriginalPictureFile(string $file, string $originalName): string
     {   
         $fileName = $originalName . '_' . $this->setUniqueName();
         // on transmet un string au format binary qui est converti en ressource GD
         $newGdRessource = imagecreatefromstring($file);
         // on crée un nouveau fichier webp à partir de la ressource.
-        $imagewebp = imagewebp($newGdRessource, $this->picDir.'/'. $fileName . '.webp', 80);
+        $imagewebp = imagewebp($newGdRessource, $this->picDir.'/'. $fileName, 80);
         // libérer la mémoire associée à la ressource GD une fois le fichier créé
         imagedestroy($newGdRessource);
         // on vérifie que le fichier a bien été créé
@@ -103,7 +98,7 @@ class UploadService
         }
         // le fichier est crée dans le dossier pictures
         // on retourne le nom du fichier pour l'utiliser dans toute la suite processus de redimentionnement
-        return $fileName . '.webp'; // TODO à utiliser pour créer l'objet Picture dans la méthode $this->createPicture()
+        return $fileName . '.webp'; // TODO à utiliser pour créer l'objet Picture dans la méthode $this->createPictureEntity()
     }
 
     /**
@@ -117,11 +112,11 @@ class UploadService
      */
     public function createProductPicture(string $name, string $alt, string $fileName, $product): void
     {   
-        $files = $this->getOriginalFile($fileName);
+        $files = $this->getOriginalPictureFile($fileName);
 
         foreach ($files as $file) {
 
-            $picture = $this->createPicture($name, $alt, $fileName, $product);
+            $picture = $this->createPictureEntity($name, $alt, $fileName, $product);
             
             if($picture) {
                 // on met à jour le workflow de l'entité Picture
@@ -157,7 +152,7 @@ class UploadService
      * @param Entity $product (objet Product ou ID si messenger)
      * @return Entity $picture
      */
-    public function createPicture(string $name, string $alt, string $fileName, $product): picture
+    public function createPictureEntity(string $name, string $alt, string $fileName, $product): picture
     {   
         // On ne recherche pas le produit si c'est déjà un objet Product qui est reçu (ajout synchrone)
         // SI on reçoit un Id de produit, on recherche le produit en BDD (messenger - ajout asynchrone)
@@ -180,88 +175,28 @@ class UploadService
 
         return $picture;
     }
-
-    /**
-     * Crée un fichier temporaire
-     *
-     * @param UploadedFile $file
-     * @return String
-     */
-    public function createTempFile($file)
-    {
-        // on récupère le nom du fichier original sans l'extension
-        //$originalFileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        // on génère un nom de fichier unique et on ajoute l'extension .webp
-        //$fileName = $originalFileName . '_' . $this->setUniqueName() . '.webp';
-        // on déplace le fichier dans le dossier temporaire
-        //$file->move($this->picDir, $fileName);
-        // on retourne le nom du fichier pour l'utiliser dans toute la suite processus de redimentionnement
-        //return $fileName;
-    }
-
     
-
     /**
-     * Déplace le fichier original dans le dossier pictures
-     *
-     * @param UploadedFile $file
-     * @param String $fileName
-     * @return void
-     */
-    public function moveOriginalFile($file, $fileName): void
-    {   
-        $file->move($this->picDir, $fileName);
-    }
-
-    
-
-    /**
-     * Récupère un fichier temporaire et crée un objet UploadedFile
+     * Récupère un fichier et crée un objet UploadedFile
+     * pour le passer au service ResizerService dans le format attendu et à la clé 'file'.
      *
      * @param String $fileName
      * @return array
      */
-    public function getOriginalFile($fileName) : array
+    public function getOriginalPictureFile($fileName) : array
     {   
         $file = $this->picDir . '/' . $fileName;
         // on recrée un objet UploadedFile à partir du fichier original pour le passer au service ResizerService dans le format attendu.
         if($file){
-            return $this->createNewUploadedFile($file, $fileName);
+            $file = new UploadedFile($file, $fileName, null, null, true);
+            return ['file' => $file];
         } else {
             throw new \Exception('Le fichier ' . $fileName . ' n\'existe pas');
         }
     }
 
     /**
-     * Crée un objet UploadedFile à partir d'un fichier
-     * 
-     * @param string $file
-     * @param string $fileName
-     * @return array
-     */
-    public function createNewUploadedFile($file, $fileName): array
-    {
-        $file = new UploadedFile($file, $fileName, null, null, true);
-        return ['file' => $file];
-    }
-
-    /**
-     * Supprime un fichier temporaire
-     *
-     * @param String $fileName
-     * @return void
-     */
-    public function deleteTempFile($fileName)
-    {   
-        if($fileName){
-            unlink($this->picDir.'/'.$fileName);
-        } else {
-            throw new \Exception('Le fichier n\'existe pas');
-        }
-    }
-    
-    /**
-     * Uploade d'un fichier unique
+     * Uploade d'un fichier unique pour un document par ex .pdf
      *
      * @param [type] $file
      * @param Entity $fileObject

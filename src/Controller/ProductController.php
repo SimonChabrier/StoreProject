@@ -196,7 +196,7 @@ class ProductController extends AbstractController
             if ($file !== null && !self::USE_MESSAGE_BUS) {
 
                 // ici le fichier initial est crée en webp et je récupère son nom pour le trouver das le repertoire et l'associer à l'entité Picture.                
-                $newFileName = $uploadService->saveOriginalFile(file_get_contents($file), pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+                $newFileName = $uploadService->saveOriginalPictureFile(file_get_contents($file), pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
                 
                 if (!$newFileName) {
                     // runtime exception simple de PHP parce que c'est une erreur qui ne peut pas être anticipée
@@ -212,8 +212,8 @@ class ProductController extends AbstractController
                 }
             } else {
                 // on utilise Messenger pour traiter les images uploadées en asynchrone
-                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $binaryContent = file_get_contents($file);
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); // retourne le nom du fichier sans l'extension
+                $binaryContent = file_get_contents($file); // retourne le contenu du fichier au format binaire (c'est une string)
 
                 if ((string)$originalName) {
                     $bus->dispatch(

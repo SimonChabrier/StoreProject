@@ -81,7 +81,7 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
                 [$name, $alt, $file] = [$data[$i]['name'], $data[$i]['alt'], $file['file']];
 
                 if (!self::USE_MESSAGE_BUS) {
-                    $newFileName = $this->uploadService->saveOriginalFile(file_get_contents($file), pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+                    $newFileName = $this->uploadService->saveOriginalPictureFile(file_get_contents($file), pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
 
                     $this->uploadService->createProductPicture(
                         $name,

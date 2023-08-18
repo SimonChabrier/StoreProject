@@ -48,7 +48,8 @@ class UploadService
      */
     public function setUniqueName() : string
     {   
-        return md5 (uniqid()).'.webp';
+        // on utlise un hashage md5 simple pour générer un nom de fichier unique
+        return md5 (uniqid());
     }
 
     /**
@@ -130,8 +131,13 @@ class UploadService
 
     public function createTempFile($fileData) : string
     {
-        $fileName = $fileData->getClientOriginalName() . '_' .$this->setUniqueName();
+        // on récupère le nom du fichier original sans l'extension
+        $originalFileName = pathinfo($fileData->getClientOriginalName(), PATHINFO_FILENAME);
+        // on génère un nom de fichier unique et on ajoute l'extension .webp
+        $fileName = $originalFileName . '_' . $this->setUniqueName() . '.webp';
+        // on déplace le fichier dans le dossier temporaire
         $fileData->move($this->picDir, $fileName);
+        // on retourne le nom du fichier pour l'utiliser dans toute la suite processus de redimentionnement
         return $fileName;
     }
 
@@ -140,12 +146,23 @@ class UploadService
         $picture = $this->picDir.'/'.$fileName;
         // on recrée un objet UploadedFile à partir du fichier original pour le passer au service ResizerService dans le format attendu.
         if($picture){
-            $picture = new UploadedFile($picture, $fileName, null, null, true);
-            return ['file' => $picture];
+            return $this->createNewUploadedFile($picture, $fileName);
         } else {
             // exception
             throw new \Exception('Le fichier n\'existe pas');
         }
+    }
+
+    /**
+     * Crée un objet UploadedFile à partir d'un fichier
+     * 
+     * @param string $picture
+     * @param string $fileName
+     * @return array
+     */
+    public function createNewUploadedFile($picture, $fileName){
+        $picture = new UploadedFile($picture, $fileName, null, null, true);
+        return ['file' => $picture];
     }
 
     public function deleteTempFile($fileName)

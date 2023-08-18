@@ -34,7 +34,7 @@ class UpdateFileMessageHandler implements MessageHandlerInterface
             return;
         }
 
-        $this->uploadService->processAndUploadPicture(
+        $this->uploadService->uploadProductPictures(
             $message->getName(),
             $message->getAlt(),
             $tempFile,

@@ -82,7 +82,7 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
                     [$name, $alt] = [$submited_data[$i]['name'], $submited_data[$i]['alt']];
                     // on utilise le service d'upload pour traiter et uploader l'image
                     // il nous retourne l'objet Picture créé
-                    $newPicture = $this->uploadService->processAndUploadPicture($name, $alt, $submited_file, $product);
+                    $newPicture = $this->uploadService->uploadProductPictures($name, $alt, $submited_file, $product);
                     
                     $this->em->persist($newPicture);
                     $product->addPicture($newPicture);

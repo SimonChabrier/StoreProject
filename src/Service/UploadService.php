@@ -46,45 +46,17 @@ class UploadService
      * @param UploadedFile $file
      * @return String
      */
-    public function setUniqueName()
+    public function setUniqueName() : string
     {   
-        // on génère un nom de fichier unique et on va l'utliser pour stocker toutes les images
-        // on les récupérera à partir de leur même nom de fichier mais dans des dossiers différents
-        // ce sera plus simple pour les afficher dans la vue e fonction du besoin.
-        // on remplace l'extension par .webp
         return md5 (uniqid()).'.webp';
     }
 
     /**
-     * Upload d'une image unique depuis le controller Home en Asynchrone avec Messenger
-     * La string de l'image est transmise par le message UpdateFileMessageHandler
-     * 
-     * @param string $file
-     * @param Entity $pictureObjet
+     * met à jour le workflow de l'entité Picture
+     * et flush
+     * TODO : à améliorer voir si on peut pas faire un service générique pour tous les workflows
      */
-    public function uploadPicture(string $file, $pictureObjet): void
-    {   
-        // on génère un nom de fichier unique pour le fichier webp qui sera créé
-        // on va l'utiliser pour le nom de chaque image et pour la propriété fileName de l'objet Picture.
-        $fileName = self::setUniqueName();
-        // UpdateFileMessageHandler transmet un string $file au format binary qui est converti en ressource GD
-        $newGdRessource = imagecreatefromstring($file);
-        // on crée un nouveau fichier webp à partir de la ressource.
-        $imagewebp = imagewebp($newGdRessource, $this->picDir.'/'.$fileName, 80);
-        // on crée un nouvel objet UploadedFile à partir de $newGdRessource pour la passer au service ResizerService dans le format attendu.
-        $imagewebp = new UploadedFile($this->picDir.'/'.$fileName, $fileName, null, null, true);
-        // on redimensionne l'image avec le service ResizerService pour les 4 tailles d'affichage et on les stocke dans des dossiers différents
-        self::moveAll($imagewebp, $fileName, 80);
-        // on crée un nouvel objet Picture avec les infos reçues du formulaire et envoyées via le message UpdateFileMessage apellé dans le controller
-        $picture = new Picture();
-               $picture->setName($pictureObjet->getName())
-                    ->setAlt($pictureObjet->getAlt())
-                    ->setFileName($fileName);
-        // appliquer la transition du workflow et flusher
-        self::updateWorkflowAndFlush($picture, 'process');
-    }
-
-    public function updateWorkflowAndFlush($picture, $transition)
+    public function updateWorkflowAndFlush($picture, $transition) : void
     {   
         // on récupère le workflow de l'entité Picture
         $stateMachine = $this->workflows->get($picture, 'picture_publishing');
@@ -100,39 +72,42 @@ class UploadService
         }
     }
 
-    //TODO
-    public function processAndUploadPicture(string $name,string $alt, $filesData, $product): Picture
+    /**
+     * Upload d'images pour les produits (ajout et édition)
+     * 
+     * @param string $file
+     */
+    public function uploadProductPictures(string $name, string $alt, $filesData, $product): void
     {   
-        // si messenger alors $product est un ID sinon c'est un objet Product mais findOneBy va le trouver dans les 2 cas
-        // je sui sobligé de faire comme ça pour le moment en utilisant messenger
-        $product = $this->manager->getRepository(Product::class)->findOneBy(['id' => $product]);
-      
-        if(!$product) {
-            throw new \Exception('Le produit n\'existe pas');
-        } else {
-
-            foreach($filesData as $fileData) {
-                // on génère un nom de fichier unique pour le fichier webp qui sera créé
-                $fileName = $this->setUniqueName();
-                $this->moveAll($fileData, $fileName, 80);
-                $this->moveOriginalFile($fileData, $fileName);
-
-                // Crée une nouvelle instance de Picture
-                $picture = new Picture();
-                $picture
-                    ->setName($name)
-                    ->setAlt($alt)
-                    ->setFileName($fileName);
-                // Associez l'entité Picture au produit
-                $picture->setProduct($product);
-
-                // Persistez et flushiez l'entité Picture
-                $this->manager->persist($picture);
-            }
-            
-            $this->manager->flush();
-            return $picture;
+        foreach($filesData as $fileData) {
+            $fileName = $this->setUniqueName();
+            $this->moveAll($fileData, $fileName, 80);
+            $this->moveOriginalFile($fileData, $fileName);
+            $this->createPicture($name, $alt, $fileName, $product);
         }
+        $this->manager->flush();
+    }
+
+    /**
+     * Crée un objet Picture
+     *
+     * @param String $name
+     * @param String $alt
+     * @param String $fileName
+     * @param Entity $product (objet Product ou ID si messenger)
+     * @return void
+     */
+    public function createPicture(string $name, string $alt, string $fileName, $product): void
+    {   
+        $product = $this->manager->getRepository(Product::class)->findOneBy(['id' => $product]);
+        
+        $picture = new Picture();
+        $picture->setName($name)
+                ->setAlt($alt)
+                ->setFileName($fileName)
+                ->setProduct($product);
+
+        $this->manager->persist($picture);
     }
 
     public function moveOriginalFile($fileData, $fileName): void
@@ -140,7 +115,7 @@ class UploadService
         $fileData->move($this->picDir, $fileName);
     }
 
-    public function createTempFile($fileData)
+    public function createTempFile($fileData) : string
     {
         $fileName = $this->setUniqueName();
         $fileData->move($this->picDir, $fileName);

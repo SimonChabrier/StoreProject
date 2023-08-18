@@ -64,52 +64,54 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         if (!($product instanceof Product)) {
             return;
         }
-    
+
         $this->cleanSubmitedFormPictures($product);
-    
+
         $current_request = $this->request->getCurrentRequest();
         $data = $current_request->get('Product')['pictures'];
         $files = $current_request->files->get('Product')['pictures'];
-    
+
         if (!empty($files)) {
             // Filtrer les nouveaux fichiers pour ne traiter que les images non-null
             $newFiles = array_filter($files, function ($file) {
                 return $file['file'] !== null;
             });
-    
+
             foreach ($newFiles as $i => $file) {
                 [$name, $alt, $file] = [$data[$i]['name'], $data[$i]['alt'], $file['file']];
-                
-                // on crée d'abord un fichier original pour chaque image uploadée
-                // les reste comme le redimentionnement et le déplacement dans les dossiers se fait dans le service d'upload
-                // en synchrone ou en asynchrone. On a besoin du nom du fichier original pour créer les autres formats.
-                $tempFileName = $this->uploadService->createTempFile($file);
-                
+
                 if (!self::USE_MESSAGE_BUS) {
-                    $tempFile = $this->uploadService->getOriginalFile($tempFileName);
-                    $this->uploadService->createProductPicture($name, $alt, $tempFile, $product);
+                    $newFileName = $this->uploadService->saveOriginalFile(file_get_contents($file), pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+
+                    $this->uploadService->createProductPicture(
+                        $name,
+                        $alt,
+                        $newFileName,
+                        $product,
+                    );
                 } else {
-                    if ($tempFileName) {
-                        $this->bus->dispatch(
-                            new UpdateFileMessage(
-                                $name,
-                                $alt,
-                                $product->getId(),
-                                $tempFileName,
-                            )
-                        );
-                    } else {
-                        throw new \Exception('Une erreur est survenue lors de l\'upload de l\'image');
-                    }
+
+                    $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    $binaryContent = file_get_contents($file);
+
+                    $this->bus->dispatch(
+                        new UpdateFileMessage(
+                            $name, // la valeur saisi dans le champ name du formulaire imbriqué
+                            $alt, // la valeur saisi dans le champ alt du formulaire imbriqué
+                            $product->getId(), // l'id du produit
+                            $originalName, // le nom du fichier sans l'extension 
+                            $binaryContent // le contenu du fichier au format binaire (c'est une string)
+                        )
+                    );
                 }
             }
         }
-    
+
         $this->em->flush();
         $this->productRepository->add($product, true);
         $this->deleteProductOrphansPictures();
     }
-    
+
 
 
     /**

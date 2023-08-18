@@ -9,6 +9,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Workflow\Registry;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+// Cette classe gère l'ensemble du processus d'upload et de gestion des images. 
+// Elle utilise les fonctionnalités de ResizerService pour effectuer le redimensionnement et la manipulation des images. 
+// Elle gère également la mise à jour des workflows des objets Picture.
+
 class UploadService
 {   
     // certaines propriétés sont ajoutés ici parce que comme elles sont bindées dans services.yaml
@@ -112,7 +116,7 @@ class UploadService
      */
     public function createProductPicture(string $name, string $alt, string $fileName, $product): void
     {   
-        $files = $this->getOriginalPictureFile($fileName);
+        $files = $this->convertGdFileToUploadFile($fileName);
 
         foreach ($files as $file) {
 
@@ -123,7 +127,7 @@ class UploadService
                 $this->updateWorkflowAndFlush($picture, 'process');
             }
             // on envoie le fichier original au service ResizerService pour le redimentionner et le déplacer dans les différents dossiers
-           $this->sendToResizerService($file, $fileName);
+           $this->sendToResizerService($file, $fileName, $picture);
         }
     }
 
@@ -137,10 +141,14 @@ class UploadService
      * @param String $fileName (nom du fichier unique généré qui set setfileName() de l'objet Picture pour le stocker en BDD et l'utiliser pour construire l'affichage dans la vue)
      * @return void
      */
-    public function sendToResizerService($file, $fileName)
+    public function sendToResizerService($file, $fileName, $picture)
     {   
-        $this->resizerService->cropAndMoveAllPictures($file, $fileName, 80);
-        $this->resizerService->slider1280($file, $fileName, 50);
+        $filesExist['resizedFiles'] = $this->resizerService->cropAndMoveAllPictures($file, $fileName, 80);
+        $filesExist['sliderFile'] = $this->resizerService->slider1280($file, $fileName, 50);
+
+        if($filesExist['resizedFiles'] && $filesExist['sliderFile']) {
+            $this->updateWorkflowAndFlush($picture, 'done');
+        }
     }
 
     /**
@@ -177,29 +185,23 @@ class UploadService
     }
     
     /**
-     * Récupère un fichier et crée un objet UploadedFile
+     * Récupère un fichier à partir de son chemin sur son dossier et crée une instance de d'objet UploadedFile
      * pour le passer au service ResizerService dans le format attendu et à la clé 'file'.
      *
      * @param String $fileName
      * @return array
      */
-    public function getOriginalPictureFile($fileName) : array
+    public function convertGdFileToUploadFile($fileName) : array
     {   
         $file = $this->picDir . '/' . $fileName;
-        // on recrée un objet UploadedFile à partir du fichier original pour le passer au service ResizerService dans le format attendu.
-        if($file){
-            //return $this->createUploadFile($file, $fileName);
-            $file = new UploadedFile($file, $fileName, null, null, true);
-            return ['file' => $file];
+        
+        if (file_exists($file)) {
+            // Créer l'objet UploadedFile à partir du chemin complet du fichier
+            $uploadedFile = new UploadedFile($file, $fileName, null, null, true);
+            return ['file' => $uploadedFile];
         } else {
             throw new \Exception('Le fichier ' . $fileName . ' n\'existe pas');
         }
-    }
-
-    public function createUploadFile($file, $fileName)
-    {
-        $file = new UploadedFile($file, $fileName, null, null, true);
-        return ['file' => $file];
     }
 
     /**

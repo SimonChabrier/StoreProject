@@ -55,60 +55,28 @@ class ProductController extends AbstractController
             $productRepository->add($product, true);
             // on récupère la valeur du champ pictures du formulaire imbriqué 'pictures' pour évaluer si il y a une image ou pas
             $formPictures = $form->get('pictures')->getData();
-            
+
             if (empty($formPictures)) {
                 $this->addFlash('success', 'Le produit a bien été ajouté');
                 return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
             }
 
             if ($formPictures !== null) {
-                // on récupère les fichiers uploadés dans le formulaire imbriqué 'pictures'
-                foreach ($formPictures as $i => $picture) {
 
-                $alt = $picture->getAlt();
-                $name = $picture->getName();
-                $file = $request->files->get('product')['pictures'][$i]['file'];
+                $this->processFormPictures($formPictures, $request, $product, $uploadService, $bus);
                 
-                // on crée d'abord un fichier original pour chaque image uploadée
-                // les reste comme le redimentionnement et le déplacement dans les dossiers se fait dans le service d'upload
-                // en synchrone ou en asynchrone. On a besoin du nom du fichier original pour créer les autres formats.
-                
-                $tempFileName = $uploadService->createTempFile($file);
-                $tempFile = $uploadService->getTempFile($tempFileName);
-                
-                    // si traitement synchrone
-                    if ($file !== null && !self::USE_MESSAGE_BUS) {
-                        
-                        $uploadService->uploadProductPictures($name, $alt, $tempFile, $product);
-                        return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
-
-                    } else { 
-  
-                        if ($tempFileName) {
-                            $bus->dispatch(
-                                new UpdateFileMessage(
-                                    $name,
-                                    $alt,
-                                    $product->getId(),
-                                    $tempFileName,
-                                )
-                            );
-                        } else {
-                            $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
-                        }
-                    }
-                }  
             }
-                $this->addFlash('success', 'Produit ajouté. Images sont en cours de traitement');
-                return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+
+            $this->addFlash('success', 'Produit mis à jour. Images sont en cours de traitement.');
+            return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }
+
 
         return $this->renderForm('product/new.html.twig', [
             'product' => $product,
             'form' => $form,
         ]);
     }
-
 
     /**
      * @Route("/{id}", name="app_product_show")
@@ -169,44 +137,14 @@ class ProductController extends AbstractController
                 return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
             }
 
-        if ($formPictures !== null) {
+            if ($formPictures !== null) {
 
-            foreach ($formPictures as $i => $picture) {
+                if ($formPictures !== null) {
 
-                //  on récupère les fichiers uploadés dans le formulaire imbriqué 'pictures'
-                // 'product' est le nom du formType de Product
-                // 'pictures' le nom du champ de type collection dans le form parent
-                // c'est sur cette propriété qu'on imbrique le form PictureType
-                $alt = $picture->getAlt();
-                $name = $picture->getName();
-                $file = $request->files->get('product')['pictures'][$i]['file'];
-
-                if ($file !== null && !self::USE_MESSAGE_BUS) {
-                    // on utilise le service d'upload pour traiter les images uploadées en synchrone
-                    $tempFileName = $uploadService->createTempFile($file);
-                    $tempFile = $uploadService->getTempFile($tempFileName);
-                    $uploadService->uploadProductPictures($name, $alt, $tempFile, $product);
-                    return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
-
-                } else {
-                    // on utilise Messenger pour traiter les images uploadées en asynchrone
-                    $tempFileName = $uploadService->createTempFile($file);
-
-                    if ((string)$tempFileName) {
-                        $bus->dispatch(
-                            new UpdateFileMessage(
-                                $name,
-                                $alt,
-                                $product->getId(),
-                                $tempFileName,
-                            )
-                        );
-                    } else {
-                        $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
-                    }
+                    $this->processFormPictures($formPictures, $request, $product, $uploadService, $bus);
+                    
                 }
             }
-        }   
             $this->addFlash('success', 'Produit mis à jour. Images sont en cours de traitement.');
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -233,5 +171,66 @@ class ProductController extends AbstractController
         }
 
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * Gère la logique d'upload des images dans le formulaire imbriqué 'pictures'
+     * tout est envoyé à UploadService qui va créer l'image originale en webp.
+     * UploadService va ensuite utiliser le ResizerService pour les redimensionner.
+     * @param $formPictures
+     * @param $request
+     * @param $product
+     * @param $uploadService
+     * @param $bus
+     * @return void
+     */
+    public function processFormPictures($formPictures, $request, $product, $uploadService, $bus)
+    {
+        foreach ($formPictures as $i => $picture) {
+
+            //  on récupère les fichiers uploadés dans le formulaire imbriqué 'pictures'
+            // 'product' est le nom du formType de Product
+            // 'pictures' le nom du champ de type collection dans le form parent
+            // c'est sur cette propriété qu'on imbrique le form PictureType
+            $alt = $picture->getAlt();
+            $name = $picture->getName();
+            $file = $request->files->get('product')['pictures'][$i]['file'];
+
+            if ($file !== null && !self::USE_MESSAGE_BUS) {
+
+                // ici le fichier initial est crée en webp et je récupère son nom pour le trouver das le repertoire et l'associer à l'entité Picture.                
+                $tempFileName = $uploadService->uploadOriginalPicture(file_get_contents($file), pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+                if (!$tempFileName) {
+                    // runtime exception simple de PHP parce que c'est une erreur qui ne peut pas être anticipée
+                    // si le fichier n'est pas créé, on ne peut pas continuer le processus...
+                    new \RuntimeException('Erreur lors de la création du fichier');
+                } else {
+                    $uploadService->uploadProductPictures(
+                        $name,
+                        $alt,
+                        $tempFileName,
+                        $product,
+                    );
+                }
+            } else {
+                // on utilise Messenger pour traiter les images uploadées en asynchrone
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $binaryContent = file_get_contents($file);
+
+                if ((string)$originalName) {
+                    $bus->dispatch(
+                        new UpdateFileMessage(
+                            $name, // la valeur saisi dans le champ name du formulaire imbriqué
+                            $alt, // la valeur saisi dans le champ alt du formulaire imbriqué
+                            $product->getId(), // l'id du produit
+                            $originalName, // le nom du fichier sans l'extension 
+                            $binaryContent // le contenu du fichier au format binaire (c'est une string)
+                        )
+                    );
+                } else {
+                    $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
+                }
+            }
+        }
     }
 }

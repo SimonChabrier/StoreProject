@@ -6,7 +6,6 @@ use App\Service\UploadService;
 use App\Message\UpdateFileMessage;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-
 class UpdateFileMessageHandler implements MessageHandlerInterface
 {   
     private $uploadService;
@@ -20,25 +19,36 @@ class UpdateFileMessageHandler implements MessageHandlerInterface
 
     public function __invoke(UpdateFileMessage $message)
     {   
-        $this->updateFile($message);
+        $this->createFile($message);
     }
 
-    public function updateFile($message)
+    public function createFile($message)
     {   
-        // On récupère le fichier dans le repertoire des fichiers originaux en cherchant avec son nom unique
-        $tempFile = $this->uploadService->getTempFile($message->getTempFileName());
-        
-        if(!$tempFile) {
-            return;
+        $tempFileName = $this->uploadService->uploadOriginalPicture(
+            $message->getBinaryContent(),
+            $message->getOriginalName(),
+        );
+
+        if(!$tempFileName){
+            // runtime exception simple de PHP parce que c'est une erreur qui ne peut pas être anticipée
+            // si le fichier n'est pas créé, on ne peut pas continuer le processus...
+            new \RuntimeException('Erreur lors de la création du fichier');
         }
 
+        $this->updateFile($message, $tempFileName);
+    }
+
+    public function updateFile($message, $tempFileName)
+    {   
         $this->uploadService->uploadProductPictures(
             $message->getName(),
             $message->getAlt(),
-            $tempFile,
-            $message->getProductId()
+            $tempFileName,
+            $message->getProductId(),
         );
     }
+
+
 }
 
 

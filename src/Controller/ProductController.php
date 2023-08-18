@@ -22,7 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ProductController extends AbstractController
 {
 
-    const USE_MESSAGE_BUS = false;
+    const USE_MESSAGE_BUS = true;
 
     /**
      * @Route("/", name="app_product_index", methods={"GET"})
@@ -164,7 +164,7 @@ class ProductController extends AbstractController
 
         // delete the file from the server if it exists
         foreach ($product->getPictures() as $picture) {
-            $uploadService->deletePictures($picture);
+            $uploadService->deletePicture($picture);
         }
 
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
@@ -196,16 +196,17 @@ class ProductController extends AbstractController
             if ($file !== null && !self::USE_MESSAGE_BUS) {
 
                 // ici le fichier initial est crée en webp et je récupère son nom pour le trouver das le repertoire et l'associer à l'entité Picture.                
-                $tempFileName = $uploadService->uploadOriginalPicture(file_get_contents($file), pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
-                if (!$tempFileName) {
+                $newFileName = $uploadService->saveOriginalFile(file_get_contents($file), pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+                
+                if (!$newFileName) {
                     // runtime exception simple de PHP parce que c'est une erreur qui ne peut pas être anticipée
                     // si le fichier n'est pas créé, on ne peut pas continuer le processus...
                     new \RuntimeException('Erreur lors de la création du fichier');
                 } else {
-                    $uploadService->uploadProductPictures(
+                    $uploadService->createProductPicture(
                         $name,
                         $alt,
-                        $tempFileName,
+                        $newFileName,
                         $product,
                     );
                 }

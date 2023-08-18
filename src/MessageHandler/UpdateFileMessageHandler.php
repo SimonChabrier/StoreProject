@@ -24,7 +24,7 @@ class UpdateFileMessageHandler implements MessageHandlerInterface
 
     public function createFile($message)
     {   
-        $tempFileName = $this->uploadService->uploadOriginalPicture(
+        $tempFileName = $this->uploadService->saveOriginalFile(
             $message->getBinaryContent(),
             $message->getOriginalName(),
         );
@@ -40,7 +40,7 @@ class UpdateFileMessageHandler implements MessageHandlerInterface
 
     public function updateFile($message, $tempFileName)
     {   
-        $this->uploadService->uploadProductPictures(
+        $this->uploadService->createProductPicture(
             $message->getName(),
             $message->getAlt(),
             $tempFileName,

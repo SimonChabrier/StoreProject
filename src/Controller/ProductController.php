@@ -69,7 +69,7 @@ class ProductController extends AbstractController
                 $file = $request->files->get('product')['pictures'][$i]['file'];
                     // si traitement synchrone
                     if ($file !== null && !self::USE_MESSAGE_BUS) {
-                        $uploadService->processAndUploadPicture($alt, $name, $file, $product);
+                        $uploadService->uploadProductPictures($alt, $name, $file, $product);
                     } else { // si traitement asynchrone
                         $tempFileName = $uploadService->createTempFile($file);
 
@@ -161,7 +161,7 @@ class ProductController extends AbstractController
                 $file = $request->files->get('product')['pictures'][$i]['file'];
 
                 if (!self::USE_MESSAGE_BUS) {
-                    $uploadService->processAndUploadPicture($alt, $name, $file, $product);
+                    $uploadService->uploadProductPictures($alt, $name, $file, $product);
                     return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
                 } else {
                     // TODO a debugger

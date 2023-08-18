@@ -5,13 +5,11 @@ namespace App\Service;
 use App\Service\ClearCacheService;
 use App\Repository\PictureRepository;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class DeleteFileService
 {   
     private $fileSystem;
     private $pictureRepository;
-    private $cache;
     private $clearCacheService;
 
     const BASE_PATH = '../public/uploads/files/';
@@ -20,13 +18,11 @@ class DeleteFileService
     public function __construct(
         Filesystem $fileSystem, 
         PictureRepository $pictureRepository, 
-        AdapterInterface $cache, 
         ClearCacheService $clearCacheService
         )
     {   
         $this->fileSystem = $fileSystem;
         $this->pictureRepository = $pictureRepository;
-        $this->cache = $cache;
         $this->clearCacheService = $clearCacheService;
     }
     

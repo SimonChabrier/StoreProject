@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
+use Symfony\Component\Messenger\MessageBusInterface;
+use App\Message\UpdateFileMessage;
 
 // A utiliser après supression de l'entité Picture pour supprimer les images du dossier uploads
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityDeletedEvent;
@@ -21,17 +23,24 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
     private $request;
     private $em;
     private $productRepository;
+    private $bus;
+
+
+    const USE_MESSAGE_BUS = true;
 
     public function __construct(
         UploadService $uploadService,
         RequestStack $request,
         EntityManagerInterface $em,
-        ProductRepository $productRepository
+        ProductRepository $productRepository,
+        MessageBusInterface $bus
+
     ) {
         $this->uploadService = $uploadService;
         $this->request = $request;
         $this->em = $em;
         $this->productRepository = $productRepository;
+        $this->bus = $bus;
     }
 
     public static function getSubscribedEvents()
@@ -51,8 +60,6 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
      */
     public function setProductPictures($event)
     {
-        //TODO faire en async avec messenger...
-
         // on récupère l'entité c'est à dire le produit
         $product = $event->getEntityInstance();
         if (!($product instanceof Product)) {
@@ -71,12 +78,26 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         $current_request = $this->request->getCurrentRequest();
         $data = $current_request->get('Product')['pictures'];
         $files = $current_request->files->get('Product')['pictures'];
-        
-        if (isset($files)) {
 
+        // si la clé 'file' du tableau $files est null c'est que l'image n'a pas été modifiée
+        // on la supprime du tableau $files pour ne pas la traiter
+        $filteredFilesArray = array_filter($files, function ($file) {
+            return $file['file'] !== null;
+        });
+
+        // on réindexe le tableau pour éviter les trous dans les index
+        $files = array_values($filteredFilesArray);
+
+        // si vide on sort de la fonction
+        if (empty($files)) {
+            return;
+        }
+
+        // sinon on traite les images uploadées
+        if (isset($files)) {
             // on boucle sur les images uploadées pour les traiter
             foreach ($files as $i => $file) {
-                if ($file['file'] !== null) {
+                if ($file['file'] !== null && !self::USE_MESSAGE_BUS) {
                     // on destructe le tableau pour récupérer les données de chaque image
                     [$name, $alt, $file] = [$data[$i]['name'], $data[$i]['alt'], $file['file']];
                     // on crée un fichier temporaire pour pouvoir le traiter
@@ -84,6 +105,24 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
                     $tempFile = $this->uploadService->getTempFile($tempFileName);
                     // on utilise le service d'upload pour traiter les images uploadées
                     $this->uploadService->uploadProductPictures($name, $alt, $tempFile, $product);
+                } else {
+                    // on destructe le tableau pour récupérer les données de chaque image   
+                    [$name, $alt, $file] = [$data[$i]['name'], $data[$i]['alt'], $file['file']];
+                    // on crée un fichier temporaire pour pouvoir le traiter
+                    $tempFileName = $this->uploadService->createTempFile($file);
+                    // on envoie un message au bus pour traiter les images uploadées
+                    if($tempFileName) {
+                        $this->bus->dispatch(
+                            new UpdateFileMessage(
+                                $name,
+                                $alt,
+                                $product->getId(),
+                                $tempFileName,
+                            )
+                        );
+                    } else {
+                        throw new \Exception('Une erreur est survenue lors de l\'upload de l\'image');
+                    }
                 }
             }
         }

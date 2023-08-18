@@ -30,21 +30,23 @@ class ClearCacheService {
      * Create a new json file with the products data
      * @return void
      */
-    public function clearCacheAndJsonFile($cacheKey): void
-    {
+    public function clearCacheAndJsonFile($cacheKey = null): void
+    {   
         $this->JsonFileUtils->jsonFileInit(
             $this->productRepository->findAll(), 
             'product:read', 
             'product.json', 
             'json'
         );
-        
-        $cacheItem = $this->cache->getItem($cacheKey);
-        $isCacheHit = $cacheItem->isHit();
 
-        $isCacheHit ? $this->cache->deleteItem($cacheKey) : null;
+        if ($cacheKey !== null) {
+            $cacheItem = $this->cache->getItem($cacheKey);
+            $isCacheHit = $cacheItem->isHit();
 
-        
+            if ($isCacheHit) {
+                $this->cache->deleteItem($cacheKey);
+            }
+        }
     }
 
 

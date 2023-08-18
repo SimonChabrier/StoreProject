@@ -56,19 +56,21 @@ class UploadService
      * et flush
      * TODO : à améliorer voir si on peut pas faire un service générique pour tous les workflows
      */
-    public function updateWorkflowAndFlush($picture, $transition) : void
+    public function updateWorkflowAndFlush($picture, $transition): void
     {   
-        // on récupère le workflow de l'entité Picture
         $stateMachine = $this->workflows->get($picture, 'picture_publishing');
-        // on applique la transition
+        
+        if (!$stateMachine->can($picture, $transition)) {
+            throw new \RuntimeException(sprintf('Transition "%s" is not valid for the current state', $transition));
+        }
+        
         $stateMachine->apply($picture, $transition);
-        // on persiste et on flush
-        $this->manager->persist($picture);
-
+        
         try {
             $this->manager->flush();            
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            // Log or handle the exception appropriately
+            throw $e;
         }
     }
 
@@ -79,13 +81,13 @@ class UploadService
      */
     public function uploadProductPictures(string $name, string $alt, $filesData, $product): void
     {   
-        foreach($filesData as $fileData) {
-            $fileName = $this->setUniqueName();
+        foreach ($filesData as $fileData) {
+            // ici on travaille sur le fichier qu'on recrée dans getTempFile()
+            $fileName = $fileData->getClientOriginalName();
             $this->moveAll($fileData, $fileName, 80);
             $this->moveOriginalFile($fileData, $fileName);
             $this->createPicture($name, $alt, $fileName, $product);
         }
-        $this->manager->flush();
     }
 
     /**
@@ -99,16 +101,27 @@ class UploadService
      */
     public function createPicture(string $name, string $alt, string $fileName, $product): void
     {   
-        $product = $this->manager->getRepository(Product::class)->findOneBy(['id' => $product]);
+        // On ne recherche pas le produit si c'est déjà un objet Product qui est reçu (ajout synchrone)
+        // SI on reçoit un Id de produit, on recherche le produit en BDD (messenger - ajout asynchrone)
+        if (!($product instanceof Product)) {
+            $product = $this->manager->getRepository(Product::class)->find($product);
+        }
         
+        if (!$product) {
+            throw new \Exception('Le produit n\'existe pas');
+        }
+
         $picture = new Picture();
-        $picture->setName($name)
-                ->setAlt($alt)
-                ->setFileName($fileName)
-                ->setProduct($product);
+        $picture
+            ->setName($name)
+            ->setAlt($alt)
+            ->setFileName($fileName)
+            ->setProduct($product);
 
         $this->manager->persist($picture);
+        $this->updateWorkflowAndFlush($picture, 'process');
     }
+
 
     public function moveOriginalFile($fileData, $fileName): void
     {   
@@ -117,12 +130,12 @@ class UploadService
 
     public function createTempFile($fileData) : string
     {
-        $fileName = $this->setUniqueName();
+        $fileName = $fileData->getClientOriginalName() . '_' .$this->setUniqueName();
         $fileData->move($this->picDir, $fileName);
         return $fileName;
     }
 
-    public function getTempFile($fileName)
+    public function getTempFile($fileName) : array
     {   
         $picture = $this->picDir.'/'.$fileName;
         // on recrée un objet UploadedFile à partir du fichier original pour le passer au service ResizerService dans le format attendu.

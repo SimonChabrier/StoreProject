@@ -168,7 +168,7 @@ class ProductController extends AbstractController
                     // on utilise Messenger pour traiter les images uploadées en asynchrone                    
                     $tempFileName = $uploadService->createTempFile($file);
 
-                    if ($tempFileName) {
+                    if ((string)$tempFileName) {
                         $bus->dispatch(
                             new UpdateFileMessage(
                                 $name,

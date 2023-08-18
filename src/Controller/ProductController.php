@@ -22,7 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ProductController extends AbstractController
 {
 
-    const USE_MESSAGE_BUS = true;
+    const USE_MESSAGE_BUS = false;
 
     /**
      * @Route("/", name="app_product_index", methods={"GET"})
@@ -56,15 +56,14 @@ class ProductController extends AbstractController
             // on récupère la valeur du champ pictures du formulaire imbriqué 'pictures' pour évaluer si il y a une image ou pas
             $formPictures = $form->get('pictures')->getData();
 
+            // si pas d'image dans le formulaire imbriqué 'pictures' on met à jour le produit sans rien faire d'autre
             if (empty($formPictures)) {
                 $this->addFlash('success', 'Le produit a bien été ajouté');
                 return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
             }
-
+            // si on a des images dans le formulaire imbriqué 'pictures' on les traite.
             if ($formPictures !== null) {
-
-                $this->processFormPictures($formPictures, $request, $product, $uploadService, $bus);
-                
+                self::processFormPictures($formPictures, $request, $product, $uploadService, $bus);
             }
 
             $this->addFlash('success', 'Produit mis à jour. Images sont en cours de traitement.');
@@ -132,19 +131,17 @@ class ProductController extends AbstractController
 
             $formPictures = $form->get('pictures')->getData();
 
+            // si pas d'image dans le formulaire imbriqué 'pictures' on met à jour le produit sans rien faire d'autre
             if (empty($formPictures)) {
                 $this->addFlash('success', 'Le produit a bien été mis à jour');
                 return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
             }
 
+            // si on a des images dans le formulaire imbriqué 'pictures' on les traite.
             if ($formPictures !== null) {
-
-                if ($formPictures !== null) {
-
-                    $this->processFormPictures($formPictures, $request, $product, $uploadService, $bus);
-                    
-                }
+                self::processFormPictures($formPictures, $request, $product, $uploadService, $bus);    
             }
+
             $this->addFlash('success', 'Produit mis à jour. Images sont en cours de traitement.');
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -184,7 +181,7 @@ class ProductController extends AbstractController
      * @param $bus
      * @return void
      */
-    public function processFormPictures($formPictures, $request, $product, $uploadService, $bus)
+    private function processFormPictures($formPictures, $request, $product, $uploadService, $bus)
     {
         foreach ($formPictures as $i => $picture) {
 

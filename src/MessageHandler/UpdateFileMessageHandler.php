@@ -27,8 +27,6 @@ class UpdateFileMessageHandler implements MessageHandlerInterface
     {   
         // On récupère le fichier dans le repertoire des fichiers originaux en cherchant avec son nom unique
         $tempFile = $this->uploadService->getTempFile($message->getTempFileName());
-        // on récumère le produit avec son id pour pouvoir lui ajouter l'image
-        $productid = $message->getProductId();
         
         if(!$tempFile) {
             return;
@@ -38,7 +36,7 @@ class UpdateFileMessageHandler implements MessageHandlerInterface
             $message->getName(),
             $message->getAlt(),
             $tempFile,
-            $productid
+            $message->getProductId()
         );
     }
 }

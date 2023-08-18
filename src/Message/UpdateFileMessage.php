@@ -8,18 +8,21 @@ class UpdateFileMessage
     private $name;
     private $alt;
     private $productId;
-    private $tempFileName;
+    private $originalName;
+    private $binaryContent;
 
     public function __construct(
         string $name,
         string $alt,
         int $productId,
-        $tempFileName
+        string $originalName,
+        string $binaryContent
     ) {
         $this->name = $name;
         $this->alt = $alt;
         $this->productId = $productId;
-        $this->tempFileName = $tempFileName;
+        $this->originalName = $originalName;
+        $this->binaryContent = $binaryContent;
     }
 
     public function getName(): string
@@ -34,8 +37,12 @@ class UpdateFileMessage
     {   
         return $this->productId;
     }
-    public function getTempFileName()
+    public function getOriginalName()
     {   
-        return $this->tempFileName;
+        return $this->originalName;
+    }
+    public function getBinaryContent()
+    {
+        return $this->binaryContent;
     }
 }

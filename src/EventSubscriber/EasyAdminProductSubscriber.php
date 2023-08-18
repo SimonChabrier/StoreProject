@@ -69,18 +69,16 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         // on doit récupèrer les données de la requête avec getCurrentRequest() parce que la requête
         // est déjà passée quand on arrive dans le service.
         $current_request = $this->request->getCurrentRequest();
-
-        if (isset($current_request->files->get('Product')['pictures'])) {
-            // sur la requête on récupère les fichiers uploadés
-            $submited_files = $current_request->files->get('Product')['pictures'];
-            // sur la requête on récupère les données soumises par le formulaire (alt et name)
-            $submited_data = $current_request->get('Product')['pictures'];
+        $data = $current_request->get('Product')['pictures'];
+        $files = $current_request->files->get('Product')['pictures'];
+        
+        if (isset($files)) {
 
             // on boucle sur les images uploadées pour les traiter
-            foreach ($submited_files as $i => $submited_file) {
-                if ($submited_file['file'] !== null) {
+            foreach ($files as $i => $file) {
+                if ($file['file'] !== null) {
                     // on destructe le tableau pour récupérer les données de chaque image
-                    [$name, $alt, $file] = [$submited_data[$i]['name'], $submited_data[$i]['alt'], $submited_file['file']];
+                    [$name, $alt, $file] = [$data[$i]['name'], $data[$i]['alt'], $file['file']];
                     // on crée un fichier temporaire pour pouvoir le traiter
                     $tempFileName = $this->uploadService->createTempFile($file);
                     $tempFile = $this->uploadService->getTempFile($tempFileName);

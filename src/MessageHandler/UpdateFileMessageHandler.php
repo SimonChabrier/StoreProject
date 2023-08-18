@@ -3,17 +3,20 @@
 namespace App\MessageHandler;
 
 use App\Service\UploadService;
+use App\Service\JsonFileUtils;
 use App\Message\UpdateFileMessage;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class UpdateFileMessageHandler implements MessageHandlerInterface
 {   
     private $uploadService;
+    private $jsonFileUtils;
 
 
-    public function __construct(UploadService $uploadService)
+    public function __construct(UploadService $uploadService, JsonFileUtils $jsonFileUtils)
     {   
         $this->uploadService = $uploadService;
+        $this->jsonFileUtils = $jsonFileUtils;
 
     }
 
@@ -47,8 +50,6 @@ class UpdateFileMessageHandler implements MessageHandlerInterface
             $message->getProductId(),
         );
     }
-
-
 }
 
 

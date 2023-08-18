@@ -45,11 +45,11 @@ class JsonSubscriber implements EventSubscriberInterface
 
         if(!$fileCreationDate) {
             $products = $this->productRepository->findAll();
-$this->JsonFileUtils->jsonFileInit($products, $serializationGroups, $fileName, $serializationFormat);
+            $this->JsonFileUtils->jsonFileInit($products, $serializationGroups, $fileName, $serializationFormat);
         } else {
             if(time() - $fileCreationDate > $time) {
                 $products = $this->productRepository->findAll();
-$this->JsonFileUtils->jsonFileInit($products, $serializationGroups, $fileName, $serializationFormat);
+                $this->JsonFileUtils->jsonFileInit($products, $serializationGroups, $fileName, $serializationFormat);
             }
         }
     }

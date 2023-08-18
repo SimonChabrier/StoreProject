@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Picture;
 use App\Entity\Product;
 use App\Service\ResizerService;
+use App\Service\ClearCacheService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Workflow\Registry;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -19,6 +20,7 @@ class UploadService
     private $manager;
     private $workflows;
     private $resizerService;
+    private $cacheService;
 
 
     public function __construct(
@@ -27,7 +29,8 @@ class UploadService
             string $docDir, 
             ResizerService $resizerService,
             EntityManagerInterface $manager,
-            Registry $workflows
+            Registry $workflows,
+            ClearCacheService $cacheService
         )
     {
         $this->adminEmail =     $adminEmail;
@@ -36,6 +39,7 @@ class UploadService
         $this->resizerService = $resizerService;
         $this->manager =        $manager;
         $this->workflows =      $workflows;
+        $this->cacheService =   $cacheService;
     }
 
     /**
@@ -67,7 +71,7 @@ class UploadService
         $stateMachine->apply($picture, $transition);
         
         try {
-            $this->manager->flush();            
+           $this->manager->flush();                        
         } catch (\Exception $e) {
             // Log or handle the exception appropriately
             throw $e;
@@ -173,7 +177,7 @@ class UploadService
             ->setProduct($product);
 
         $this->manager->persist($picture);
-        
+
         return $picture;
     }
 

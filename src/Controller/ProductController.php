@@ -22,7 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ProductController extends AbstractController
 {
 
-    const USE_MESSAGE_BUS = true;
+    const USE_MESSAGE_BUS = false;
 
     /**
      * @Route("/", name="app_product_index", methods={"GET"})
@@ -44,6 +44,7 @@ class ProductController extends AbstractController
         UploadService $uploadService,
         MessageBusInterface $bus
     ): Response {
+
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
@@ -53,23 +54,29 @@ class ProductController extends AbstractController
             // on ajoute le produit en base de données avec le flag $flush à true pour flusher
             $productRepository->add($product, true);
             // on récupère la valeur du champ pictures du formulaire imbriqué 'pictures' pour évaluer si il y a une image ou pas
-            $formAsPicture = $form->get('pictures')->getData();
- 
-            if (empty($formAsPicture)) {
+            $formPictures = $form->get('pictures')->getData();
+            
+            if (empty($formPictures)) {
                 $this->addFlash('success', 'Le produit a bien été ajouté');
                 return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
             }
 
-            if ($formAsPicture !== null) {
+            if ($formPictures !== null) {
                 // on récupère les fichiers uploadés dans le formulaire imbriqué 'pictures'
-                foreach ($form->get('pictures')->getData() as $i => $picture) {
+                foreach ($formPictures as $i => $picture) {
 
                 $alt = $picture->getAlt();
                 $name = $picture->getName();
                 $file = $request->files->get('product')['pictures'][$i]['file'];
+                
                     // si traitement synchrone
                     if ($file !== null && !self::USE_MESSAGE_BUS) {
-                        $uploadService->uploadProductPictures($alt, $name, $file, $product);
+                        // on utilise le service d'upload pour traiter les images uploadées en synchrone
+                        $tempFileName = $uploadService->createTempFile($file);
+                        $tempFile = $uploadService->getTempFile($tempFileName);
+                        $uploadService->uploadProductPictures($name, $alt, $tempFile, $product);
+                        return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+
                     } else { // si traitement asynchrone
                         $tempFileName = $uploadService->createTempFile($file);
 
@@ -88,7 +95,7 @@ class ProductController extends AbstractController
                     }
                 }  
             }
-                $this->addFlash('success', 'Le produit a été ajouté, les images sont en cours de traitement');
+                $this->addFlash('success', 'Produit ajouté. Images sont en cours de traitement');
                 return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -151,21 +158,34 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            foreach ($form->get('pictures')->getData() as $i => $picture) {
+            $formPictures = $form->get('pictures')->getData();
+
+            if (empty($formPictures)) {
+                $this->addFlash('success', 'Le produit a bien été mis à jour');
+                return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+        if ($formPictures !== null) {
+
+            foreach ($formPictures as $i => $picture) {
+
                 //  on récupère les fichiers uploadés dans le formulaire imbriqué 'pictures'
-                // 'product' est le nom du formType de Product 
-                // 'pictures' le nom du champ de type collection dans le form parent 
+                // 'product' est le nom du formType de Product
+                // 'pictures' le nom du champ de type collection dans le form parent
                 // c'est sur cette propriété qu'on imbrique le form PictureType
                 $alt = $picture->getAlt();
                 $name = $picture->getName();
                 $file = $request->files->get('product')['pictures'][$i]['file'];
 
-                if (!self::USE_MESSAGE_BUS) {
-                    $uploadService->uploadProductPictures($alt, $name, $file, $product);
+                if ($file !== null && !self::USE_MESSAGE_BUS) {
+                    // on utilise le service d'upload pour traiter les images uploadées en synchrone
+                    $tempFileName = $uploadService->createTempFile($file);
+                    $tempFile = $uploadService->getTempFile($tempFileName);
+                    $uploadService->uploadProductPictures($name, $alt, $tempFile, $product);
                     return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+
                 } else {
-                    // TODO a debugger
-                    // on utilise Messenger pour traiter les images uploadées en asynchrone                    
+                    // on utilise Messenger pour traiter les images uploadées en asynchrone
                     $tempFileName = $uploadService->createTempFile($file);
 
                     if ((string)$tempFileName) {
@@ -182,7 +202,8 @@ class ProductController extends AbstractController
                     }
                 }
             }
-
+        }   
+            $this->addFlash('success', 'Produit mis à jour. Images sont en cours de traitement.');
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }
 

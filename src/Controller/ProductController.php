@@ -69,17 +69,21 @@ class ProductController extends AbstractController
                 $name = $picture->getName();
                 $file = $request->files->get('product')['pictures'][$i]['file'];
                 
+                // on crée d'abord un fichier original pour chaque image uploadée
+                // les reste comme le redimentionnement et le déplacement dans les dossiers se fait dans le service d'upload
+                // en synchrone ou en asynchrone. On a besoin du nom du fichier original pour créer les autres formats.
+                
+                $tempFileName = $uploadService->createTempFile($file);
+                $tempFile = $uploadService->getTempFile($tempFileName);
+                
                     // si traitement synchrone
                     if ($file !== null && !self::USE_MESSAGE_BUS) {
-                        // on utilise le service d'upload pour traiter les images uploadées en synchrone
-                        $tempFileName = $uploadService->createTempFile($file);
-                        $tempFile = $uploadService->getTempFile($tempFileName);
+                        
                         $uploadService->uploadProductPictures($name, $alt, $tempFile, $product);
                         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
 
-                    } else { // si traitement asynchrone
-                        $tempFileName = $uploadService->createTempFile($file);
-
+                    } else { 
+  
                         if ($tempFileName) {
                             $bus->dispatch(
                                 new UpdateFileMessage(

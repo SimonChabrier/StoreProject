@@ -7,6 +7,7 @@ use App\Form\ProductType;
 use App\Form\AddToCartType;
 use App\Manager\CartManager;
 use App\Service\UploadService;
+use App\Service\ClearCacheService;
 use App\Message\UpdateFileMessage;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +24,7 @@ class ProductController extends AbstractController
 {
 
     const USE_MESSAGE_BUS = true;
+    const CACHE_KEY = 'home_data';
 
     /**
      * @Route("/", name="app_product_index", methods={"GET"})
@@ -237,5 +239,16 @@ class ProductController extends AbstractController
                 }
             }
         }
+    }   
+
+    /**
+     * Vide le cache et met à jour le fichier json après la création ou la modification d'un produit
+     * au quel on ajoute pas d'image. SI on ajoute une image le cache est nétoyé plus tard après le traitement de l'image
+     * 
+     * @param ClearCacheService $clearCacheService
+     */
+    private function clearCacheOnProductCreateAndUpdate(ClearCacheService $clearCacheService) : void
+    {
+        $clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
     }
 }

@@ -45,7 +45,7 @@ class JsonFileUtils extends AbstractController
      * @return boolean
      * @return int $fileCreationDate
      */
-    public function checkJsonDir()
+    public function createJsonDirectory()
     {
         $publicDirectory = $this->getJsonPath();
 
@@ -111,7 +111,7 @@ class JsonFileUtils extends AbstractController
         $this->deleteOldJsonFile($fileName);
 
         // Check and initialize JSON directory if it doesn't exist
-        $this->checkJsonDir();
+        $this->createJsonDirectory();
 
         // Construct the full path for the JSON file
         $jsonFilePath = $this->getJsonFilePath($fileName);

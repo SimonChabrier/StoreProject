@@ -9,7 +9,9 @@ use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\EventSubscriber as DoctrineEventSubscriber;
 use Doctrine\ORM\Event\PostFlushEventArgs as PostFlushEventArgs;
-use Symfony\Component\Workflow\Event\Event;
+
+
+//! EN ATTENTE DE VOIR SI BESOIN DE REUTILISER CES EVENEMENTS OU PAS DANS LE FUTUR (ABANDONNE LE 16/AOUT/2023 POUR D'AUTRES SOLUTIONS)
 
 // Cette classe est chargée de supprimer le cache et de refaire le fichier json après chaque flush d'une entité
 // Elle est appelée à chaque fois qu'une entité est créée, modifiée ou supprimée
@@ -57,7 +59,9 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
         // };
 
         // Sinon on supprime le cache et on refait le json
-        $this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
+        // vérifier si toutes les images sont à jour avec le status 'done'
+
+       //* $this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
     }
 
     //*  NON UTILISE CAR ON UTLISE POST FLUSH
@@ -69,7 +73,7 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
         // Exclure les entités Order et OrderItem du cache
         if (!$entity instanceof Order && !$entity instanceof OrderItem) {
             // On supprime le cache et on refait le json
-            $this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
+            //$this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
         }
     }
 
@@ -83,7 +87,7 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
         if (!$entity instanceof Order && !$entity instanceof OrderItem) {
             // On supprime le cache et on refait le json
             // todo pose problème si on utilise messenger il faudra utiliser le workflow ou le post persit pour créer le fichier json
-            $this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
+//$this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
         }
     }
 }

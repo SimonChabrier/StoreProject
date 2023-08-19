@@ -65,5 +65,9 @@ services:
     App\EventSubscriber\ClearCacheSubscriber:
         tags:
             - { name: doctrine.event_subscriber }
-
-        
+    App\EventSubscriber\PictureWorkflowSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+    App\EventSubscriber\MessageProcessedSubscriber:
+        tags:
+            - { name: messenger.event_subscriber }  

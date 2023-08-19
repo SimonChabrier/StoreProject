@@ -23,7 +23,7 @@ class HomeController extends AbstractController
     private $cache;
     
     const CACHE_KEY = 'home_data';
-    const CACHE_DURATION = 0;
+    const CACHE_DURATION = 3600;
 
     public function __construct($adminEmail, AdapterInterface $cache)
     {
@@ -268,7 +268,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/delete/pictures", name="app_product_delete_pictures")
+     * @Route("/delete/pictures", name="app_delete_all_pictures")
      * @IsGranted("ROLE_ADMIN")
      */
     public function unlinkAllPictures(DeleteFileService $deleteFileService): Response

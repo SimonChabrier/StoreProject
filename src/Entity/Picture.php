@@ -42,10 +42,14 @@ class Picture
      * @ORM\ManyToOne(
      * targetEntity=Product::class,
      * inversedBy="pictures",
-     * cascade={"persist"}
      * )
      */
     private $product;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $state;
 
 
     public function getId(): ?int
@@ -98,6 +102,18 @@ class Picture
     public function setAlt(?string $alt): self
     {
         $this->alt = $alt;
+
+        return $this;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(?string $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }

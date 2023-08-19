@@ -20,7 +20,7 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"product:read"})
+     * @Groups({"product:read", "product:id"})
      */
     private $id;
 
@@ -33,8 +33,7 @@ class Product
     /**
      * @ORM\ManyToOne(
      *      targetEntity=Category::class, 
-     *      inversedBy="products", 
-
+     *      inversedBy="products"
      *  )
      * @Groups({"product:read"})
      */
@@ -43,8 +42,7 @@ class Product
     /**
      * @ORM\ManyToOne(
      *      targetEntity=SubCategory::class, 
-     *      inversedBy="products", 
-     *      cascade={"persist"}
+     *      inversedBy="products"
      *  )
      * @Groups({"product:read"})
      */
@@ -93,8 +91,7 @@ class Product
     /**
      * @ORM\ManyToOne(
      *      targetEntity=ProductType::class, 
-     *      inversedBy="products", 
-     *      cascade={"persist"}
+     *      inversedBy="products"
      *  )
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"product:read"})
@@ -118,7 +115,11 @@ class Product
     private $productData = [];
 
     /**
-     * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="products")
+     * @ORM\ManyToOne(
+     * targetEntity=Brand::class, 
+     * inversedBy="products",
+     * cascade={"persist"}
+     * )
      * @Groups({"product:read"})
      */
     private $brand;
@@ -138,7 +139,7 @@ class Product
     /**
      * @ORM\OneToMany(targetEntity=Picture::class, 
      * mappedBy="product", 
-     * cascade={"persist", "remove"})
+     * cascade={"remove"})
      * @Groups({"product:read"})
      */
     private $pictures;

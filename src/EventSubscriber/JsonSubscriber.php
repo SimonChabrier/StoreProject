@@ -2,22 +2,22 @@
 
 namespace App\EventSubscriber;
 
-use App\Service\JsonManager;
+use App\Service\JsonFileUtils;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class JsonSubscriber implements EventSubscriberInterface 
 {
-    private $jsonManager;
+    private $JsonFileUtils;
     private $productRepository;
 
     public function __construct(
-        JsonManager $jsonManager, 
+        JsonFileUtils $JsonFileUtils, 
         ProductRepository $productRepository
         )
     {
-        $this->jsonManager = $jsonManager;
+        $this->JsonFileUtils = $JsonFileUtils;
         $this->productRepository = $productRepository;
     }
 
@@ -35,7 +35,7 @@ class JsonSubscriber implements EventSubscriberInterface
         $serializationFormat = 'json';
         $serializationGroups = 'product:read';
         // $fileCreationDate vaudra false si le fichier json n'existe pas ou le timestamp de création du fichier si le fichier json existe
-        $fileCreationDate = $this->jsonManager->checkJsonFile($fileName);
+        $fileCreationDate = $this->JsonFileUtils->checkJsonFile($fileName);
         // nombre de secondes à évaluer entre la date de création du fichier et la date actuelle avant de créer un nouveau fichier json
         $time = 3600;
         
@@ -45,11 +45,11 @@ class JsonSubscriber implements EventSubscriberInterface
 
         if(!$fileCreationDate) {
             $products = $this->productRepository->findAll();
-            $this->jsonManager->jsonFileInit($products, $serializationGroups, $fileName, $serializationFormat);
+            $this->JsonFileUtils->jsonFileInit($products, $serializationGroups, $fileName, $serializationFormat);
         } else {
             if(time() - $fileCreationDate > $time) {
                 $products = $this->productRepository->findAll();
-                $this->jsonManager->jsonFileInit($products, $serializationGroups, $fileName, $serializationFormat);
+                $this->JsonFileUtils->jsonFileInit($products, $serializationGroups, $fileName, $serializationFormat);
             }
         }
     }

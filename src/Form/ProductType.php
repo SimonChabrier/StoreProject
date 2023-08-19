@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Product;
 use App\Entity\Category;
 use App\Entity\SubCategory;
+use App\Entity\Brand;
 use Symfony\Component\Form\AbstractType;
 
 
@@ -45,6 +46,12 @@ class ProductType extends AbstractType
                     'En ligne' => 1,
                     'Hors ligne' => 0,
                 ],
+            ])
+            ->add('brand', EntityType::class, [
+                'class' => Brand::class,
+                'choice_label' => 'name',
+                'multiple' => false,
+                'expanded' => true,
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,

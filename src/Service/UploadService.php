@@ -3,18 +3,15 @@
 namespace App\Service;
 
 use App\Entity\Picture;
+use App\Entity\Product;
 use App\Service\ResizerService;
-
-use Symfony\Component\Workflow\Marking;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Workflow\Registry;
-use Symfony\Component\Workflow\Workflow;
-
-use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Workflow\Exception\LogicException;
 
-use function PHPSTORM_META\map;
+// Cette classe gère l'ensemble du processus d'upload et de gestion des images. 
+// Elle utilise les fonctionnalités de ResizerService pour effectuer le redimensionnement et la manipulation des images. 
+// Elle gère également la mise à jour des workflows des objets Picture.
 
 class UploadService
 {   
@@ -52,129 +49,86 @@ class UploadService
      * @param UploadedFile $file
      * @return String
      */
-    public function setUniqueName()
+    public function setUniqueName() : string
     {   
-        // on génère un nom de fichier unique et on va l'utliser pour stocker toutes les images
-        // on les récupérera à partir de leur même nom de fichier mais dans des dossiers différents
-        // ce sera plus simple pour les afficher dans la vue e fonction du besoin.
-        // on remplace l'extension par .webp
-        return md5 (uniqid()).'.webp';
+        // on utlise un hashage md5 simple pour générer un nom de fichier unique
+        return md5 (uniqid()) . '.webp';
     }
 
     /**
-     * Upload d'une image unique depuis le controller Home en Asynchrone avec Messenger
+     * met à jour le workflow de l'entité Picture
+     * et flush
+     * TODO : à améliorer voir si on peut pas faire un service générique pour tous les workflows
+     */
+    public function updateWorkflowAndFlush($picture, $transition): void
+    {   
+        $stateMachine = $this->workflows->get($picture, 'picture_publishing');
+        
+        if (!$stateMachine->can($picture, $transition)) {
+            throw new \RuntimeException(sprintf('Transition "%s" is not valid for the current state', $transition));
+        }
+        
+        $stateMachine->apply($picture, $transition);
+        
+        try {
+           $this->manager->flush();                        
+        } catch (\Exception $e) {
+            throw new \Exception('Erreur lors de la mise à jour du workflow' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Création de l'image originale à partir des donnés binaires du fichier.
+     * Utilisé en synchrone directement dans le ProductController 
+     * Utilisé en  asynchrone dans UpdateFileMessageHandler.
+     * 
      * La string de l'image est transmise par le message UpdateFileMessageHandler
      * 
      * @param string $file
      * @param Entity $pictureObjet
      */
-    public function uploadPicture(string $file, $pictureObjet): void
+    public function saveOriginalPictureFile(string $file, string $originalName): string
     {   
-        // on génère un nom de fichier unique pour le fichier webp qui sera créé
-        // on va l'utiliser pour le nom de chaque image et pour la propriété fileName de l'objet Picture.
-        $fileName = self::setUniqueName();
-        // UpdateFileMessageHandler transmet un string $file au format binary qui est converti en ressource GD
+        $fileName = $originalName . '_' . $this->setUniqueName();
+        // on transmet un string au format binary qui est converti en ressource GD
         $newGdRessource = imagecreatefromstring($file);
         // on crée un nouveau fichier webp à partir de la ressource.
-        $imagewebp = imagewebp($newGdRessource, $this->picDir.'/'.$fileName, 80);
-        // on crée un nouvel objet UploadedFile à partir de $newGdRessource pour la passer au service ResizerService dans le format attendu.
-        $imagewebp = new UploadedFile($this->picDir.'/'.$fileName, $fileName, null, null, true);
-        // on redimensionne l'image avec le service ResizerService pour les 4 tailles d'affichage et on les stocke dans des dossiers différents
-        self::moveAll($imagewebp, $fileName, 80);
-        // on crée un nouvel objet Picture avec les infos reçues du formulaire et envoyées via le message UpdateFileMessage apellé dans le controller
-        $picture = new Picture();
-               $picture->setName($pictureObjet->getName())
-                    ->setAlt($pictureObjet->getAlt())
-                    ->setFileName($fileName);
-        // appliquer la transition du workflow et flusher
-        self::updateWorkflowAndFlush($picture, 'process');
-    }
-
-    public function updateWorkflowAndFlush($picture, $transition)
-    {   
-        // on récupère le workflow de l'entité Picture
-        $stateMachine = $this->workflows->get($picture, 'picture_publishing');
-        // on applique la transition
-        $stateMachine->apply($picture, $transition);
-        // on persiste et on flush
-        $this->manager->persist($picture);
-
-        try {
-            $this->manager->flush();            
-        } catch (\Exception $e) {
-            dd($e->getMessage());
+        $imagewebp = imagewebp($newGdRessource, $this->picDir.'/'. $fileName, 80);
+        // libérer la mémoire associée à la ressource GD une fois le fichier créé
+        imagedestroy($newGdRessource);
+        // on vérifie que le fichier a bien été créé
+        if(!$imagewebp) {
+            throw new \Exception('Le fichier n\'a pas pu être créé');
         }
+        // le fichier est crée dans le dossier pictures
+        // on retourne le nom du fichier pour l'utiliser dans toute la suite processus de redimentionnement
+        return $fileName;
     }
 
     /**
-     * Upload d'une collection d'images en synchrone sans Messenger
-     *
-     * @param array $filesArray
-     * @param Entity $pictureObjet
-     * @param Entity $productObject
-     * @return Picture
+     * Upload d'images pour les produits (ajout et édition)
+     * Utilisé en synchrone directement dans le ProductController 
+     * Utilisé en  asynchrone dans UpdateFileMessageHandler.
+     * @param string $name
+     * @param string $alt
+     * @param uploadDocFile $files
+     * @param Entity $product (objet Product ou ID si messenger)
      */
-    public function uploadPictures(array $filesArray, $pictureObjet, $productObject): Object
+    public function createProductPicture(string $name, string $alt, string $fileName, $product): void
     {   
-        foreach($filesArray as $file) {
-            // on génère un nom de fichier unique pour le fichier webp qui sera créé
-            $fileName = self::setUniqueName();
+        $files = $this->convertGdFileToUploadFile($fileName);
 
-            self::moveAll($file, $fileName, 80);
-            $file->move($this->picDir, $fileName);
-            // A chaque itération, on initialise les propriétés de l'objet Picture avec les infos du formulaire
-            $pictureObjet
-                        ->setName($pictureObjet->getName())
-                        ->setAlt($pictureObjet->getAlt())
-                        ->setProduct($productObject)                        
-                        //->setGallery($galleryObject)
-                        ->setFileName($fileName);
-        }
-        // A chaque itération, on retourne l'objet Picture initialisé avec un nom de fichier unique pour le stocker en BDD 
-        // utlisé ensuite pour construire l'affichage du fichier dans la vue.
-        return $pictureObjet;
-    }
-    
-    /**
-     * Uploade d'un fichier unique
-     *
-     * @param [type] $file
-     * @param Entity $fileObject
-     * @return void
-     */
-    public function uploadFile($file, $fileObject)
-    {   
-        $fileName = md5(uniqid()).'.'.$file->guessExtension();
-        $file->move($this->docDir, $fileName);
-        return $fileObject->setFileName($fileName);
-    }
+        foreach ($files as $file) {
 
-    /**
-     * Upload d'une collection de fichiers
-     *
-     * @param array $filesArray
-     * @param Entity $fileObject
-     * @param Entity $productObject
-     * @return File
-     */
-    public function uploadFiles(array $filesArray, $fileObject, $productObject)
-    {   
-        foreach($filesArray as $file) {
+            $picture = $this->setNewPictureEntity($name, $alt, $fileName, $product);
             
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
-            $file->move($this->picDir, $fileName);
-            // A chaque itération, on initialise les propriétés de l'objet File avec les infos du formulaire
-            $fileObject
-                        ->setProduct($productObject)
-                        ->setName($fileObject->getName())
-                        ->setInfo($fileObject->getInfo())
-                        ->setFileName($fileName);
-                        
+            if($picture) {
+                // on met à jour le workflow de l'entité Picture
+                $this->updateWorkflowAndFlush($picture, 'process');
+            }
+            // on envoie le fichier original au service ResizerService pour le redimentionner et le déplacer dans les différents dossiers
+           $this->sendToResizerService($file, $fileName, $picture);
         }
-
-        // A chaque itération, on retourne l'objet File initialisé avec un nom de fichier unique pour le stocker en BDD 
-        // utlisé ensuite pour construire l'affichage du fichier dans la vue.
-        return $fileObject;
     }
 
     /**
@@ -187,18 +141,127 @@ class UploadService
      * @param String $fileName (nom du fichier unique généré qui set setfileName() de l'objet Picture pour le stocker en BDD et l'utiliser pour construire l'affichage dans la vue)
      * @return void
      */
-    public function moveAll($file, $fileName)
+    public function sendToResizerService($file, $fileName, $picture)
     {   
-        // on redimensionne l'image et stcoke en local avec le service ResizerService
-        $this->resizerService->cropAndMoveAllPictures($file, $fileName, 80);
-        $this->resizerService->slider1280($file, $fileName, 50);
+        $filesExist['resizedFiles'] = $this->resizerService->cropAndMoveAllPictures($file, $fileName, 80);
+        $filesExist['sliderFile'] = $this->resizerService->slider1280($file, $fileName, 50);
+
+        if($filesExist['resizedFiles'] && $filesExist['sliderFile']) {
+            $this->updateWorkflowAndFlush($picture, 'done');
+        }
+    }
+
+    /**
+     * Crée un objet Picture
+     *
+     * @param String $name
+     * @param String $alt
+     * @param String $fileName
+     * @param Entity $product (objet Product ou ID si messenger)
+     * @return Entity $picture
+     */
+    public function setNewPictureEntity(string $name, string $alt, string $fileName, $product): picture
+    {   
+        // On ne recherche pas le produit si c'est déjà un objet Product qui est reçu (ajout synchrone)
+        // SI on reçoit un Id de produit, on recherche le produit en BDD (messenger - ajout asynchrone)
+        if (!($product instanceof Product)) {
+            $product = $this->manager->getRepository(Product::class)->find($product);
+        }
+        
+        if (!$product) {
+            throw new \Exception('Le produit n\'existe pas');
+        }
+
+        $picture = new Picture();
+        $picture
+            ->setName($name)
+            ->setAlt($alt)
+            ->setFileName($fileName)
+            ->setProduct($product);
+
+        $this->manager->persist($picture);
+
+        return $picture;
+    }
+    
+    /**
+     * Récupère un fichier à partir de son chemin sur son dossier et crée une instance de d'objet UploadedFile
+     * pour le passer au service ResizerService dans le format attendu et à la clé 'file'.
+     *
+     * @param String $fileName
+     * @return array
+     */
+    public function convertGdFileToUploadFile($fileName) : array
+    {   
+        $file = $this->picDir . '/' . $fileName;
+        
+        if (file_exists($file)) {
+            // Créer l'objet UploadedFile à partir du chemin complet du fichier
+            $uploadedFile = new UploadedFile($file, $fileName, null, null, true);
+            // toutes les autres méthodes attendent un tableau avec la clé 'file' qui contient le fichier
+            return [
+                'file' => $uploadedFile
+            ];
+
+        } else {
+            throw new \Exception('Le fichier ' . $fileName . ' n\'existe pas');
+        }
+    }
+    // TODO a finaliser pour l'upload de plusieurs fichiers
+    /**
+     * Uploade d'un fichier unique pour un document par ex .pdf
+     *
+     * @param [type] $file
+     * @param Entity $fileObject
+     * @return void
+     */
+    public function uploadDocFile($file, $fileObject)
+    {   
+        $fileName = md5(uniqid()).'.'.$file->guessExtension();
+        $file->move($this->docDir, $fileName);
+        return $fileObject->setFileName($fileName);
+    }
+
+    // TODO a finaliser pour l'upload de plusieurs fichiers
+    /**
+     * Upload d'une collection de fichiers
+     *
+     * @param array $filesArray
+     * @param Entity $file
+     * @param Entity $product
+     * @return Entity $fileObject
+     */
+    public function uploadDocFiles(array $filesArray, $fileObject, $productObject = null)
+    {   
+        foreach($filesArray as $file) {
+            
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            $file->move($this->docDir, $fileName);
+            // A chaque itération, on initialise les propriétés de l'objet File avec les infos du formulaire
+            $fileObject
+                        ->setProduct($productObject)
+                        ->setName($fileObject->getName())
+                        ->setInfo($fileObject->getInfo())
+                        ->setFileName($fileName);
+                        
+        }
+
+        // A chaque itération, on retourne l'objet File initialisé avec un nom de fichier unique pour le stocker en BDD 
+        // utlisé ensuite pour construire l'affichage du fichier dans la vue.
+        
+        return $fileObject;
     }
 
     // TODO a améliorer sur la gestion des repertoires
-    public function deletePictures($picture)
+    /**
+     * Supprime toutes les images de tous les dossiers de stockage
+     * 
+     * @return void
+     */
+    public function deletePicture($file)
     {   
         // on récupère le nom du fichier à supprimer
-        $fileName = $picture->getFileName();
+        $fileName = $file->getFileName();
        
         $allPictures = [
             // glob va chercher tous les fichiers dans les dossiers spécifiés et les stocker dans un tableau

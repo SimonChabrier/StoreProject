@@ -7,6 +7,12 @@ use App\Repository\ProductRepository;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+// Cette class est chargée de créer un fichier json avec les données des produits si le fichier n'existe pas
+// ou si le fichier existe et qu'il est plus vieux que 3600 secondes (1 heure)
+// Elle est appelée à chaque fois qu'une page est chargée
+// TODO le fichier json ets maintenant remis à jour après le nettoyage du cache ou après la création d'un nouveau produit
+// TODO il n'est plu snecessaire de le mettre à jour à chaque fois qu'une page est chargée car il doit : soit déjà être à jour soit ne pas exister.
+
 class JsonSubscriber implements EventSubscriberInterface 
 {
     private $JsonFileUtils;
@@ -45,11 +51,12 @@ class JsonSubscriber implements EventSubscriberInterface
 
         if(!$fileCreationDate) {
             $products = $this->productRepository->findAll();
-            $this->JsonFileUtils->jsonFileInit($products, $serializationGroups, $fileName, $serializationFormat);
+            // si le fichier n'existe pas on le crée
+            $this->JsonFileUtils->createJsonFile($products, $serializationGroups, $fileName, $serializationFormat);
         } else {
             if(time() - $fileCreationDate > $time) {
                 $products = $this->productRepository->findAll();
-                $this->JsonFileUtils->jsonFileInit($products, $serializationGroups, $fileName, $serializationFormat);
+                $this->JsonFileUtils->createJsonFile($products, $serializationGroups, $fileName, $serializationFormat);
             }
         }
     }

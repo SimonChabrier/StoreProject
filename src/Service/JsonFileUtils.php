@@ -92,15 +92,15 @@ class JsonFileUtils extends AbstractController
     }
 
     /**
-     * Initialize a JSON file from object or objects
+     * Create a JSON file from an Entity
      *
-     * @param [Entity] $object The object to be serialized and saved as JSON
-     * @param [string] $context Serialization context (e.g., serialization groups)
+     * @param [Entity] $object The Entity to be serialized and saved as JSON
+     * @param [string] $context Serialization context (e.g., 'product:read' or 'user:read')
      * @param [string] $fileName The name of the JSON file to be created
      * @param [string] $format The serialization format (e.g., 'json')
      * @return array The decoded JSON content as an array
      */
-    public function jsonFileInit($object, $context, $fileName, $format)
+    public function createJsonFile($object, $context, $fileName, $format): array
     {
         // Delete old file if necessary
         $this->deleteOldJsonFile($fileName);

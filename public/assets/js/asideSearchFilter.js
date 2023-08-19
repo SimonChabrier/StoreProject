@@ -34,7 +34,7 @@ async function fetchProducts() {
     try {
         const response = await fetch(`${URI}/json/product.json`);
         const data = await response.json();
-        //console.log(data);
+        console.log(data);
         return data;
     } catch (error) {
         console.log(error);
@@ -173,7 +173,7 @@ function filterProducts() {
     }
 }
 
-// make product card with the filtered products
+// make product card  template with the filtered products
 function createProductCard(product){
     let searchResults = document.getElementById('searchResults');
     // on nettoie avant d'afficher les résultats ou de les mettre à jour

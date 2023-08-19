@@ -32,7 +32,7 @@ class ClearCacheService {
      */
     public function clearCacheAndJsonFile($cacheKey = null): void
     {   
-        $this->JsonFileUtils->jsonFileInit(
+        $this->JsonFileUtils->createJsonFile(
             $this->productRepository->findAll(), 
             'product:read', 
             'product.json', 

@@ -38,7 +38,7 @@ class MessageProcessedSubscriber implements EventSubscriberInterface
             // après que le message ait été traité par le worker 
             // pour attendre que le worker ait fini de traiter le message
             // et que toutes les entités aient été mises à jour en base de données.
-            $this->clearCacheService->clearCacheAndJsonFile();
+            $this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
             
         }
     }

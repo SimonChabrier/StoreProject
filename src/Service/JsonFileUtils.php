@@ -50,6 +50,7 @@ class JsonFileUtils extends AbstractController
         $publicDirectory = $this->getJsonPath();
         // if the json directory doesn't exist, create it
         if (!is_dir($publicDirectory)) {
+            // donner les droits d'écriture au dossier json à www-data
             if (mkdir($publicDirectory, 0777, true)) {
                 return true;
             }

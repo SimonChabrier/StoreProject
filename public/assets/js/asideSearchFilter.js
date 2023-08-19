@@ -30,6 +30,11 @@ maxOutput.style.fontSize = 'smaller';
 async function fetchProducts() {
     
     const URI = window.location.origin;
+
+    // on attend 1 secondes parce que le fichier json est trop rapide à charger 
+    // il n'est pas encore mis à jour si il y a eu des modifications d'Entité (ajout image etc) quand on arrive ici
+    //* A améliorer
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
     try {
         const response = await fetch(`${URI}/json/product.json`);

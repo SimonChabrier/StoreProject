@@ -122,28 +122,32 @@ class ProductController extends AbstractController
         Request $request,
         Product $product,
         UploadService $uploadService,
-        MessageBusInterface $bus
+        MessageBusInterface $bus,
+        ProductRepository $productRepository
     ): Response {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            
             $formPictures = $form->get('pictures')->getData();
 
             // si pas d'image dans le formulaire imbriqué 'pictures' on met à jour le produit sans rien faire d'autre
             if (empty($formPictures)) {
+                // on met à jour le produit avec les données du formulaire
+                $productRepository->add($product, true);
                 $this->addFlash('success', 'Le produit a bien été mis à jour');
                 return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
             }
 
             // si on a des images dans le formulaire imbriqué 'pictures' on les traite.
             if ($formPictures !== null) {
-                self::processFormPictures($formPictures, $request, $product, $uploadService, $bus);    
+                self::processFormPictures($formPictures, $request, $product, $uploadService, $bus, $productRepository);  
+                $this->addFlash('success', 'Produit mis à jour. Images sont en cours de traitement.');
+                return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);  
             }
 
-            $this->addFlash('success', 'Produit mis à jour. Images sont en cours de traitement.');
-            return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+            
         }
 
         return $this->renderForm('product/edit.html.twig', [
@@ -181,8 +185,11 @@ class ProductController extends AbstractController
      * @param $bus
      * @return void
      */
-    private function processFormPictures($formPictures, $request, $product, $uploadService, $bus)
-    {
+    private function processFormPictures($formPictures, $request, $product, $uploadService, $bus, ProductRepository $productRepository)
+    {   
+        // on met à jour le produit avec les données du formulaire
+        $productRepository->add($product, true);
+
         foreach ($formPictures as $i => $picture) {
 
             //  on récupère les fichiers uploadés dans le formulaire imbriqué 'pictures'

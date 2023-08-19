@@ -11,6 +11,9 @@ use Doctrine\Common\EventSubscriber as DoctrineEventSubscriber;
 use Doctrine\ORM\Event\PostFlushEventArgs as PostFlushEventArgs;
 use Symfony\Component\Workflow\Event\Event;
 
+// Cette classe est chargée de supprimer le cache et de refaire le fichier json après chaque flush d'une entité
+// Elle est appelée à chaque fois qu'une entité est créée, modifiée ou supprimée
+
 class ClearCacheSubscriber implements DoctrineEventSubscriber
 {
     private $clearCacheService;
@@ -34,12 +37,14 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
         ];
     }
 
-    // met à jour le cache après une création d'entité
+    /**
+     * met à jour le cache et le json après chaque flush d'une entité
+     * exlue les entités Order et OrderItem.
+     * @param PostFlushEventArgs $args
+     * @return void
+     */
     public function postFlush(PostFlushEventArgs $args)
     {   
-
-        $this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
-        // on veut agir après la création d'une entité en utilisant Doctrine ORM PostFlush directement
         // on récupère les entités créées
         $entities = $args->getEntityManager()->getUnitOfWork()->getScheduledEntityInsertions();
         // on boucle sur les entités créées
@@ -53,6 +58,7 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
 
     }
 
+    //*  NON UTILISE CAR ON UTLISE POST FLUSH
     // met à jour le cache et le json après la création d'une entité
     public function postPersist(LifecycleEventArgs $args)
     {   
@@ -65,6 +71,7 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
         }
     }
 
+    //*  NON UTILISE CAR ON UTLISE POST FLUSH
     // met à jour le cache après une modification d'entité
     public function postUpdate(LifecycleEventArgs $args)
     {   

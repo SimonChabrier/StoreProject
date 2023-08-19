@@ -63,7 +63,7 @@ class ProductController extends AbstractController
             }
             // si on a des images dans le formulaire imbriqué 'pictures' on les traite.
             if ($formPictures !== null) {
-                self::processFormPictures($formPictures, $request, $product, $uploadService, $bus);
+                self::processFormPictures($formPictures, $request, $product, $uploadService, $bus, $productRepository);
             }
 
             $this->addFlash('success', 'Produit mis à jour. Images sont en cours de traitement.');

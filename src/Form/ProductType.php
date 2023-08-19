@@ -25,7 +25,7 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Product name',
+                'label' => 'Nom du produit',
                 'disabled' => false,
             ])    
             ->add('buyPrice', TextType::class, [

@@ -45,17 +45,16 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
      */
     public function postFlush(PostFlushEventArgs $args)
     {   
-        // on récupère les entités créées
-        $entities = $args->getEntityManager()->getUnitOfWork()->getScheduledEntityInsertions();
-        // on boucle sur les entités créées
-        foreach ($entities as $entity) {
-            // on exclut les entités Order et OrderItem
-            if (!$entity instanceof Order && !$entity instanceof OrderItem) {
-                // on supprime le cache et on refait le json
-                $this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
-            }
-        }
+        // on récupère toutes les entités qui ont été modifiées lors du flush
+        $entities = $args->getEntityManager()->getUnitOfWork()->getIdentityMap();
 
+        // si on le flush implique une modification d'une entité Order ou OrderItem on ne fait rien
+        if(array_key_exists(Order::class, $entities) && array_key_exists(OrderItem::class, $entities)){
+            return;
+        };
+
+        // Sinon on supprime le cache et on refait le json
+        $this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
     }
 
     //*  NON UTILISE CAR ON UTLISE POST FLUSH

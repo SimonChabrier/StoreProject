@@ -111,7 +111,7 @@ class UploadService
      * Utilisé en  asynchrone dans UpdateFileMessageHandler.
      * @param string $name
      * @param string $alt
-     * @param UploadFile $files
+     * @param uploadDocFile $files
      * @param Entity $product (objet Product ou ID si messenger)
      */
     public function createProductPicture(string $name, string $alt, string $fileName, $product): void
@@ -120,7 +120,7 @@ class UploadService
 
         foreach ($files as $file) {
 
-            $picture = $this->createPictureEntity($name, $alt, $fileName, $product);
+            $picture = $this->setNewPictureEntity($name, $alt, $fileName, $product);
             
             if($picture) {
                 // on met à jour le workflow de l'entité Picture
@@ -160,7 +160,7 @@ class UploadService
      * @param Entity $product (objet Product ou ID si messenger)
      * @return Entity $picture
      */
-    public function createPictureEntity(string $name, string $alt, string $fileName, $product): picture
+    public function setNewPictureEntity(string $name, string $alt, string $fileName, $product): picture
     {   
         // On ne recherche pas le produit si c'est déjà un objet Product qui est reçu (ajout synchrone)
         // SI on reçoit un Id de produit, on recherche le produit en BDD (messenger - ajout asynchrone)
@@ -198,12 +198,16 @@ class UploadService
         if (file_exists($file)) {
             // Créer l'objet UploadedFile à partir du chemin complet du fichier
             $uploadedFile = new UploadedFile($file, $fileName, null, null, true);
-            return ['file' => $uploadedFile];
+            // toutes les autres méthodes attendent un tableau avec la clé 'file' qui contient le fichier
+            return [
+                'file' => $uploadedFile
+            ];
+
         } else {
             throw new \Exception('Le fichier ' . $fileName . ' n\'existe pas');
         }
     }
-
+    // TODO a finaliser pour l'upload de plusieurs fichiers
     /**
      * Uploade d'un fichier unique pour un document par ex .pdf
      *
@@ -211,27 +215,28 @@ class UploadService
      * @param Entity $fileObject
      * @return void
      */
-    public function uploadFile($file, $fileObject)
+    public function uploadDocFile($file, $fileObject)
     {   
         $fileName = md5(uniqid()).'.'.$file->guessExtension();
         $file->move($this->docDir, $fileName);
         return $fileObject->setFileName($fileName);
     }
 
+    // TODO a finaliser pour l'upload de plusieurs fichiers
     /**
      * Upload d'une collection de fichiers
      *
      * @param array $filesArray
-     * @param Entity $fileObject
-     * @param Entity $productObject
-     * @return File
+     * @param Entity $file
+     * @param Entity $product
+     * @return Entity $fileObject
      */
-    public function uploadFiles(array $filesArray, $fileObject, $productObject)
+    public function uploadDocFiles(array $filesArray, $fileObject, $productObject = null)
     {   
         foreach($filesArray as $file) {
             
             $fileName = md5(uniqid()).'.'.$file->guessExtension();
-            $file->move($this->picDir, $fileName);
+            $file->move($this->docDir, $fileName);
             // A chaque itération, on initialise les propriétés de l'objet File avec les infos du formulaire
             $fileObject
                         ->setProduct($productObject)

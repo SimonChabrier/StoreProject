@@ -67,12 +67,21 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
 
         $this->cleanSubmitedFormPictures($product);
 
+        // Récupérer les données du formulaire imbriqué
         $current_request = $this->request->getCurrentRequest();
-        $data = $current_request->get('Product')['pictures'];
-        $files = $current_request->files->get('Product')['pictures'];
+        $productData = $current_request->get('Product');
+        // si l'utilisateur n'a pas ajouté de nouvelles images, on ne fait rien.
+        // il n'a pas affiché le formulaire imbriqué dans le DOM donc le form imbriqué ['pictures'] n'existe pas dans la requête.
+        // le reste du produit sera quand même mis à jour (nom, prix, etc.)
+        if (!array_key_exists('pictures', $productData)) {
+            return;
+        }
+
+        $data = $current_request->get('Product')['pictures']; // name et alt
+        $files = $current_request->files->get('Product')['pictures']; // file
 
         if (!empty($files)) {
-            // Filtrer les nouveaux fichiers pour ne traiter que les images non-null
+            // Filtrer les nouveaux fichiers pour ne traiter que les images non-null (les images déjà existantes sont null car by_reference = false)
             $newFiles = array_filter($files, function ($file) {
                 return $file['file'] !== null;
             });
@@ -150,15 +159,14 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * nettoyer la soumission du formulaire
-     *
+     * Supprime les images qui n'ont pas de nom de fichier parce que EasyAdmin ajoute directement depuis la requête
+     * mais elles ne sont pas encore traitées par le service d'upload et donc pas encore liées à l'objet Product dans la base de données.
+     * 
      * @param Entity $product
      * @return void
      */
     public function cleanSubmitedFormPictures($product)
     {
-        // on enlève les images qui n'ont pas de nom de fichier parce que EasyAdmin ajoute directement
-        // les images à l'objet à la soumission du formulaire et elles ne sont pas encore traitées par le service d'upload.
         foreach ($product->getPictures() as $picture) {
             if ($picture->getFileName() === null) {
                 $product->removePicture($picture);

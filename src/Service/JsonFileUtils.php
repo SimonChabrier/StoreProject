@@ -34,13 +34,16 @@ class JsonFileUtils extends AbstractController
      * @param string $fileName The name of the JSON file
      * @return string The full path for the JSON file
      */
-    private function getJsonFilePath($fileName)
+    private function getJsonFilePath(string $fileName)
     {
         return $this->getParameter('kernel.project_dir') . '/public/json/' . $fileName;
     }
 
     /**
      * Check if the json directry exist
+     * If not, create it with the right permissions (0775)
+     * and give the right permissions to the www-data group
+     * for the server to be able to write in it when app is in production.
      * 
      * @return boolean
      * @return int $fileCreationDate
@@ -76,7 +79,7 @@ class JsonFileUtils extends AbstractController
      * @param string $fileName
      * @return false|int
      */
-    public function checkJsonFile($fileName)
+    public function checkJsonFile(string $fileName)
     {
         // Return the file creation date if it exists, otherwise false
         return file_exists($this->getJsonFilePath($fileName)) ? filectime($this->getJsonFilePath($fileName)) : false;
@@ -88,7 +91,7 @@ class JsonFileUtils extends AbstractController
      * @param string $fileName
      * @return void
      */
-    public function deleteOldJsonFile($fileName)
+    public function deleteOldJsonFile(string $fileName)
     {
         $fileCreationDate = $this->checkJsonFile($fileName);
 
@@ -111,7 +114,7 @@ class JsonFileUtils extends AbstractController
      * @param [string] $format The serialization format (e.g., 'json')
      * @return array The decoded JSON content as an array
      */
-    public function createJsonFile($object, $context, $fileName, $format): array
+    public function createJsonFile(array $object, string $context, string $fileName, string $format): array
     {
         // Delete old file if necessary
         $this->deleteOldJsonFile($fileName);

@@ -65,10 +65,15 @@ services:
     App\EventSubscriber\Cache\ClearCacheSubscriber:
         tags:
             - { name: doctrine.event_subscriber }
-    App\EventSubscriber\PictureWorkflowSubscriber:
+    App\EventSubscriber\Workflow\PictureWorkflowSubscriber:
         tags:
             - { name: kernel.event_subscriber }
-    App\EventSubscriber\MessageProcessedSubscriber:
+    App\EventSubscriber\Cache\MessageProcessedSubscriber:
         tags:
             - { name: messenger.event_subscriber }  
-    
+    App\EventSubscriber\EasyAdmin\EasyAdminProductSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+    App\EventSubscriber\Kernel\JsonSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }

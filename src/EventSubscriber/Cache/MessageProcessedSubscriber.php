@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventSubscriber;
+namespace App\EventSubscriber\Cache;
 
 use App\Message\UpdateFileMessage; // Remplacez par le nom de votre classe de message
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

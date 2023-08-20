@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventSubscriber\Cache;
+namespace App\EventSubscriber\EasyAdmin;
 
 use App\Entity\Picture;
 use App\Entity\Product;

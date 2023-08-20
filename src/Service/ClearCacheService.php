@@ -3,6 +3,8 @@
 namespace App\Service;
 
 // On supprime le cache et on refait le json
+// utilisée après les evenements messenger et postFlush
+// MessageProcessedSubscriber.php et ClearCacheSubscriber.php
 
 use App\Repository\ProductRepository;
 use App\Service\JsonFileUtils;
@@ -32,12 +34,7 @@ class ClearCacheService {
      */
     public function clearCacheAndJsonFile($cacheKey = null): void
     {   
-        $this->JsonFileUtils->createJsonFile(
-            $this->productRepository->findAll(), 
-            'product:read', 
-            'product.json', 
-            'json'
-        );
+        $this->renewJsonFile();
 
         if ($cacheKey !== null) {
             $cacheItem = $this->cache->getItem($cacheKey);
@@ -47,6 +44,20 @@ class ClearCacheService {
                 $this->cache->deleteItem($cacheKey);
             }
         }
+    }
+
+    /**
+     * Create a new json file with the products data
+     * @return void
+     */
+    public function renewJsonFile(): void
+    {
+        $this->JsonFileUtils->createJsonFile(
+            $this->productRepository->findAll(), 
+            'product:read', 
+            'product.json', 
+            'json'
+        );
     }
 
 

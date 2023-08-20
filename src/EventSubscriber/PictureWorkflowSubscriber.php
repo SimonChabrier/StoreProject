@@ -11,7 +11,11 @@ class PictureWorkflowSubscriber implements EventSubscriberInterface
 // TODO class en attente, permet de faire des actions lors de la transition d'un workflow
 // TODO à voir si on en a besoin pour le moment on ne fait rien
 
-    public static function getSubscribedEvents()
+    /**
+     * Pour agir sur les transitions du workflow 'picture_publishing'
+     * @return array
+     */
+    public static function getSubscribedEvents() : array
     {
         return [
             'workflow.picture_publishing.guard.process' => 'onGuardProcess', // sur la transition 'process' du workflow 'picture_publishing' on exécute la méthode onGuardProcess

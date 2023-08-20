@@ -2,7 +2,7 @@
 
 //https://symfony.com/doc/current/security.html#customizing-logout
 
-namespace App\EventSubscriber;
+namespace App\EventSubscriber\User;
 
 use Symfony\Component\Security\Http\Event\LogoutEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\EventSubscriber;
+namespace App\EventSubscriber\Workflow;
 
 use Symfony\Component\Workflow\Event\GuardEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

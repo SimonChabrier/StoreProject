@@ -6,10 +6,8 @@ use App\Entity\Product;
 use App\Form\ProductType;
 use App\Form\AddToCartType;
 use App\Manager\CartManager;
-use App\Service\NotifyService;
 use App\Service\UploadService;
 use App\Message\UpdateFileMessage;
-use App\Service\ClearCacheService;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,13 +25,6 @@ class ProductController extends AbstractController
 
     const USE_MESSAGE_BUS = true;
     const CACHE_KEY = 'home_data';
-
-    private $notifyService;
-
-    public function __construct(NotifyService $notifyService)
-    {
-        $this->notifyService = $notifyService;
-    }
 
     /**
      * @Route("/", name="app_product_index", methods={"GET"})

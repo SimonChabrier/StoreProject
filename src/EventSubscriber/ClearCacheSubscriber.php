@@ -33,7 +33,6 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
             Events::postFlush,
             //Events::postPersist,
             //Events::postUpdate,
-            // todo il faudra gèrer postRemove pour supprimer le fichier json
         ];
     }
 
@@ -47,8 +46,8 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
     {   
         // TODO en test pour voir si il faudra ou pas exclure les entités Order et OrderItem du cache
         // TODO pour le moment c'est le moyen le plus simple de maintenir le cache et le json à jour après chaque flush
-        // TODO car si on update ou crée un produit sans image alors le cache et le json ne sont pas mis à jour puisque le uplaodService
-        // TODO n'est pas appelé et donc le message n'est pas envoyé au worker et donc le cache et le json ne sont pas mis à jour
+        // TODO car si on update ou crée un produit sans image alors le cache et le json ne sont pas mis à jour puisque 
+        // TODO on ne passe pas par messenger et donc pas par le MessageProcessedSubscriber.php qui met à jour le cache et le json en fin de traitement du message.
         
         // on récupère toutes les entités qui ont été modifiées lors du flush
         $entities = $args->getEntityManager()->getUnitOfWork()->getIdentityMap();
@@ -57,7 +56,7 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
             return;
         };
         // Sinon on supprime le cache et on refait le json
-       $this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
+        $this->clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
     }
 
 

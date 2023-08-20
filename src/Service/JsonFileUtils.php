@@ -51,10 +51,16 @@ class JsonFileUtils extends AbstractController
 
         // if the json directory doesn't exist, create it
         if (!is_dir($publicDirectory)) {
-            // Crée le dossier avec les droits 0775 (lecture, écriture, exécution pour le propriétaire et le groupe, lecture et exécution pour les autres)
+            // Crée le dossier avec les droits 0775
             if (mkdir($publicDirectory, 0775, true)) {
-                // Change les permissions du dossier pour qu'il appartienne au groupe www-data et donne des droits d'écriture au groupe
-                chgrp($publicDirectory, 'www-data');
+                // Si l'identifiant de groupe (GID) de www-data existe, on utilise chgrp pour changer le groupe
+                if (function_exists('posix_getgrnam')) {
+                    $groupInfo = posix_getgrnam('www-data');
+                    if ($groupInfo !== false) {
+                        chgrp($publicDirectory, $groupInfo['gid']);
+                    }
+                }
+                // Donne des droits d'écriture au groupe www-data pour le serveur...
                 chmod($publicDirectory, 0775);
                 return true;
             }

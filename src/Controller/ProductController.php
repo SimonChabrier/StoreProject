@@ -6,13 +6,15 @@ use App\Entity\Product;
 use App\Form\ProductType;
 use App\Form\AddToCartType;
 use App\Manager\CartManager;
+use App\Service\NotifyService;
 use App\Service\UploadService;
-use App\Service\ClearCacheService;
 use App\Message\UpdateFileMessage;
+use App\Service\ClearCacheService;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,6 +27,13 @@ class ProductController extends AbstractController
 
     const USE_MESSAGE_BUS = true;
     const CACHE_KEY = 'home_data';
+
+    private $notifyService;
+
+    public function __construct(NotifyService $notifyService)
+    {
+        $this->notifyService = $notifyService;
+    }
 
     /**
      * @Route("/", name="app_product_index", methods={"GET"})
@@ -224,7 +233,7 @@ class ProductController extends AbstractController
                 $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); // retourne le nom du fichier sans l'extension
                 $binaryContent = file_get_contents($file); // retourne le contenu du fichier au format binaire (c'est une string)
 
-                if ((string)$originalName) {
+                if ($originalName) {
                     $bus->dispatch(
                         new UpdateFileMessage(
                             $name, // la valeur saisi dans le champ name du formulaire imbriqué
@@ -233,7 +242,8 @@ class ProductController extends AbstractController
                             $originalName, // le nom du fichier sans l'extension 
                             $binaryContent // le contenu du fichier au format binaire (c'est une string)
                         )
-                    );
+                    )->with(new DelayStamp(30));
+                    
                 } else {
                     $this->addFlash('danger', 'Une erreur est survenue lors de l\'upload de l\'image');
                 }
@@ -241,14 +251,4 @@ class ProductController extends AbstractController
         }
     }   
 
-    /**
-     * Vide le cache et met à jour le fichier json après la création ou la modification d'un produit
-     * au quel on ajoute pas d'image. SI on ajoute une image le cache est nétoyé plus tard après le traitement de l'image
-     * 
-     * @param ClearCacheService $clearCacheService
-     */
-    private function clearCacheOnProductCreateAndUpdate(ClearCacheService $clearCacheService) : void
-    {
-        $clearCacheService->clearCacheAndJsonFile(self::CACHE_KEY);
-    }
 }

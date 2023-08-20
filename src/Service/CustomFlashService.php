@@ -5,7 +5,7 @@ namespace App\Service;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
-class NotificationService extends AbstractController
+class CustomFlashService extends AbstractController
 {
 
     /**

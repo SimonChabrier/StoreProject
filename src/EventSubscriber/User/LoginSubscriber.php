@@ -1,6 +1,7 @@
 <?php
 
-namespace App\EventSubscriber;
+namespace App\EventSubscriber\User;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;

@@ -62,7 +62,7 @@ services:
         arguments: ['%pictureXSDir%','%picture250Dir%', '%picture400Dir%', '%picture1200Dir%', '%slider1280Dir%']
     App\Message\UpdateFileMessage:
         arguments: ['%file', '%pictureObject']         
-    App\EventSubscriber\ClearCacheSubscriber:
+    App\EventSubscriber\Cache\ClearCacheSubscriber:
         tags:
             - { name: doctrine.event_subscriber }
     App\EventSubscriber\PictureWorkflowSubscriber:
@@ -71,3 +71,4 @@ services:
     App\EventSubscriber\MessageProcessedSubscriber:
         tags:
             - { name: messenger.event_subscriber }  
+    

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventSubscriber;
+namespace App\EventSubscriber\Cache;
 
 use App\Entity\Picture;
 use App\Entity\Product;
@@ -43,7 +43,12 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         $this->bus = $bus;
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * Pour créer et mettre à jour les images d'un produit
+     *
+     * @return array
+     */
+    public static function getSubscribedEvents() : array
     {
         return [
             BeforeEntityPersistedEvent::class => ['setProductPictures'], // après création d'un produit

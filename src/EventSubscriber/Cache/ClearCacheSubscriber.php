@@ -1,6 +1,6 @@
 <?php
 
-Namespace App\EventSubscriber;
+Namespace App\EventSubscriber\Cache;
 
 use App\Entity\Order;
 use App\Entity\OrderItem;

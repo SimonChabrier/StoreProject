@@ -61,19 +61,28 @@ services:
     App\Service\ResizerService:
         arguments: ['%pictureXSDir%','%picture250Dir%', '%picture400Dir%', '%picture1200Dir%', '%slider1280Dir%']
     App\Message\UpdateFileMessage:
-        arguments: ['%file', '%pictureObject']         
-    App\EventSubscriber\Cache\ClearCacheSubscriber:
-        tags:
-            - { name: doctrine.event_subscriber }
+        arguments: ['%file', '%pictureObject']  
+
+# DECLARER ICI LES LISTENER
+    # Eg:
+    # App\EventListener\PictureListener:
+    #     tags:
+    #         - { name: doctrine.event_listener, event: prePersist }
+
+# DECLARER ICI LES SUBSCRIBER      
     App\EventSubscriber\Workflow\PictureWorkflowSubscriber:
         tags:
             - { name: kernel.event_subscriber }
-    App\EventSubscriber\Cache\MessageProcessedSubscriber:
-        tags:
-            - { name: messenger.event_subscriber }  
     App\EventSubscriber\EasyAdmin\EasyAdminProductSubscriber:
         tags:
             - { name: kernel.event_subscriber }
     App\EventSubscriber\Kernel\JsonSubscriber:
         tags:
             - { name: kernel.event_subscriber }
+    App\EventSubscriber\Cache\ClearCacheSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber }
+    App\EventSubscriber\Cache\MessageProcessedSubscriber:
+        tags:
+            - { name: messenger.event_subscriber }  
+    

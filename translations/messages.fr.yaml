@@ -1,5 +1,3 @@
-# translations/messages.fr.yaml
-
 #EasyAdminBundle
 Product: "un produit"
 ProductType: "un type de produit"
@@ -34,3 +32,11 @@ Types: "Types"
 Marques: "Marques"
 Admin Commentaires: "Admin Commentaires"
 Commentaires: "Commentaires"
+Inscrit le : "Inscrit le"
+Compte vérifié: "Compte vérifié"
+Identifiant : "Identifiant - e-mail"
+Ordre d'affichage: "Ordre d'affichage"
+Sous-catégories liés: "Sous-catégories liés"
+Afficher sur la page d'accueil: "Afficher sur la page d'accueil"
+Liste des categories: "Liste des categories"
+

@@ -14,7 +14,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
@@ -36,9 +35,9 @@ class ProductCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         $this->setPageValues($crud, 'Product');
-        return parent::configureCrud($crud
-        ->addFormTheme('@FOSCKEditor/Form/ckeditor_widget.html.twig')
-    );
+        return parent::configureCrud(
+            $crud->addFormTheme('@FOSCKEditor/Form/ckeditor_widget.html.twig')
+        );
     }
 
     /**
@@ -108,13 +107,13 @@ class ProductCrudController extends AbstractCrudController
             ->setRequired(true),
 
             // description textarea en utilisant le composant CKEditor
-            TextEditorField::new('description', 'Description')
+            TextareaField::new('description', 'Description')
             ->setRequired(false)
             ->setFormType(CKEditorType::class)
             ->setFormTypeOptions([
-                'config' => [
-                    'toolbar' => 'full', // Configure CKEditor toolbar options
-                ],
+                // 'config' => [
+                //     'toolbar' => 'full', // Configure CKEditor toolbar options
+                // ],
                 'attr' => [
                     'rows' => 10,
                 ],

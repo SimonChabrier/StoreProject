@@ -99,9 +99,9 @@ class ProductType extends AbstractType
             ->add('description', CKEditorType::class, [
                 'label' => 'Description',
                 'required' => false,
-                'config' => [
-                    'toolbar' => 'full', // Configure CKEditor toolbar options
-                ],
+                // 'config' => [
+                //     'toolbar' => 'full', // Configure CKEditor toolbar options
+                // ],
             ])
             
             ->add('productData', CollectionType::class, [

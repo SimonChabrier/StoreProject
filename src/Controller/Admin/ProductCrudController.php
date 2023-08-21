@@ -6,15 +6,16 @@ use App\Entity\Brand;
 use App\Entity\Product;
 use App\Form\PictureType;
 use App\Form\ProductDataType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-
 
 class ProductCrudController extends AbstractCrudController
 {   
@@ -34,7 +35,9 @@ class ProductCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         $this->setPageValues($crud, 'Product');
-        return parent::configureCrud($crud);
+        return parent::configureCrud(
+            $crud->addFormTheme('@FOSCKEditor/Form/ckeditor_widget.html.twig')
+        );
     }
 
     /**
@@ -102,6 +105,21 @@ class ProductCrudController extends AbstractCrudController
             AssociationField::new('brand', 'Marque')
             ->setFormTypeOption('choice_label', 'name')
             ->setRequired(true),
+
+            // description textarea en utilisant le composant CKEditor
+            TextareaField::new('description', 'Description')
+            ->setRequired(false)
+            ->setFormType(CKEditorType::class)
+            ->setFormTypeOptions([
+                // 'config' => [
+                //     'toolbar' => 'full', // Configure CKEditor toolbar options
+                // ],
+                'attr' => [
+                    'rows' => 10,
+                ],
+            ])
+            // on n'affiche pas la colonne description dans la liste des produits
+            ->hideOnIndex(),
 
             // use ProdctDataType to manage prodcut data (attributes)
             CollectionField::new('productData', 'Infos')

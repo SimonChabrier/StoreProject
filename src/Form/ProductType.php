@@ -2,14 +2,15 @@
 
 namespace App\Form;
 
+use App\Entity\Brand;
 use App\Entity\Product;
 use App\Entity\Category;
 use App\Entity\SubCategory;
-use App\Entity\Brand;
 use Symfony\Component\Form\AbstractType;
 
 
 use App\Repository\ProductTypeRepository;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use App\Entity\ProductType as ProductTypeEntity;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -17,6 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ProductType extends AbstractType
@@ -51,19 +53,19 @@ class ProductType extends AbstractType
                 'class' => Brand::class,
                 'choice_label' => 'name',
                 'multiple' => false,
-                'expanded' => true,
+                'expanded' => false,
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'multiple' => false,
-                'expanded' => true,
+                'expanded' => false,
             ])
             ->add('subCategory', EntityType::class, [
                 'class' => SubCategory::class,
                 'choice_label' => 'getSubCategoryName',
                 'multiple' => false,
-                'expanded' => true,
+                'expanded' => false,
             ])
             // A utiliser si produit et sous catégories sont liés par une ManyToMany
             // ->add('subCategories', CollectionType::class, [
@@ -83,8 +85,25 @@ class ProductType extends AbstractType
                 'class' => ProductTypeEntity::class,
                 'choice_label' => 'name',
                 'multiple' => false,
-                'expanded' => true,                
+                'expanded' => false,               
             ])
+            // description textarea en utilisant le composant CKEditor
+            ->add('description', CKEditorType::class, [
+                'label' => 'Description',
+                'required' => false,
+                'config' => [
+                    'toolbar' => 'full', // Configure CKEditor toolbar options
+                ],
+            ])
+            // on set le form type à Ck editor
+            ->add('description', CKEditorType::class, [
+                'label' => 'Description',
+                'required' => false,
+                // 'config' => [
+                //     'toolbar' => 'full', // Configure CKEditor toolbar options
+                // ],
+            ])
+            
             ->add('productData', CollectionType::class, [
                     'entry_type' => ProductDataType::class,
                     'allow_add' => true,

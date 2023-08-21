@@ -5,20 +5,23 @@ namespace App\Controller\Admin;
 use App\Entity\User;
 
 
-use App\Entity\Product;
+use App\Entity\Brand;
 use App\Entity\Comment;
-use App\Entity\ProductType;
+use App\Entity\Product;
 use App\Entity\Category;
-use App\Entity\SubCategory;
+use App\Entity\ProductType;
 
+use App\Entity\SubCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Controller\Admin\CategoryCrudController;
-use App\Entity\Brand;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
+
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 
 // Code source perso 
@@ -26,24 +29,25 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 
 class AdminController extends AbstractDashboardController
 {   
-
+   
     /**
      * @Route("/admin", name="app_admin")
-     * //@IsGranted("ROLE_ADMIN")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(): Response
     {
         $routeBuilder = $this->container->get(AdminUrlGenerator::class);
-        $url = $routeBuilder->setController(CategoryCrudController::class)->generateUrl();
-
+        // la page d'accueil de l'admin redirige vers la liste des produits
+        $url = $routeBuilder->setController(ProductCrudController::class)->generateUrl();
+        
         return $this->redirect($url);
 
-        // je peux aussi retourner un render de template twig ici  
+        // je peux aussi retourner un render de template twig ici
         // return $this->render('admin/index.html.twig');
 
     }
 
-   
+
     /**
      * Main Admin Dashboard Title
      * @return Dashboard
@@ -68,7 +72,7 @@ class AdminController extends AbstractDashboardController
      * @return iterable
      */
     public function configureMenuItems(): iterable
-    {   
+    {
         yield MenuItem::linktoRoute('Accueil Site', 'fa fa-home', 'app_home');
         yield MenuItem::section('Admin Utilisateurs');
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
@@ -76,7 +80,7 @@ class AdminController extends AbstractDashboardController
         yield MenuItem::section('Admin Navigation');
         yield MenuItem::linkToCrud('Categories', 'fa fa-bars', Category::class);
         yield MenuItem::linkToCrud('Sous Categories', 'fa fa-indent', SubCategory::class);
-       
+
         yield MenuItem::section('Admin Produits');
         yield MenuItem::linkToCrud('Produits', 'fa fa-tag', Product::class);
         yield MenuItem::linkToCrud('Types', 'fa fa-tag', ProductType::class);
@@ -87,6 +91,7 @@ class AdminController extends AbstractDashboardController
 
 
     }
+
     /**
      * Personalize Admin Css
      * https://symfony.com/bundles/EasyAdminBundle/current/design.html#customizing-the-backend-design

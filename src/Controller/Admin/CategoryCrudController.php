@@ -25,6 +25,31 @@ class CategoryCrudController extends AbstractCrudController
     }
 
     /**
+     * Override the default CRUD configuration
+     */
+    public function configureCrud(Crud $crud): Crud
+    {
+        $this->setPageValues($crud, 'Category');
+        return parent::configureCrud($crud);
+    }
+
+    /**
+     * Configure the page values for a specific page
+     */
+    public function setPageValues(Crud $crud, string $pageName)
+    {
+        // Change the title of the specified page
+        if ($pageName === 'Category') {
+            $crud->setPageTitle('index', 'Liste des categories');
+            $crud->setPageTitle('new', 'Ajouter une categorie');
+            $crud->setPageTitle('edit', 'Modifier une categorie');
+            $crud->setPageTitle('detail', 'Détails de la categorie');
+            // tri par défaut sur la colonne id en ordre décroissant
+            $crud->setDefaultSort(['id' => 'DESC']);
+        }
+    }
+
+    /**
      * This crud hide actions
      * @return Actions
      */
@@ -68,27 +93,6 @@ class CategoryCrudController extends AbstractCrudController
             //     return count($products);
             // }),
         ];
-    }
-
-    /**
-     * This crud global config.
-     * https://symfony.com/bundles/EasyAdminBundle/current/crud.html#search-order-and-pagination-options
-     */
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud
-
-            ->setSearchFields(['name', 'listOrder'])
-            ->setDefaultSort(['listOrder' => 'ASC'])
-            // Si je n'ai pas fermé la visibilité dans la sidebar dans AdminController.php : configureMenuItems()
-            // alors, ici je peux aussi décider de cacher le contenu de ce CRUD aux rôle non autorisés
-            // ->setEntityPermission('ROLE_ADMIN')
-            // ->setPaginatorPageSize(10)
-            // ->setPaginatorRangeSize(4)
-            // https://www.doctrine-project.org/projects/doctrine-orm/en/2.7/tutorials/pagination.html
-            // ->setPaginatorUseOutputWalkers(true)
-            // ->setPaginatorFetchJoinCollection(true)
-        ;
     }
 
     /**

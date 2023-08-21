@@ -6,15 +6,17 @@ use App\Entity\Brand;
 use App\Entity\Product;
 use App\Form\PictureType;
 use App\Form\ProductDataType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 
 class ProductCrudController extends AbstractCrudController
 {   
@@ -34,7 +36,9 @@ class ProductCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         $this->setPageValues($crud, 'Product');
-        return parent::configureCrud($crud);
+        return parent::configureCrud($crud
+        ->addFormTheme('@FOSCKEditor/Form/ckeditor_widget.html.twig')
+    );
     }
 
     /**
@@ -103,12 +107,17 @@ class ProductCrudController extends AbstractCrudController
             ->setFormTypeOption('choice_label', 'name')
             ->setRequired(true),
 
-            // description textarea
-            TextareaField::new('description', 'Description du produit')
+            // description textarea en utilisant le composant CKEditor
+            TextEditorField::new('description', 'Description')
             ->setRequired(false)
-            // on lui passe ses attributs html
-            ->setFormTypeOption('attr', [
-                'rows' => 5,
+            ->setFormType(CKEditorType::class)
+            ->setFormTypeOptions([
+                'config' => [
+                    'toolbar' => 'full', // Configure CKEditor toolbar options
+                ],
+                'attr' => [
+                    'rows' => 10,
+                ],
             ])
             // on n'affiche pas la colonne description dans la liste des produits
             ->hideOnIndex(),

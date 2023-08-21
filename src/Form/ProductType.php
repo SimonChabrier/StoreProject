@@ -2,14 +2,15 @@
 
 namespace App\Form;
 
+use App\Entity\Brand;
 use App\Entity\Product;
 use App\Entity\Category;
 use App\Entity\SubCategory;
-use App\Entity\Brand;
 use Symfony\Component\Form\AbstractType;
 
 
 use App\Repository\ProductTypeRepository;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use App\Entity\ProductType as ProductTypeEntity;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -17,8 +18,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ProductType extends AbstractType
 {
@@ -86,17 +87,23 @@ class ProductType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,               
             ])
-            // description
-            ->add('description', TextareaType::class, [
+            // description textarea en utilisant le composant CKEditor
+            ->add('description', CKEditorType::class, [
                 'label' => 'Description',
-                'disabled' => false,
-                // on ajoute des attributs html
-                'attr' => [
-                    'rows' => 10,
-                    'cols' => 50,
-                    'placeholder' => 'Description du produit',
+                'required' => false,
+                'config' => [
+                    'toolbar' => 'full', // Configure CKEditor toolbar options
                 ],
             ])
+            // on set le form type à Ck editor
+            ->add('description', CKEditorType::class, [
+                'label' => 'Description',
+                'required' => false,
+                'config' => [
+                    'toolbar' => 'full', // Configure CKEditor toolbar options
+                ],
+            ])
+            
             ->add('productData', CollectionType::class, [
                     'entry_type' => ProductDataType::class,
                     'allow_add' => true,

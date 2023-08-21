@@ -6,7 +6,7 @@ use App\Entity\Brand;
 use App\Entity\Product;
 use App\Form\PictureType;
 use App\Form\ProductDataType;
-use Symfony\Component\Validator\Constraints\File;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -18,92 +18,116 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class ProductCrudController extends AbstractCrudController
 {   
-
-
+    /**
+     * Configure the entity which will be managed by this controller
+     *
+     * @return string
+     */
     public static function getEntityFqcn(): string
-    {
+    {   
         return Product::class;
     }
 
+    /**
+     * Override the default CRUD configuration
+     */
+    public function configureCrud(Crud $crud): Crud
+    {
+        $this->setPageValues($crud, 'Product');
+        return parent::configureCrud($crud);
+    }
+
+    /**
+     * Configure the page values for a specific page
+     */
+    public function setPageValues(Crud $crud, string $pageName)
+    {
+        // Change the title of the specified page
+        if ($pageName === 'Product') {
+            $crud->setPageTitle('index', 'Liste des produits');
+            $crud->setPageTitle('new', 'Ajouter un produit');
+            $crud->setPageTitle('edit', 'Modifier un produit');
+            $crud->setPageTitle('detail', 'Détails du produit');
+            // tri par défaut sur la colonne id en ordre décroissant
+            $crud->setDefaultSort(['id' => 'DESC']);
+        }
+    }
+
+
+    /**
+     * Configure fields for Product entity
+     *
+     * @param string $pageName
+     * @return iterable
+     */
     public function configureFields(string $pageName): iterable
     {
         return [
-            // show product id 
-            NumberField::new('id')
-            ->setLabel('ID')
-            ->setFormTypeOption('disabled', true),
 
-            TextField::new('name')
-            ->setLabel('Nom')
-            ->setRequired(true),
-            
-            TextField::new('buyPrice')
-            ->setLabel('Prix d\'achat HT')
-            ->setRequired(true),
-            
-            TextField::new('sellingPrice')
-            ->setLabel('Prix de vente TTC')
-            ->setRequired(true),
-            
-            TextField::new('catalogPrice')
-            ->setLabel('Prix catalogue')
+            BooleanField::new('visibility', 'Visible')
             ->setRequired(true),
 
-            TextField::new('tauxMarque')
-            ->setLabel('Taux de marque')
+            NumberField::new('id', 'ID')
             ->setFormTypeOption('disabled', true),
-            
-            AssociationField::new('category')
-            ->setLabel('Catégorie')
+
+            TextField::new('name', 'Nom')
             ->setRequired(true),
             
-            AssociationField::new('subCategory')
+            TextField::new('buyPrice', 'Prix d\'achat HT')
+            ->setRequired(false),
+            
+            TextField::new('sellingPrice', 'Prix de vente TTC')
+            ->setRequired(true),
+            
+            TextField::new('catalogPrice', 'Prix catalogue TTC')
+            ->setRequired(true),
+
+            TextField::new('tauxMarque', 'Marge %')
+            ->setFormTypeOption('disabled', true),
+            
+            AssociationField::new('category', 'Catégorie')
+            ->setRequired(false),
+            
+            AssociationField::new('subCategory', 'Sous-Catégorie')
             // display only subcategory linked to the slectecd category
-            ->setLabel('Sous-catégorie')
             // set choice on getSubCategoryName method from SubCategory entity
             ->setFormTypeOption('choice_label', 'getSubCategoryName')
             // display only subcategory linked to the slectecd category
             ->setRequired(true),
 
-            BooleanField::new('visibility')
-            ->setLabel('Visible')
-            ->setRequired(true),
-
-            AssociationField::new('productType')
-            ->setLabel('Types de produits')
+            AssociationField::new('productType', 'Type')
             ->setFormTypeOption('choice_label', 'name')
             ->setRequired(true),
 
-            AssociationField::new('brand')
-            ->setLabel('Marque')
+            AssociationField::new('brand', 'Marque')
             ->setFormTypeOption('choice_label', 'name')
             ->setRequired(true),
 
             // use ProdctDataType to manage prodcut data (attributes)
-            CollectionField::new('productData', 'Données du produit')
+            CollectionField::new('productData', 'Infos')
             ->setEntryType(ProductDataType::class, [])
             ->setCustomOption('allow_add', true)
-            ->renderExpanded(true),
+            ->renderExpanded(false),
 
             // use PicturesType to manage pictures
-            CollectionField::new('pictures', 'Photos')
+            CollectionField::new('pictures', 'Img')
             ->setEntryType(PictureType::class, [])
             ->setCustomOption('allow_add', true)
-            ->renderExpanded(true)
+            ->renderExpanded(false)
             // upload pictures addes in input file to the server
             ->setFormTypeOption('by_reference', false)
+            // ne pas autoriser le tri sur cette colonne pour le moment j'ai un bug
+            // TODO à débugger plus tard
+            ->setSortable(false),
         ];
     }
 
-    // layout
-    // public function configureCrud(Crud $crud): Crud
-    // {
-    //     return $crud
-    //         // ...
-    //     ;
-    // }
-
-    // filters
+    /**
+     * Configure filters for Product entity
+     *
+     * @param Filters $filters
+     * @return Filters
+     */
     public function configureFilters(Filters $filters): Filters
     {
         return $filters

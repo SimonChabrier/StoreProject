@@ -84,7 +84,7 @@ class ProductTypeCrudController extends AbstractCrudController
             CollectionField::new('typeData', 'Caractéristiques du type de produit')
             ->setEntryType(ProductDataType::class, [])
             ->setCustomOption('allow_add', true)
-            ->renderExpanded(true),
+            ->renderExpanded(false),
             
         ];
     }

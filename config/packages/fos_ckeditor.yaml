@@ -4,22 +4,9 @@ twig:
     form_themes:
         - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
 
-# ajouter easy admin
-easy_admin:
-    entities:
-        Product:
-            class: App\Entity\Product
-            form:
-                fields:
-                    - 'description':
-                        formType: FOS\CKEditorBundle\Form\Type\CKEditorType
-                        formType_options:
-                            config:
-                                toolbar: 'full' # Config options for CKEditor
-
 # Customisation de la toolbar
-# fos_ck_editor:
-#     configs:
-#         main_config:
-#             toolbar:
-#                 - { name: "styles", items: ['Bold', 'Italic', 'Underline', 'Strike', 'Blockquote', '-', 'Link', '-', 'RemoveFormat', '-', 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'Image', 'Table', '-', 'Styles', 'Format','Font','FontSize', '-', 'TextColor', 'BGColor', 'Source'] }
+fos_ck_editor:
+    configs:
+        main_config:
+            toolbar:
+                - { name: "styles", items: ['Bold', 'Italic', 'Underline', 'Strike', 'Blockquote', '-', 'Link', '-', 'RemoveFormat', '-', 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'Image', 'Table', '-', 'Styles', 'Format','Font','FontSize', '-', 'TextColor', 'BGColor', 'Source'] }

@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ProductType extends AbstractType
 {
@@ -51,19 +52,19 @@ class ProductType extends AbstractType
                 'class' => Brand::class,
                 'choice_label' => 'name',
                 'multiple' => false,
-                'expanded' => true,
+                'expanded' => false,
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'multiple' => false,
-                'expanded' => true,
+                'expanded' => false,
             ])
             ->add('subCategory', EntityType::class, [
                 'class' => SubCategory::class,
                 'choice_label' => 'getSubCategoryName',
                 'multiple' => false,
-                'expanded' => true,
+                'expanded' => false,
             ])
             // A utiliser si produit et sous catégories sont liés par une ManyToMany
             // ->add('subCategories', CollectionType::class, [
@@ -83,7 +84,18 @@ class ProductType extends AbstractType
                 'class' => ProductTypeEntity::class,
                 'choice_label' => 'name',
                 'multiple' => false,
-                'expanded' => true,                
+                'expanded' => false,               
+            ])
+            // description
+            ->add('description', TextareaType::class, [
+                'label' => 'Description',
+                'disabled' => false,
+                // on ajoute des attributs html
+                'attr' => [
+                    'rows' => 10,
+                    'cols' => 50,
+                    'placeholder' => 'Description du produit',
+                ],
             ])
             ->add('productData', CollectionType::class, [
                     'entry_type' => ProductDataType::class,

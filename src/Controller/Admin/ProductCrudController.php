@@ -14,7 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 
 class ProductCrudController extends AbstractCrudController
 {   
@@ -102,6 +102,16 @@ class ProductCrudController extends AbstractCrudController
             AssociationField::new('brand', 'Marque')
             ->setFormTypeOption('choice_label', 'name')
             ->setRequired(true),
+
+            // description textarea
+            TextareaField::new('description', 'Description du produit')
+            ->setRequired(false)
+            // on lui passe ses attributs html
+            ->setFormTypeOption('attr', [
+                'rows' => 5,
+            ])
+            // on n'affiche pas la colonne description dans la liste des produits
+            ->hideOnIndex(),
 
             // use ProdctDataType to manage prodcut data (attributes)
             CollectionField::new('productData', 'Infos')

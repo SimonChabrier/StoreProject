@@ -64,7 +64,7 @@ class UserCrudController extends AbstractCrudController
                 ->setLabel('Identifiant')
                 ->setRequired(true),
                 DateField::new('createdAt')
-                ->setLabel('Incrit le')
+                ->setLabel('Inscrit le')
                 ->setFormTypeOption('disabled', true),
             BooleanField::new('isVerified')
                 ->setLabel('Compte vérifié')

@@ -80,7 +80,8 @@ class SubCategoryCrudController extends AbstractCrudController
                 'multiple' => true,
                 'expanded' => true,
                 'choice_label' => 'name',
-            ]),
+            ])
+            ->hideOnForm(),
 
             AssociationField::new('productType', 'Type de produit')
             ->setFormTypeOptions([
@@ -89,6 +90,7 @@ class SubCategoryCrudController extends AbstractCrudController
                 'expanded' => true,
                 'choice_label' => 'name',
             ])
+            ->hideOnForm(),
         ];
     }
 

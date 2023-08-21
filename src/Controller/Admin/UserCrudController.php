@@ -45,6 +45,12 @@ class UserCrudController extends AbstractCrudController
         }
     }
 
+     /**
+     * Configure fields for User entity
+     *
+     * @param string $pageName
+     * @return iterable
+     */
     public function configureFields(string $pageName): iterable
     {   
         return [

@@ -5,8 +5,10 @@ namespace App\Controller\Admin;
 use App\Entity\ProductType;
 use App\Form\ProductDataType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use Doctrine\ORM\Mapping\Builder\AssociationBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -43,10 +45,20 @@ class ProductTypeCrudController extends AbstractCrudController
         }
     }
 
-    
+     /**
+     * Configure fields for ProductType entity
+     *
+     * @param string $pageName
+     * @return iterable
+     */
     public function configureFields(string $pageName): iterable
     {
         return [
+
+            NumberField::new('id', 'ID')// get the id of the product
+            ->setFormTypeOption('disabled', true),// disable the field in the form
+
+            TextField::new('name', 'Nom du type de produit'),
 
             AssociationField::new('subCategories', 'Sous catégrories liées')
             ->setFormTypeOptions([
@@ -58,17 +70,16 @@ class ProductTypeCrudController extends AbstractCrudController
             // ->formatValue(function ($value, $entity) {
             //     return $entity->getSubCategories()->first()->getName();
             // }),
-
-            TextField::new('name', 'Nom du type de produit'),
-            
-
+    
             AssociationField::new('products', 'Nombre de produits liés')
             ->setFormTypeOptions([
                 'by_reference' => false,
                 'multiple' => true,
                 'expanded' => true,
                 'choice_label' => 'name',
-            ]),
+            ])
+            // ne pas afficher dans le formulaire de création
+            ->hideOnForm(),
             
             CollectionField::new('typeData', 'Caractéristiques du type de produit')
             ->setEntryType(ProductDataType::class, [])
@@ -78,4 +89,16 @@ class ProductTypeCrudController extends AbstractCrudController
         ];
     }
     
+    /**
+     * This crud Filters
+     * @return Filters
+     */
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('name', [
+                'label' => 'Nom du type de produit',
+            ])
+        ;
+    }
 }

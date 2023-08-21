@@ -107,13 +107,13 @@ class ProductCrudController extends AbstractCrudController
             CollectionField::new('productData', 'Infos')
             ->setEntryType(ProductDataType::class, [])
             ->setCustomOption('allow_add', true)
-            ->renderExpanded(true),
+            ->renderExpanded(false),
 
             // use PicturesType to manage pictures
             CollectionField::new('pictures', 'Img')
             ->setEntryType(PictureType::class, [])
             ->setCustomOption('allow_add', true)
-            ->renderExpanded(true)
+            ->renderExpanded(false)
             // upload pictures addes in input file to the server
             ->setFormTypeOption('by_reference', false)
             // ne pas autoriser le tri sur cette colonne pour le moment j'ai un bug

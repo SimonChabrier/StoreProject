@@ -20,6 +20,31 @@ class UserCrudController extends AbstractCrudController
         return User::class;
     }
 
+    /**
+     * Override the default CRUD configuration
+     */
+    public function configureCrud(Crud $crud): Crud
+    {
+        $this->setPageValues($crud, 'User');
+        return parent::configureCrud($crud);
+    }
+
+    /**
+     * Configure the page values for a specific page
+     */
+    public function setPageValues(Crud $crud, string $pageName)
+    {
+        // Change the title of the specified page
+        if ($pageName === 'User') {
+            $crud->setPageTitle('index', 'Liste des utilisateurs');
+            $crud->setPageTitle('new', 'Ajouter un utilisateur');
+            $crud->setPageTitle('edit', 'Modifier un utilisateur');
+            $crud->setPageTitle('detail', 'Détails de l\'utilisateur');
+            // tri par défaut sur la colonne id en ordre décroissant
+            $crud->setDefaultSort(['id' => 'DESC']);
+        }
+    }
+
     public function configureFields(string $pageName): iterable
     {   
         return [
@@ -43,27 +68,6 @@ class UserCrudController extends AbstractCrudController
                 ->hideOnIndex()
                 ->setLabel('Role'),
         ];
-    }
-
-    /**
-     * This crud global config.
-     * https://symfony.com/bundles/EasyAdminBundle/current/crud.html#search-order-and-pagination-options
-     */
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud
-
-            ->setSearchFields(['email', 'email', 'email'])
-            ->setDefaultSort(['email' => 'ASC'])
-            // Si je n'ai pas fermé la visibilité dans la sidebar dans AdminController.php : configureMenuItems()
-            // alors, ici je peux aussi décider de cacher le contenu de ce CRUD aux rôle non autorisés
-            // ->setEntityPermission('ROLE_ADMIN')
-            // ->setPaginatorPageSize(10)
-            // ->setPaginatorRangeSize(4)
-            // https://www.doctrine-project.org/projects/doctrine-orm/en/2.7/tutorials/pagination.html
-            // ->setPaginatorUseOutputWalkers(true)
-            // ->setPaginatorFetchJoinCollection(true)
-        ;
     }
 
      /**

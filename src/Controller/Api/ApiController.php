@@ -21,6 +21,8 @@ class ApiController extends AbstractController
 {   
 
     /**
+     * Retourne toutes les catégories avec leurs sous-catégories et leurs produits
+     * pour la page d'accueil. 
      * @Route("/categories", name="app_api_categories")
      */
     public function apiGetCategories(CategoryRepository $categoryRepository, ProductRepository $productRepository): Response
@@ -65,9 +67,10 @@ class ApiController extends AbstractController
     }
 
     /**
+     * Retourne tous les produits en stock
      * @Route("/products", name="app_api_products")
      */
-    public function apiGetProducts(ProductRepository $pr): Response
+    public function apiGetInStockProducts(ProductRepository $pr): Response
     {   
         return $this->json(
             // find in  products inStockQuantity = true or > 0
@@ -80,8 +83,8 @@ class ApiController extends AbstractController
         );
     }
 
-    // par id de category 
     /**
+     * Retourne un produit en fonction de son id
      * @Route("/products/{id}", name="app_api_product")
      */
     public function apiGetProduct(Product $product): Response

@@ -502,6 +502,8 @@ class AppFixtures extends Fixture
             $product->setSellingPrice(sprintf('%0.2f', $product->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
             $product->setCatalogPrice(sprintf('%0.2f', $product->getSellingPrice() * 1.1));
 
+            $product->setDescription($faker->text);
+
             
             $runningProducts[] = $product;
             $manager->persist($product);
@@ -525,6 +527,7 @@ class AppFixtures extends Fixture
             $product->setSellingPrice(sprintf('%0.2f', $product->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
             $product->setCatalogPrice(sprintf('%0.2f', $product->getSellingPrice() * 1.1));
 
+            $product->setDescription($faker->text);
             
             $lifeStyleProducts[] = $product;
             $manager->persist($product);
@@ -548,6 +551,7 @@ class AppFixtures extends Fixture
             $product->setSellingPrice(sprintf('%0.2f', $product->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
             $product->setCatalogPrice(sprintf('%0.2f', $product->getSellingPrice() * 1.1));
 
+            $product->setDescription($faker->text);
             
             $classiqueProducts[] = $product;
             $manager->persist($product);
@@ -571,6 +575,7 @@ class AppFixtures extends Fixture
             $product->setSellingPrice(sprintf('%0.2f', $product->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
             $product->setCatalogPrice(sprintf('%0.2f', $product->getSellingPrice() * 1.1));
 
+            $product->setDescription($faker->text);
             
             $randonneeProducts[] = $product;
             $manager->persist($product);
@@ -595,6 +600,7 @@ class AppFixtures extends Fixture
         $product->setSellingPrice(sprintf('%0.2f', $product->getbuyPrice() * $margin[rand(0, count($margin) - 1)]));
         $product->setCatalogPrice(sprintf('%0.2f', $product->getSellingPrice() * 1.1));
 
+        $product->setDescription($faker->text);
 
         $trainingProducts[] = $product;
         $manager->persist($product);

@@ -3,9 +3,9 @@
 {% block title %}{{ sub_category.getCategoryName }} - {{ sub_category.name }}{% endblock %}
 
 {% block content %}
-    <h1>sous-catégorie {{ sub_category.name }}</h1>
-    <hr>
+    <h1>Produits de la sous-categorie {{ sub_category.name }}</h1>
 
+{% if app.user and is_granted('ROLE_ADMIN') %}
     <table class="table">
         <tbody>
             <tr>
@@ -22,25 +22,24 @@
             </tr>
         </tbody>
     </table>
-
     <a href="{{ path('app_sub_category_index') }}" class="btn">Liste des sous-categories</a>
     <a href="{{ path('app_sub_category_edit', {'id': sub_category.id}) }}" class="btn">Modifier {{ sub_category.name }} </a>
-
-    {# {{ include('sub_category/_delete_form.html.twig') }} #}
-    
+    {{ include('sub_category/_delete_form.html.twig') }}
     <hr>
-    <h2>Produits de la sous-categorie {{ sub_category.name }}</h2>
+{% endif %}  
+    <hr>
     <h3>De la catégorie : {{ sub_category.getCategoryName }}</h3>
 
-<div class="last-five swiper">
-    <div class="last-five-products">
-    {% for product in products %}
-        {% if product.getSubCategory.getName == sub_category.name %}
-            <section>
-                 {% include '_fragments/_product_object.html.twig' %} 
-            </section>  
-        {% endif %}
-    {% endfor %}
+    <div class="last-five swiper">
+        <div class="last-five-products">
+        {% for product in products %}
+            {% if product.getSubCategory.getName == sub_category.name %}
+                <section>
+                    {% include '_fragments/_product_object.html.twig' %} 
+                </section>  
+            {% endif %}
+        {% endfor %}
+        </div>
     </div>
-</div>
+
 {% endblock %}

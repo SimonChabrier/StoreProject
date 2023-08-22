@@ -66,9 +66,10 @@ ol ul {
 }
 
 table {
-  border-collapse: collapse;
-  width: 100%;
+  border-collapse: collapse!important;
+  width: 100%!important;
   overflow: hidden;
+  border: 1px solid black;
 
   th,
   td {
@@ -76,19 +77,20 @@ table {
     text-align: left;
     border: none !important;
   }
-  // set td 1 2 and 3 width
-  // td:nth-child(1),
-  // td:nth-child(2),
-  // td:nth-child(3),
-  // td:nth-child(6) {
-  //   width: 10%;
-  //   white-space: nowrap;
-  // }
 }
 
-  tr:nth-child(even) {
-    background-color: rgb(245, 245, 245) !important;
-  }
+.table>thead {
+  vertical-align: bottom;
+  background-color: beige;
+}
+
+tr th {
+  padding: 15px 7px!important;
+}
+
+tr:nth-child(even) {
+  background-color: rgb(245, 245, 245) !important;
+}
 
 .swal-icon--success__line::before, 
 .swal-icon--success__line::after {

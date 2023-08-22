@@ -5,7 +5,7 @@
 {% block content %}
     <h1>Administration des catégories</h1>
 
-    <table mt-3 class="table mt-3">
+    <table class="table mt-3">
         <thead>
             <tr>
                 <th>Nom de la catégorie</th>
@@ -31,7 +31,7 @@
             </tr>
         {% endfor %}
         </tbody>
-    </table mt-3>
+    </table>
 
-    <a href="{{ path('app_category_new') }}">Ajouter une catégorie</a>
+    <a href="{{ path('app_category_new') }}" class="btn">Ajouter une catégorie</a>
 {% endblock %}

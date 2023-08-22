@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Brand{% endblock %}
+
+{% block content %}
+    <h1>Produits de la marque: {{ brand.name }}</h1>
+{% if app.user and is_granted('ROLE_ADMIN') %}
+    <a href="{{ path('app_brand_index') }}">back to list</a>
+    <a href="{{ path('app_brand_edit', {'id': brand.id}) }}">edit</a>
+    {{ include('brand/_delete_form.html.twig') }}
+{% endif %}
+
+<div class="last-five swiper">
+<div class="swiper-wrapper">
+{% for product in products %}
+<div class="last-five-products">
+<section>
+    {{ include('_fragments/_product_object.html.twig') }}
+</section>
+</div>
+{% endfor %}
+</div>
+</div>
+
+
+{% endblock %}

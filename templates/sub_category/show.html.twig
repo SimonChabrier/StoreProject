@@ -4,9 +4,8 @@
 
 {% block content %}
     <h1>Produits de la sous-categorie {{ sub_category.name }}</h1>
-
 {% if app.user and is_granted('ROLE_ADMIN') %}
-    <table mt-3 class="table mt-3">
+    <table class="table mt-3">
         <tbody>
             <tr>
                 <th>Identifiant de le sous catérorie</th>
@@ -21,11 +20,10 @@
                 <td>{{ sub_category.listOrder }}</td>
             </tr>
         </tbody>
-    </table mt-3>
+    </table>
     <a href="{{ path('app_sub_category_index') }}" class="btn">Liste des sous-categories</a>
     <a href="{{ path('app_sub_category_edit', {'id': sub_category.id}) }}" class="btn">Modifier {{ sub_category.name }} </a>
     {{ include('sub_category/_delete_form.html.twig') }}
-    <hr>
 {% endif %}  
     <hr>
     <h3>De la catégorie : {{ sub_category.getCategoryName }}</h3>

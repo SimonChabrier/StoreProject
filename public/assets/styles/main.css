@@ -61,15 +61,25 @@ ol ul {
 }
 
 table {
-  border-collapse: collapse;
-  width: 100%;
+  border-collapse: collapse !important;
+  width: 100% !important;
   overflow: hidden;
+  border: 1px solid black;
 }
 table th,
 table td {
   padding: 0.4rem !important;
   text-align: left;
   border: none !important;
+}
+
+.table > thead {
+  vertical-align: bottom;
+  background-color: beige;
+}
+
+tr th {
+  padding: 15px 7px !important;
 }
 
 tr:nth-child(even) {

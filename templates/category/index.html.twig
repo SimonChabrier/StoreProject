@@ -1,24 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Category index{% endblock %}
+{% block title %}Categories{% endblock %}
 
 {% block content %}
-    <h1>Category index</h1>
+    <h1>Administration des catégories</h1>
 
-    <table class="table">
+    <table mt-3 class="table mt-3">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>ListOrder</th>
+                <th>Nom de la catégorie</th>
+                <th>Identifiant</th>
+                <th>Ordre d'affichage</th>
                 <th>Admin</th>
             </tr>
         </thead>
         <tbody>
         {% for category in categories %}
             <tr>
-                <td>{{ category.id }}</td>
                 <td>{{ category.name }}</td>
+                <td>{{ category.id }}</td>
                 <td>{{ category.listOrder }}</td>
                 <td>
                     <a href="{{ path('app_category_show', {'id': category.id}) }}">Voir</a>
@@ -27,11 +27,11 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">Aucune données enregistrée pour le moment...</td>
+                <td colspan="4">Aucune données enregistrée pour le moment...</td>
             </tr>
         {% endfor %}
         </tbody>
-    </table>
+    </table mt-3>
 
-    <a href="{{ path('app_category_new') }}">Nouveau</a>
+    <a href="{{ path('app_category_new') }}">Ajouter une catégorie</a>
 {% endblock %}

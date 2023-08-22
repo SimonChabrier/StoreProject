@@ -500,7 +500,7 @@ aside {
   display: inline-block;
 }
 .last-five img.last-five-picture {
-  width: 100%;
+  width: 70%;
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;

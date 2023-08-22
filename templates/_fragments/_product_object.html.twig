@@ -1,4 +1,4 @@
- <h6>{{ product.name|upper }}</h6>
+<h6>{{ product.name|upper }}</h6>
 {% set lastPicture = product.pictures|first %}
 <img class="last-five-picture" src="{{ lastPicture ? 'uploads/files/pictures/' ~ lastPicture.getFilename : '/assets/pictures/defaultSneakersPicture.webp' }}" alt="{{ lastPicture ? lastPicture.alt : '' }}" loading="lazy">
 <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>

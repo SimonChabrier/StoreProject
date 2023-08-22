@@ -99,11 +99,11 @@ class HomeController extends AbstractController
             $viewData = $isCacheHit ? $viewData : $categoryRepository->findBy(['showOnHome' => true], ['listOrder' => 'ASC']);
             // si les données sont en cache, on affiche le template adapté aux tableaux, sinon on affiche le template adpaté aux objets.
             //$template = $isCacheHit ? self::TEMPLATE_CACHE : self::TEMPLATE_OBJECTS;
-            $template = $isCacheHit ? true : false;
+            $cache = $isCacheHit ? true : false;
 
             return $this->render('home/index.html.twig', [
                 'homeCats' => $viewData,
-                'template' => $template,
+                'cache' => $cache,
             ]);
     }
     /**

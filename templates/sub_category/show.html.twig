@@ -1,38 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ sub_category.name }}{% endblock %}
+{% block title %}{{ sub_category.getCategoryName }} - {{ sub_category.name }}{% endblock %}
 
 {% block content %}
-    <h1>SousCatégorie : {{ sub_category.name }}</h1>
-    <p>De la catégorie : {{ sub_category.getCategoryName }}</p>
+    <h1>sous-catégorie {{ sub_category.name }}</h1>
     <hr>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>Identifiant de le sous catérorie</th>
                 <td>{{ sub_category.id }}</td>
             </tr>
             <tr>
-                <th>Nom</th>
+                <th>Nom de la sous-catégorie</th>
                 <td>{{ sub_category.name }}</td>
             </tr>
             <tr>
-                <th>Ordre d'affichage</th>
+                <th>Ordre d'affichage dans le menu de navigation</th>
                 <td>{{ sub_category.listOrder }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_sub_category_index') }}">Retour à la liste</a>
-
-    <a href="{{ path('app_sub_category_edit', {'id': sub_category.id}) }}">Modifier</a>
+    <a href="{{ path('app_sub_category_index') }}" class="btn">Liste des sous-categories</a>
+    <a href="{{ path('app_sub_category_edit', {'id': sub_category.id}) }}" class="btn">Modifier {{ sub_category.name }} </a>
 
     {# {{ include('sub_category/_delete_form.html.twig') }} #}
     
     <hr>
-    <h2>Produits de {{ sub_category.name }} :</h2>
-    <p>De la catégorie : {{ sub_category.getCategoryName }}</p>
+    <h2>Produits de la sous-categorie {{ sub_category.name }}</h2>
+    <h3>De la catégorie : {{ sub_category.getCategoryName }}</h3>
 
     <ol>
     {% for product in products %}

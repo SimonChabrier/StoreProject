@@ -68,22 +68,57 @@
     <h6> Aucun type de produit renseigné pour ce produit </h6>
     <hr>
     {% endif %}
-        <div class="last-five">
-        <h3 class="mb-2"> Propriétés du produit </h3>
-            <ol>
-                <li>Id : {{ product.id }}</li>
-                <li>Nom : {{ product.name }}</li>
-                <li>Stock : {{ product.inStockQuantity }}</li>
-                <li>Visible : {{ (product.visibility) ? 'Oui' : 'Non' }}</li>
-                <li>Prix catalogue : <span class="catalogPrice"><del>{{ product.catalogPrice|round(0) }} €</del></span></li>
-                {% set discount = (product.catalogPrice - product.sellingPrice|round(0) ) / product.catalogPrice * 100 %}
-                <li>Réduction : <span class="dicountPrice">{{ discount|round(0) }} % </span></li> 
-                <li>Prix : <span class="price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span></li>
-                {# ajoute un lien vers les produits de la marque en utilisant l'id du produit #}
-                <li>Produits de la Marque : <a href="{{ path('app_brand_show', { 'id': product.brand.id }) }}">{{ product.brand.name }}</a></li>
-                <li>Marque : {{ product.brand }}</li>
-            </ol>
+    <h3 class="section-title">Propriétés du produit</h3>
+    
+    <div class="last-five product-properties">
+        <div class="product-properties">
+            <table class="property-table">
+                    <tbody>
+                        {% if app.user and is_granted('ROLE_ADMIN') %}
+                        <tr class="property-row">
+                            <td class="property-label">Identifiant :</td>
+                            <td>{{ product.id }}</td>
+                        </tr>
+                        <tr class="property-row">
+                            <td class="property-label">Visible :</td>
+                            <td>{{ (product.visibility) ? 'Oui' : 'Non' }}</td>
+                        </tr>
+                        {% endif %}
+                        <tr class="property-row">
+                            <td class="property-label">Nom :</td>
+                            <td>{{ product.name }}</td>
+                        </tr>
+                        <tr class="property-row">
+                            <td class="property-label">Qte stock :</td>
+                            <td>{{ product.inStockQuantity }}</td>
+                        </tr>
+                        
+                        <tr class="property-row">
+                            <td class="property-label">Prix catalogue :</td>
+                            <td><del>{{ product.catalogPrice|round(0) }} €</del></td>
+                        </tr>
+                        <tr class="property-row">
+                            <td class="property-label">Réduction :</td>
+                            {% set discount = (product.catalogPrice - product.sellingPrice|round(0)) / product.catalogPrice * 100 %}
+                            <td><span class="discountPrice">{{ discount|round(0)}} %</span></td>
+                        </tr>
+                        <tr class="property-row">
+                            <td class="property-label">Prix :</td>
+                            <td><span class="price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span></td>
+                        </tr>
+                        <tr class="property-row">
+                            <td class="property-label">Produits de la Marque :</td>
+                            <td><a class="brand-link" href="{{ path('app_brand_show', { 'id': product.brand.id }) }}">{{ product.brand.name }}</a></td>
+                        </tr>
+                        <tr class="property-row">
+                            <td class="property-label">Marque :</td>
+                            <td>{{ product.brand }}</td>
+                        </tr>
+                    </tbody>
+            </table>
         </div>
+    </div>
+
     <hr>
     <div class="last-five">
     <h3> Ajouter au panier </h3>

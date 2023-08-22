@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/product/type")
- * @IsGranted("ROLE_ADMIN")
+ * 
  */
 class ProductTypeController extends AbstractController
 {
@@ -29,6 +29,7 @@ class ProductTypeController extends AbstractController
 
     /**
      * @Route("/new", name="app_product_type_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request, ProductTypeRepository $productTypeRepository): Response
     {

@@ -44,14 +44,18 @@
     </div>
     </div>
 
+
     <div class="product_info col-md-4">
-    {% if product.category %}
-    <h5><a href="{{ path('app_category_show', { 'id': product.category.id }) }}">Categorie :  {{ product.category|capitalize }}</a></h5>
-    <hr>
-    {% else %}
-    <h6> Aucune categorie renseigné pour ce produit </h6>
-    <hr>
-    {% endif %}
+    
+    {% for category in product.subCategory.getCategories %}
+        {% if category.name is defined %}
+        <h5><a href="{{ path('app_category_show', { 'id': category.id }) }}">Categorie :  {{ category|capitalize }}</a></h5>
+        <hr>
+        {% else %}
+        <h6> Aucune categorie renseigné pour ce produit </h6>
+        <hr>
+        {% endif %}
+    {% endfor %}
 
     {% if product.subCategory %}
     <h6><a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}">Sous-Categorie : {{ product.subCategory|capitalize }}</a></h6>
@@ -92,7 +96,6 @@
                             <td class="property-label">Qte stock :</td>
                             <td>{{ product.inStockQuantity }}</td>
                         </tr>
-                        
                         <tr class="property-row">
                             <td class="property-label">Prix catalogue :</td>
                             <td><del>{{ product.catalogPrice|round(0) }} €</del></td>
@@ -107,12 +110,8 @@
                             <td><span class="price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span></td>
                         </tr>
                         <tr class="property-row">
-                            <td class="property-label">Produits de la Marque :</td>
-                            <td><a class="brand-link" href="{{ path('app_brand_show', { 'id': product.brand.id }) }}">{{ product.brand.name }}</a></td>
-                        </tr>
-                        <tr class="property-row">
                             <td class="property-label">Marque :</td>
-                            <td>{{ product.brand }}</td>
+                            <td><a class="brand-link" href="{{ path('app_brand_show', { 'id': product.brand.id }) }}">{{ product.brand.name }}</a></td>
                         </tr>
                     </tbody>
             </table>

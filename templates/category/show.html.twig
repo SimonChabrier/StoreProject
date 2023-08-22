@@ -24,19 +24,46 @@
 {% endif %}  
 
 <hr>
-    {% if category.products is not empty %}
+{% if category.products is not empty %}
     <div class="last-five swiper">
         <div class="last-five-products">
-        {% for product in category.products %}
+            {% for product in category.products %}
                 <section>
                     {% include '_fragments/_product_object.html.twig' %} 
                 </section>  
-        {% endfor %}
+            {% endfor %}
         </div>
     </div>
+{% else %}
+    {% if category.subCategories is not empty %}
+        {% set hasSubCategoryProducts = false %}
+        {% for subCategory in category.subCategories %}
+            {% if subCategory.products is not empty %}
+                {% if not hasSubCategoryProducts %}
+                    {% set hasSubCategoryProducts = true %}
+                    <div class="last-five swiper">
+                        <div class="last-five-products">
+                            {% for product in subCategory.products %}
+                                <section>
+                                    {% include '_fragments/_product_object.html.twig' %} 
+                                </section>  
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        {% if not hasSubCategoryProducts %}
+            <div class="alert alert-info" role="alert">
+                <p>Il n'y a pas de produits dans cette catégorie</p>
+            </div>
+        {% endif %}
     {% else %}
         <div class="alert alert-info" role="alert">
             <p>Il n'y a pas de produits dans cette catégorie</p>
         </div>
     {% endif %}
+{% endif %}
+
+
 {% endblock %}

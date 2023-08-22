@@ -825,8 +825,7 @@ help.help-block {
 
 .price {
   font-size: 1.2rem;
-  font-weight: 300;
-  color: #c7c721;
+  font-weight: 200;
 }
 
 section.result-card {
@@ -923,4 +922,8 @@ img.gallery_dialog_img {
   text-align: center;
   margin-bottom: 0 !important;
   border: none !important;
+}
+
+table.property-table {
+  border: none;
 }/*# sourceMappingURL=main.css.map */

@@ -876,8 +876,8 @@ width: 100%;
 
 .price {
   font-size: 1.2rem;
-  font-weight: 300;
-  color: #c7c721;
+  font-weight: 200;
+  // color: #c7c721;
 }
 
 section.result-card {
@@ -982,3 +982,10 @@ img.gallery_dialog_img {
   margin-bottom: 0!important;
   border: none!important;
 }
+
+// infos du produit sur fiche produit 
+table.property-table {
+  border: none;
+}
+
+

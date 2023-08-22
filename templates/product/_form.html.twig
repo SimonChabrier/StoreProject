@@ -16,9 +16,7 @@
  {{ form_row(form.brand) }}
  {{ form_row(form.description) }}
 
-    {# Gestion de la collection - nécéssite le JS des balises script #}
-<hr>
-    <h3>Collection d'attributs produit</h3>
+<h3 class="mt-3">Spécificités</h3>
 
     <section>
         {% if product.productData %}
@@ -26,7 +24,7 @@
                 <div>{{ data.key|capitalize }} : {{ data.value|capitalize }}</div>
         {% endfor %}
         {% else %}
-            <div> Aucune caractéristique renseigné pour ce produit </div>
+            <div><p>Aucune spécificité renseigné pour ce produit</p></div>
         {% endif %}
     </section>
     
@@ -46,17 +44,17 @@
 <hr>
 
     {# Gestion de la collection d'images sur la propriété pictures - nécéssite le JS des balises script #}
-    <h3>Collection d'images</h3>
+    <h3>Images</h3>
 
     <div class="gallery_small">
-    {% if product.pictures %}
+    {% if product.pictures is not empty %}
         {% for picture in product.pictures %}
             {% if picture %}
                 <img class="picture_XS" src="/uploads/files/pictures_XS/{{ picture.getFilename }}" alt="{{ picture.alt }}" id="{{ picture.id }}" title="{{ picture.name }}" >
             {% endif %}
         {% endfor %}
     {% else %}
-        <div> Aucune image associé pour ce produit </div>
+        <div><p>Aucune image associé pour ce produit</p></div>
     {% endif %}
     </div>
 
@@ -71,6 +69,7 @@
     >
     </div>
 
+<hr>
     <button class="btn btn-success">{{ button_label|default('Enregistrer le produit') }}</button>
 
 {{ form_end(form) }}

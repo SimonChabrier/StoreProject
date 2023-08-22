@@ -30,7 +30,7 @@
 
               <div class="navbar-collapse" id="footer_navbarNavDropdown">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        {% for cat in catsAndSubCats.getOnlyCatsAndOnlySubCats() %}      
+                        {% for cat in catsAndSubCats.getNavCatsAndSubCats() %}      
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown{{ cat.catId }}" role="button" aria-expanded="false">{{ cat.catName }}</a>
                                 <ul class="dropdown-menu slide" aria-labelledby="navbarDropdown{{ cat.catId }}">

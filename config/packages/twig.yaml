@@ -3,8 +3,8 @@ twig:
     form_themes: ['bootstrap_4_layout.html.twig']
     # ajout du service CatsAndSubCatsService pour injecter les categories et sous categories dans la variable globale: catsAndSubCats
     globals:
-        catsAndSubCats: '@App\Service\CatsAndSubCatsService'
-        brands: '@App\Service\BrandsService'
+        catsAndSubCats: '@App\Service\GlobalVarsService'
+        allbrands: '@App\Service\GlobalVarsService'
     # ajout du style pour les emails - voir base_email.html.twig pour l'appel du style
     paths:
         '%kernel.project_dir%/public/assets/styles': styles_email

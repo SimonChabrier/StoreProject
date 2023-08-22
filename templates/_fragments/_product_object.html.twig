@@ -4,9 +4,9 @@
 <span class="catalog-price"><del>{{ product.catalogPrice }} €</del></span>
 <span class="selling-price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span>
 <div class="productInfo">
-    {# si le produit a une catégorie et que la variable category est définie  #}
-    {% if product.category is defined and category is defined %}
-    <span class="categorie">Catégorie : {{ category.name }}</span>
+    {# On récupère le nom de la categorie parent  #}
+    {% if product.getSubCategory.getCategoryName is defined%}
+    <span class="categorie">Catégorie : {{ product.getSubCategory.getCategoryName }} {{ product.getSubCategory.name }}</span>
     {% endif %}
     {% if product.subCategory is not empty %}
         <span class="sous-categorie">Sous-catégorie : {{ product.subCategory.name }}</span>

@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use tidy;
 
 class ProductType extends AbstractType
 {
@@ -29,43 +30,73 @@ class ProductType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Nom du produit',
                 'disabled' => false,
+                'required' => true,
+                'attr' => [
+                    'placeholder' => 'Nom du produit',
+                ],
+
             ])    
             ->add('buyPrice', TextType::class, [
                 'label' => 'Prix achat',
                 'disabled' => false,
+                'required' => false,
+                // placeholder
+                'attr' => [
+                    'placeholder' => 'Prix achat HT',
+                ],
             ])
             ->add('sellingPrice', TextType::class, [
                 'label' => 'Prix de vente',
                 'disabled' => false,
+                'required' => true,
+                'attr' => [
+                    'placeholder' => 'Prix de vente TTC',
+                ],
             ])
             ->add('catalogPrice', TextType::class, [
-                'label' => 'Prix catalogue',
+                'label' => 'Prix public',
                 'disabled' => false,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Prix public TTC',
+                ],
             ])
             ->add('visibility', ChoiceType::class, [
                 'label' => 'Visibilité',
                 'choices' => [
+                    'Choisir une option' => null,
                     'En ligne' => 1,
                     'Hors ligne' => 0,
                 ],
+                'required' => true,
+                'multiple' => false,
+                'expanded' => false,
+                // valeur par défaut si null
+                // 'data' => 1,
             ])
             ->add('brand', EntityType::class, [
                 'class' => Brand::class,
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
+                'placeholder' => 'Choisir une marque',
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
+                // non requis 
+                'required' => false,
+                // empty start value
+                'placeholder' => 'Choisir une catégorie',
             ])
             ->add('subCategory', EntityType::class, [
                 'class' => SubCategory::class,
                 'choice_label' => 'getSubCategoryName',
                 'multiple' => false,
                 'expanded' => false,
+                'placeholder' => 'Choisir une sous-catégorie',
             ])
             // A utiliser si produit et sous catégories sont liés par une ManyToMany
             // ->add('subCategories', CollectionType::class, [
@@ -85,7 +116,8 @@ class ProductType extends AbstractType
                 'class' => ProductTypeEntity::class,
                 'choice_label' => 'name',
                 'multiple' => false,
-                'expanded' => false,               
+                'expanded' => false,     
+                'placeholder' => 'Choisir un type de produit',          
             ])
             // description textarea en utilisant le composant CKEditor
             ->add('description', CKEditorType::class, [

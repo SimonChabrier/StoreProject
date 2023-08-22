@@ -46,7 +46,12 @@ h3{
   font-weight: 200!important;
 }
 
-
+p {
+  font-size: 1rem;
+  font-weight: 200;
+  margin: 0!important;
+  padding: 10px 0!important;
+}
 hr {
   border: 1px solid #c7c721 !important;
   padding: 0 !important;
@@ -968,4 +973,10 @@ img.gallery_dialog_img {
 .product_info_comp {
   //border: 1px solid #52522e;
   width: 100%;
+}
+
+.alert {
+  text-align: center;
+  margin-bottom: 0!important;
+  border: none!important;
 }

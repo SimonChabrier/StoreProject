@@ -64,15 +64,12 @@ class ProductType extends AbstractType
             ->add('visibility', ChoiceType::class, [
                 'label' => 'Visibilité',
                 'choices' => [
-                    'Choisir une option' => null,
                     'En ligne' => 1,
                     'Hors ligne' => 0,
                 ],
                 'required' => true,
-                'multiple' => false,
-                'expanded' => false,
-                // valeur par défaut si null
-                // 'data' => 1,
+                'placeholder' => 'Choisir une option', // Option de choix par défaut
+                'empty_data' => 1, // Valeur par défaut si aucun choix n'est fait
             ])
             ->add('brand', EntityType::class, [
                 'class' => Brand::class,

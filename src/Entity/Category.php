@@ -49,7 +49,8 @@ class Category
     /**
      * @ORM\OneToMany(
      *      targetEntity=Product::class, 
-     *      mappedBy="category"
+     *      mappedBy="category",
+     *      fetch="EAGER"
      *  )
      * 
      */

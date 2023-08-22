@@ -3,24 +3,64 @@
 {% block title %}Category{% endblock %}
 
 {% block content %}
-    <h1>Category</h1>
 
-    <table class="table">
+    <h1>Produits de la categorie {{ category.name }}</h1>
+{% if app.user and is_granted('ROLE_ADMIN') %}
+    <table class="table mt-3">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>Identifiant de la catégorie</th>
                 <td>{{ category.id }}</td>
             </tr>
             <tr>
-                <th>Name</th>
+                <th>Nom de la catégorie</th>
                 <td>{{ category.name }}</td>
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('app_category_index') }}">Retour à la liste</a>
-
-    <a href="{{ path('app_category_edit', {'id': category.id}) }}">Modifier</a>
-
+    <a href="{{ path('app_category_index') }}" class="btn">Retour à la liste</a>
+    <a href="{{ path('app_category_edit', {'id': category.id}) }}" class="btn">Modifier</a>
     {{ include('category/_delete_form.html.twig') }}
+{% endif %}  
+
+<hr>
+{% if category.products is not empty %}
+    <div class="last-five swiper">
+        <div class="last-five-products">
+            {% for product in category.products %}
+                <section>
+                    {% include '_fragments/_product_object.html.twig' %} 
+                </section>  
+            {% endfor %}
+        </div>
+    </div>
+{% elseif category.subCategories is not empty %}
+    {% set hasSubCategoryProducts = false %}
+    {% for subCategory in category.subCategories %}
+        {% if subCategory.products is not empty %}
+            {% set hasSubCategoryProducts = true %}
+            <div class="last-five swiper">
+                <div class="last-five-products">
+                    {% for product in subCategory.products %}
+                        <section>
+                            {% include '_fragments/_product_object.html.twig' %} 
+                        </section>  
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    {% if not hasSubCategoryProducts %}
+        <div class="alert alert-info" role="alert">
+            <p>Il n'y a pas de produits dans cette catégorie</p>
+        </div>
+    {% endif %}
+{% else %}
+    <div class="alert alert-info" role="alert">
+        <p>Il n'y a pas de produits dans cette catégorie</p>
+    </div>
+{% endif %}
+
+
+
 {% endblock %}

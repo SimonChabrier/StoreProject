@@ -5,22 +5,39 @@
 {% block content %}
     <h1>Produits de la marque: {{ brand.name }}</h1>
 {% if app.user and is_granted('ROLE_ADMIN') %}
-    <a href="{{ path('app_brand_index') }}">back to list</a>
-    <a href="{{ path('app_brand_edit', {'id': brand.id}) }}">edit</a>
+    <table class="table mt-3">
+        <tbody>
+            <tr>
+                <th>Identifiant de la marque</th>
+                <td>{{ brand.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom de la catégorie</th>
+                <td>{{ brand.name }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="{{ path('app_brand_index') }}" class="btn">Retour à la liste</a>
+    <a href="{{ path('app_brand_edit', {'id': brand.id}) }}" class="btn">Modifier</a>
     {{ include('brand/_delete_form.html.twig') }}
-{% endif %}
+{% endif %}  
 
-<div class="last-five swiper">
-<div class="swiper-wrapper">
-{% for product in products %}
-<div class="last-five-products">
-<section>
-    {{ include('_fragments/_product_object.html.twig') }}
-</section>
-</div>
-{% endfor %}
-</div>
-</div>
+<hr>
+    {% if brand.products is not empty %}
+    <div class="last-five swiper">
+        <div class="last-five-products">
+        {% for product in brand.products %}
+                <section>
+                    {% include '_fragments/_product_object.html.twig' %} 
+                </section>  
+        {% endfor %}
+        </div>
+    </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            <p>Il n'y a pas de produits de cette marque</p>
+        </div>
+    {% endif %}
 
 
 {% endblock %}

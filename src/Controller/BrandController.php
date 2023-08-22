@@ -14,7 +14,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/brand")
- * @IsGranted("ROLE_ADMIN")
  */
 class BrandController extends AbstractController
 {
@@ -29,6 +28,7 @@ class BrandController extends AbstractController
     }
     /**
      * @Route("/new", name="app_brand_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request, BrandRepository $brandRepository): Response
     {
@@ -62,6 +62,7 @@ class BrandController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="app_brand_edit", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Brand $brand, BrandRepository $brandRepository): Response
     {
@@ -82,6 +83,7 @@ class BrandController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_brand_delete", methods={"POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Brand $brand, BrandRepository $brandRepository): Response
     {

@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+
+<div class="last-five searchResults">
+    {# résultats de la recherche #}
+    {% include '_fragments/_searchResults.html.twig' %}
+</div>
+
+<div class="last-five swiper">
+
+    {% for category in homeCats %}
+        {% if template %}
+            <a href="{{ path('app_category_show', {'id': category['id']}) }}"><h2>{{ category['name']|upper }}</h2></a>
+        {% else %}
+            <a href="{{ path('app_category_show', {'id': category.id}) }}"><h2>{{ category.name|upper }}</h2></a>
+        {% endif %}
+    
+    <div class="swiper-wrapper">
+        {% if template %}
+            {% for product in category['products']|slice(-4)|reverse %}
+                <section class="swiper-slide">
+                    {% include '_fragments/_product_array.html.twig' with {'product': product} %} 
+                </section>
+            {% endfor %}
+        {% else %}
+            {% for product in category.products|slice(-4)|reverse %}
+                <section class="swiper-slide">
+                    {% include '_fragments/_product_object.html.twig' with {'product': product} %}
+                </section>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="swiper-pagination"></div>
+    
+    {% if template %}
+        {% for subCategory in category['subCategories'] %}
+            <a href="{{ path('app_sub_category_show', {'id': subCategory['id']}) }}"><h3>{{ category['name']|upper }} - {{ subCategory['name']|upper }}</h3></a>
+            <div class="last-five-products">
+                {% for product in subCategory['products'] %}
+                    <section>
+                        {% include '_fragments/_product_array.html.twig' with {'product': product} %} 
+                    </section>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    {% else %}
+        {% for subCategory in category.subCategories %}
+            <a href="{{ path('app_sub_category_show', {'id': subCategory.id}) }}"><h3>{{ category.name|upper }} - {{ subCategory.name|upper }}</h3></a>
+            <div class="last-five-products">
+                {% for product in subCategory.products %}
+                    <section>
+                        {% include '_fragments/_product_object.html.twig' with {'product': product} %}
+                    </section>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endfor %}
+
+</div>
+
+
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const swiper = new Swiper('.swiper', {
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    type: 'bullets',
+                    clickable: true,
+                    dynamicBullets: true,
+                    dynamicMainBullets: 5,
+                },
+                slidesPerView: 4,
+                direction: 'horizontal',
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: true,
+                },
+                transitionEffect: 'slide',
+                loop: true,
+                centeredSlides: true,
+                breakpoints: {
+                    320: { slidesPerView: 1 },
+                    480: { slidesPerView: 2 },
+                    640: { slidesPerView: 3 },
+                    1024: { slidesPerView: 4 },
+                },
+            });
+        });
+
+    // fetch /api/categories
+
+    const endPoint = window.location.origin + '/api/categories';
+
+    async function logMovies() {
+    const response = await fetch(endPoint);
+    const movies = await response.json();
+    console.log(movies);
+    }
+
+    logMovies();
+
+    </script>
+{% endblock %}
+
+{% endblock %}

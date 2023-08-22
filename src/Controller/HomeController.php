@@ -101,7 +101,7 @@ class HomeController extends AbstractController
             //$template = $isCacheHit ? self::TEMPLATE_CACHE : self::TEMPLATE_OBJECTS;
             $template = $isCacheHit ? true : false;
 
-            return $this->render('home/index.html.twig', [
+            return $this->render('home/temp.html.twig', [
                 'homeCats' => $viewData,
                 'template' => $template,
             ]);

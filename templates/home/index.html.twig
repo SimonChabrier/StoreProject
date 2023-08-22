@@ -17,7 +17,7 @@
             {% if category['products'] is not empty and category['name'] == 'Nouveautés' %}
                 {% set categoryProducts = category['products']|slice(-4)|reverse %}
             {% else %}
-            {# on ne veut pas afficher ailleur que dans le slider les produit de la catégorie nouveautés #}
+                {# on ne veut pas afficher ailleur que dans le slider les produit de la catégorie nouveautés #}
                 {% set categoryProducts = [] %} 
             {% endif %}
 

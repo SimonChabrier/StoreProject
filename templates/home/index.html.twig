@@ -1,149 +1,88 @@
 {% extends 'base.html.twig' %}
+
 {% block content %}
+    <div class="last-five searchResults">
+        {# résultats de la recherche #}
+        {% include '_fragments/_searchResults.html.twig' %}
+    </div>
 
-<div class="last-five searchResults">
-    {# résultats de la recherche #}
-    {% include '_fragments/_searchResults.html.twig' %}
-</div>
-
-
-{% if template %}
-
-<div class="last-five swiper">
-    {% for category in homeCats %}
-        <a href="{{ path('app_category_show', {'id': category['id']}) }}"><h2>{{ category['name']|upper }}</h2></a>
-        
-        <div class="swiper-wrapper">
-            {% if category['products'] is not empty and category['name'] == 'Nouveautés' %}
-                {% set categoryProducts = category['products']|slice(-4)|reverse %}
-            {% else %}
-                {# on ne veut pas afficher ailleur que dans le slider les produit de la catégorie nouveautés #}
-                {% set categoryProducts = [] %} 
-            {% endif %}
-
-            {% for product in categoryProducts %}
-                <section class="swiper-slide">
-                     {% include '_fragments/_product_array.html.twig' %} 
-                </section>
-            {% endfor %}
-        </div>
-        <div class="swiper-pagination"></div>
-        
-        {% for subCategory in category['subCategories'] %}
-            <a href="{{ path('app_sub_category_show', {'id': subCategory['id']}) }}"><h3>{{ category['name']|upper }} - {{ subCategory['name']|upper }}</h3></a>
-            <div class="last-five-products">
-                {% set subCategoryProducts = subCategory['products']|slice(-4) %}
-                {% for product in subCategoryProducts %}
-                    <section>
-                        {% include '_fragments/_product_array.html.twig' %} 
+    <div class="last-five swiper">
+        {% for category in homeCats %}
+            <a href="{{ path('app_category_show', {'id': category.id}) }}"><h2>{{ category.name|upper }}</h2></a>
+            
+            <div class="swiper-wrapper">
+                {% set productsToRender = template ? category['products']|slice(-4)|reverse : category.products|slice(-4)|reverse %}
+                {% for product in productsToRender %}
+                    <section class="swiper-slide">
+                        {% include template ? '_fragments/_product_array.html.twig' : '_fragments/_product_object.html.twig' with {'product': product} %} 
                     </section>
                 {% endfor %}
             </div>
-        {% endfor %}
-    {% endfor %}
-</div>
-
-{% else %}
-
-<div class="last-five swiper">
-    {% for category in homeCats %}
-        <a href="{{ path('app_category_show', {'id': category.id}) }}"><h2>{{ category.name|upper }}</h2></a>
-        
-        <div class="swiper-wrapper">
-            {# si la category a des produits Eg "nouveautés"  #}
-            {% if category.products is not empty and category.name == 'Nouveautés' %}
-                {% set categoryProducts = category.products|slice(-4)|reverse %}
-            {% else %}
-            {# Ensuite on va chercher les produits des sous-catégories et on vide le categoryProducts parce qu'on n gère pas 
-            l'affichage des produits à la racine de la categorie en dehors du slider donc on vide le tableau #}
-                {% set categoryProducts = [] %} 
-                {# Si on veut gèrer l'affichage des produits qui ont une category et aussi une sous categorie alors on descend on boucle sur les sous-catégories de la catégorie en cours et on rempli le tableau categoryProducts avec les produits de chaque sous-catégorie #}
-                {# {% for subCategory in category['subCategories'] %}
-                    {% set subCategoryProducts = subCategory['products']|slice(0, 4)|reverse %}
-                {% endfor %} #}
-            {% endif %}
-
-            {% for product in categoryProducts %}
-                <section class="swiper-slide">
-                     {% include '_fragments/_product_object.html.twig' %} 
-                </section>
+            <div class="swiper-pagination"></div>
+            
+            {% set subCategoriesToRender = template ? category['subCategories'] : category.subCategories %}
+            {% for subCategory in subCategoriesToRender %}
+                <a href="{{ path('app_sub_category_show', {'id': subCategory.id}) }}"><h3>{{ category.name|upper }} - {{ subCategory.name|upper }}</h3></a>
+                <div class="last-five-products">
+                    {% set subCategoryProductsToRender = template ? subCategory['products'] : subCategory.products %}
+                    {% for product in subCategoryProductsToRender %}
+                        <section>
+                            {% include template ? '_fragments/_product_array.html.twig' : '_fragments/_product_object.html.twig' with {'product': product} %} 
+                        </section>
+                    {% endfor %}
+                </div>
             {% endfor %}
-        </div>
-        <div class="swiper-pagination"></div>
-        
-        {% for subCategory in category.subcategories %}
-            <a href="{{ path('app_sub_category_show', {'id': subCategory.id}) }}"><h3>{{ category.name|upper }} - {{ subCategory.name|upper }}</h3></a>
-            <div class="last-five-products">
-                {% set subCategoryProducts = subCategory.products|slice(-4)|reverse %}
-                {% for product in subCategoryProducts %}
-                    <section>
-                        {% include '_fragments/_product_object.html.twig' %} 
-                    </section>
-                {% endfor %}
-            </div>
         {% endfor %}
-    {% endfor %}
-</div>
+    </div>
 
-{% endif %}
+    {% block stylesheets %}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
+    {% endblock %}
 
-
-
-
-
-
-
-{% block stylesheets %}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
-{% endblock %}
-
-{% block javascripts %}
-    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const swiper = new Swiper('.swiper', {
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    type: 'bullets',
-                    clickable: true,
-                    dynamicBullets: true,
-                    dynamicMainBullets: 5,
-                },
-                slidesPerView: 4,
-                direction: 'horizontal',
-                autoplay: {
-                    delay: 5000,
-                    disableOnInteraction: true,
-                },
-                transitionEffect: 'slide',
-                loop: true,
-                centeredSlides: true,
-                breakpoints: {
-                    320: { slidesPerView: 1 },
-                    480: { slidesPerView: 2 },
-                    640: { slidesPerView: 3 },
-                    1024: { slidesPerView: 4 },
-                },
+    {% block javascripts %}
+        <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const swiper = new Swiper('.swiper', {
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        type: 'bullets',
+                        clickable: true,
+                        dynamicBullets: true,
+                        dynamicMainBullets: 5,
+                    },
+                    slidesPerView: 4,
+                    direction: 'horizontal',
+                    autoplay: {
+                        delay: 5000,
+                        disableOnInteraction: true,
+                    },
+                    transitionEffect: 'slide',
+                    loop: true,
+                    centeredSlides: true,
+                    breakpoints: {
+                        320: { slidesPerView: 1 },
+                        480: { slidesPerView: 2 },
+                        640: { slidesPerView: 3 },
+                        1024: { slidesPerView: 4 },
+                    },
+                });
             });
-        });
 
-    // fetch /api/categories
+            // fetch /api/categories
+            const endPoint = window.location.origin + '/api/categories';
 
-    const endPoint = window.location.origin + '/api/categories';
+            async function logMovies() {
+                const response = await fetch(endPoint);
+                const movies = await response.json();
+                console.log(movies);
+            }
 
-    async function logMovies() {
-    const response = await fetch(endPoint);
-    const movies = await response.json();
-    console.log(movies);
-    }
-
-    logMovies();
-
-    </script>
-{% endblock %}
-
+            logMovies();
+        </script>
+    {% endblock %}
 {% endblock %}

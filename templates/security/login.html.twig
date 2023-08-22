@@ -21,7 +21,10 @@
     <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
     <label for="inputPassword">Password</label>
     <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
+    <div class="form-check mt-3">
+            <input type="checkbox" id="show_password" name="show_password" class="form-check-input"/>
+            <label for="show_password">Afficher le mot de passe</label>    
+    </div>
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
     >
@@ -44,4 +47,21 @@
 </form>
 
 <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
+
+{# bloc script afficher masque mot de passe  #}
+    {% block javascripts %}
+        <script>
+            $(document).ready(function() {
+                $('#inputPassword').attr('type', 'password');
+                $('#show_password').click(function() {
+                    if ($('#inputPassword').attr('type') == 'password') {
+                        $('#inputPassword').attr('type', 'text');
+                    } else {
+                        $('#inputPassword').attr('type', 'password');
+                    }
+                });
+            });
+        </script>
+    {% endblock %}
+
 {% endblock %}

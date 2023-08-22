@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class TypeProductType extends AbstractType
 {
@@ -20,17 +21,17 @@ class TypeProductType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
-            ->add('typeData', CollectionType::class, [
-                'entry_type' => ProductDataType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'label' => 'Caractéristiques du produit',
-                'attr' => [
-                    'class' => 'form-control',
-                ],
-            ])
+            // ->add('typeData', CollectionType::class, [
+            //     'entry_type' => ProductDataType::class,
+            //     'entry_options' => ['label' => false],
+            //     'allow_add' => true,
+            //     'allow_delete' => true,
+            //     'by_reference' => false,
+            //     'label' => 'Caractéristiques du produit',
+            //     'attr' => [
+            //         'class' => 'form-control',
+            //     ],
+            // ])
         ;
     }
 

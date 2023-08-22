@@ -1,54 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ sub_category.name }}{% endblock %}
+{% block title %}{{ sub_category.getCategoryName }} - {{ sub_category.name }}{% endblock %}
 
 {% block content %}
-    <h1>SousCatégorie : {{ sub_category.name }}</h1>
-    <p>De la catégorie : {{ sub_category.getCategoryName }}</p>
-    <hr>
-
-    <table class="table">
+    <h1>Produits de la sous-categorie {{ sub_category.name }}</h1>
+{% if app.user and is_granted('ROLE_ADMIN') %}
+    <table class="table mt-3">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>Identifiant de le sous catérorie</th>
                 <td>{{ sub_category.id }}</td>
             </tr>
             <tr>
-                <th>Nom</th>
+                <th>Nom de la sous-catégorie</th>
                 <td>{{ sub_category.name }}</td>
             </tr>
             <tr>
-                <th>Ordre d'affichage</th>
+                <th>Ordre d'affichage dans le menu de navigation</th>
                 <td>{{ sub_category.listOrder }}</td>
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('app_sub_category_index') }}">Retour à la liste</a>
-
-    <a href="{{ path('app_sub_category_edit', {'id': sub_category.id}) }}">Modifier</a>
-
-    {# {{ include('sub_category/_delete_form.html.twig') }} #}
-    
+    <a href="{{ path('app_sub_category_index') }}" class="btn">Liste des sous-categories</a>
+    <a href="{{ path('app_sub_category_edit', {'id': sub_category.id}) }}" class="btn">Modifier {{ sub_category.name }} </a>
+    {{ include('sub_category/_delete_form.html.twig') }}
+{% endif %}  
     <hr>
-    <h2>Produits de {{ sub_category.name }} :</h2>
-    <p>De la catégorie : {{ sub_category.getCategoryName }}</p>
+    <h3>De la catégorie : {{ sub_category.getCategoryName }}</h3>
 
-    <ol>
-    {% for product in products %}
-        {% if product.getSubCategory.getName == sub_category.name %}
-            <li>
-                <a href="{{ path('app_product_show', {'id': product.id}) }}">Produit : {{ product.name }}</a>
-            </li>
-            <div class="gallery galleryThumb">
-                <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
-            </div>
-                <li>Categorie : {{product.category}} </li>  
-                <li>SousCategorie : {{product.subCategory}} </li>
-                <li>Type : <a href="{{ path('app_product_type_show', {'id': product.productType.id}) }}">{{product.productType}}</a></li>    
-            <hr>    
-        {% endif %}
-    {% endfor %}
-    </ol>
+    <div class="last-five swiper">
+        <div class="last-five-products">
+        {% for product in products %}
+            {% if product.getSubCategory.getName == sub_category.name %}
+                <section>
+                    {% include '_fragments/_product_object.html.twig' %} 
+                </section>  
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
 
 {% endblock %}

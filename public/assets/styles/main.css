@@ -23,6 +23,69 @@ body {
   flex-grow: 1;
 }
 
+h1 {
+  font-size: 2rem;
+  font-weight: 300;
+  margin: 0;
+  margin-bottom: 30px;
+}
+
+h2 {
+  font-size: 18px !important;
+  font-weight: 200 !important;
+}
+
+h3 {
+  font-size: 16px !important;
+  font-weight: 200 !important;
+}
+
+p {
+  font-size: 1rem;
+  font-weight: 200;
+  margin: 0 !important;
+  padding: 10px 0 !important;
+}
+
+hr {
+  border: 1px solid #c7c721 !important;
+  padding: 0 !important;
+}
+
+a {
+  color: #cb8431 !important;
+}
+
+ol ul {
+  padding: 0 0 0 10px;
+}
+
+table {
+  border-collapse: collapse !important;
+  width: 100% !important;
+  overflow: hidden;
+  border: 1px solid black;
+}
+table th,
+table td {
+  padding: 0.4rem !important;
+  text-align: left;
+  border: none !important;
+}
+
+.table > thead {
+  vertical-align: bottom;
+  background-color: beige;
+}
+
+tr th {
+  padding: 15px 7px !important;
+}
+
+tr:nth-child(even) {
+  background-color: rgb(245, 245, 245) !important;
+}
+
 .swal-icon--success__line::before,
 .swal-icon--success__line::after {
   box-sizing: inherit !important;
@@ -132,42 +195,6 @@ button#reset_submit {
 
 .navbar.bg-light {
   background-color: #ffffff !important;
-}
-
-h1 {
-  font-size: 2rem;
-  font-weight: 300;
-  margin: 0;
-  margin-bottom: 30px;
-}
-
-hr {
-  border: 1px solid #c7c721 !important;
-  padding: 0 !important;
-}
-
-a {
-  color: #cb8431 !important;
-}
-
-ol ul {
-  padding: 0 0 0 10px;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-  overflow: hidden;
-}
-table th,
-table td {
-  padding: 0.4rem !important;
-  text-align: left;
-  border: none !important;
-}
-
-tr:nth-child(even) {
-  background-color: rgb(245, 245, 245) !important;
 }
 
 button {
@@ -360,7 +387,7 @@ label {
   margin: 0;
   margin-bottom: 5px;
   text-align: center;
-  font-size: 1.7rem;
+  font-size: 1.7rem !important;
   font-weight: 300;
   text-transform: uppercase;
   height: -moz-fit-content;
@@ -368,6 +395,8 @@ label {
   width: 100%;
 }
 
+h2,
+h3,
 .last-five h3,
 .block-content h1 {
   background: rgb(199, 199, 33);
@@ -454,7 +483,7 @@ aside {
   text-transform: uppercase;
   transition: all 0.2s ease-in;
   margin: 20px 0;
-  width: calc(25% - 30px);
+  width: calc(25% - 30px) !important;
   height: auto;
 }
 .last-five section:hover {
@@ -464,15 +493,15 @@ aside {
 .last-five .last-five-products {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-around;
+  justify-content: flex-start;
   gap: 30px;
 }
 .last-five ol.last-five {
   display: inline-block;
 }
 .last-five img.last-five-picture {
-  width: 200px;
-  height: 200px;
+  width: 70%;
+  height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
   -o-object-position: center;
@@ -796,8 +825,7 @@ help.help-block {
 
 .price {
   font-size: 1.2rem;
-  font-weight: 300;
-  color: #c7c721;
+  font-weight: 200;
 }
 
 section.result-card {
@@ -888,4 +916,14 @@ img.gallery_dialog_img {
 
 .product_info_comp {
   width: 100%;
+}
+
+.alert {
+  text-align: center;
+  margin-bottom: 0 !important;
+  border: none !important;
+}
+
+table.property-table {
+  border: none;
 }/*# sourceMappingURL=main.css.map */

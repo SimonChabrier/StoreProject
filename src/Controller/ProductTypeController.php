@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\ProductType;
-use App\Form\TypeProductType;
+use App\Entity\ProductType as Type;
+use App\Form\TypeProductType as TypeProductType;
 use App\Repository\ProductTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/product/type")
+ * 
  */
 class ProductTypeController extends AbstractController
 {
@@ -32,7 +33,7 @@ class ProductTypeController extends AbstractController
      */
     public function new(Request $request, ProductTypeRepository $productTypeRepository): Response
     {
-        $productType = new ProductType();
+        $productType = new Type();
         $form = $this->createForm(TypeProductType::class, $productType);
         $form->handleRequest($request);
 
@@ -51,7 +52,7 @@ class ProductTypeController extends AbstractController
     /**
      * @Route("/{id}", name="app_product_type_show", methods={"GET"})
      */
-    public function show(ProductType $productType): Response
+    public function show(Type $productType): Response
     {   
         
         return $this->render('product_type/show.html.twig', [
@@ -63,7 +64,7 @@ class ProductTypeController extends AbstractController
      * @Route("/{id}/edit", name="app_product_type_edit", methods={"GET", "POST"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function edit(Request $request, ProductType $productType, ProductTypeRepository $productTypeRepository): Response
+    public function edit(Request $request, Type $productType, ProductTypeRepository $productTypeRepository): Response
     {
         $form = $this->createForm(TypeProductType::class, $productType);
         $form->handleRequest($request);
@@ -84,7 +85,7 @@ class ProductTypeController extends AbstractController
      * @Route("/{id}", name="app_product_type_delete", methods={"POST"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function delete(Request $request, ProductType $productType, ProductTypeRepository $productTypeRepository): Response
+    public function delete(Request $request, Type $productType, ProductTypeRepository $productTypeRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$productType->getId(), $request->request->get('_token'))) {
             $productTypeRepository->remove($productType, true);

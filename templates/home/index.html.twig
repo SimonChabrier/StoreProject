@@ -7,28 +7,29 @@
 </div>
 
 
-{% if template %}
+{% if cache %}
 
 <div class="last-five swiper">
     {% for category in homeCats %}
         <a href="{{ path('app_category_show', {'id': category['id']}) }}"><h2>{{ category['name']|upper }}</h2></a>
-        
-        <div class="swiper-wrapper">
+
             {% if category['products'] is not empty and category['name'] == 'Nouveautés' %}
+            <div class="swiper-wrapper">
                 {% set categoryProducts = category['products']|slice(-4)|reverse %}
+                {% for product in categoryProducts %}
+                    <section class="swiper-slide">
+                        {% include '_fragments/_product_array.html.twig' %} 
+                    </section>
+                {% endfor %}
+            </div>
+            <div class="swiper-pagination"></div>
             {% else %}
-            {# on ne veut pas afficher ailleur que dans le slider les produit de la catégorie nouveautés #}
+                {# On ne veut pas afficher ailleurs que dans le slider des produits à la racine d'une catégorie #}
                 {% set categoryProducts = [] %} 
             {% endif %}
+ </div> 
 
-            {% for product in categoryProducts %}
-                <section class="swiper-slide">
-                     {% include '_fragments/_product_array.html.twig' %} 
-                </section>
-            {% endfor %}
-        </div>
-        <div class="swiper-pagination"></div>
-        
+ <div class="last-five">       
         {% for subCategory in category['subCategories'] %}
             <a href="{{ path('app_sub_category_show', {'id': subCategory['id']}) }}"><h3>{{ category['name']|upper }} - {{ subCategory['name']|upper }}</h3></a>
             <div class="last-five-products">
@@ -48,33 +49,28 @@
 <div class="last-five swiper">
     {% for category in homeCats %}
         <a href="{{ path('app_category_show', {'id': category.id}) }}"><h2>{{ category.name|upper }}</h2></a>
-        
-        <div class="swiper-wrapper">
-            {# si la category a des produits Eg "nouveautés"  #}
-            {% if category.products is not empty and category.name == 'Nouveautés' %}
-                {% set categoryProducts = category.products|slice(-4)|reverse %}
-            {% else %}
-            {# Ensuite on va chercher les produits des sous-catégories et on vide le categoryProducts parce qu'on n gère pas 
-            l'affichage des produits à la racine de la categorie en dehors du slider donc on vide le tableau #}
-                {% set categoryProducts = [] %} 
-                {# Si on veut gèrer l'affichage des produits qui ont une category et aussi une sous categorie alors on descend on boucle sur les sous-catégories de la catégorie en cours et on rempli le tableau categoryProducts avec les produits de chaque sous-catégorie #}
-                {# {% for subCategory in category['subCategories'] %}
-                    {% set subCategoryProducts = subCategory['products']|slice(0, 4)|reverse %}
-                {% endfor %} #}
-            {% endif %}
 
-            {% for product in categoryProducts %}
-                <section class="swiper-slide">
-                     {% include '_fragments/_product_object.html.twig' %} 
-                </section>
-            {% endfor %}
-        </div>
-        <div class="swiper-pagination"></div>
-        
-        {% for subCategory in category.subcategories %}
+            {% if category.products is not empty and category.name == 'Nouveautés' %}
+            <div class="swiper-wrapper">
+                {% set categoryProducts = category.products|slice(-4)|reverse %}
+                {% for product in categoryProducts %}
+                    <section class="swiper-slide">
+                        {% include '_fragments/_product_object.html.twig' %} 
+                    </section>
+                {% endfor %}
+            </div>
+            <div class="swiper-pagination"></div>
+            {% else %}
+                {# On ne veut pas afficher ailleurs que dans le slider des produits à la racine d'une catégorie #}
+                {% set categoryProducts = [] %} 
+            {% endif %}
+ </div> 
+
+ <div class="last-five">       
+        {% for subCategory in category.getSubCategories %}
             <a href="{{ path('app_sub_category_show', {'id': subCategory.id}) }}"><h3>{{ category.name|upper }} - {{ subCategory.name|upper }}</h3></a>
             <div class="last-five-products">
-                {% set subCategoryProducts = subCategory.products|slice(-4)|reverse %}
+                {% set subCategoryProducts = subCategory.products|slice(-4) %}
                 {% for product in subCategoryProducts %}
                     <section>
                         {% include '_fragments/_product_object.html.twig' %} 
@@ -83,8 +79,7 @@
             </div>
         {% endfor %}
     {% endfor %}
-</div>
-
+</div>    
 {% endif %}
 
 

@@ -32,21 +32,15 @@
     <h2>Produits de la sous-categorie {{ sub_category.name }}</h2>
     <h3>De la catégorie : {{ sub_category.getCategoryName }}</h3>
 
-    <ol>
+<div class="last-five swiper">
+    <div class="last-five-products">
     {% for product in products %}
         {% if product.getSubCategory.getName == sub_category.name %}
-            <li>
-                <a href="{{ path('app_product_show', {'id': product.id}) }}">Produit : {{ product.name }}</a>
-            </li>
-            <div class="gallery galleryThumb">
-                <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/acc1f836e10a4c1191dbae2801556d8d_9366/Chaussure_Ultraboost_5_DNA_Running_Sportswear_Lifestyle_Blanc_GV8747_01_standard.jpg" alt="">
-            </div>
-                <li>Categorie : {{product.category}} </li>  
-                <li>SousCategorie : {{product.subCategory}} </li>
-                <li>Type : <a href="{{ path('app_product_type_show', {'id': product.productType.id}) }}">{{product.productType}}</a></li>    
-            <hr>    
+            <section>
+                 {% include '_fragments/_product_object.html.twig' %} 
+            </section>  
         {% endif %}
     {% endfor %}
-    </ol>
-
+    </div>
+</div>
 {% endblock %}

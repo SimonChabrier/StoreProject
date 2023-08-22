@@ -393,7 +393,7 @@ label {
   margin: 0;
   margin-bottom: 5px;
   text-align: center;
-  font-size: 1.7rem;
+  font-size: 1.7rem!important;
   font-weight: 300;
   text-transform: uppercase;
   height: fit-content;
@@ -523,7 +523,7 @@ aside {
   .last-five-products {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-around;
+    justify-content: flex-start;
     gap: 30px;
   }
 

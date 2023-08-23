@@ -43,7 +43,7 @@ class Order
      * Une commande en cours, pas encore passée.
      * @var string
      */
-    const STATUS_CART = 'cart';
+    const STATUS_CART = 'new';
 
     /**
      * @ORM\ManyToOne(
@@ -64,6 +64,11 @@ class Order
      * @Gedmo\Timestampable(on="update")
      */
     private $updatedAt;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $userIdentifier;
 
     public function __construct()
     {
@@ -199,6 +204,18 @@ class Order
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getUserIdentifier(): ?string
+    {
+        return $this->userIdentifier;
+    }
+
+    public function setUserIdentifier(string $userIdentifier): self
+    {
+        $this->userIdentifier = $userIdentifier;
 
         return $this;
     }

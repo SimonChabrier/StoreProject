@@ -63,7 +63,6 @@ class OrderController extends AbstractController
 
             //TODO ici il faudra faire le paiement avec Stripe avant de changer le statut du panier en "processing"
 
-
             // on récupère son panier courant
             $cart = $cartManager->getCurrentCart();
             // on change le statut du panier en "processing"

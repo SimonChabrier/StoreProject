@@ -34,10 +34,7 @@ class OrderFactory
         $order
             ->setStatus(Order::CART_STATUS)
             ->setUser($this->getCurentUser())
-            ->setUserIdentifier($this->createUniqueIdentifier())
-            ->setCreatedAt(new \DateTimeImmutable())
-            ->setUpdatedAt(new \DateTime());
-
+            ->setUserIdentifier($this->createUniqueIdentifier());
         return $order;
     }
 

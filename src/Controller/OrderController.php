@@ -11,10 +11,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 
+/**
+ * @Route("/order")
+ */
 class OrderController extends AbstractController
 {
     /**
-     * @Route("/order", name="app_order")
+     * @Route("/", name="app_order")
      */
     public function index(
         CartManager $cartManager, 
@@ -41,7 +44,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/order/process", name="app_order_process")
+     * @Route("/process", name="app_order_process")
      */
     public function process(
         CartManager $cartManager,
@@ -74,6 +77,37 @@ class OrderController extends AbstractController
 
             return $this->redirectToRoute('app_order');
         }
-        
     }
+
+    /**
+     * TODO en attente...
+     * Affiche le commandes de l'utilisateur connecté
+     * @Route("/user", name="app_order_user")
+     */
+    // public function showUserOrders(
+    //     AuthorizationCheckerInterface $authorizationChecker
+    // )
+    // {
+    //     // on récupère le user connecté
+    //     $user = $this->getUser();
+
+    //     if(!$user) {
+    //         $this->addFlash('warning', 'Vous devez être connecté pour voir vos commandes');
+    //         return $this->redirectToRoute('app_login');
+    //     }
+
+    //     // si on a un user et qu'il est pleinement authentifié
+    //     if($user && $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+
+    //         // on récupère les commandes de l'utilisateur
+    //         $orders = $user->getOrders();
+    //         dd($orders);
+    //         return $this->render('order/user_orders.html.twig', [
+    //             'orders' => $orders
+    //         ]);
+    //     }
+
+    // }
+    
+    
 }

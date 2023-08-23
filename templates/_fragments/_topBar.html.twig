@@ -28,9 +28,11 @@
 </section>
 {% endif %}
 
-{% if orders.getUserOrder() > 0 %}
+{% if new_order_count.getUserOrder > 0 %}
 <section class="topicon">
-<a href="{{ path('app_order') }}" class="btn" title"voir votre commande">Vous avez : {{ orders.getUserOrder() }} commande en cours.</a>
+<a href="{{ path('app_order') }}" class="btn" title"voir votre commande">
+    Vous avez : {{ new_order_count.getUserOrder() }} commande en cours.
+</a>
 </section>
 {% else %}
 {# pas de commande en cours #}

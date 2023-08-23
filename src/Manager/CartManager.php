@@ -18,7 +18,7 @@ class CartManager
     /**
      * @var OrderFactory
      */
-    private $cartFactory;
+    private $orderFactory;
 
     /**
      * @var EntityManagerInterface
@@ -34,20 +34,22 @@ class CartManager
         EntityManagerInterface $entityManager
     ) {
         $this->cartSessionStorage = $cartStorage;
-        $this->cartFactory = $orderFactory;
+        $this->orderFactory = $orderFactory;
         $this->entityManager = $entityManager;
     }
 
     /**
      * Gets the current cart.
      */
-    public function getCurrentCart(): Order
-    {
+    public function getCurrentCart()
+    {   
+
         $cart = $this->cartSessionStorage->getCart();
+
         // si le panier n'existe pas en session, on le crée
-        
+
         if (!$cart) {
-            $cart = $this->cartFactory->create();
+            $cart = $this->orderFactory->create();
         }
 
         return $cart;

@@ -17,8 +17,6 @@ class CartController extends AbstractController
     public function index(CartManager $cartManager, Request $request): Response
     {   
 
-        //dump($request->getSession()->get('cart_id'));
-
         $cart = $cartManager->getCurrentCart();
         $form = $this->createForm(CartType::class, $cart);
 

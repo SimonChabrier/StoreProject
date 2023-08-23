@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Cart{% endblock %}
+{% block title %}Order{% endblock %}
 
 {% block content %}
     <div class="container mt-4">
@@ -74,7 +74,7 @@
                             </li>
                         </ul>
                         <div class="card-body">
-                            <a href="#" class="btn btn-warning w-100">Commander</a>
+                            <a href="{{ path('app_order_process') }}" class="btn btn-warning w-100">Commander</a>
                         </div>
                     </div>
                 </div>

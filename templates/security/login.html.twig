@@ -13,7 +13,7 @@
             Vous êtes connecté en tant que : {{ app.user.userIdentifier }}, 
             <a href="{{ path('app_logout') }}">Déconnexion</a>
         </div>
-        {% else %}
+    {% else %}
     
 
     <h1 class="h3 mb-3 font-weight-normal">Page de connexion</h1>
@@ -40,13 +40,15 @@
         </div>
     #}
 
-    <button class="btn btn-lg btn-primary" type="submit">
+    <button class="btn btn-lg btn-primary mb-4" type="submit">
         LogIn
     </button>
     {% endif %}
 </form>
 
-<a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
+<hr>
+<a href="{{ path('app_register') }}" class="btn btn-lg btn-primary mb-2">Créer un compte utlisateur</a>
+<a href="{{ path('app_forgot_password_request') }}" class="btn btn-lg btn-primary">Mot de passe oublié ?</a>
 
 {# bloc script afficher masque mot de passe  #}
     {% block javascripts %}

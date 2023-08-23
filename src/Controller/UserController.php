@@ -44,7 +44,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/", name="app_user")
+     * @Route("/", name="app_user_account")
      */
     public function userAccount(): Response
     {   

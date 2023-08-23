@@ -59,6 +59,14 @@
     <body>
         
         {% block body %}
+
+        {% if new_order_count.getUserOrder > 0 %}
+            <div class="info_bar">
+            {% block infobar %}
+                {% include '_fragments/_info_bar.html.twig' %} 
+            {% endblock %}
+            </div>
+        {% endif %}
         
         <div class="userbar">
         {% block userbar %}

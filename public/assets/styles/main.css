@@ -597,6 +597,24 @@ form.resetForm {
   width: 100%;
 }
 
+.info_bar {
+  background: linear-gradient(-90deg, rgba(199, 199, 33, 0.4066001401) 0%, rgba(255, 255, 255, 0) 44%);
+  padding: 8px 30px 8px 0;
+}
+.info_bar a {
+  color: #7d7d1f !important;
+  text-decoration: none;
+  font-weight: 200;
+  transition: all 0.2s ease-in;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.info_bar a:hover {
+  color: rgb(49, 49, 46) !important;
+  transition: all 0.2s ease-in;
+}
+
 .userbar {
   display: flex;
   justify-content: space-between;

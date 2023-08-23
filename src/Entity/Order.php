@@ -36,14 +36,22 @@ class Order
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $status = self::STATUS_CART;
+    private $status = self::CART_STATUS;
     
     /**
      * An order that is in progress, not placed yet.
      * Une commande en cours, pas encore passée.
      * @var string
      */
-    const STATUS_CART = 'cart';
+    const CART_STATUS = 'new';
+
+    /**
+     * @ORM\ManyToOne(
+     * targetEntity=User::class, 
+     * inversedBy="orders"
+     * )
+     */
+    private $user;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -56,6 +64,11 @@ class Order
      * @Gedmo\Timestampable(on="update")
      */
     private $updatedAt;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $userIdentifier;
 
     public function __construct()
     {
@@ -159,6 +172,18 @@ class Order
         return $this;
     }
 
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -182,4 +207,18 @@ class Order
 
         return $this;
     }
+
+    public function getUserIdentifier(): ?string
+    {
+        return $this->userIdentifier;
+    }
+
+    public function setUserIdentifier(string $userIdentifier): self
+    {
+        $this->userIdentifier = $userIdentifier;
+
+        return $this;
+    }
+
+    
 }

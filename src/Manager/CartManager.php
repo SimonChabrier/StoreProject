@@ -18,7 +18,7 @@ class CartManager
     /**
      * @var OrderFactory
      */
-    private $cartFactory;
+    private $orderFactory;
 
     /**
      * @var EntityManagerInterface
@@ -34,20 +34,21 @@ class CartManager
         EntityManagerInterface $entityManager
     ) {
         $this->cartSessionStorage = $cartStorage;
-        $this->cartFactory = $orderFactory;
+        $this->orderFactory = $orderFactory;
         $this->entityManager = $entityManager;
     }
 
     /**
      * Gets the current cart.
      */
-    public function getCurrentCart(): Order
-    {
+    public function getCurrentCart()
+    {   
+
         $cart = $this->cartSessionStorage->getCart();
+        // dump($cart);
         // si le panier n'existe pas en session, on le crée
-        
         if (!$cart) {
-            $cart = $this->cartFactory->create();
+            $cart = $this->orderFactory->create();
         }
 
         return $cart;
@@ -58,9 +59,9 @@ class CartManager
      */
     public function save(Order $cart): void
     {   
-        // database
 
-        //TODO vérifier si le panier est vide alors on supprime le panier de la BDD
+        // si le panier est vide alors on supprime le panier de la BDD et de la session
+        // on recréera un nouveau panier vide à la prochaine requête...
         if($cart->getItems()->isEmpty()){
             $this->entityManager->remove($cart);
             $this->entityManager->flush();

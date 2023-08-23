@@ -49,7 +49,7 @@ class OrderRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('o')
             ->andWhere('o.status = :status')
             ->andWhere('o.updatedAt < :date')
-            ->setParameter('status', Order::STATUS_CART)
+            ->setParameter('status', Order::CART_STATUS)
             ->setParameter('date', $limitDate)
             ->setMaxResults($limit)
             ->getQuery()

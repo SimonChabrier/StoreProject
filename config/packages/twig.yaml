@@ -5,6 +5,7 @@ twig:
     globals:
         catsAndSubCats: '@App\Service\GlobalVarsService'
         allbrands: '@App\Service\GlobalVarsService'
+        orders: '@App\Service\GlobalVarsService'
     # ajout du style pour les emails - voir base_email.html.twig pour l'appel du style
     paths:
         '%kernel.project_dir%/public/assets/styles': styles_email

@@ -17,6 +17,13 @@
 <section class="topicon">
 <p class="username">{{ app.user.email }}</p>
 </section>
+{% if orders.getUserOrder() > 0 %}
+<section class="topicon">
+<a href="{{ path('app_cart') }}" class="btn" title"voir votre commande">Vous avez : {{ orders.getUserOrder() }} commande en cours.</a>
+</section>
+{% else %}
+{# pas de commande en cours #}
+{% endif %}
 {% else %}
 <section class="topicon">
 <a href="{{ path('app_login') }}" title="{{ app.user.email | default('Connection') }}" title=" {{ app.user.email | default('Connection') }}">

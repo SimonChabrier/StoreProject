@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User account{% endblock %}
+
+{% block content %}
+<h1>Bonjour {{ user.email }}</h1>
+<hr>
+<div class="example-wrapper">
+    
+<h2 class="mb-3">Commandes en attente</h2>
+{% if pending_orders is not empty %}
+    {% for order in pending_orders %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h3 class="card-title">Commande #{{ order.id }}</h3>
+                <ol>
+                <li class="card-text">Du: {{ order.createdAt|date('Y-m-d H:i:s') }}</li>
+                <li class="card-text">Total: {{ order.total }}</li>
+                <li class="card-text">Statut de la commande: {{ order.status }}</li>
+                </ol>
+                <h3 class="card-title">Produits</h3>
+                   
+                    {% for item in order.items %}
+                    <ol>
+                        <li class="card-text">Produit: {{ item.product.name }}</li>
+                        <li class="card-text">Quantité: {{ item.quantity }}</li>
+                        <li class="card-text">Prix: {{ item.product.sellingPrice }}</li>
+                    </ol>
+                    {% endfor %}
+                
+                <a href="#" class="btn btn-primary">Voir la commande</a>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Aucune commande en attente</p>
+{% endif %}
+</div>
+<hr>
+<h2 class="mb-3">Commandes en cours</h2>
+<div class="example-wrapper">
+{% if processing_orders is not empty %}
+    {% for order in processing_orders %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h3 class="card-title">Commande #{{ order.id }}</h3>
+                <ol>
+                <li class="card-text">Du: {{ order.createdAt|date('Y-m-d H:i:s') }}</li>
+                <li class="card-text">Total: {{ order.total }}</li>
+                <li class="card-text">Statut de la commande: {{ order.status }}</li>
+                </ol>
+                <h3 class="card-title">Produits</h3>
+                    
+                    {% for item in order.items %}
+                    <ol>
+                        <li class="card-text">Produit: {{ item.product.name }}</li>
+                        <li class="card-text">Quantité: {{ item.quantity }}</li>
+                        <li class="card-text">Prix: {{ item.product.sellingPrice }}</li>
+                    </ol>
+                    {% endfor %}
+                
+                <a href="#" class="btn btn-primary">Voir la commande</a>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Aucune commande en cours</p>
+{% endif %}
+</div>
+{% endblock %}

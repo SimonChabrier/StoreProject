@@ -46,6 +46,14 @@ class Order
     const STATUS_CART = 'cart';
 
     /**
+     * @ORM\ManyToOne(
+     * targetEntity=User::class, 
+     * inversedBy="orders"
+     * )
+     */
+    private $user;
+
+    /**
      * @ORM\Column(type="datetime_immutable")
      * @Gedmo\Timestampable(on="create")
      */
@@ -159,6 +167,18 @@ class Order
         return $this;
     }
 
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -182,4 +202,6 @@ class Order
 
         return $this;
     }
+
+    
 }

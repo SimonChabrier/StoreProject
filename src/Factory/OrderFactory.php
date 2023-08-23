@@ -32,7 +32,7 @@ class OrderFactory
     {
         $order = new Order();
         $order
-            ->setStatus(Order::STATUS_CART)
+            ->setStatus(Order::CART_STATUS)
             ->setUser($this->getCurentUser())
             ->setUserIdentifier($this->createUniqueIdentifier())
             ->setCreatedAt(new \DateTimeImmutable())

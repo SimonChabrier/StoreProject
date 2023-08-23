@@ -36,14 +36,14 @@ class Order
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $status = self::STATUS_CART;
+    private $status = self::CART_STATUS;
     
     /**
      * An order that is in progress, not placed yet.
      * Une commande en cours, pas encore passée.
      * @var string
      */
-    const STATUS_CART = 'new';
+    const CART_STATUS = 'new';
 
     /**
      * @ORM\ManyToOne(

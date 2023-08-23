@@ -45,9 +45,9 @@ class CartManager
     {   
 
         $cart = $this->cartSessionStorage->getCart();
+        dump($cart);
 
         // si le panier n'existe pas en session, on le crée
-
         if (!$cart) {
             $cart = $this->orderFactory->create();
         }

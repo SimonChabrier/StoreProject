@@ -54,6 +54,11 @@ class Order
     private $user;
 
     /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $userIdentifier;
+
+    /**
      * @ORM\Column(type="datetime_immutable")
      * @Gedmo\Timestampable(on="create")
      */
@@ -64,11 +69,6 @@ class Order
      * @Gedmo\Timestampable(on="update")
      */
     private $updatedAt;
-
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $userIdentifier;
 
     public function __construct()
     {

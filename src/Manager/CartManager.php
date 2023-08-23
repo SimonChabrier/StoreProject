@@ -45,8 +45,7 @@ class CartManager
     {   
 
         $cart = $this->cartSessionStorage->getCart();
-        dump($cart);
-
+        // dump($cart);
         // si le panier n'existe pas en session, on le crée
         if (!$cart) {
             $cart = $this->orderFactory->create();
@@ -60,9 +59,9 @@ class CartManager
      */
     public function save(Order $cart): void
     {   
-        // database
 
-        //TODO vérifier si le panier est vide alors on supprime le panier de la BDD
+        // si le panier est vide alors on supprime le panier de la BDD et de la session
+        // on recréera un nouveau panier vide à la prochaine requête...
         if($cart->getItems()->isEmpty()){
             $this->entityManager->remove($cart);
             $this->entityManager->flush();

@@ -73,7 +73,5 @@ class LoginSubscriber extends AbstractController implements EventSubscriberInter
                 $this->addFlash('success', 'Connexion réussie vous avez une commande en cours.');
             }
         }
-
-        
     }
 }

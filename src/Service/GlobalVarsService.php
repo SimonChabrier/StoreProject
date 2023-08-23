@@ -63,7 +63,7 @@ class GlobalVarsService
         }
         //$order = $this->em->getRepository(Order::class)->findOneBy(['user' => $user, 'status' => Order::CART_STATUS]);
         //dump($order);
-        $orderCount = $this->em->getRepository(Order::class)->count(['user' => $user, 'status' => Order::CART_STATUS]);
+        $orderCount = $this->em->getRepository(Order::class)->count(['user' => $user, 'status' => Order::CART_STATUS]); // CART_STATUS === 'new'
         //dd($orderCount);
         return $orderCount;
     }

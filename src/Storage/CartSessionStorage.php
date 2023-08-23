@@ -54,21 +54,22 @@ class CartSessionStorage
         // on vérifie si il est connecté
         if($this->security->getUser() && $this->security->isGranted('IS_AUTHENTICATED_FULLY')){
             $currentUserLastOrder = $this->cartRepository->findOneBy([
-                'id' => $this->getCartId(),
-                'status' => Order::STATUS_CART, //TODO il faudra gérer les status des commandes après (new, paid, shipped, delivered, canceled etc...)
+                'status' => Order::CART_STATUS, //TODO il faudra gérer les status des commandes après (new, paid, shipped, delivered, canceled etc...)
                 'user' => $this->security->getUser()
             ]);
+
             return $currentUserLastOrder;
+
         } else {
             // soit il n'est pas connecté et on récupère l'identifiant unique de l'utilisateur en session
-            $userIdentifier = $this->getSession()->get('user_identifier');
             // ici j'ai un identifiant unique de l'utilisateur en session
             // il faut que je récupère le panier en cours de cet utilisateur uniquement
             $currentUserLastOrder = $this->cartRepository->findOneBy([
                 'id' => $this->getCartId(),
-                'status' => Order::STATUS_CART, //TODO il faudra gérer les status des commandes après (new, paid, shipped, delivered, canceled etc...)
-                'userIdentifier' => $userIdentifier
+                'status' => Order::CART_STATUS, //TODO il faudra gérer les status des commandes après (new, paid, shipped, delivered, canceled etc...)
+                'userIdentifier' => $this->getSession()->get('user_identifier'),
             ]);
+
             return $currentUserLastOrder;
         }
     }

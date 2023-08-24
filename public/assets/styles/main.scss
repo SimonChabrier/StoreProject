@@ -852,7 +852,7 @@ help.help-block {
 
 .gallery {
 height: auto;
-width: 100%;
+width:100%;
 //margin: 20px 0 10px 0;
 }
 
@@ -887,8 +887,8 @@ width: 100%;
 }
 
 .picture_XS {
-  width: 95px!important;
-  height: 95px;
+  width: 150px!important;
+  height: auto;
   -o-object-fit: cover;
   object-fit: cover;
   border-radius: 5px;
@@ -959,12 +959,6 @@ dialog {
   opacity: 1;
 }
 
-.picture_XS {
-  width: 95px;
-  height: 95px;
-  object-fit: cover;
-  border-radius: 5px;
-}
 
 .gallery_small {
   display: flex;

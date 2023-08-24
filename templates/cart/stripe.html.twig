@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement{% endblock %}
+
+{% block content %}
+<h1>Formulaire de paiement stripe</h1> 
+
+<p>Commande Id : {{ order.id }}</p>
+<p>Montant : {{ order.getTotal }}</p>
+
+<form id='checkout-form' method='post' action="{{ path('app_stripe_charge') }}">             
+    <input type='hidden' name='stripeToken' id='stripe-token-id'>                              
+    <label for="card-element" class="mb-5">Paiement</label>
+    <br>
+    <div id="card-element" class="form-control"></div>
+    <button 
+        id='pay-btn'
+        class="btn btn-success mt-3"
+        type="button"
+        style="margin-top: 20px; width: 100%;padding: 7px;"
+        onclick="createToken()">PAY $5
+    </button>
+</form>
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+    var stripe = Stripe("{{ stripe_key }}");
+    var elements = stripe.elements();
+    var cardElement = elements.create('card');
+    cardElement.mount('#card-element');
+    
+    function createToken() {
+        document.getElementById("pay-btn").disabled = true;
+        stripe.createToken(cardElement).then(function(result) {
+            if (result.error) {
+                document.getElementById("pay-btn").disabled = false;
+                alert(result.error.message);
+            } else {
+                document.getElementById("stripe-token-id").value = result.token.id;
+                document.getElementById('checkout-form').submit();
+            }
+        });
+    }
+</script>
+
+{% endblock content %}

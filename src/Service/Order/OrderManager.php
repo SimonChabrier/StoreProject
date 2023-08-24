@@ -125,10 +125,25 @@ class OrderManager
         $this->stockManager->reserveStock($order);
         // on met à jour le statut de la commande
         $order->setStatus($orderStatus);
-        // on persiste la commande
-        $this->entityManager->persist($order);
         // Enregistrer la commande
         $this->save($order);
+    }
+
+
+
+    /**
+     * Pay an order and release the stock.
+     */
+    public function payOrder(Order $order) : void
+    {
+        // décrémenter le stock de chaque item
+        $this->stockManager->decrementStock($order);
+
+        // Payer la commande
+        $order->setStatus('paid');
+
+        $this->entityManager->persist($order);
+        $this->entityManager->flush();
     }
 
     /**

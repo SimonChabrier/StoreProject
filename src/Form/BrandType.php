@@ -6,6 +6,7 @@ use App\Entity\Brand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class BrandType extends AbstractType
 {
@@ -13,9 +14,13 @@ class BrandType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom de la marque',
-                'disabled' => false,
+                'label' => 'test',
+                'attr' => [
+                    'placeholder' => 'Nom de la marque'
+                ]
             ])
+            // ->add('createdAt')
+            // ->add('updatedAt')
         ;
     }
 

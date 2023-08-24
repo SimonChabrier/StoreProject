@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Form\CartType;
+use App\Form\Order\OrderType;
 use App\Service\Order\OrderManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,20 +25,20 @@ class OrderController extends AbstractController
     ): Response
     {   
 
-        $cart = $OrderManager->getCurrentCart();
-        $form = $this->createForm(CartType::class, $cart);
+        $order = $OrderManager->getCurrentCart();
+        $form = $this->createForm(OrderType::class, $order);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $cart->setUpdatedAt(new \DateTime());
-            $OrderManager->save($cart);
+            $order->setUpdatedAt(new \DateTime());
+            $OrderManager->save($order);
 
             return $this->redirectToRoute('app_order');
         }
 
         return $this->render('cart/index.html.twig', [
-            'cart' => $cart,
+            'cart' => $order,
             'form' => $form->createView(),
         ]);
     }

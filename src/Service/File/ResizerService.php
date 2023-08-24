@@ -208,7 +208,7 @@ class ResizerService
             $img = self::createGDResourceFromMimeType($file);
             // on crée un tableau contenant les noms des dossiers et les dimensions des images à créer
             $sizeAndDirs = [
-                'pictureXSDir' => [95, 95],
+                'pictureXSDir' => [150, 150],
                 'picture250Dir' => [250, 250],
                 'picture400Dir' => [400, 400],
                 'picture1200Dir' => [1200, 1200],

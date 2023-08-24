@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Utils;
 
 use App\Form\SearchType;
 use Symfony\Component\Form\FormFactoryInterface;

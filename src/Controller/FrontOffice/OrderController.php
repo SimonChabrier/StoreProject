@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\FrontOffice;
 
 use App\Form\Order\OrderType;
 use App\Service\Order\OrderManager;

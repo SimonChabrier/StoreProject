@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\FrontOffice;
 
 use App\Entity\SubCategory;
 use App\Form\Entity\SubCategoryType;

@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Form\CartType;
-use App\Manager\CartManager;
+use App\Service\Order\CartManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

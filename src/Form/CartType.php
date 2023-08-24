@@ -3,16 +3,16 @@
 namespace App\Form;
 
 use App\Entity\Order;
-use App\Manager\CartManager;
-use App\Storage\CartSessionStorage; 
+use App\Service\Order\CartManager;
+use App\Service\Order\CartSessionStorage; 
 use Symfony\Component\Form\AbstractType;
-use App\Form\EventListener\ClearCartListener;
 use Symfony\Component\Form\FormBuilderInterface;
-use App\Form\EventListener\RemoveCartItemListener;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
+use App\EventSubscriber\Order\ClearCartSubscriber;
+use App\EventSubscriber\Order\RemoveCartItemSubscriber;
 
 // Formulaire de la page panier pour modifier la quantité et supprimer un produit
 class CartType extends AbstractType
@@ -53,7 +53,7 @@ class CartType extends AbstractType
 
     private function addSubscribers(FormBuilderInterface $builder): void
     {
-        $builder->addEventSubscriber(new RemoveCartItemListener($this->cartManager));
-        $builder->addEventSubscriber(new ClearCartListener($this->cartManager));
+        $builder->addEventSubscriber(new RemoveCartItemSubscriber($this->cartManager));
+        $builder->addEventSubscriber(new ClearCartSubscriber($this->cartManager));
     }
 }

@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Form\AddToCartType;
-use App\Manager\CartManager;
+use App\Service\Order\CartManager;
 use App\Service\UploadService;
 use App\Message\UpdateFileMessage;
 use App\Repository\ProductRepository;

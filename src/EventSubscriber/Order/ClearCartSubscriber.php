@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Form\EventListener;
+namespace App\EventSubscriber\Order;
 
 use App\Entity\Order;
-use App\Manager\CartManager;
+use App\Service\Order\CartManager;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ClearCartListener implements EventSubscriberInterface
+class ClearCartSubscriber implements EventSubscriberInterface
 {   
     private $cartManager;
 
@@ -27,6 +27,7 @@ class ClearCartListener implements EventSubscriberInterface
 
     /**
      * Removes all items from the cart when the clear button is clicked.
+     * Delete the cart from the database and the session.
      */
     public function postSubmit(FormEvent $event): void
     {

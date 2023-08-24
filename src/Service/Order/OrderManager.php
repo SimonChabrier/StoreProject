@@ -8,12 +8,15 @@ use App\Service\Order\OrderFactory;
 use App\Service\Order\OrderSessionStorage;
 use Doctrine\ORM\EntityManagerInterface;
 
+// Cette class gère la logique métier du panier ici. 
+// Les méthodes pour récupérer, sauvegarder et supprimer le panier sont ici.
+
 class OrderManager
 {
     /**
      * @var OrderSessionStorage
      */
-    private $OrderSessionStorage;
+    private $orderSessionStorage;
 
     /**
      * @var OrderFactory
@@ -29,73 +32,74 @@ class OrderManager
      * OrderManager constructor.
      */
     public function __construct(
-        OrderSessionStorage $cartStorage,
+        OrderSessionStorage $orderSessionStorage,
         OrderFactory $orderFactory,
         EntityManagerInterface $entityManager
     ) {
-        $this->OrderSessionStorage = $cartStorage;
+        $this->orderSessionStorage = $orderSessionStorage;
         $this->orderFactory = $orderFactory;
         $this->entityManager = $entityManager;
     }
 
     /**
      * Gets the current cart.
+     * @return Order
      */
-    public function getCurrentCart()
+    public function getCurrentCart() : Order
     {   
-
-        $cart = $this->OrderSessionStorage->getCart();
-        // dump($cart);
+        $order = $this->orderSessionStorage->getOrder();
         // si le panier n'existe pas en session, on le crée
-        if (!$cart) {
-            $cart = $this->orderFactory->create();
+        if (!$order) {
+            $order = $this->orderFactory->create();
         }
-
-        return $cart;
+        return $order;
     }
 
     /**
-     * Sauvegarde l'état du panier en session et en base de données.
+     * Saves an order in database and session.
+     * @param Order $order
+     * @return void
      */
-    public function save(Order $cart): void
-    {   
-
-        // si le panier est vide alors on supprime le panier de la BDD et de la session
-        // on recréera un nouveau panier vide à la prochaine requête...
-        if($cart->getItems()->isEmpty()){
-            $this->entityManager->remove($cart);
-            $this->entityManager->flush();
-
-            // on supprime aussi le panier de la session
-            $this->OrderSessionStorage->removeCart();
-
+    public function save(Order $order): void
+    {
+        if ($order->getItems()->isEmpty()) {
+            $this->removeOrder($order);
             return;
         }
-
-        $this->entityManager->persist($cart);
+        // on sauvegarde le panier en bdd
+        $this->entityManager->persist($order);
         $this->entityManager->flush();
-        // session placer après le flush pour avoir l'id du panier
-        // sinon on a une erreur car le panier n'a pas d'id
-        $this->OrderSessionStorage->setCart($cart);
-        
+        // on sauvegarde le panier en session
+        $this->orderSessionStorage->setOrder($order);
     }
 
     /**
-     * Removes an item from the cart (database and session).
-     *
-     * @param Order      $cart
-     * @param OrderItem  $item
+     * Removes an item from an order.
+     * @param Order $order
+     * @param OrderItem $item
+     * @return void
      */
-    public function deleteItem(Order $cart, OrderItem $item): void
-    {   
-        // Remove the item from the cart
-        if($cart->removeItem($item)){
+    public function deleteItem(Order $order, OrderItem $item): void
+    {
+        if ($order->removeItem($item)) {
             $this->entityManager->remove($item);
             $this->entityManager->flush();
+            // on sauvegarde l'état du panier en bdd et en session.
+            $this->save($order);
         }
-
-        $this->save($cart);
-        
     }
 
+    /**
+     * Removes an order.
+     * @param Order $order
+     * @return void
+     */
+    private function removeOrder(Order $order): void
+    {   
+        // on supprime le panier en bdd
+        $this->entityManager->remove($order);
+        $this->entityManager->flush();
+        // on supprime le panier en session
+        $this->orderSessionStorage->removeCart();
+    }
 }

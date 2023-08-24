@@ -5,14 +5,15 @@ namespace App\Service\Order;
 use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Entity\Product;
-// get user from session instead of injecting it
 use Symfony\Component\Security\Core\Security;
 
-/**
- * Class OrderFactory.
- */
+// Cette class gère la logique de création d'objets pour les entités Order et OrderItem.
+
 class OrderFactory
 {   
+    /**
+     * @var Security
+     */
     private $security;
 
     public function __construct(Security $security)
@@ -22,6 +23,7 @@ class OrderFactory
 
     /**
      * Creates an order.
+     * @return Order
      */
     public function create(): Order
     {
@@ -38,6 +40,8 @@ class OrderFactory
 
     /**
      * Creates an item for a product.
+     * @param Product $product
+     * @return OrderItem
      */
     public function createItem(Product $product): OrderItem
     {

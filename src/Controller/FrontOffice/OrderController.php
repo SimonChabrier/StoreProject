@@ -27,13 +27,10 @@ class OrderController extends AbstractController
 
         $order = $OrderManager->getCurrentCart();
         $form = $this->createForm(OrderType::class, $order);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $order->setUpdatedAt(new \DateTime());
             $OrderManager->save($order);
-
             return $this->redirectToRoute('app_order');
         }
 
@@ -61,8 +58,6 @@ class OrderController extends AbstractController
 
         // si on a un user et qu'il est pleinement authentifié
         if($user && $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
-
-
 
             //TODO ici il faudra faire le paiement avec Stripe avant de changer le statut du panier en "processing"
 

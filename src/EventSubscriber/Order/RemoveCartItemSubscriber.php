@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Form\EventListener;
+namespace App\EventSubscriber\Order;
 
 use App\Entity\Order;
-use App\Manager\CartManager;
+use App\Service\Order\CartManager;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class RemoveCartItemListener implements EventSubscriberInterface
+class RemoveCartItemSubscriber implements EventSubscriberInterface
 {   
     private $cartManager;
 

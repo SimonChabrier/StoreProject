@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Storage;
+namespace App\Service\Order;
 
 use App\Entity\Order;
 use App\Repository\OrderRepository;

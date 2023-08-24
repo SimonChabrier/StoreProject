@@ -2,7 +2,7 @@
 
 namespace App\EventSubscriber\User;
 
-use App\Manager\CartManager;
+use App\Service\Order\CartManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;

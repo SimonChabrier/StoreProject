@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Manager;
+namespace App\Service\Order;
 
 use App\Entity\Order;
 use App\Entity\OrderItem;
-use App\Factory\OrderFactory;
-use App\Storage\CartSessionStorage;
+use App\Service\Order\OrderFactory;
+use App\Service\Order\CartSessionStorage;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CartManager

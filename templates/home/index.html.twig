@@ -9,6 +9,7 @@
 
 {% if cache %}
 
+{# le slider des produits et le nom de la categorie racine #}
 <div class="last-five swiper">
     {% for category in homeCats %}
         <a href="{{ path('app_category_show', {'id': category['id']}) }}"><h2>{{ category['name']|upper }}</h2></a>
@@ -24,11 +25,16 @@
             </div>
             <div class="swiper-pagination"></div>
             {% else %}
-                {# On ne veut pas afficher ailleurs que dans le slider des produits à la racine d'une catégorie #}
+                {# 
+                    On ne veut pas afficher ailleurs que dans le slider des produits à la racine d'une catégorie
+                    mais on veut afficher quand même le h2 de la categorie racine
+                    donc on vide juste categoryProducts pour toutes les autres catégories  
+                #}
                 {% set categoryProducts = [] %} 
             {% endif %}
  </div> 
 
+{# les produits des sous catégories de chaque categorie racine #}
  <div class="last-five">       
         {% for subCategory in category['subCategories'] %}
             <a href="{{ path('app_sub_category_show', {'id': subCategory['id']}) }}"><h3>{{ category['name']|upper }} - {{ subCategory['name']|upper }}</h3></a>
@@ -46,13 +52,14 @@
 
 {% else %}
 
+{# le slider des produits et le nom de la categorie racine #}
 <div class="last-five swiper">
     {% for category in homeCats %}
         <a href="{{ path('app_category_show', {'id': category.id}) }}"><h2>{{ category.name|upper }}</h2></a>
 
             {% if category.products is not empty and category.name == 'Nouveautés' %}
             <div class="swiper-wrapper">
-                {% set categoryProducts = category.products|slice(-4)|reverse %}
+                {% set categoryProducts = category.products|slice(-4) %}
                 {% for product in categoryProducts %}
                     <section class="swiper-slide">
                         {% include '_fragments/_product_object.html.twig' %} 
@@ -61,16 +68,21 @@
             </div>
             <div class="swiper-pagination"></div>
             {% else %}
-                {# On ne veut pas afficher ailleurs que dans le slider des produits à la racine d'une catégorie #}
+                {# 
+                    On ne veut pas afficher ailleurs que dans le slider des produits à la racine d'une catégorie
+                    mais on veut afficher quand même le h2 de la categorie racine
+                    donc on vide juste categoryProducts pour toutes les autres catégories  
+                #}
                 {% set categoryProducts = [] %} 
             {% endif %}
  </div> 
 
+{# les produits des sous catégories de chaque categorie racine #}
  <div class="last-five">       
         {% for subCategory in category.getSubCategories %}
             <a href="{{ path('app_sub_category_show', {'id': subCategory.id}) }}"><h3>{{ category.name|upper }} - {{ subCategory.name|upper }}</h3></a>
             <div class="last-five-products">
-                {% set subCategoryProducts = subCategory.products|slice(-4) %}
+                {% set subCategoryProducts = subCategory.products|slice(-4)|reverse %}
                 {% for product in subCategoryProducts %}
                     <section>
                         {% include '_fragments/_product_object.html.twig' %} 
@@ -81,11 +93,6 @@
     {% endfor %}
 </div>    
 {% endif %}
-
-
-
-
-
 
 
 {% block stylesheets %}

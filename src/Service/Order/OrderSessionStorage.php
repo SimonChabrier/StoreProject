@@ -6,24 +6,21 @@ use App\Entity\Order;
 use App\Repository\OrderRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-// get user from session instead of injecting it
 use Symfony\Component\Security\Core\Security;
 
+// Cette class gère la logique de stockage du panier en session.
+
 class OrderSessionStorage
-{
+{   
     /**
-     * The request stack.
-     *
      * @var RequestStack
      */
     private $requestStack;
 
     /**
-     * The cart repository.
-     *
      * @var OrderRepository
      */
-    private $cartRepository;
+    private $orderRepository;
 
     /**
      * @var Security
@@ -31,64 +28,76 @@ class OrderSessionStorage
     private $security;
 
     /**
+     * The key used to store the cart id in session.
      * @var string
      */
     public const CART_KEY_NAME = 'cart_id';
 
-    /**
-     * OrderSessionStorage constructor.
-     */
-    public function __construct(RequestStack $requestStack, OrderRepository $cartRepository, Security $security)
+    public function __construct(RequestStack $requestStack, OrderRepository $orderRepository, Security $security)
     {
         $this->requestStack = $requestStack;
-        $this->cartRepository = $cartRepository;
+        $this->orderRepository = $orderRepository;
         $this->security = $security;
     }
 
     /**
-     * Gets the cart in session.
+     * Gets the order in session.
+     * @return Order|null
      */
-    public function getCart()
-    {   
-        // si l'utilisateur est connecté, on récupère les panier en cours de cet utilisateur uniquement
-        // on vérifie si il est connecté
-        if($this->security->getUser() && $this->security->isGranted('IS_AUTHENTICATED_FULLY')){
-            $currentUserLastOrder = $this->cartRepository->findOneBy([
-                'status' => Order::CART_STATUS, //TODO il faudra gérer les status des commandes après (new, paid, shipped, delivered, canceled etc...)
-                'user' => $this->security->getUser()
-            ]);
-
-            return $currentUserLastOrder;
-
+    public function getOrder() : ?Order
+    {    
+        if ($this->security->getUser() && $this->security->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->getUserLastOrder($this->security->getUser());
         } else {
-            // soit il n'est pas connecté et on récupère l'identifiant unique de l'utilisateur en session
-            // ici j'ai un identifiant unique de l'utilisateur en session
-            // il faut que je récupère le panier en cours de cet utilisateur uniquement
-            $currentUserLastOrder = $this->cartRepository->findOneBy([
-                'id' => $this->getCartId(),
-                'status' => Order::CART_STATUS, //TODO il faudra gérer les status des commandes après (new, paid, shipped, delivered, canceled etc...)
-                'userIdentifier' => $this->getSession()->get('user_identifier'),
-            ]);
-
-            return $currentUserLastOrder;
+            return $this->getAnanymeUserLastOrder();
         }
     }
 
     /**
-     * Sets the cart in session.
+     * Gets the last order for a logged in user.
+     * If the user has an order in session, we return it.
+     * @param User $user
+     * @return Order|null
      */
-    public function setCart(Order $cart): void
-    {   
-        $this->getSession()->set(self::CART_KEY_NAME, $cart->getId());
-        // je récupère l'identifiant unique de l'utilisateur crée pour l"utilisateur 
-        // lors de la création du panier en BDD
-        $this->getSession()->set('user_identifier', $cart->getUserIdentifier());
+    private function getUserLastOrder($user) : ?Order
+    {
+        return $this->orderRepository->findOneBy([
+            'id' => $this->getOrderId(), // on récupère l'id du panier en session
+            'status' => Order::CART_STATUS,
+            'user' => $user
+        ]);
     }
 
     /**
-     * Returns the cart id.
+     * Gets the last order for an anonymous user.
+     * If the user has an order in session, we return it.
+     * @return Order|null
      */
-    private function getCartId(): ?int
+    private function getAnanymeUserLastOrder() : ?Order
+    {
+        return $this->orderRepository->findOneBy([
+            'id' => $this->getOrderId(),
+            'status' => Order::CART_STATUS,
+            'userIdentifier' => $this->getSession()->get('user_identifier'),
+        ]);
+    }
+
+    /**
+     * Sets the order in session.
+     * @param Order $order
+     * @return void
+     */
+    public function setOrder(Order $order): void
+    {   
+        $this->getSession()->set(self::CART_KEY_NAME, $order->getId()); // je stocke l'id du panier en session (on a crée une card dans la BDD et on récupère son id)
+        $this->getSession()->set('user_identifier', $order->getUserIdentifier()); // je récupère l'identifiant unique de l'utilisateur crée pour l"utilisateur lors de la création du panier en BDD
+    }
+
+    /**
+     * Returns the order id.
+     * @return int|null
+     */
+    private function getOrderId(): ?int
     {
         return $this->getSession()->get(self::CART_KEY_NAME);
     }
@@ -99,7 +108,8 @@ class OrderSessionStorage
     }
 
     /**
-     * Removes the cart from session.
+     * Removes the order from session.
+     * @return void
      */
     public function removeCart(): void
     {

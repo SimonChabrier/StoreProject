@@ -149,6 +149,11 @@ class Product
      */
     private $description;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $reservedQuantity = 0;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -434,6 +439,18 @@ class Product
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getReservedQuantity(): ?int
+    {
+        return $this->reservedQuantity;
+    }
+
+    public function setReservedQuantity(int $reservedQuantity): self
+    {
+        $this->reservedQuantity = $reservedQuantity;
 
         return $this;
     }

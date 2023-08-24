@@ -59,10 +59,15 @@ class UserController extends AbstractController
         $processing_orders = $user->getOrders()->filter(function($order) {
             return $order->getStatus() === 'processing';
         });
+        // on récupère les commandes annulées
+        $cancelled_orders = $user->getOrders()->filter(function($order) {
+            return $order->getStatus() === 'cancelled';
+        });
 
         return $this->render('user/index.html.twig', [
             'pending_orders' => $pending_orders,
             'processing_orders' => $processing_orders,
+            'cancelled_orders' => $cancelled_orders,
             'user' => $user,
         ]);
     }

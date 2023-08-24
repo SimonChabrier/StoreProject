@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Notify;
 
 use App\Message\AdminNotification;
 use App\Message\EmailNotification;

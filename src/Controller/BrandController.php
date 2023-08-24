@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Brand;
-use App\Form\Brand1Type;
+use App\Form\BrandType;
 use App\Repository\BrandRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +33,7 @@ class BrandController extends AbstractController
     public function new(Request $request, BrandRepository $brandRepository): Response
     {
         $brand = new Brand();
-        $form = $this->createForm(Brand1Type::class, $brand);
+        $form = $this->createForm(BrandType::class, $brand);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -66,7 +66,7 @@ class BrandController extends AbstractController
      */
     public function edit(Request $request, Brand $brand, BrandRepository $brandRepository): Response
     {
-        $form = $this->createForm(Brand1Type::class, $brand);
+        $form = $this->createForm(BrandType::class, $brand);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\SubCategory;
-use App\Form\SubCategoryType;
+use App\Form\Entity\SubCategoryType;
 use App\Repository\SubCategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

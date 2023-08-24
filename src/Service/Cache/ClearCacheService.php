@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Cache;
 
 // On supprime le cache et on refait le json
 // utilisée après les evenements messenger et postFlush
 // MessageProcessedSubscriber.php et ClearCacheSubscriber.php
 
 use App\Repository\ProductRepository;
-use App\Service\JsonFileUtils;
+use App\Service\File\JsonFileUtils;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class ClearCacheService {

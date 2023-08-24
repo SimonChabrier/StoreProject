@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Brand;
-use App\Form\BrandType;
+use App\Form\Entity\BrandType;
 use App\Repository\BrandRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

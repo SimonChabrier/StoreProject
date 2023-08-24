@@ -4,7 +4,7 @@ Namespace App\EventSubscriber\Cache;
 
 use App\Entity\Order;
 use App\Entity\OrderItem;
-use App\Service\ClearCacheService;
+use App\Service\Cache\ClearCacheService;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\EventSubscriber as DoctrineEventSubscriber;

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\File;
 
-use App\Service\ClearCacheService;
+use App\Service\Cache\ClearCacheService;
 use App\Repository\PictureRepository;
 use Symfony\Component\Filesystem\Filesystem;
 

@@ -4,8 +4,9 @@ namespace App\Controller\Admin;
 
 use App\Entity\Brand;
 use App\Entity\Product;
-use App\Form\PictureType;
-use App\Form\ProductDataType;
+use App\Form\Entity\PictureType;
+use App\Form\Entity\ProductDataType;
+
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;

@@ -3,10 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Product;
-use App\Form\ProductType;
+use App\Form\Entity\ProductType;
 use App\Form\Order\AddProductToOrderType;
 use App\Service\Order\OrderManager;
-use App\Service\UploadService;
+use App\Service\File\UploadService;
 use App\Message\UpdateFileMessage;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;

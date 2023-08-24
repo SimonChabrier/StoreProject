@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Order;
 
 use App\Entity\OrderItem;
 use Symfony\Component\Form\AbstractType;
@@ -9,7 +9,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 // Formulaire de la page produit pour ajouter un produit au panier
-class AddToCartType extends AbstractType
+// rendu par le ProductController sur la route /product/{id}
+
+class AddProductToOrderType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

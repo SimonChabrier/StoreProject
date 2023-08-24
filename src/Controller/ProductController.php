@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
-use App\Form\AddToCartType;
+use App\Form\Order\AddProductToOrderType;
 use App\Service\Order\OrderManager;
 use App\Service\UploadService;
 use App\Message\UpdateFileMessage;
@@ -88,7 +88,7 @@ class ProductController extends AbstractController
         Request $request,
         OrderManager $OrderManager
     ): Response {
-        $form = $this->createForm(AddToCartType::class);
+        $form = $this->createForm(AddProductToOrderType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

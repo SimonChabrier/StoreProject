@@ -37,7 +37,7 @@ class RemoveCartItemSubscriber implements EventSubscriberInterface
             return;
         }
 
-        // On récupère tous les formulaires imbriqués dans le formulaire CartType pour le champ items
+        // On récupère tous les formulaires imbriqués dans le formulaire OrderType pour le champ items
         foreach ($form->get('items')->all() as $child) {
             if ($child->get('remove')->isClicked()) {
                 $this->OrderManager->deleteItem($cart, $child->getData());

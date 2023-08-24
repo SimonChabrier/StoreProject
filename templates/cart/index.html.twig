@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Order{% endblock %}
+{% block title %}Panier {{ cart.id }} en cours{% endblock %}
 
 {% block content %}
     <div class="container mt-4">
-        <h1>Votre panier</h1>
+        <h1>Panier en cours</h1>
         {% if cart.items.count > 0 %}
             <div class="row mt-2">
                 <!-- List of items -->

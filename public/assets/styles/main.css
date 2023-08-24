@@ -833,8 +833,8 @@ help.help-block {
 }
 
 .picture_XS {
-  width: 95px !important;
-  height: 95px;
+  width: 150px !important;
+  height: auto;
   -o-object-fit: cover;
   object-fit: cover;
   border-radius: 5px;
@@ -897,14 +897,6 @@ dialog {
 
 .fade-dialog.open {
   opacity: 1;
-}
-
-.picture_XS {
-  width: 95px;
-  height: 95px;
-  -o-object-fit: cover;
-     object-fit: cover;
-  border-radius: 5px;
 }
 
 .gallery_small {

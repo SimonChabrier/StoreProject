@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Form\CartType;
-use App\Service\Order\CartManager;
+use App\Service\Order\OrderManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,19 +20,19 @@ class OrderController extends AbstractController
      * @Route("/", name="app_order")
      */
     public function index(
-        CartManager $cartManager, 
+        OrderManager $OrderManager, 
         Request $request
     ): Response
     {   
 
-        $cart = $cartManager->getCurrentCart();
+        $cart = $OrderManager->getCurrentCart();
         $form = $this->createForm(CartType::class, $cart);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $cart->setUpdatedAt(new \DateTime());
-            $cartManager->save($cart);
+            $OrderManager->save($cart);
 
             return $this->redirectToRoute('app_order');
         }
@@ -47,7 +47,7 @@ class OrderController extends AbstractController
      * @Route("/process", name="app_order_process")
      */
     public function process(
-        CartManager $cartManager,
+        OrderManager $OrderManager,
         AuthorizationCheckerInterface $authorizationChecker
     ): Response
     {   
@@ -67,11 +67,11 @@ class OrderController extends AbstractController
             //TODO ici il faudra faire le paiement avec Stripe avant de changer le statut du panier en "processing"
 
             // on récupère son panier courant
-            $cart = $cartManager->getCurrentCart();
+            $cart = $OrderManager->getCurrentCart();
             // on change le statut du panier en "processing"
             $cart->setStatus('processing');
             $cart->setUpdatedAt(new \DateTime());
-            $cartManager->save($cart);
+            $OrderManager->save($cart);
 
             $this->addFlash('success', 'Votre commande a bien été enregistrée');
 

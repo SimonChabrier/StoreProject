@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Form\AddToCartType;
-use App\Service\Order\CartManager;
+use App\Service\Order\OrderManager;
 use App\Service\UploadService;
 use App\Message\UpdateFileMessage;
 use App\Repository\ProductRepository;
@@ -86,7 +86,7 @@ class ProductController extends AbstractController
         Product $product,
         ProductRepository $pr,
         Request $request,
-        CartManager $cartManager
+        OrderManager $OrderManager
     ): Response {
         $form = $this->createForm(AddToCartType::class);
         $form->handleRequest($request);
@@ -95,12 +95,12 @@ class ProductController extends AbstractController
             $item = $form->getData();
             $item->setProduct($product);
 
-            $cart = $cartManager->getCurrentCart();
+            $cart = $OrderManager->getCurrentCart();
             $cart
                 ->addItem($item)
                 ->setUpdatedAt(new \DateTime());
 
-            $cartManager->save($cart);
+            $OrderManager->save($cart);
 
             // add flash message
             $this->addFlash('success', 'Le produit a bien été ajouté au panier');

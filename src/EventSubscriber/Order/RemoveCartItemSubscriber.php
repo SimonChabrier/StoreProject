@@ -3,18 +3,18 @@
 namespace App\EventSubscriber\Order;
 
 use App\Entity\Order;
-use App\Service\Order\CartManager;
+use App\Service\Order\OrderManager;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class RemoveCartItemSubscriber implements EventSubscriberInterface
 {   
-    private $cartManager;
+    private $OrderManager;
 
-    public function __construct(CartManager $cartManager)
+    public function __construct(OrderManager $OrderManager)
     {
-        $this->cartManager = $cartManager;
+        $this->OrderManager = $OrderManager;
     }
     
     /**
@@ -40,7 +40,7 @@ class RemoveCartItemSubscriber implements EventSubscriberInterface
         // On récupère tous les formulaires imbriqués dans le formulaire CartType pour le champ items
         foreach ($form->get('items')->all() as $child) {
             if ($child->get('remove')->isClicked()) {
-                $this->cartManager->deleteItem($cart, $child->getData());
+                $this->OrderManager->deleteItem($cart, $child->getData());
                 // méthode originale déclaré dans l'entité mais elle ne supprime pas l'item de la BDD 
                 // $cart->removeItem($child->getData());
                 break;
@@ -49,7 +49,7 @@ class RemoveCartItemSubscriber implements EventSubscriberInterface
             // si save est cliqué on met à jour la quantité de chaque item
             // save = bouton mettre à jour le panier.
             if ($form->get('save')->isClicked()) {
-                $this->cartManager->save($cart);
+                $this->OrderManager->save($cart);
                 break;
             }
         }

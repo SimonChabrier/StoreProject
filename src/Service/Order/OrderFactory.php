@@ -20,30 +20,20 @@ class OrderFactory
         $this->security = $security;
     }
 
-    public function getCurentUser()
-    {
-        return $this->security->getUser();
-    }
-
     /**
      * Creates an order.
      */
     public function create(): Order
     {
         $order = new Order();
+
         $order
             ->setStatus(Order::CART_STATUS)
-            ->setUser($this->getCurentUser())
-            ->setUserIdentifier($this->createUniqueIdentifier());
+            ->setUser($this->security->getUser()) // on récupère l'utilisateur connecté - si pas de user connecté, le champ user sera null.
+            ->setUserIdentifier(uniqid('user_')); // on génère un identifiant unique pour l'utilisateur qui nous permettra de retrouver son panier en session et/ou en bdd
+                                                  // si il n'est pas connecté mais qu'il a déjà un panier en cours et se connecte ensuite ou crée un compte.
+        
         return $order;
-    }
-
-    /**
-     * Create unique user identifier.
-     */
-    public static function createUniqueIdentifier(): string
-    {
-        return uniqid('user_');
     }
 
     /**
@@ -52,8 +42,10 @@ class OrderFactory
     public function createItem(Product $product): OrderItem
     {
         $item = new OrderItem();
-        $item->setProduct($product);
-        $item->setQuantity(1);
+
+        $item
+            ->setProduct($product)
+            ->setQuantity(1);
 
         return $item;
     }

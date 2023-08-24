@@ -34,6 +34,24 @@ class StockManager
         $this->entityManager->flush();
     }
 
+    /**
+     * Décrémente le stock si la commande est payée
+     */
+    public function decrementStock(Order $order) : void
+    {
+        foreach ($order->getItems() as $item) {
+            $product = $item->getProduct();
+            $quantity = $item->getQuantity();
+
+            // Mettre à jour la quantité en stock
+            $product->setInStockQuantity($product->getInStockQuantity() - $quantity);
+
+            $this->entityManager->persist($product);
+        }
+
+        $this->entityManager->flush();
+    }
+
     /** 
      * Libère la quantité de produits réservés si la commande est annulée
     */

@@ -52,21 +52,36 @@ class UserController extends AbstractController
         $user = $this->checkUser();
         
         // on récupère les commandes dont la status est new 
-        $pending_orders = $user->getOrders()->filter(function($order) {
-            return $order->getStatus() === 'new';
+        $pending_payment_orders = $user->getOrders()->filter(function($order) {
+            return $order->getStatus() === 'pending';
         });
-        // on récupère les commandes don tle status est 'processing'
-        $processing_orders = $user->getOrders()->filter(function($order) {
-            return $order->getStatus() === 'processing';
+        // on récupère les commandes dont le status est 'paid'
+        $paid_orders = $user->getOrders()->filter(function($order) {
+            return $order->getStatus() === 'paid';
+        });
+        // on récupère les commandes en cours de préparation
+        $preparing_orders = $user->getOrders()->filter(function($order) {
+            return $order->getStatus() === 'preparing';
+        });
+        // on récupère les commandes en cours de livraison
+        $shipped_orders = $user->getOrders()->filter(function($order) {
+            return $order->getStatus() === 'shipped';
+        });
+        // on récupère les commandes terminées
+        $completed_orders = $user->getOrders()->filter(function($order) {
+            return $order->getStatus() === 'completed';
         });
         // on récupère les commandes annulées
         $cancelled_orders = $user->getOrders()->filter(function($order) {
             return $order->getStatus() === 'cancelled';
         });
-
+        
         return $this->render('user/index.html.twig', [
-            'pending_orders' => $pending_orders,
-            'processing_orders' => $processing_orders,
+            'pending_payment_orders' => $pending_payment_orders,
+            'paid_orders' => $paid_orders,
+            'preparing_orders' => $preparing_orders,
+            'shipped_orders' => $shipped_orders,
+            'completed_orders' => $completed_orders, 
             'cancelled_orders' => $cancelled_orders,
             'user' => $user,
         ]);

@@ -3,18 +3,18 @@
 namespace App\EventSubscriber\Order;
 
 use App\Entity\Order;
-use App\Service\Order\CartManager;
+use App\Service\Order\OrderManager;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ClearCartSubscriber implements EventSubscriberInterface
 {   
-    private $cartManager;
+    private $OrderManager;
 
-    public function __construct(CartManager $cartManager)
+    public function __construct(OrderManager $OrderManager)
     {
-        $this->cartManager = $cartManager;
+        $this->OrderManager = $OrderManager;
     }
 
     /**
@@ -46,7 +46,7 @@ class ClearCartSubscriber implements EventSubscriberInterface
         // Clears the cart
         $cart->removeItems();
         // Clear the cart from the database and the session
-        $this->cartManager->save($cart);
+        $this->OrderManager->save($cart);
     }
 }
 

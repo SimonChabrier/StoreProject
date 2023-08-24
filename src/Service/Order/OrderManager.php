@@ -5,15 +5,15 @@ namespace App\Service\Order;
 use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Service\Order\OrderFactory;
-use App\Service\Order\CartSessionStorage;
+use App\Service\Order\OrderSessionStorage;
 use Doctrine\ORM\EntityManagerInterface;
 
-class CartManager
+class OrderManager
 {
     /**
-     * @var CartSessionStorage
+     * @var OrderSessionStorage
      */
-    private $cartSessionStorage;
+    private $OrderSessionStorage;
 
     /**
      * @var OrderFactory
@@ -26,14 +26,14 @@ class CartManager
     private $entityManager;
 
     /**
-     * CartManager constructor.
+     * OrderManager constructor.
      */
     public function __construct(
-        CartSessionStorage $cartStorage,
+        OrderSessionStorage $cartStorage,
         OrderFactory $orderFactory,
         EntityManagerInterface $entityManager
     ) {
-        $this->cartSessionStorage = $cartStorage;
+        $this->OrderSessionStorage = $cartStorage;
         $this->orderFactory = $orderFactory;
         $this->entityManager = $entityManager;
     }
@@ -44,7 +44,7 @@ class CartManager
     public function getCurrentCart()
     {   
 
-        $cart = $this->cartSessionStorage->getCart();
+        $cart = $this->OrderSessionStorage->getCart();
         // dump($cart);
         // si le panier n'existe pas en session, on le crée
         if (!$cart) {
@@ -67,7 +67,7 @@ class CartManager
             $this->entityManager->flush();
 
             // on supprime aussi le panier de la session
-            $this->cartSessionStorage->removeCart();
+            $this->OrderSessionStorage->removeCart();
 
             return;
         }
@@ -76,7 +76,7 @@ class CartManager
         $this->entityManager->flush();
         // session placer après le flush pour avoir l'id du panier
         // sinon on a une erreur car le panier n'a pas d'id
-        $this->cartSessionStorage->setCart($cart);
+        $this->OrderSessionStorage->setCart($cart);
         
     }
 

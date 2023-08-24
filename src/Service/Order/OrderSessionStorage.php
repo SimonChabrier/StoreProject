@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 // get user from session instead of injecting it
 use Symfony\Component\Security\Core\Security;
 
-class CartSessionStorage
+class OrderSessionStorage
 {
     /**
      * The request stack.
@@ -36,7 +36,7 @@ class CartSessionStorage
     public const CART_KEY_NAME = 'cart_id';
 
     /**
-     * CartSessionStorage constructor.
+     * OrderSessionStorage constructor.
      */
     public function __construct(RequestStack $requestStack, OrderRepository $cartRepository, Security $security)
     {
@@ -73,8 +73,6 @@ class CartSessionStorage
             return $currentUserLastOrder;
         }
     }
-
-
 
     /**
      * Sets the cart in session.

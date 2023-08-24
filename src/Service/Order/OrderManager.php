@@ -5,8 +5,9 @@ namespace App\Service\Order;
 use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Service\Order\OrderFactory;
-use App\Service\Order\OrderSessionStorage;
+use App\Service\Order\StockManager;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Service\Order\OrderSessionStorage;
 
 // Cette class gère la logique métier du panier ici. 
 // Les méthodes pour récupérer, sauvegarder et supprimer le panier sont ici.
@@ -29,16 +30,23 @@ class OrderManager
     private $entityManager;
 
     /**
+     * @var StockManager
+     */
+    private $stockManager;
+
+    /**
      * OrderManager constructor.
      */
     public function __construct(
         OrderSessionStorage $orderSessionStorage,
         OrderFactory $orderFactory,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        StockManager $stockManager
     ) {
         $this->orderSessionStorage = $orderSessionStorage;
         $this->orderFactory = $orderFactory;
         $this->entityManager = $entityManager;
+        $this->stockManager = $stockManager;
     }
 
     /**
@@ -101,5 +109,43 @@ class OrderManager
         $this->entityManager->flush();
         // on supprime le panier en session
         $this->orderSessionStorage->removeCart();
+    }
+
+    ///////GESTION DU STOCK///////
+
+    /**
+     * Place an order and reserve the stock.
+     *
+     * @param Order $order
+     * @return void
+     */
+    public function placeOrder(Order $order, string $orderStatus) : void
+    {
+        // Mettre à jour le stock réservé
+        $this->stockManager->reserveStock($order);
+        // on met à jour le statut de la commande
+        $order->setStatus($orderStatus);
+        // on persiste la commande
+        $this->entityManager->persist($order);
+        // Enregistrer la commande
+        $this->save($order);
+    }
+
+    /**
+     * Cancel an order and release the stock.
+     *
+     * @param Order $order
+     * @return void
+     */
+    public function cancelOrder(Order $order) : void
+    {
+        // Libérer le stock réservé
+        $this->stockManager->releaseReservedStock($order);
+
+        // Annuler la commande
+        $order->setStatus('cancelled');
+
+        $this->entityManager->persist($order);
+        $this->entityManager->flush();
     }
 }

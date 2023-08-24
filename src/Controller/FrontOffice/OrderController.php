@@ -2,12 +2,13 @@
 
 namespace App\Controller\FrontOffice;
 
+use App\Entity\Order;
 use App\Form\Order\OrderType;
 use App\Service\Order\OrderManager;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 
@@ -20,17 +21,17 @@ class OrderController extends AbstractController
      * @Route("/", name="app_order")
      */
     public function index(
-        OrderManager $OrderManager, 
+        OrderManager $orderManager, 
         Request $request
     ): Response
     {   
 
-        $order = $OrderManager->getCurrentCart();
+        $order = $orderManager->getCurrentCart();
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $OrderManager->save($order);
+            $orderManager->save($order);
             return $this->redirectToRoute('app_order');
         }
 
@@ -41,10 +42,11 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/process", name="app_order_process")
+     * @Route("/process/{id}", name="app_order_process")
      */
-    public function process(
-        OrderManager $OrderManager,
+    public function placeOrder(
+        Order $order,
+        OrderManager $orderManager,
         AuthorizationCheckerInterface $authorizationChecker
     ): Response
     {   
@@ -59,19 +61,26 @@ class OrderController extends AbstractController
         // si on a un user et qu'il est pleinement authentifié
         if($user && $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
 
+            $order = $orderManager->getCurrentCart();
+            // on place la commande ça va réserver le stock et changer le statut du panier en "processing"
+            $orderManager->placeOrder($order, 'processing');
             //TODO ici il faudra faire le paiement avec Stripe avant de changer le statut du panier en "processing"
 
-            // on récupère son panier courant
-            $cart = $OrderManager->getCurrentCart();
-            // on change le statut du panier en "processing"
-            $cart->setStatus('processing');
-            $cart->setUpdatedAt(new \DateTime());
-            $OrderManager->save($cart);
-
             $this->addFlash('success', 'Votre commande a bien été enregistrée');
-
-            return $this->redirectToRoute('app_order');
+            return $this->redirectToRoute('app_user_account');
         }
+    }
+
+
+    /**
+     * @Route("/cancel/{id}", name="app_order_cancel")
+     */
+    public function cancelOrder(Order $order, OrderManager $orderManager) : Response
+    {
+        $orderManager->cancelOrder($order);
+
+        // retour à la page du profil de l'utilisateur
+        return $this->redirectToRoute('app_user_account');
     }
 
     /**

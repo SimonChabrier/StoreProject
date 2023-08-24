@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Order{% endblock %}
+{% block title %}Panier {{ cart.id }} en cours{% endblock %}
 
 {% block content %}
     <div class="container mt-4">
-        <h1>Votre panier</h1>
+        <h1>Panier en cours</h1>
         {% if cart.items.count > 0 %}
             <div class="row mt-2">
                 <!-- List of items -->
@@ -36,7 +36,7 @@
 
                                 <div class="flex-fill mr-2">
                                     <h5 class="mt-0 mb-0">{{ item.vars.data.product.name }}</h5>
-                                    {# <small>{{ item.vars.data.product.description[:50] }}...</small> #}
+                                    <small>{{ item.vars.data.product.description[:50] }}...</small>
                                     <div class="form-inline mt-2">
                                         <div class="form-group mb-0 mr-2">
                                             {{ form_widget(item.quantity, {

@@ -2,8 +2,8 @@
 
 namespace App\MessageHandler;
 
-use App\Service\UploadService;
-use App\Service\JsonFileUtils;
+use App\Service\File\UploadService;
+use App\Service\File\JsonFileUtils;
 use App\Message\UpdateFileMessage;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 

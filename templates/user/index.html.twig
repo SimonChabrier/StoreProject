@@ -7,7 +7,7 @@
 <hr>
 <div class="example-wrapper">
     
-<h2 class="mb-3">Commandes en attente</h2>
+<h2 class="mb-3">{{ pending_orders.count() > 1 ? 'Commandes' : 'Commande'  }} en attente</h2>
 {% if pending_orders is not empty %}
     {% for order in pending_orders %}
         <div class="card mb-3">
@@ -18,7 +18,7 @@
                 <li class="card-text">Total: {{ order.total }}</li>
                 <li class="card-text">Statut de la commande: {{ order.status }}</li>
                 </ol>
-                <h3 class="card-title">Produits</h3>
+                <h3 class="card-title">{{ order.items.count() > 1 ? 'Produits' : 'Produit'  }}</h3>
                    
                     {% for item in order.items %}
                     <ol>
@@ -28,7 +28,8 @@
                     </ol>
                     {% endfor %}
                 
-                <a href="#" class="btn btn-primary">Voir la commande</a>
+                <a href="#" class="btn btn-primary">Valider cette commande</a>
+                <a href="#" class="btn btn-primary mt-3">Supprimer cette commande</a>
             </div>
         </div>
     {% endfor %}
@@ -37,7 +38,7 @@
 {% endif %}
 </div>
 <hr>
-<h2 class="mb-3">Commandes en cours</h2>
+<h2 class="mb-3">{{ processing_orders.count() > 1 ? 'Commandes en cours' : 'Commande en cours'  }}</h2>
 <div class="example-wrapper">
 {% if processing_orders is not empty %}
     {% for order in processing_orders %}
@@ -49,7 +50,7 @@
                 <li class="card-text">Total: {{ order.total }}</li>
                 <li class="card-text">Statut de la commande: {{ order.status }}</li>
                 </ol>
-                <h3 class="card-title">Produits</h3>
+                <h3 class="card-title">{{ order.items.count() > 1 ? 'Produits' : 'Produit'  }}</h3>
                     
                     {% for item in order.items %}
                     <ol>
@@ -59,7 +60,7 @@
                     </ol>
                     {% endfor %}
                 
-                <a href="#" class="btn btn-primary">Voir la commande</a>
+                <a href="#" class="btn btn-primary">Obtenir la facture</a>
             </div>
         </div>
     {% endfor %}

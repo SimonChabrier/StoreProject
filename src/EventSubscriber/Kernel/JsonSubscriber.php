@@ -2,7 +2,7 @@
 
 namespace App\EventSubscriber\Kernel;
 
-use App\Service\JsonFileUtils;
+use App\Service\File\JsonFileUtils;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

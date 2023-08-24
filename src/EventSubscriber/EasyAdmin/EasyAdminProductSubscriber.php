@@ -5,7 +5,7 @@ namespace App\EventSubscriber\EasyAdmin;
 use App\Entity\Picture;
 use App\Entity\Product;
 use App\Repository\ProductRepository;
-use App\Service\UploadService;
+use App\Service\File\UploadService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

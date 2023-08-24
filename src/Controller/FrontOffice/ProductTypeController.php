@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\FrontOffice;
 
 use App\Entity\ProductType as Type;
 use App\Form\Entity\TypeProductType as TypeProductType;

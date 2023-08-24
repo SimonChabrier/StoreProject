@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\BackOffice;
 
 use App\Entity\Category;
 use App\Entity\SubCategory;

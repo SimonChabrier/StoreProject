@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\FrontOffice;
 
 use App\Service\Notify\EmailService;
 use App\Service\File\DeleteFileService;

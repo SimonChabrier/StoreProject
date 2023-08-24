@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Utils;
 
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;

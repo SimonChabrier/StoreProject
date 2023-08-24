@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\EmailService;
+use App\Service\Notify\EmailService;
 use App\Service\File\DeleteFileService;
 use App\Repository\UserRepository;
 use App\Repository\ProductRepository;

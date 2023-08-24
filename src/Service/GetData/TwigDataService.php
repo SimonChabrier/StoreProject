@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\GetData;
 
 use App\Entity\Brand;
 use App\Entity\Category;
 use App\Entity\Order;
+use App\Entity\ProductType;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -12,7 +14,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class GlobalVarsService
+class TwigDataService
 {
     private $em;
     private $cache;
@@ -34,6 +36,7 @@ class GlobalVarsService
 
     /**
      * Returns the categories and subcategories for the navigation menu.
+     * @return array|null
      */
     public function getNavCatsAndSubCats() : ?array
     {   
@@ -67,6 +70,7 @@ class GlobalVarsService
 
     /**
      * Returns the number of items in the cart for the current user.
+     * @return int|null
      */
     public function getUserOrder() : ?int
     {
@@ -88,6 +92,19 @@ class GlobalVarsService
         }
 
         return null;
+    }
+
+    // retourne toutes les marques pour les filtres de la sidebar
+    // déclaré dans twig comme un service injecté dans une variable 'brands' rendue globale..(voir config/twig.yaml)
+    // la méthode est ensuite appellée dans twig comme ceci: {% for productType in productsTypes.getProductsTypes() %} 
+    
+    /**
+     * Returns the product types for the sidebar filters.
+     * @return array|null
+     */
+    public function getProductsTypes() : ?array
+    {   
+        return $this->em->getRepository(ProductType::class)->findBy([], ['name' => 'ASC']);
     }
 
     /**

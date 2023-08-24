@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Service\EmailService;
+use App\Service\Notify\EmailService;
 use App\Security\EmailVerifier;
 use App\Form\Security\RegistrationFormType;
 use App\Repository\UserRepository;

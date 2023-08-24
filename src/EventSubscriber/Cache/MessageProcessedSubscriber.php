@@ -6,7 +6,7 @@ use App\Message\UpdateFileMessage; // Remplacez par le nom de votre classe de me
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageHandledEvent;
 use Symfony\Component\Messenger\MessageBusInterface;
-use App\Service\ClearCacheService;
+use App\Service\Cache\ClearCacheService;
 
 class MessageProcessedSubscriber implements EventSubscriberInterface
 {

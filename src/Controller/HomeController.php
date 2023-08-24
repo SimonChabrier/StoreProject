@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Service\EmailService;
-use App\Service\DeleteFileService;
+use App\Service\File\DeleteFileService;
 use App\Repository\UserRepository;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;

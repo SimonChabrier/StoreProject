@@ -72,9 +72,6 @@ class GlobalVarsService
     {
         $user = $this->security->getUser();
         $userIdentifier = $this->getSession()->get('user_identifier');
-        
-        dump($user);
-        dump($userIdentifier);
 
         if(!$user && !$userIdentifier) {
             return null;

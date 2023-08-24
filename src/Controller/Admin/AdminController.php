@@ -14,15 +14,14 @@ use App\Entity\ProductType;
 use App\Entity\SubCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Controller\Admin\CategoryCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
-
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+
+// use App\Controller\Admin\CategoryCrudController;
+// use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 
 // Code source perso 
 // https://github.com/SimonChabrier/BackEnd_VideoStreamAndCapture/blob/main/src/Controller/Admin/AdminController.php

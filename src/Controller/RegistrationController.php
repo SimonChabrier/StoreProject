@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Service\EmailService;
 use App\Security\EmailVerifier;
-use App\Form\RegistrationFormType;
+use App\Form\Security\RegistrationFormType;
 use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
 use App\Security\LoginFormAuthenticator;

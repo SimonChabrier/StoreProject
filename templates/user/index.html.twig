@@ -4,11 +4,35 @@
 
 {% block content %}
 <h1>Bonjour {{ user.email }}</h1>
-
 {% for status, orders in ordersByStatus %}
-    <hr>
+
+<hr>
     <div class="example-wrapper">
-        <h2 class="mb-3">{{ orders|length > 1 ? 'Commandes' : 'Commande'  }} {{ status|title }}</h2>
+    {% if status == 'new' %}
+        {% set statusLabel = 'Nouvelle commande' %}
+        {% set statusLabelPlural = 'Nouvelles commandes' %}
+    {% elseif status == 'pending' %}
+        {% set statusLabel = 'Commande en attente de paiement' %}
+        {% set statusLabelPlural = 'Commandes en attente de paiement' %}
+    {% elseif status == 'paid' %}
+        {% set statusLabel = 'Commande payée' %}
+        {% set statusLabelPlural = 'Commandes payées' %}
+    {% elseif status == 'preparing' %}
+        {% set statusLabel = 'Commande en cours de préparation' %}
+        {% set statusLabelPlural = 'Commandes en cours de préparation' %}
+    {% elseif status == 'shipped' %}
+        {% set statusLabel = 'Commande expédiée' %}
+        {% set statusLabelPlural = 'Commandes expédiées' %}
+    {% elseif status == 'completed' %}
+        {% set statusLabel = 'Commande terminée' %}
+        {% set statusLabelPlural = 'Commandes terminées' %}
+    {% elseif status == 'cancelled' %}
+        {% set statusLabel = 'Commande annulée' %}
+        {% set statusLabelPlural = 'Commandes annulées' %}
+    {% endif %}
+
+    <h2 class="mb-3">{{ orders|length > 1 ? statusLabelPlural : statusLabel }}</h2>
+
         {% if orders is not empty %}
             {% for order in orders %}
                 <div class="card mb-3">
@@ -19,7 +43,7 @@
                             <li class="card-text">Total: {{ order.total }}</li>
                             <li class="card-text">Statut de la commande: {{ order.status }}</li>
                         </ol>
-                        <h3 class="card-title">{{ order.items.count() > 1 ? 'Produits' : 'Produit'  }}</h3>
+                        <h3 class="card-title">{{ order.items|length > 1 ? 'Produits' : 'Produit' }}</h3>
                         {% for item in order.items %}
                             <ol>
                                 <li class="card-text">Produit: {{ item.product.name }}</li>
@@ -27,30 +51,25 @@
                                 <li class="card-text">Prix: {{ item.product.sellingPrice }}</li>
                             </ol>
                         {% endfor %}
-                        <a href="{{ path( 'app_order_process' , {'id': order.id} ) }}" class="btn btn-primary">Valider cette commande</a>
-                        <a href="{{ path( 'app_order_cancel' , {'id': order.id} ) }}" class="btn btn-primary mt-3">Supprimer cette commande</a>
                         
-                        {# {% if status == 'new' %}
-                            <p>Message spécifique pour les commandes en attente dans le panier</p>
+                        {% if status == 'new' %}
+                            <a href="{{ path( 'app_order_process' , {'id': order.id} ) }}" class="btn btn-primary">Valider cette commande</a>
+                            <a href="{{ path( 'app_order_cancel' , {'id': order.id} ) }}" class="btn btn-primary mt-3">Supprimer cette commande</a>
                         {% elseif status == 'pending' %}
-                            <p>Message spécifique pour les commandes en attente de paiement</p>
-                        {% elseif status == 'paid' %}
-                            <p>Message spécifique pour les commandes validées et payées</p>
-                        {% elseif status == 'preparing' %}
-                            <p>Message spécifique pour les commandes en cours de préparation</p>
+                            <a href="{{ path( 'app_order_process' , {'id': order.id} ) }}" class="btn btn-primary">Valider cette commande</a>
+                            <a href="{{ path( 'app_order_cancel' , {'id': order.id} ) }}" class="btn btn-primary mt-3">Supprimer cette commande</a>
                         {% elseif status == 'shipped' %}
-                            <p>Message spécifique pour les commandes en cours d'expédition</p>
+                            <a href="#" class="btn btn-primary mt-3">Suivre ma commande</a>
                         {% elseif status == 'completed' %}
-                            <p>Message spécifique pour les commandes terminées</p>
+                            <a href="#" class="btn btn-primary mt-3">Obtenir la facture</a>
                         {% elseif status == 'cancelled' %}
-                            <p>Message spécifique pour les commandes annulées</p>
-                        {% endif %} #}
-
+                            <a href="{{ path( 'app_order_process' , {'id': order.id} ) }}" class="btn btn-primary">Valider cette commande</a>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
         {% else %}
-            <p>Aucune commande {{ status|title }}</p>
+            <p>Aucune commande {{ orders|length > 1 ? statusLabelPlural|lower : statusLabel|lower }}</p>
         {% endif %}
     </div>
 {% endfor %}

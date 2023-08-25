@@ -60,7 +60,8 @@ class OrderSessionStorage
      * @return Order|null
      */
     private function getUserLastOrder($user) : ?Order
-    {
+    {   
+
         return $this->orderRepository->findOneBy([
             'id' => $this->getOrderId(), // on récupère l'id du panier en session
             'status' => Order::CART_STATUS,

@@ -193,7 +193,7 @@ public function createCharge(Request $request): Response
      */
     public function cancelOrder(Order $order, OrderManager $orderManager) : Response
     {   
-        $user = $user = $this->checkUserService->getUserIfAuthenticatedFully();
+        $user = $this->checkUserService->getUserIfAuthenticatedFully();
 
         if(!$user) {
             $this->addFlash('warning', 'Vous devez être connecté pour annuler une commande');

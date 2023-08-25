@@ -50,6 +50,10 @@ class UserController extends AbstractController
     {   
         // on récupère le user connecté
         $user = $this->checkUser();
+        // si on a pas de user on renvoie vers la page de connexion
+        if(!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         
         // on récupère les commandes dont la status est new 
         $pending_payment_orders = $user->getOrders()->filter(function($order) {

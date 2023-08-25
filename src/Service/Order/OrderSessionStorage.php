@@ -54,36 +54,6 @@ class OrderSessionStorage
     }
 
     /**
-     * Gets the last order for a logged in user.
-     * If the user has an order in session, we return it.
-     * @param User $user
-     * @return Order|null
-     */
-    private function getUserLastOrder($user) : ?Order
-    {   
-
-        return $this->orderRepository->findOneBy([
-            'id' => $this->getOrderId(), // on récupère l'id du panier en session
-            'status' => Order::CART_STATUS,
-            'user' => $user
-        ]);
-    }
-
-    /**
-     * Gets the last order for an anonymous user.
-     * If the user has an order in session, we return it.
-     * @return Order|null
-     */
-    private function getAnanymeUserLastOrder() : ?Order
-    {
-        return $this->orderRepository->findOneBy([
-            'id' => $this->getOrderId(),
-            'status' => Order::CART_STATUS,
-            'userIdentifier' => $this->getSession()->get('user_identifier'),
-        ]);
-    }
-
-    /**
      * Sets the order in session.
      * @param Order $order
      * @return void
@@ -115,5 +85,35 @@ class OrderSessionStorage
     public function removeCart(): void
     {
         $this->getSession()->remove(self::CART_KEY_NAME);
+    }
+
+        /**
+     * Gets the last order for a logged in user.
+     * If the user has an order in session, we return it.
+     * @param User $user
+     * @return Order|null
+     */
+    private function getUserLastOrder($user) : ?Order
+    {   
+
+        return $this->orderRepository->findOneBy([
+            'id' => $this->getOrderId(), // on récupère l'id du panier en session
+            'status' => Order::CART_STATUS,
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * Gets the last order for an anonymous user.
+     * If the user has an order in session, we return it.
+     * @return Order|null
+     */
+    private function getAnanymeUserLastOrder() : ?Order
+    {
+        return $this->orderRepository->findOneBy([
+            'id' => $this->getOrderId(),
+            'status' => Order::CART_STATUS,
+            'userIdentifier' => $this->getSession()->get('user_identifier'),
+        ]);
     }
 }

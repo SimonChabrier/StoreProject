@@ -32,9 +32,9 @@ class ClearCartSubscriber implements EventSubscriberInterface
     public function postSubmit(FormEvent $event): void
     {
         $form = $event->getForm();
-        $cart = $form->getData();
+        $order = $form->getData();
 
-        if (!$cart instanceof Order) {
+        if (!$order instanceof Order) {
             return;
         }
 
@@ -44,9 +44,9 @@ class ClearCartSubscriber implements EventSubscriberInterface
         }
 
         // Clears the cart
-        $cart->removeItems();
+        $order->removeItems();
         // Clear the cart from the database and the session
-        $this->OrderManager->save($cart);
+        $this->OrderManager->save($order);
     }
 }
 

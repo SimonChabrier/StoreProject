@@ -5,9 +5,9 @@ namespace App\Service\Order;
 use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Service\Order\OrderFactory;
+use App\Service\Order\OrderSessionStorage;
 use App\Service\Stock\StockManager;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Service\Order\OrderSessionStorage;
 
 // Cette class gère la logique métier du panier ici. 
 // Les méthodes pour récupérer, sauvegarder et supprimer le panier sont ici.

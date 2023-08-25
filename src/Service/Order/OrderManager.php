@@ -120,7 +120,10 @@ class OrderManager
      * @return void
      */
     public function placeOrder(Order $order, string $orderStatus) : void
-    {
+    {   // vérifier si le produit est en stock
+        foreach($order->getItems() as $item){
+            $this->stockManager->isProductInStock($item->getProduct());
+        }
         // Mettre à jour le stock réservé
         $this->stockManager->reserveStock($order);
         // on met à jour le statut de la commande
@@ -147,6 +150,14 @@ class OrderManager
             // alors on supprime la commande de la session pour vider le panier de l'utilisateur
             $this->orderSessionStorage->removeCart();
         }
+    }
+
+    /**
+     * Get a order by id.
+    */
+    public function getOrder(int $orderId) : ?Order
+    {
+        return $this->entityManager->getRepository(Order::class)->find($orderId);
     }
 
     /**

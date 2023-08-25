@@ -64,6 +64,16 @@ class OrderManager
     }
 
     /**
+     * Get a order by id.
+     * @param int $orderId
+     * @return Order|null
+    */
+    public function getOrder(int $orderId) : ?Order
+    {
+        return $this->entityManager->getRepository(Order::class)->find($orderId);
+    }
+
+    /**
      * Saves an order in database and session.
      * @param Order $order
      * @return void
@@ -77,7 +87,7 @@ class OrderManager
         // on sauvegarde le panier en bdd
         $this->entityManager->persist($order);
         $this->entityManager->flush();
-        // on sauvegarde le panier en session
+        // on sauvegarde le panier en session pour maintenir l'état du panier à jour entre la bdd et la session
         $this->orderSessionStorage->setOrder($order);
     }
 
@@ -150,14 +160,6 @@ class OrderManager
             // alors on supprime la commande de la session pour vider le panier de l'utilisateur
             $this->orderSessionStorage->removeCart();
         }
-    }
-
-    /**
-     * Get a order by id.
-    */
-    public function getOrder(int $orderId) : ?Order
-    {
-        return $this->entityManager->getRepository(Order::class)->find($orderId);
     }
 
     /**

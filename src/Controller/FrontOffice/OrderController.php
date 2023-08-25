@@ -106,7 +106,8 @@ class OrderController extends AbstractController
         Request $request,
         OrderManager $orderManager,
         AuthorizationCheckerInterface $authorizationChecker,
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
+        OrderSessionStorage $orderSessionStorage
     ): Response
     {   
         // on récupère le user connecté
@@ -132,6 +133,8 @@ class OrderController extends AbstractController
 
             // on place la commande ça va réserver le stock et changer le statut du panier en "processing"
             $orderManager->placeOrder($order, 'paid');
+            // on retire le panier de la session puisqu'il est payé.
+            $orderSessionStorage->removeCart();
             
             // on dirige vers la page de paiement Stripe
             return $this->render('cart/stripe.html.twig', [

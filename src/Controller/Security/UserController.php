@@ -48,45 +48,77 @@ class UserController extends AbstractController
      */
     public function showAccount(): Response
     {   
+
         // on récupère le user connecté
         $user = $this->checkUser();
         // si on a pas de user on renvoie vers la page de connexion
-        if(!$user) {
+        if (!$user) {
             return $this->redirectToRoute('app_login');
         }
-        // on récupère les commandes dont la status est new 
-        $pending_payment_orders = $user->getOrders()->filter(function($order) {
-            return $order->getStatus() === 'pending';
-        });
-        // on récupère les commandes dont le status est 'paid'
-        $paid_orders = $user->getOrders()->filter(function($order) {
-            return $order->getStatus() === 'paid';
-        });
-        // on récupère les commandes en cours de préparation
-        $preparing_orders = $user->getOrders()->filter(function($order) {
-            return $order->getStatus() === 'preparing';
-        });
-        // on récupère les commandes en cours de livraison
-        $shipped_orders = $user->getOrders()->filter(function($order) {
-            return $order->getStatus() === 'shipped';
-        });
-        // on récupère les commandes terminées
-        $completed_orders = $user->getOrders()->filter(function($order) {
-            return $order->getStatus() === 'completed';
-        });
-        // on récupère les commandes annulées
-        $cancelled_orders = $user->getOrders()->filter(function($order) {
-            return $order->getStatus() === 'cancelled';
-        });
-        
+
+        // pour stocker les commandes selon leur statut
+        $ordersByStatus = [
+            'new' => [], 
+            'pending' => [],
+            'paid' => [],
+            'preparing' => [],
+            'shipped' => [],
+            'completed' => [],
+            'cancelled' => [],
+        ];
+
+        // Parcourir les commandes de l'utilisateur et les trier par statut
+        foreach ($user->getOrders() as $order) {
+            $status = $order->getStatus();
+            if (array_key_exists($status, $ordersByStatus)) {
+                $ordersByStatus[$status][] = $order;
+            }
+        }
+
         return $this->render('user/index.html.twig', [
-            'pending_payment_orders' => $pending_payment_orders,
-            'paid_orders' => $paid_orders,
-            'preparing_orders' => $preparing_orders,
-            'shipped_orders' => $shipped_orders,
-            'completed_orders' => $completed_orders, 
-            'cancelled_orders' => $cancelled_orders,
+            'ordersByStatus' => $ordersByStatus,
             'user' => $user,
         ]);
+
+        // // on récupère le user connecté
+        // $user = $this->checkUser();
+        // // si on a pas de user on renvoie vers la page de connexion
+        // if(!$user) {
+        //     return $this->redirectToRoute('app_login');
+        // }
+        // // on récupère les commandes dont la status est new 
+        // $pending_payment_orders = $user->getOrders()->filter(function($order) {
+        //     return $order->getStatus() === 'pending';
+        // });
+        // // on récupère les commandes dont le status est 'paid'
+        // $paid_orders = $user->getOrders()->filter(function($order) {
+        //     return $order->getStatus() === 'paid';
+        // });
+        // // on récupère les commandes en cours de préparation
+        // $preparing_orders = $user->getOrders()->filter(function($order) {
+        //     return $order->getStatus() === 'preparing';
+        // });
+        // // on récupère les commandes en cours de livraison
+        // $shipped_orders = $user->getOrders()->filter(function($order) {
+        //     return $order->getStatus() === 'shipped';
+        // });
+        // // on récupère les commandes terminées
+        // $completed_orders = $user->getOrders()->filter(function($order) {
+        //     return $order->getStatus() === 'completed';
+        // });
+        // // on récupère les commandes annulées
+        // $cancelled_orders = $user->getOrders()->filter(function($order) {
+        //     return $order->getStatus() === 'cancelled';
+        // });
+        
+        // return $this->render('user/index.html.twig', [
+        //     'pending_payment_orders' => $pending_payment_orders,
+        //     'paid_orders' => $paid_orders,
+        //     'preparing_orders' => $preparing_orders,
+        //     'shipped_orders' => $shipped_orders,
+        //     'completed_orders' => $completed_orders, 
+        //     'cancelled_orders' => $cancelled_orders,
+        //     'user' => $user,
+        // ]);
     }
 }

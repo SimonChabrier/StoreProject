@@ -139,6 +139,9 @@ public function createCharge(Request $request): Response
             "description" => "Paiement de commande"
         ]);
 
+        //TODO on décrémente le stock des produits de la commande payée si le paiement est réussi
+        
+
         $this->addFlash(
             'success',
             'Paiement réussi !'

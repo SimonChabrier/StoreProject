@@ -5,7 +5,7 @@ namespace App\Service\Order;
 use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Service\Order\OrderFactory;
-use App\Service\Order\StockManager;
+use App\Service\Stock\StockManager;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\Order\OrderSessionStorage;
 
@@ -50,7 +50,7 @@ class OrderManager
     }
 
     /**
-     * Gets the current cart.
+     * Gets the current cart from session or creates a new one.
      * @return Order
      */
     public function getCurrentCart() : Order
@@ -129,21 +129,24 @@ class OrderManager
         $this->save($order);
     }
 
-
-
     /**
-     * Pay an order and release the stock.
+     * Pay an order and decrement the stock.
      */
     public function payOrder(Order $order) : void
     {
         // décrémenter le stock de chaque item
         $this->stockManager->decrementStock($order);
-
-        // Payer la commande
+        // on libère du coup le stock réservé pour la commande
+        $this->stockManager->releaseReservedStock($order);
+        // on change le statut de la commande en "paid"
         $order->setStatus('paid');
-
+        // on sauvegarde la commande en bdd
         $this->entityManager->persist($order);
-        $this->entityManager->flush();
+        // si on flush 
+        if($this->entityManager->flush()){
+            // alors on supprime la commande de la session pour vider le panier de l'utilisateur
+            $this->orderSessionStorage->removeCart();
+        }
     }
 
     /**
@@ -156,9 +159,9 @@ class OrderManager
     {
         // Libérer le stock réservé
         $this->stockManager->releaseReservedStock($order);
-
         // Annuler la commande
         $order->setStatus('cancelled');
+        //TODO voir si il faudra supprimer la commande de la session ou pas ?
 
         $this->entityManager->persist($order);
         $this->entityManager->flush();

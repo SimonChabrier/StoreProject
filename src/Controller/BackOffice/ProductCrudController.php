@@ -17,6 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 
 class ProductCrudController extends AbstractCrudController
 {   
@@ -86,9 +87,15 @@ class ProductCrudController extends AbstractCrudController
             TextField::new('catalogPrice', 'Prix catalogue TTC')
             ->setRequired(true),
 
-            TextField::new('tauxMarque', 'Marge %')
+            TextField::new('margeBrute', 'Marge brute %')
+            ->setFormTypeOption('disabled', true),
+
+            TextField::new('margeNette', 'Marge nette %')
             ->setFormTypeOption('disabled', true),
             
+            IntegerField::new('coefficientMarge', 'Coef')
+            ->setFormTypeOption('disabled', true),
+
             AssociationField::new('category', 'Catégorie')
             ->setRequired(false),
             

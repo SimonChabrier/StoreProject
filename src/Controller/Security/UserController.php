@@ -44,9 +44,9 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/", name="app_user_account")
+     * @Route("/account", name="app_user_account")
      */
-    public function userAccount(): Response
+    public function showAccount(): Response
     {   
         // on récupère le user connecté
         $user = $this->checkUser();
@@ -54,7 +54,6 @@ class UserController extends AbstractController
         if(!$user) {
             return $this->redirectToRoute('app_login');
         }
-        
         // on récupère les commandes dont la status est new 
         $pending_payment_orders = $user->getOrders()->filter(function($order) {
             return $order->getStatus() === 'pending';

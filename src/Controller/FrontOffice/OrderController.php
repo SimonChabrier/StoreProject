@@ -24,10 +24,7 @@ class OrderController extends AbstractController
     /**
      * Cette route permet d'afficher le panier et son formulaire de modification
      * c'est le formulaire qui contient les produits du panier
-     * les boutons d'actions qui dirige ici sont : 
-     * "Mettre à jour le panier" (recalcule les quantités si un item est modifié)
-     * "Supprimer" (un item du panier)
-     * 
+     *  "Mettre à jour le panier" permet de modifier la quantité des produits du panier avec le subesciber UpdateCartItemSubscriber
      * @Route("/", name="app_order")
      */
     public function index(

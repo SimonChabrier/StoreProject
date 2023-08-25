@@ -11,11 +11,11 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use App\Form\Order\OrderItemType;
 use App\EventSubscriber\Order\ClearCartSubscriber;
-use App\EventSubscriber\Order\RemoveCartItemSubscriber;
+use App\EventSubscriber\Order\UpdateCartSubscriber;
 
 // Formulaire général de la page panier 
 // il imbrique le formulaire OrderItemType pour chaque élément du panier
-// il utilise les EventSubscriber ClearCartSubscriber et RemoveCartItemSubscriber
+// il utilise les EventSubscriber ClearCartSubscriber et UpdateCartSubscriber
 // pour vider le panier ou supprimer un produit du panier
 
 class OrderType extends AbstractType
@@ -36,7 +36,7 @@ class OrderType extends AbstractType
                 'entry_type' => OrderItemType::class
             ])
             // ici on va utiliser un subscriber pour évaluer si on sauvegarde ou si on vide le panier 
-            ->add('save', SubmitType::class, [
+            ->add('update', SubmitType::class, [
                 'label' => 'Mettre à jour le panier'
             ])
             ->add('clear', SubmitType::class, [
@@ -56,7 +56,7 @@ class OrderType extends AbstractType
 
     private function addSubscribers(FormBuilderInterface $builder): void
     {
-        $builder->addEventSubscriber(new RemoveCartItemSubscriber($this->OrderManager));
+        $builder->addEventSubscriber(new UpdateCartSubscriber($this->OrderManager));
         $builder->addEventSubscriber(new ClearCartSubscriber($this->OrderManager));
     }
 }

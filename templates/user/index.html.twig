@@ -4,12 +4,12 @@
 
 {% block content %}
 <h1>Bonjour {{ user.email }}</h1>
+
 <hr>
 <div class="example-wrapper">
-    
-<h2 class="mb-3">{{ pending_orders.count() > 1 ? 'Commandes' : 'Commande'  }} en attente</h2>
-{% if pending_orders is not empty %}
-    {% for order in pending_orders %}
+<h2 class="mb-3">{{ pending_payment_orders.count() > 1 ? 'Commandes' : 'Commande'  }} en attente de paiment</h2>
+{% if pending_payment_orders is not empty %}
+    {% for order in pending_payment_orders %}
         <div class="card mb-3">
             <div class="card-body">
                 <h3 class="card-title">Commande #{{ order.id }}</h3>
@@ -28,20 +28,51 @@
                     </ol>
                     {% endfor %}
                 
-                <a href="#" class="btn btn-primary">Valider cette commande</a>
-                <a href="#" class="btn btn-primary mt-3">Supprimer cette commande</a>
+                <a href="{{ path( 'app_order_process' , {'id': order.id} ) }}" class="btn btn-primary">Valider cette commande</a>
+                <a href="{{ path( 'app_order_cancel' , {'id': order.id} ) }}" class="btn btn-primary mt-3">Supprimer cette commande</a>
             </div>
         </div>
     {% endfor %}
 {% else %}
-    <p>Aucune commande en attente</p>
+    <p>Aucune commande en attente de paiment</p>
 {% endif %}
 </div>
 <hr>
-<h2 class="mb-3">{{ processing_orders.count() > 1 ? 'Commandes en cours' : 'Commande en cours'  }}</h2>
 <div class="example-wrapper">
-{% if processing_orders is not empty %}
-    {% for order in processing_orders %}
+<h2 class="mb-3">{{ paid_orders.count() > 1 ? 'Commandes validés et payés' : 'Commande validé et payé'  }}</h2>
+{% if paid_orders is not empty %}
+    {% for order in paid_orders %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h3 class="card-title">Commande #{{ order.id }}</h3>
+                <ol>
+                <li class="card-text">Du: {{ order.createdAt|date('Y-m-d H:i:s') }}</li>
+                <li class="card-text">Total: {{ order.total }}</li>
+                <li class="card-text">Statut de la commande: {{ order.status }}</li>
+                </ol>
+                <h3 class="card-title">{{ order.items.count() > 1 ? 'Produits' : 'Produit'  }}</h3>
+                   
+                    {% for item in order.items %}
+                    <ol>
+                        <li class="card-text">Produit: {{ item.product.name }}</li>
+                        <li class="card-text">Quantité: {{ item.quantity }}</li>
+                        <li class="card-text">Prix: {{ item.product.sellingPrice }}</li>
+                    </ol>
+                    {% endfor %}
+                
+                <a href="{{ path( 'app_order_process' , {'id': order.id} ) }}" class="btn btn-primary">Valider cette commande</a>
+                <a href="{{ path( 'app_order_cancel' , {'id': order.id} ) }}" class="btn btn-primary mt-3">Supprimer cette commande</a>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Aucune commande validé et payé</p>
+{% endif %}
+<hr>
+<h2 class="mb-3">{{ preparing_orders.count() > 1 ? 'Commandes en cours de préparation' : 'Commande en cours en cours de préparation'  }}</h2>
+<div class="example-wrapper">
+{% if preparing_orders is not empty %}
+    {% for order in preparing_orders %}
         <div class="card mb-3">
             <div class="card-body">
                 <h3 class="card-title">Commande #{{ order.id }}</h3>
@@ -65,7 +96,98 @@
         </div>
     {% endfor %}
 {% else %}
-    <p>Aucune commande en cours</p>
+    <p>Aucune commande en cours de préparation</p>
+{% endif %}
+<hr>
+<h2 class="mb-3">{{ shipped_orders.count() > 1 ? 'Commandes' : 'Commande'  }} en cours d'expédition</h2>
+<div class="example-wrapper">
+{% if shipped_orders is not empty %}
+    {% for order in shipped_orders %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h3 class="card-title">Commande #{{ order.id }}</h3>
+                <ol>
+                <li class="card-text">Du: {{ order.createdAt|date('Y-m-d H:i:s') }}</li>
+                <li class="card-text">Total: {{ order.total }}</li>
+                <li class="card-text">Statut de la commande: {{ order.status }}</li>
+                </ol>
+                <h3 class="card-title">{{ order.items.count() > 1 ? 'Produits' : 'Produit'  }}</h3>
+                    
+                    {% for item in order.items %}
+                    <ol>
+                        <li class="card-text">Produit: {{ item.product.name }}</li>
+                        <li class="card-text">Quantité: {{ item.quantity }}</li>
+                        <li class="card-text">Prix: {{ item.product.sellingPrice }}</li>
+                    </ol>
+                    {% endfor %}
+                
+                <a href="#" class="btn btn-primary">Obtenir la facture</a>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Aucune commande en cours d'expédition</p>
+{% endif %}
+<hr>
+<h2 class="mb-3">{{ completed_orders.count() > 1 ? 'Commandes terminés' : 'Commande terminé'  }}</h2>
+<div class="example-wrapper">
+{% if completed_orders is not empty %}
+    {% for order in completed_orders %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h3 class="card-title">Commande #{{ order.id }}</h3>
+                <ol>
+                <li class="card-text">Du: {{ order.createdAt|date('Y-m-d H:i:s') }}</li>
+                <li class="card-text">Total: {{ order.total }}</li>
+                <li class="card-text">Statut de la commande: {{ order.status }}</li>
+                </ol>
+                <h3 class="card-title">{{ order.items.count() > 1 ? 'Produits' : 'Produit'  }}</h3>
+                    
+                    {% for item in order.items %}
+                    <ol>
+                        <li class="card-text">Produit: {{ item.product.name }}</li>
+                        <li class="card-text">Quantité: {{ item.quantity }}</li>
+                        <li class="card-text">Prix: {{ item.product.sellingPrice }}</li>
+                    </ol>
+                    {% endfor %}
+                
+                {# <a href="#" class="btn btn-primary">Valider cette commande </a> #}
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Aucune commande terminé</p>
+{% endif %}
+</div>
+<hr>
+<h2 class="mb-3">{{ cancelled_orders.count() > 1 ? 'Commandes annulés' : 'Commande annulé'  }}</h2>
+<div class="example-wrapper">
+{% if cancelled_orders is not empty %}
+    {% for order in cancelled_orders %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h3 class="card-title">Commande #{{ order.id }}</h3>
+                <ol>
+                <li class="card-text">Du: {{ order.createdAt|date('Y-m-d H:i:s') }}</li>
+                <li class="card-text">Total: {{ order.total }}</li>
+                <li class="card-text">Statut de la commande: {{ order.status }}</li>
+                </ol>
+                <h3 class="card-title">{{ order.items.count() > 1 ? 'Produits' : 'Produit'  }}</h3>
+                    
+                    {% for item in order.items %}
+                    <ol>
+                        <li class="card-text">Produit: {{ item.product.name }}</li>
+                        <li class="card-text">Quantité: {{ item.quantity }}</li>
+                        <li class="card-text">Prix: {{ item.product.sellingPrice }}</li>
+                    </ol>
+                    {% endfor %}
+                
+                {# <a href="#" class="btn btn-primary">Valider cette commande </a> #}
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Aucune commande annulé</p>
 {% endif %}
 </div>
 {% endblock %}

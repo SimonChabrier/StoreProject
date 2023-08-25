@@ -4,7 +4,7 @@ namespace App\Controller\FrontOffice;
 
 use Stripe\Charge;
 use Stripe\Stripe;
-
+use App\Service\Security\CheckUserService;
 use App\Entity\Order;
 use App\Form\Order\OrderType;
 use App\Repository\OrderRepository;
@@ -20,7 +20,14 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  * @Route("/order")
  */
 class OrderController extends AbstractController
-{
+{   
+    private $checkUserService;
+
+    public function __construct(CheckUserService $checkUserService)
+    {
+        $this->checkUserService = $checkUserService;
+    }
+
     /**
      * Cette route permet d'afficher le panier et son formulaire de modification
      * c'est le formulaire qui contient les produits du panier
@@ -69,12 +76,11 @@ class OrderController extends AbstractController
     public function checkOutOrder(
         Order $order,
         OrderManager $orderManager,
-        AuthorizationCheckerInterface $authorizationChecker,
-        Request $request
+        AuthorizationCheckerInterface $authorizationChecker
     ): Response
     {   
         // on récupère le user connecté
-        $user = $this->getUser();
+        $user = $this->checkUserService->getUserIfAuthenticatedFully();
 
         if(!$user) {
             $this->addFlash('warning', 'Vous devez être connecté pour passer une commande');
@@ -104,7 +110,7 @@ class OrderController extends AbstractController
     ): Response
     {   
         // on récupère le user connecté
-        $user = $this->getUser();
+        $user = $this->checkUserService->getUserIfAuthenticatedFully();
 
         if(!$user) {
             $this->addFlash('warning', 'Vous devez être connecté pour payer une commande');
@@ -186,7 +192,14 @@ public function createCharge(Request $request): Response
      * @Route("/cancel/{id}", name="app_order_cancel")
      */
     public function cancelOrder(Order $order, OrderManager $orderManager) : Response
-    {
+    {   
+        $user = $user = $this->checkUserService->getUserIfAuthenticatedFully();
+
+        if(!$user) {
+            $this->addFlash('warning', 'Vous devez être connecté pour annuler une commande');
+            return $this->redirectToRoute('app_login');
+        }
+
         $orderManager->cancelOrder($order);
 
         // retour à la page du profil de l'utilisateur

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Security;
+namespace App\Controller\FrontOffice;
 
 use App\Service\Security\CheckUserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

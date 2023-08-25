@@ -98,12 +98,12 @@ class OrderSessionStorage
      * Returns the order id.
      * @return int|null
      */
-    private function getOrderId(): ?int
+    public function getOrderId(): ?int
     {
         return $this->getSession()->get(self::CART_KEY_NAME);
     }
 
-    private function getSession(): SessionInterface
+    public function getSession(): SessionInterface
     {
         return $this->requestStack->getSession();
     }

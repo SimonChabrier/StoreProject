@@ -9,6 +9,7 @@ use App\Entity\Order;
 use App\Form\Order\OrderType;
 use App\Repository\OrderRepository;
 use App\Service\Order\OrderManager;
+use App\Service\Order\OrderSessionStorage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,17 +32,23 @@ class OrderController extends AbstractController
      */
     public function index(
         OrderManager $orderManager, 
+        OrderSessionStorage $orderSessionStorage,
         Request $request
     ): Response
     {   
         // sur cette page on utilise le panier de la session 
         // si il existe getCurrentCart() le récupère sinon le crée.
         $order = $orderManager->getCurrentCart();
-        
+        dump($order);
+        $sessionOrder = $orderSessionStorage->getSession()->get('cart_id');
+        dump($sessionOrder);
         // si on a bien un panier en session avec un id
         if($order->getId()){
             // on récupère le panier de la bdd pour être sur d'avoir les données à jour 
             // et travailler sur le bon panier en cas de modification
+            // à partir de là je n'ai plus réellement besoin de la session pour travailler sur le panier...
+            // ça fait des requêtes en plus à la bdd (à voir si on peut optimiser ça).
+            // mais ça permet aussi de maintenir en permanance les stocks à jour dans la bdd. (il faudra choisir)
             $order = $orderManager->getOrder($order->getId());
         }
 

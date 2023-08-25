@@ -1,3 +1,5 @@
+{% if app.user %}
+
 {% if new_order_count.getUserOrder() > 1 %}
     {% set href = 'app_user_account' %}
     {% set title = 'voir vos commandes' %}
@@ -8,6 +10,22 @@
     {% set title = 'voir votre commande' %}
     {% set count = 'Une' %}
     {% set command = 'commande' %}
+{% endif %}
+
+{% else %}
+
+{% if new_order_count.getUserOrder() > 1 %}
+    {% set href = 'app_order' %}
+    {% set title = 'voir vos commandes' %}
+    {% set count = new_order_count.getUserOrder() %}
+    {% set command = 'commandes' %}
+{% else %}
+    {% set href = 'app_order' %}
+    {% set title = 'voir votre commande' %}
+    {% set count = 'Une' %}
+    {% set command = 'commande' %}
+{% endif %}
+
 {% endif %}
 
 <a href="{{ path(href) }}" title="{{ title }}">

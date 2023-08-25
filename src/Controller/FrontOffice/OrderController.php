@@ -9,12 +9,10 @@ use App\Entity\Order;
 use App\Form\Order\OrderType;
 use App\Repository\OrderRepository;
 use App\Service\Order\OrderManager;
-use Stripe\BillingPortal\Session;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -23,6 +21,12 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class OrderController extends AbstractController
 {
     /**
+     * Cette route permet d'afficher le panier et son formulaire de modification
+     * c'est le formulaire qui contient les produits du panier
+     * les boutons d'actions qui dirige ici sont : 
+     * "Mettre à jour le panier" (recalcule les quantités si un item est modifié)
+     * "Supprimer" (un item du panier)
+     * 
      * @Route("/", name="app_order")
      */
     public function index(
@@ -30,8 +34,17 @@ class OrderController extends AbstractController
         Request $request
     ): Response
     {   
-
+        // sur cette page on utilise le panier de la session 
+        // si il existe getCurrentCart() le récupère sinon le crée.
         $order = $orderManager->getCurrentCart();
+        
+        // si on a bien un panier en session avec un id
+        if($order->getId()){
+            // on récupère le panier de la bdd pour être sur d'avoir les données à jour 
+            // et travailler sur le bon panier en cas de modification
+            $order = $orderManager->getOrder($order->getId());
+        }
+
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
 
@@ -49,10 +62,11 @@ class OrderController extends AbstractController
     /**
      * @Route("/checkout/{id}", name="app_order_process")
      */
-    public function placeOrder(
+    public function checkOutOrder(
         Order $order,
         OrderManager $orderManager,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        Request $request
     ): Response
     {   
         // on récupère le user connecté
@@ -62,13 +76,11 @@ class OrderController extends AbstractController
             $this->addFlash('warning', 'Vous devez être connecté pour passer une commande');
             return $this->redirectToRoute('app_login');
         }
-
         // si on a un user et qu'il est pleinement authentifié
         if($user && $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
-
-            $order = $orderManager->getCurrentCart();
-            // on place la commande ça va réserver le stock et changer le statut du panier en "processing"
-            $orderManager->placeOrder($order, 'pending');
+            // on récupère la commande en cours
+            $order = $orderManager->getOrder($order->getId());
+            
             // on dirige vers la page de paiement Stripe
             return $this->redirectToRoute('app_payment_stripe', [
                 'id' => $order->getId()
@@ -84,8 +96,7 @@ class OrderController extends AbstractController
         Request $request,
         OrderManager $orderManager,
         AuthorizationCheckerInterface $authorizationChecker,
-        OrderRepository $orderRepository,
-        SessionInterface $session
+        OrderRepository $orderRepository
     ): Response
     {   
         // on récupère le user connecté

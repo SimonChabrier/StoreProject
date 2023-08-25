@@ -17,18 +17,32 @@ class StockManager
         $this->entityManager = $entityManager;
     }
 
+
+//////// UTILS ////////
     /**
-     * Vérifié que le produit est bien en stock sur l'attribut inStock
-     */
+     * Vérifie que le produit est bien en stock sur l'attribut inStock
+    */
     public function isProductInStock(Product $product) : bool
     {
         if($product->isInStock() === true) {
             return true;
         } else {
+              return false; // le produit n'est pas en stock et pas en commande fournisseur
+            }
+    }
+
+    
+    /**
+     * Vérifie si le produit est en commande fournisseur sur l'attribut inSupplierOrder
+    */
+    public function isProductInSupplierOrder(Product $product) : bool
+    {
+        if($product->getInSupplierOrderQuantity() === true) {
+            return true;
+        } else {
             return false;
         }
     }
-
 
 //////// GESTION DU STOCK DES PRODUITS POUR LES COMMANDES ////////
 

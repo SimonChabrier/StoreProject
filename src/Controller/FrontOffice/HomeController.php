@@ -43,7 +43,6 @@ class HomeController extends AbstractController
         // Récupérer le cache
         $cacheItem = $this->cache->getItem(self::CACHE_KEY);
         $isCacheHit = $cacheItem->isHit();
-        dump($isCacheHit);
 
         // Si les données sont en cache, les retourner directement
         if ($cacheItem->isHit()) {

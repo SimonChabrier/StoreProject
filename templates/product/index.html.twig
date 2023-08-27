@@ -9,9 +9,10 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Name</th>
+                <th>Nom</th>
+                <th>Visibilité</th>
                 <th>Images</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -19,6 +20,7 @@
             <tr>
                 <td>{{ product.id }}</td>
                 <td>{{ product.name }}</td>
+                <td>{{ product.visibility == 0 ? 'Masqué' : 'Visible'  }}</td>
                 <td>
                 {% if product.pictures %}
                     {% for picture in product.pictures %}

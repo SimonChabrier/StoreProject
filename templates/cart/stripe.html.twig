@@ -5,20 +5,28 @@
 {% block content %}
 <h1>Formulaire de paiement stripe</h1> 
 
-<p>Commande Id : {{ order.id }}</p>
-<p>Montant : {{ order.getTotal }}</p>
+{% for message in app.flashes('success') %}
+    <div 
+        style="color: green;
+            border: 2px green solid;
+            text-align: center;
+            padding: 5px;margin-bottom: 10px;">
+        {{ message }}
+    </div>
+{% endfor %}
 
 <form id='checkout-form' method='post' action="{{ path('app_stripe_charge') }}">             
-    <input type='hidden' name='stripeToken' id='stripe-token-id'>                              
-    <label for="card-element" class="mb-5">Paiement</label>
-    <br>
+    <input type='hidden' name='stripeToken' id='stripe-token-id'>   
+    <input type="hidden" name="amount" value="{{ order.getTotal }}">                           
+    <input type="hidden" name="order_id" value="{{ order.id }}">                           
+    <label for="card-element" class="mt-3 mb-1">Paiement</label>
     <div id="card-element" class="form-control"></div>
     <button 
         id='pay-btn'
         class="btn btn-success mt-3"
         type="button"
         style="margin-top: 20px; width: 100%;padding: 7px;"
-        onclick="createToken()">PAY $5
+        onclick="createToken()"> Payer {{ order.getTotal }} €
     </button>
 </form>
 

@@ -9,6 +9,7 @@ use App\Service\Order\OrderManager;
 use App\Service\File\UploadService;
 use App\Message\UpdateFileMessage;
 use App\Repository\ProductRepository;
+use App\Service\Stock\StockManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,6 +17,8 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\MakerBundle\Str;
+use Symfony\Component\HttpKernel\HttpCache\Store;
 
 /**
  * @Route("/product")
@@ -82,39 +85,50 @@ class ProductController extends AbstractController
     /**
      * @Route("/{id}", name="app_product_show")
      */
-    public function show(
-        Product $product,
-        ProductRepository $pr,
+    public function addProductToCart(
         Request $request,
-        OrderManager $OrderManager
-    ): Response {
+        OrderManager $orderManager,
+        Product $product,
+        ProductRepository $productRepository
+    ): Response
+    {
+        // On crée un formulaire imbriqué dans la page produit pour ajouter un produit au panier
         $form = $this->createForm(AddProductToOrderType::class);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            // On récupère les données du formulaire
             $item = $form->getData();
+            // On donne à l'item (orderitem) le produit sélectionné
             $item->setProduct($product);
-
-            $cart = $OrderManager->getCurrentCart();
-            $cart
-                ->addItem($item)
-                ->setUpdatedAt(new \DateTime());
-
-            $OrderManager->save($cart);
-
-            // add flash message
-            $this->addFlash('success', 'Le produit a bien été ajouté au panier');
-
-            // on redirige vers la page produit pour éviter de renvoyer le formulaire en cas de rafraichissement de la page
+            // On récupère le panier en cours
+            $cart = $orderManager->getCurrentCart();
+            // On ajoute l'item au panier en cours
+            $cart->addItem($item);
+    
+            // On sauvegarde le panier avec vérification des quantités insuffisantes
+            $saveResult = $orderManager->save($cart);
+    
+            if (is_array($saveResult)) {
+                // S'il y a des messages d'erreur, affichez-les en tant que messages flash d'erreur
+                foreach ($saveResult as $errorMessage) {
+                    $this->addFlash('error', $errorMessage);
+                }
+            } else {
+                // Ajout au panier réussi, afficher un message flash de succès
+                $this->addFlash('success', 'Le produit a bien été ajouté au panier');
+            }
+    
+            // On redirige vers la page produit pour éviter de renvoyer le formulaire en cas de rafraîchissement de la page
             return $this->redirectToRoute('app_product_show', ['id' => $product->getId()]);
         }
-
+    
         return $this->render('product/show.html.twig', [
             'product' => $product,
-            'relatedProducts' => $pr->relatedProducts($product->getSubCategory()->getId()),
+            'relatedProducts' => $productRepository->relatedProducts($product->getSubCategory()->getId()),
             'form' => $form->createView()
         ]);
-    }
+    }    
 
     /**
      * @Route("/{id}/edit", name="app_product_edit", methods={"GET", "POST"})

@@ -19,9 +19,11 @@
             <div class="swiper-wrapper">
                 {% set categoryProducts = category['products']|slice(-4)|reverse %}
                 {% for product in categoryProducts %}
+                {% if product['visibility'] == 1 %}
                     <section class="swiper-slide">
                         {% include '_fragments/_product_array.html.twig' %} 
                     </section>
+                {% endif %}
                 {% endfor %}
             </div>
             <div class="swiper-pagination"></div>
@@ -43,9 +45,11 @@
             <div class="last-five-products">
                 {% set subCategoryProducts = subCategory['products']|slice(-4) %}
                 {% for product in subCategoryProducts %}
+                {% if product['visibility'] == 1 %}
                     <section>
                         {% include '_fragments/_product_array.html.twig' %} 
                     </section>
+                {% endif %}
                 {% endfor %}
             </div>
         {% endfor %}
@@ -65,8 +69,10 @@
                 {% set categoryProducts = category.products|slice(-4) %}
                 {% for product in categoryProducts %}
                     <section class="swiper-slide">
+                    {% if categoryProducts.visibility == 1 %}
                         {% include '_fragments/_product_object.html.twig' %} 
                     </section>
+                    {% endif %}
                 {% endfor %}
             </div>
             <div class="swiper-pagination"></div>
@@ -88,9 +94,11 @@
             <div class="last-five-products">
                 {% set subCategoryProducts = subCategory.products|slice(-4)|reverse %}
                 {% for product in subCategoryProducts %}
+                {% if product.visibility == 1 %}
                     <section>
                         {% include '_fragments/_product_object.html.twig' %} 
                     </section>
+                {% endif %}
                 {% endfor %}
             </div>
         {% endfor %}

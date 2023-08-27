@@ -15,7 +15,7 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\Console\Helper\Dumper;
 
 class HomeController extends AbstractController
 {
@@ -23,7 +23,7 @@ class HomeController extends AbstractController
     private $cache;
     
     const CACHE_KEY = 'home_data';
-    const CACHE_DURATION = 0;
+    const CACHE_DURATION = 3600;
 
     public function __construct($adminEmail, AdapterInterface $cache)
     {
@@ -43,6 +43,7 @@ class HomeController extends AbstractController
         // Récupérer le cache
         $cacheItem = $this->cache->getItem(self::CACHE_KEY);
         $isCacheHit = $cacheItem->isHit();
+        dump($isCacheHit);
 
         // Si les données sont en cache, les retourner directement
         if ($cacheItem->isHit()) {
@@ -130,7 +131,9 @@ class HomeController extends AbstractController
                 'sellingPrice' => $product->getSellingPrice(),
                 'subCategory' => $product->getSubCategory()->getName(),
                 'productType' => $product->getProductType()->getName(),
-                'brand' => $product->getBrand()->getName()
+                'brand' => $product->getBrand()->getName(),
+                'visibility' => $product->isVisibility(),
+                'inStock' => $product->isInStock(),
             ];
             // récupèrer les images du produit
             foreach ($product->getPictures() as $picture) {

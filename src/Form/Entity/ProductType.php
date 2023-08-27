@@ -75,7 +75,7 @@ class ProductType extends AbstractType
                 'empty_data' => 1, // Valeur par défaut si aucun choix n'est fait
             ])
             // isInStock (est ce que le produit est disponible en stock)
-            ->add('isInStock', ChoiceType::class, [
+            ->add('inStock', ChoiceType::class, [
                 'label' => 'Dispobilité stock',
                 'choices' => [
                     'Disponible' => true,

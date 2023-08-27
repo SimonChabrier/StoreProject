@@ -5,9 +5,9 @@ namespace App\Service\Order;
 use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Service\Order\OrderFactory;
-use App\Service\Order\StockManager;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Service\Order\OrderSessionStorage;
+use App\Service\Stock\StockManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 // Cette class gère la logique métier du panier ici. 
 // Les méthodes pour récupérer, sauvegarder et supprimer le panier sont ici.
@@ -50,7 +50,7 @@ class OrderManager
     }
 
     /**
-     * Gets the current cart.
+     * Gets the current cart from session or creates a new one.
      * @return Order
      */
     public function getCurrentCart() : Order
@@ -61,6 +61,16 @@ class OrderManager
             $order = $this->orderFactory->create();
         }
         return $order;
+    }
+
+    /**
+     * Get a order by id.
+     * @param int $orderId
+     * @return Order|null
+    */
+    public function getOrder(int $orderId) : ?Order
+    {
+        return $this->entityManager->getRepository(Order::class)->find($orderId);
     }
 
     /**
@@ -77,7 +87,7 @@ class OrderManager
         // on sauvegarde le panier en bdd
         $this->entityManager->persist($order);
         $this->entityManager->flush();
-        // on sauvegarde le panier en session
+        // on sauvegarde le panier en session pour maintenir l'état du panier à jour entre la bdd et la session
         $this->orderSessionStorage->setOrder($order);
     }
 
@@ -120,7 +130,10 @@ class OrderManager
      * @return void
      */
     public function placeOrder(Order $order, string $orderStatus) : void
-    {
+    {   // vérifier si le produit est en stock
+        foreach($order->getItems() as $item){
+            $this->stockManager->isProductInStock($item->getProduct());
+        }
         // Mettre à jour le stock réservé
         $this->stockManager->reserveStock($order);
         // on met à jour le statut de la commande
@@ -129,21 +142,24 @@ class OrderManager
         $this->save($order);
     }
 
-
-
     /**
-     * Pay an order and release the stock.
+     * Pay an order and decrement the stock.
      */
     public function payOrder(Order $order) : void
     {
         // décrémenter le stock de chaque item
         $this->stockManager->decrementStock($order);
-
-        // Payer la commande
+        // on libère du coup le stock réservé pour la commande
+        $this->stockManager->releaseReservedStock($order);
+        // on change le statut de la commande en "paid"
         $order->setStatus('paid');
-
+        // on sauvegarde la commande en bdd
         $this->entityManager->persist($order);
-        $this->entityManager->flush();
+        // si on flush 
+        if($this->entityManager->flush()){
+            // alors on supprime la commande de la session pour vider le panier de l'utilisateur
+            $this->orderSessionStorage->removeCart();
+        }
     }
 
     /**
@@ -156,9 +172,9 @@ class OrderManager
     {
         // Libérer le stock réservé
         $this->stockManager->releaseReservedStock($order);
-
         // Annuler la commande
         $order->setStatus('cancelled');
+        //TODO voir si il faudra supprimer la commande de la session ou pas ?
 
         $this->entityManager->persist($order);
         $this->entityManager->flush();

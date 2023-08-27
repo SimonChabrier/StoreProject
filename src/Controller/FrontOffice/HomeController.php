@@ -15,7 +15,7 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\Console\Helper\Dumper;
 
 class HomeController extends AbstractController
 {
@@ -47,6 +47,7 @@ class HomeController extends AbstractController
         // Si les données sont en cache, les retourner directement
         if ($cacheItem->isHit()) {
             $viewData = $cacheItem->get();
+        // sinon on contruit les données à mettre en cache et on les met en cache
         } else {
             // on récupère les catégories qui ont showOnHome = true
             $categories = $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
@@ -97,6 +98,7 @@ class HomeController extends AbstractController
 
             // si les données sont en cache, on les récupère, sinon on les récupère de la BDD
             $viewData = $isCacheHit ? $viewData : $categoryRepository->findBy(['showOnHome' => true], ['listOrder' => 'ASC']);
+
             // si les données sont en cache, on affiche le template adapté aux tableaux, sinon on affiche le template adpaté aux objets.
             //$template = $isCacheHit ? self::TEMPLATE_CACHE : self::TEMPLATE_OBJECTS;
             $cache = $isCacheHit ? true : false;
@@ -128,7 +130,9 @@ class HomeController extends AbstractController
                 'sellingPrice' => $product->getSellingPrice(),
                 'subCategory' => $product->getSubCategory()->getName(),
                 'productType' => $product->getProductType()->getName(),
-                'brand' => $product->getBrand()->getName()
+                'brand' => $product->getBrand()->getName(),
+                'visibility' => $product->isVisibility(),
+                'inStock' => $product->isInStock(),
             ];
             // récupèrer les images du produit
             foreach ($product->getPictures() as $picture) {

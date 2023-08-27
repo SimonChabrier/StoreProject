@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class RemoveCartItemSubscriber implements EventSubscriberInterface
+class UpdateCartSubscriber implements EventSubscriberInterface
 {   
     private $OrderManager;
 
@@ -31,25 +31,22 @@ class RemoveCartItemSubscriber implements EventSubscriberInterface
     public function postSubmit(FormEvent $event): void
     {
         $form = $event->getForm();
-        $cart = $form->getData();
+        $order = $form->getData();
 
-        if (!$cart instanceof Order) {
+        if (!$order instanceof Order) {
             return;
         }
 
         // On récupère tous les formulaires imbriqués dans le formulaire OrderType pour le champ items
         foreach ($form->get('items')->all() as $child) {
             if ($child->get('remove')->isClicked()) {
-                $this->OrderManager->deleteItem($cart, $child->getData());
-                // méthode originale déclaré dans l'entité mais elle ne supprime pas l'item de la BDD 
-                // $cart->removeItem($child->getData());
+                $this->OrderManager->deleteItem($order, $child->getData());
                 break;
             }
-            // sur le formulaire parent on récupère le bouton save
-            // si save est cliqué on met à jour la quantité de chaque item
-            // save = bouton mettre à jour le panier.
-            if ($form->get('save')->isClicked()) {
-                $this->OrderManager->save($cart);
+            // sur le formulaire parent on récupère le bouton update
+            // si update est cliqué on met à jour la quantité de chaque item
+            if ($form->get('update')->isClicked()) {
+                $this->OrderManager->save($order);
                 break;
             }
         }

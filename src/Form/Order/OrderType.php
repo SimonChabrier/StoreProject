@@ -3,15 +3,16 @@
 namespace App\Form\Order;
 
 use App\Entity\Order;
+use App\Form\Order\OrderItemType;
 use App\Service\Order\OrderManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use App\EventSubscriber\Order\ClearCartSubscriber;
+use App\EventSubscriber\Order\UpdateCartSubscriber;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use App\Form\Order\OrderItemType;
-use App\EventSubscriber\Order\ClearCartSubscriber;
-use App\EventSubscriber\Order\UpdateCartSubscriber;
 
 // Formulaire général de la page panier 
 // il imbrique le formulaire OrderItemType pour chaque élément du panier
@@ -21,10 +22,12 @@ use App\EventSubscriber\Order\UpdateCartSubscriber;
 class OrderType extends AbstractType
 {
     private $OrderManager;
+    private $entityManager;
 
-    public function __construct(OrderManager $OrderManager)
+    public function __construct(OrderManager $OrderManager, EntityManagerInterface $entityManager)
     {
         $this->OrderManager = $OrderManager;
+        $this->entityManager = $entityManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -56,7 +59,7 @@ class OrderType extends AbstractType
 
     private function addSubscribers(FormBuilderInterface $builder): void
     {
-        $builder->addEventSubscriber(new UpdateCartSubscriber($this->OrderManager));
+        $builder->addEventSubscriber(new UpdateCartSubscriber($this->OrderManager, $this->entityManager));
         $builder->addEventSubscriber(new ClearCartSubscriber($this->OrderManager));
     }
 }

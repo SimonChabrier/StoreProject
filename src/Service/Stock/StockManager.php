@@ -48,32 +48,6 @@ class StockManager
 
 //////// GESTION DU STOCK DES PRODUITS POUR LES COMMANDES ////////
 
-    /** 
-     * Réserve la quantité de produits pour une commande en cours
-     * sans décrémenter le stock des produits mais en mettant à jour l'attribut reservedQuantity
-     * pour chaque produit.
-    */
-    public function reserveStock(Order $order) : void
-    {
-        foreach ($order->getItems() as $item) {
-            $product = $item->getProduct();
-            $reservedQuantity = $item->getQuantity();
-            $newReservedQuantity = $product->getReservedQuantity() + $reservedQuantity;
-            
-            // Vérifier si la quantité réservée est supérieure à la quantité en stock
-            if ($newReservedQuantity > $product->getInStockQuantity()) {
-                $this->insufficientQuantityWarnings[] = 'La quantité en stock est insuffisante pour la commande.';
-                // Ne pas sauvegarder la nouvelle quantité réservée si la quantité en stock est insuffisante
-                continue;
-            }
-
-            $product->setReservedQuantity($newReservedQuantity);
-            $this->entityManager->persist($product);
-        }
-        
-        $this->entityManager->flush();
-    }
-
 
     /**
      * Retourne les warnings de quantité insuffisante pour la commande dans un tableau
@@ -110,9 +84,24 @@ class StockManager
             $product = $item->getProduct();
             $quantity = $item->getQuantity();
 
-            //TODO ici il faut gèrer le stock une foi que la commande est expédiée et que les produits sont sortis du dépôt.
-
             $product->setInStockQuantity($product->getInStockQuantity() - $quantity);
+
+            $this->entityManager->persist($product);
+        }
+
+        $this->entityManager->flush();
+    }
+
+    /**
+     * Réserve la quantité de produits commandés si la commande est validée
+     */
+    public function reserveStock(Order $order) : void
+    {
+        foreach ($order->getItems() as $item) {
+            $product = $item->getProduct();
+            $quantity = $item->getQuantity();
+
+            $product->setReservedQuantity($product->getReservedQuantity() + $quantity);
 
             $this->entityManager->persist($product);
         }

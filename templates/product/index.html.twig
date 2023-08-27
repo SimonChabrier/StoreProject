@@ -10,7 +10,11 @@
             <tr>
                 <th>Id</th>
                 <th>Nom</th>
-                <th>Visibilité</th>
+                <th>Visible</th>
+                <th>Dispo à la vente</th>
+                <th>Qte en stock</th>
+                <th>Qte réservé</th>
+                <th>Qte en cmd fournisseur</th>
                 <th>Images</th>
                 <th>Actions</th>
             </tr>
@@ -20,17 +24,23 @@
             <tr>
                 <td>{{ product.id }}</td>
                 <td>{{ product.name }}</td>
-                <td>{{ product.visibility == 0 ? 'Masqué' : 'Visible'  }}</td>
+                <td>{{ product.visibility == 0 ? 'Non' : 'Oui'  }}</td>
+                <td>{{ product.inStock == 0 ? 'Non' : 'Oui' }}</td>
+                <td>{{ product.inStockQuantity }}</td>
+                <td>{{ product.reservedQuantity }}</td>
+                <td>{{ product.inSupplierOrderQuantity }}</td>
+                
                 <td>
-                {% if product.pictures %}
-                    {% for picture in product.pictures %}
-                        {% if picture %}
-                            <img style="width:50px" src="/uploads/files/pictures_XS/{{ picture.getFilename }}" alt="{{ picture.alt }}" id="{{ picture.id }}" title="{{ picture.name }}" >
-                        {% endif %}
-                    {% endfor %}
-                {% else %}
-                    <div> Aucune image associé pour ce produit </div>
-                {% endif %}
+                    {% if product.pictures is not empty %}
+                        {% for picture in product.pictures %}
+                            {% if picture %}
+                                <img style="width: 50px;" src="/uploads/files/pictures_XS/{{ picture.getFilename }}" alt="{{ picture.alt }}" id="{{ picture.id }}" title="{{ picture.name }}">
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        Pas d'image
+                    {% endif %}
+                </td>
                 <td>
                     <a href="{{ path('app_product_show', {'id': product.id}) }}">Voir</a>
                     <a href="{{ path('app_product_edit', {'id': product.id}) }}">Modifier</a>

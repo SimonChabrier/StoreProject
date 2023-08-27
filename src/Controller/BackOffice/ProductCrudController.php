@@ -69,10 +69,22 @@ class ProductCrudController extends AbstractCrudController
     {
         return [
 
+            NumberField::new('id', 'ID')
+            ->setFormTypeOption('disabled', true),
+
             BooleanField::new('visibility', 'Visible')
             ->setRequired(true),
 
-            NumberField::new('id', 'ID')
+            BooleanField::new('isInStock', 'Disponible')
+            ->setRequired(true),
+            
+            NumberField::new('inStockQuantity', 'Quantité en stock')
+            ->setRequired(true),
+
+            NumberField::new('reservedQuantity', 'Quantité en commande client')
+            ->setFormTypeOption('disabled', true),
+
+            NumberField::new('inSupplierOrderQuantity', 'Quantité en commande fournisseur')
             ->setFormTypeOption('disabled', true),
 
             TextField::new('name', 'Nom')

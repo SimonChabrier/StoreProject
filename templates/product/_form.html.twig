@@ -11,7 +11,7 @@
  {{ form_row(form.catalogPrice) }}
  {{ form_row(form.visibility) }}
  {{ form_row(form.isInStock) }}
- {{ form_row(form.inStockQuantity) }}
+{{ form_row(form.inStockQuantity, {'attr': {'type': 'number', 'min': 0}}) }}
  {{ form_row(form.reservedQuantity) }}
  {{ form_row(form.inSupplierOrderQuantity) }}
  {{ form_row(form.category) }}

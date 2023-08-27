@@ -3,6 +3,7 @@
 namespace App\Service\Order;
 
 use App\Entity\Order;
+use App\Entity\Product;
 use App\Entity\OrderItem;
 use App\Service\Order\OrderFactory;
 use App\Service\Order\OrderSessionStorage;
@@ -83,40 +84,15 @@ class OrderManager
             $this->deleteOrder($order);
             return;
         }
-
-        $insufficientQuantityMessages = [];
-
-        foreach ($order->getItems() as $item) {
-            if (!$this->stockManager->isProductInStock($item->getProduct())) {
-                $insufficientQuantityMessages[] = "Le produit '{$item->getProduct()->getName()}' n'est plus en stock.";
-            }
-        }
-
-        if (!empty($insufficientQuantityMessages)) {
-            // Retourner les messages d'erreur concernant les quantités insuffisantes
-            return $insufficientQuantityMessages;
-        }
-
-        // Réservation du stock
-        $reservedStock = $this->stockManager->reserveStock($order);
-
-        // Vérification des quantités réservées
-        $insufficientReservedQuantityMessages = $this->stockManager->getInsufficientQuantityWarnings();
-
-        if (!empty($insufficientReservedQuantityMessages)) {
-            // Retourner les messages d'erreur concernant les quantités réservées insuffisantes
-            return $insufficientReservedQuantityMessages;
-        }
-
+    
         // Enregistrement du panier en base de données
         $this->entityManager->persist($order);
         $this->entityManager->flush();
 
-        // Enregistrement du panier en session pour maintenir l'état cohérent entre la base de données et la session
+        // Enregistrement du panier en session
         $this->orderSessionStorage->setOrder($order);
     }
-        
-
+    
     /**
      * Removes an item from an order.
      * @param Order $order
@@ -179,7 +155,6 @@ class OrderManager
         foreach($order->getItems() as $item){
             $this->stockManager->isProductInStock($item->getProduct());
         }
-
         // on met à jour le statut de la commande
         $order->setStatus($orderStatus);
         // Enregistrer la commande
@@ -191,10 +166,10 @@ class OrderManager
      */
     public function payOrder(Order $order) : void
     {
+        // réserver la quantité de chaque item
+        $this->stockManager->reserveStock($order);
         // décrémenter le stock de chaque item
-        $this->stockManager->decrementStock($order);
-        // on libère du coup le stock réservé pour la commande
-        $this->stockManager->releaseReservedStock($order);
+        $this->stockManager->decrementStock($order);;
         // on change le statut de la commande en "paid"
         $order->setStatus('paid');
         // on sauvegarde la commande en bdd

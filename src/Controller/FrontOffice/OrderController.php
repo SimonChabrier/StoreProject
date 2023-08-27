@@ -133,10 +133,10 @@ class OrderController extends AbstractController
         }
 
         // TODO: Placer la commande (réserver le stock et changer le statut en "processing")
-        $orderManager->payOrder($order, 'paid');
+        // $orderManager->payOrder($order, 'paid');
 
         // TODO: Retirer le panier de la session puisqu'il est payé et présent en BDD.
-        $orderSessionStorage->removeCart();
+        // $orderSessionStorage->removeCart();
         
         // Rediriger vers la page de paiement Stripe
         return $this->render('cart/stripe.html.twig', [
@@ -151,7 +151,7 @@ class OrderController extends AbstractController
      *
      * @Route("/stripe/charge", name="app_stripe_charge", methods={"POST"})
      */
-    public function createCharge(Request $request, OrderRepository $orderRepository, OrderManager $orderManager): Response
+    public function createCharge(Request $request, OrderRepository $orderRepository, OrderManager $orderManager, OrderSessionStorage $orderSessionStorage): Response
     {
         try {
             Stripe::setApiKey($_ENV["STRIPE_SECRET"]);
@@ -191,6 +191,8 @@ class OrderController extends AbstractController
 
             // Payer la commande si le paiement est réussi
             $orderManager->payOrder($order, "paid");
+            // Supprimer le panier de la session puisqu'il est payé et présent en BDD.
+            $orderSessionStorage->removeCart();
 
             // TODO: Décrémenter le stock des produits de la commande payée si le paiement est réussi
             

@@ -49,4 +49,3 @@ class ClearCartSubscriber implements EventSubscriberInterface
         $this->OrderManager->save($order);
     }
 }
-

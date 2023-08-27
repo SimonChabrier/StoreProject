@@ -71,6 +71,44 @@ class ProductType extends AbstractType
                 'placeholder' => 'Choisir une option', // Option de choix par défaut
                 'empty_data' => 1, // Valeur par défaut si aucun choix n'est fait
             ])
+            // isInStock
+            ->add('isInStock', ChoiceType::class, [
+                'label' => 'En stock',
+                'choices' => [
+                    'Oui' => 1,
+                    'Non' => 0,
+                ],
+                'required' => true,
+                'placeholder' => 'Choisir une option', // Option de choix par défaut
+                'empty_data' => 1, // Valeur par défaut si aucun choix n'est fait
+            ])
+            // in stock quantity
+            ->add('inStockQuantity', TextType::class, [
+                'label' => 'Quantité en stock',
+                'disabled' => false,
+                'required' => true,
+                'attr' => [
+                    'placeholder' => 'Quantité en stock',
+                ],
+            ])
+            // quantiité réservé 
+            ->add('reservedQuantity', TextType::class, [
+                'label' => 'Quantité en commande client',
+                'disabled' => true,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Quantité réservée',
+                ],
+            ])
+            // quantité en commande fournisseur
+            ->add('inSupplierOrderQuantity', TextType::class, [
+                'label' => 'Quantité en commande fournisseur',
+                'disabled' => true,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Quantité en commande fournisseur',
+                ],
+            ])
             ->add('brand', EntityType::class, [
                 'class' => Brand::class,
                 'choice_label' => 'name',
@@ -116,14 +154,6 @@ class ProductType extends AbstractType
                 'expanded' => false,     
                 'placeholder' => 'Choisir un type de produit',          
             ])
-            // description textarea en utilisant le composant CKEditor
-            ->add('description', CKEditorType::class, [
-                'label' => 'Description',
-                'required' => false,
-                'config' => [
-                    'toolbar' => 'full', // Configure CKEditor toolbar options
-                ],
-            ])
             // on set le form type à Ck editor
             ->add('description', CKEditorType::class, [
                 'label' => 'Description',
@@ -132,7 +162,6 @@ class ProductType extends AbstractType
                 //     'toolbar' => 'full', // Configure CKEditor toolbar options
                 // ],
             ])
-            
             ->add('productData', CollectionType::class, [
                     'entry_type' => ProductDataType::class,
                     'allow_add' => true,

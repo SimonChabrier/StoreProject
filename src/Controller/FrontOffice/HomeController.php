@@ -23,7 +23,7 @@ class HomeController extends AbstractController
     private $cache;
     
     const CACHE_KEY = 'home_data';
-    const CACHE_DURATION = 3600;
+    const CACHE_DURATION = 0;
 
     public function __construct($adminEmail, AdapterInterface $cache)
     {
@@ -47,6 +47,7 @@ class HomeController extends AbstractController
         // Si les données sont en cache, les retourner directement
         if ($cacheItem->isHit()) {
             $viewData = $cacheItem->get();
+        // sinon on contruit les données à mettre en cache et on les met en cache
         } else {
             // on récupère les catégories qui ont showOnHome = true
             $categories = $categoryRepository->findBy(['showOnHome' => 'true'], ['listOrder' => 'ASC']);
@@ -97,6 +98,7 @@ class HomeController extends AbstractController
 
             // si les données sont en cache, on les récupère, sinon on les récupère de la BDD
             $viewData = $isCacheHit ? $viewData : $categoryRepository->findBy(['showOnHome' => true], ['listOrder' => 'ASC']);
+
             // si les données sont en cache, on affiche le template adapté aux tableaux, sinon on affiche le template adpaté aux objets.
             //$template = $isCacheHit ? self::TEMPLATE_CACHE : self::TEMPLATE_OBJECTS;
             $cache = $isCacheHit ? true : false;

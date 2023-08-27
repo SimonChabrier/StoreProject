@@ -9,12 +9,10 @@
 
 {% if cache %}
 
-
 {# le slider des produits et le nom de la categorie racine #}
 <div class="last-five swiper">
     {% for category in homeCats %}
         <a href="{{ path('app_category_show', {'id': category['id']}) }}"><h2>{{ category['name']|upper }}</h2></a>
-{# {{ dump(category['products']) }} #}
             {% if category['products'] is not empty and category['name'] == 'Nouveautés' %}
             <div class="swiper-wrapper">
                 {% set categoryProducts = category['products']|slice(-4)|reverse %}
@@ -40,7 +38,6 @@
 {# les produits des sous catégories de chaque categorie racine #}
  <div class="last-five">       
         {% for subCategory in category['subCategories'] %}
-{# {{ dump(subCategory['products']) }} #}
             <a href="{{ path('app_sub_category_show', {'id': subCategory['id']}) }}"><h3>{{ category['name']|upper }} - {{ subCategory['name']|upper }}</h3></a>
             <div class="last-five-products">
                 {% set subCategoryProducts = subCategory['products']|slice(-4) %}
@@ -62,7 +59,6 @@
 <div class="last-five swiper">
     {% for category in homeCats %}
         <a href="{{ path('app_category_show', {'id': category.id}) }}"><h2>{{ category.name|upper }}</h2></a>
-{# {{ dump(category.products) }} #}
 
             {% if category.products is not empty and category.name == 'Nouveautés' %}
             <div class="swiper-wrapper">
@@ -89,7 +85,7 @@
 {# les produits des sous catégories de chaque categorie racine #}
  <div class="last-five">       
         {% for subCategory in category.getSubCategories %}
-{# {{  dump(subCategory.products)  }} #}
+
             <a href="{{ path('app_sub_category_show', {'id': subCategory.id}) }}"><h3>{{ category.name|upper }} - {{ subCategory.name|upper }}</h3></a>
             <div class="last-five-products">
                 {% set subCategoryProducts = subCategory.products|slice(-4)|reverse %}

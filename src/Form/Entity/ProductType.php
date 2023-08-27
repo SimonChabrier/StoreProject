@@ -13,6 +13,7 @@ use Symfony\Component\Form\AbstractType;
 use App\Repository\ProductTypeRepository;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use App\Entity\ProductType as ProductTypeEntity;
+use Doctrine\DBAL\Types\BooleanType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -85,6 +86,14 @@ class ProductType extends AbstractType
                 'placeholder' => 'Choisir une option', // Option de choix par défaut
                 'empty_data' => 1, // Valeur par défaut si aucun choix n'est fait
             ])
+            // ->add('visibility', CheckboxType::class, [
+            //     'label' => 'Visible',
+            //     'required' => false,
+            // ])
+            // ->add('inStock', CheckboxType::class, [
+            //     'label' => 'Disponible',
+            //     'required' => false,
+            // ])
             // in stock quantity
             ->add('inStockQuantity', NumberType::class, [
                 'label' => 'Quantité en stock',

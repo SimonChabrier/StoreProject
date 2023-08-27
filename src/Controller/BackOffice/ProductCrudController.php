@@ -19,6 +19,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use PhpParser\Node\Expr\Cast\Bool_;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class ProductCrudController extends AbstractCrudController
 {   
@@ -73,21 +75,30 @@ class ProductCrudController extends AbstractCrudController
             NumberField::new('id', 'ID')
             ->setFormTypeOption('disabled', true),
 
+            //TODO ajuster ça avec le listener pour pouvoir utiliser sur l'index
+            // BooleanField::new('visibility', 'Visible')
+            // ->hideOnIndex(),
+            
             ChoiceField::new('visibility', 'Visible')
             ->setChoices([
-                'Oui' => true,
-                'Non' => false,
+                'En ligne' => 1,
+                'Hors ligne' => 0,
             ])
             ->setRequired(true)
-            ->hideOnIndex(),
+            ->setFormTypeOption('disabled', false),
+            
+            //TODO ajuster ça avec le listener pour pouvoir utiliser sur l'index
+            // BooleanField::new('inStock', 'Disponible')
+            // ->hideOnIndex(),
 
             ChoiceField::new('inStock', 'Disponible')
             ->setChoices([
-                'Oui' => true,
-                'Non' => false,
+                'Disponible' => 1,
+                'Indisponible' => 0,
             ])
             ->setRequired(true)
-            ->hideOnIndex(),
+            ->setFormTypeOption('disabled', false),
+                    
             
             NumberField::new('inStockQuantity', 'Quantité en stock')
             ->setRequired(true)

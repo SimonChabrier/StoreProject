@@ -2,25 +2,28 @@
 
 namespace App\Form\Entity;
 
+use tidy;
 use App\Entity\Brand;
 use App\Entity\Product;
 use App\Entity\Category;
 use App\Entity\SubCategory;
+
+
 use Symfony\Component\Form\AbstractType;
-
-
 use App\Repository\ProductTypeRepository;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use App\Entity\ProductType as ProductTypeEntity;
+use Doctrine\DBAL\Types\BooleanType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use tidy;
 
 class ProductType extends AbstractType
 {
@@ -61,6 +64,7 @@ class ProductType extends AbstractType
                     'placeholder' => 'Prix public TTC',
                 ],
             ])
+            // visibility (afficher ou non le produit sur le site)
             ->add('visibility', ChoiceType::class, [
                 'label' => 'Visibilité',
                 'choices' => [
@@ -70,6 +74,52 @@ class ProductType extends AbstractType
                 'required' => true,
                 'placeholder' => 'Choisir une option', // Option de choix par défaut
                 'empty_data' => 1, // Valeur par défaut si aucun choix n'est fait
+            ])
+            // isInStock (est ce que le produit est disponible en stock)
+            ->add('inStock', ChoiceType::class, [
+                'label' => 'Dispobilité stock',
+                'choices' => [
+                    'Disponible' => true,
+                    'Indisponible' => false,
+                ],
+                'required' => true,
+                'placeholder' => 'Choisir une option', // Option de choix par défaut
+                'empty_data' => 1, // Valeur par défaut si aucun choix n'est fait
+            ])
+            // ->add('visibility', CheckboxType::class, [
+            //     'label' => 'Visible',
+            //     'required' => false,
+            // ])
+            // ->add('inStock', CheckboxType::class, [
+            //     'label' => 'Disponible',
+            //     'required' => false,
+            // ])
+            // in stock quantity
+            ->add('inStockQuantity', NumberType::class, [
+                'label' => 'Quantité en stock',
+                'disabled' => false,
+                'required' => true,
+                'attr' => [
+                    'placeholder' => 'Quantité en stock',
+                ],
+            ])
+            // quantité réservé 
+            ->add('reservedQuantity', TextType::class, [
+                'label' => 'Quantité en commande client',
+                'disabled' => true,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Quantité réservée',
+                ],
+            ])
+            // quantité en commande fournisseur
+            ->add('inSupplierOrderQuantity', TextType::class, [
+                'label' => 'Quantité en commande fournisseur',
+                'disabled' => true,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Quantité en commande fournisseur',
+                ],
             ])
             ->add('brand', EntityType::class, [
                 'class' => Brand::class,
@@ -116,14 +166,6 @@ class ProductType extends AbstractType
                 'expanded' => false,     
                 'placeholder' => 'Choisir un type de produit',          
             ])
-            // description textarea en utilisant le composant CKEditor
-            ->add('description', CKEditorType::class, [
-                'label' => 'Description',
-                'required' => false,
-                'config' => [
-                    'toolbar' => 'full', // Configure CKEditor toolbar options
-                ],
-            ])
             // on set le form type à Ck editor
             ->add('description', CKEditorType::class, [
                 'label' => 'Description',
@@ -132,7 +174,6 @@ class ProductType extends AbstractType
                 //     'toolbar' => 'full', // Configure CKEditor toolbar options
                 // ],
             ])
-            
             ->add('productData', CollectionType::class, [
                     'entry_type' => ProductDataType::class,
                     'allow_add' => true,

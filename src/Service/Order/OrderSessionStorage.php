@@ -54,6 +54,40 @@ class OrderSessionStorage
     }
 
     /**
+     * Sets the order in session.
+     * @param Order $order
+     * @return void
+     */
+    public function setOrder(Order $order): void
+    {   
+        $this->getSession()->set(self::CART_KEY_NAME, $order->getId()); // je stocke l'id du panier en session (on a crée une card dans la BDD et on récupère son id)
+        $this->getSession()->set('user_identifier', $order->getUserIdentifier()); // je récupère l'identifiant unique de l'utilisateur crée pour l"utilisateur lors de la création du panier en BDD
+    }
+
+    /**
+     * Returns the order id.
+     * @return int|null
+     */
+    public function getOrderId(): ?int
+    {
+        return $this->getSession()->get(self::CART_KEY_NAME);
+    }
+
+    public function getSession(): SessionInterface
+    {
+        return $this->requestStack->getSession();
+    }
+
+    /**
+     * Removes the order from session.
+     * @return void
+     */
+    public function removeCart(): void
+    {
+        $this->getSession()->remove(self::CART_KEY_NAME);
+    }
+
+        /**
      * Gets the last order for a logged in user.
      * If the user has an order in session, we return it.
      * @param User $user
@@ -81,39 +115,5 @@ class OrderSessionStorage
             'status' => Order::CART_STATUS,
             'userIdentifier' => $this->getSession()->get('user_identifier'),
         ]);
-    }
-
-    /**
-     * Sets the order in session.
-     * @param Order $order
-     * @return void
-     */
-    public function setOrder(Order $order): void
-    {   
-        $this->getSession()->set(self::CART_KEY_NAME, $order->getId()); // je stocke l'id du panier en session (on a crée une card dans la BDD et on récupère son id)
-        $this->getSession()->set('user_identifier', $order->getUserIdentifier()); // je récupère l'identifiant unique de l'utilisateur crée pour l"utilisateur lors de la création du panier en BDD
-    }
-
-    /**
-     * Returns the order id.
-     * @return int|null
-     */
-    private function getOrderId(): ?int
-    {
-        return $this->getSession()->get(self::CART_KEY_NAME);
-    }
-
-    private function getSession(): SessionInterface
-    {
-        return $this->requestStack->getSession();
-    }
-
-    /**
-     * Removes the order from session.
-     * @return void
-     */
-    public function removeCart(): void
-    {
-        $this->getSession()->remove(self::CART_KEY_NAME);
     }
 }

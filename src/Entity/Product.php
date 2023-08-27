@@ -71,24 +71,6 @@ class Product
     private $visibility = 1;
 
     /**
-     * Permet de calculer la marge brute d'un produit
-     * n'est pas persisté en base de données
-     */
-    private $tauxMarque;
-
-    /**
-     * @ORM\Column(type="boolean")
-     * @Groups({"product:read"})
-     */
-    private $inStock = 1;
-
-    /**
-     * @ORM\Column(type="string", length=5)
-     * @Groups({"product:read"})
-     */
-    private $inStockQuantity = 0;
-
-    /**
      * @ORM\ManyToOne(
      *      targetEntity=ProductType::class, 
      *      inversedBy="products"
@@ -125,18 +107,6 @@ class Product
     private $brand;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
-     * @Gedmo\Timestampable(on="create")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="update")
-     */
-    private $updatedAt;
-
-    /**
      * @ORM\OneToMany(targetEntity=Picture::class, 
      * mappedBy="product", 
      * cascade={"remove"})
@@ -148,11 +118,45 @@ class Product
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
+    
+    // est ce que le produit est en stock ou pas
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"product:read"})
+     */
+    private $inStock = true;
+    
+    // la quantité réélle en stock 
+    /**
+     * @ORM\Column(type="string", length=5)
+     * @Groups({"product:read"})
+     */
+    private $inStockQuantity = 0;
 
+    // la quantité en commande fournisseur
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $inSupplierOrderQuantity = 0;
+    
+    // la quantité réservée pour les commandes en cours
     /**
      * @ORM\Column(type="integer")
      */
     private $reservedQuantity = 0;
+
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $updatedAt;
+
 
     public function __construct()
     {
@@ -283,36 +287,82 @@ class Product
         return $this;
     }
 
-    public function tauxMarque(): ?string
+    public function margeBrute(): ?string
     {   
-        // On calcule la marge commerciale HT pour easyAdmin
-        //TODO A paufiner et vérifier la formule de calcul
+        // formule de calcul de la marge brute
+        // Taux de Marge Brute (%) = [(Prix de Vente - Coût d'Achat) / Prix de Vente] * 100
 
-        // pour EasyAdmin on retourne 0 si le prix d'achat ou de vente est à 0
+        // Pour EasyAdmin, on retourne 0 si le prix d'achat ou de vente est à 0
         // pour ne pas avoir de division par 0 et donc une erreur à la création d'un produit
         if ($this->buyPrice == 0 || $this->sellingPrice == 0) {
             return '0 %';
         }
         
-        $achatHt = $this->buyPrice * 0.8;
-        $venteHt = $this->sellingPrice * 0.8;
+        $achatHt = $this->buyPrice;
+        $venteTtc = $this->sellingPrice;
 
-        $margeCommerciale = $venteHt - $achatHt;
-        $tauxDeMarge = ($margeCommerciale / $achatHt) * 100;
-        $tauxDeMarque = ($margeCommerciale / $venteHt) * 100;
+        $margeBrute = $venteTtc - $achatHt;
+        $tauxDeMargeBrute = ($margeBrute / $venteTtc) * 100;
 
-        $result = round($tauxDeMarge , 2) . ' %';
+        $result = round($tauxDeMargeBrute, 2);
+    
         if ($result <= 25) {
-            return '🔴 ' . $this->tauxMarque = $result;
-        } elseif ($result > 25 && $result <= 40) {
-            return '🟡 ' . $this->tauxMarque = $result;
-        } elseif ($result > 40) {
-            return '🟢 ' .$this->tauxMarque = $result;
+            return '🔴 ' . $result . ' %';
+        } elseif ($result <= 40) {
+            return '🟡 ' . $result . ' %';
         } else {
-            return $this->tauxMarque = 'informations incomplètes';
+            return '🟢 ' . $result . ' %';
+        }
+    }
+
+    public function margeNette(): ?string
+    {   
+        // formule de calcul de la marge nette
+        // Marge Nette (%) = [(Prix de Vente - Coût d'Achat) / Prix de Vente] * (1 - Taux de TVA) * 100
+
+        // Pour EasyAdmin, on retourne 0 si le prix d'achat ou de vente est à 0
+        // pour ne pas avoir de division par 0 et donc une erreur à la création d'un produit
+        if ($this->buyPrice == 0 || $this->sellingPrice == 0) {
+            return '0 %';
+        }
+        
+        $achatHt = $this->buyPrice;
+        $venteTtc = $this->sellingPrice;
+
+        // Taux de TVA en décimal
+        $tauxTVA = 0.2;
+
+        $margeBrute = $venteTtc - $achatHt;
+        $margeNette = $margeBrute * (1 - $tauxTVA);
+
+        $tauxDeMargeNette = ($margeNette / $venteTtc) * 100;
+
+        $result = round($tauxDeMargeNette, 2);
+        
+        if ($result <= 25) {
+            return '🔴 ' . $result . ' %';
+        } elseif ($result <= 40) {
+            return '🟡 ' . $result . ' %';
+        } else {
+            return '🟢 ' . $result . ' %';
+        }
+    }
+
+    public function coefficientMarge(): ?float
+    {   
+        // Pour EasyAdmin, on retourne null si le prix de vente est à 0
+        // pour éviter toute division par 0 et une erreur à la création d'un produit
+        if ($this->buyPrice == 0 || $this->sellingPrice == 0) {
+            return null;
         }
 
-        //return $this->tauxMarque = round($tauxDeMarque , 2) . ' %';
+        $achatHt = $this->buyPrice;
+        $venteHt = $this->sellingPrice * 0.8;
+
+        // Calcul du coefficient de marge
+        $coefficientMarge = $venteHt / $achatHt;
+
+        return round($coefficientMarge, 2);
     }
 
     public function isInStock(): ?bool
@@ -451,6 +501,18 @@ class Product
     public function setReservedQuantity(int $reservedQuantity): self
     {
         $this->reservedQuantity = $reservedQuantity;
+
+        return $this;
+    }
+
+    public function getInSupplierOrderQuantity(): ?int
+    {
+        return $this->inSupplierOrderQuantity;
+    }
+
+    public function setInSupplierOrderQuantity(int $inSupplierOrderQuantity): self
+    {
+        $this->inSupplierOrderQuantity = $inSupplierOrderQuantity;
 
         return $this;
     }

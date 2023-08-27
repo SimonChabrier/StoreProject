@@ -17,6 +17,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use PhpParser\Node\Expr\Cast\Bool_;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class ProductCrudController extends AbstractCrudController
 {   
@@ -68,27 +72,72 @@ class ProductCrudController extends AbstractCrudController
     {
         return [
 
-            BooleanField::new('visibility', 'Visible')
-            ->setRequired(true),
-
             NumberField::new('id', 'ID')
             ->setFormTypeOption('disabled', true),
+
+            //TODO ajuster ça avec le listener pour pouvoir utiliser sur l'index
+            // BooleanField::new('visibility', 'Visible')
+            // ->hideOnIndex(),
+            
+            ChoiceField::new('visibility', 'Visible')
+            ->setChoices([
+                'En ligne' => 1,
+                'Hors ligne' => 0,
+            ])
+            ->setRequired(true)
+            ->setFormTypeOption('disabled', false),
+            
+            //TODO ajuster ça avec le listener pour pouvoir utiliser sur l'index
+            // BooleanField::new('inStock', 'Disponible')
+            // ->hideOnIndex(),
+
+            ChoiceField::new('inStock', 'Disponible')
+            ->setChoices([
+                'Disponible' => 1,
+                'Indisponible' => 0,
+            ])
+            ->setRequired(true)
+            ->setFormTypeOption('disabled', false),
+                    
+            
+            NumberField::new('inStockQuantity', 'Quantité en stock')
+            ->setRequired(true)
+            ->hideOnIndex(),
+
+            NumberField::new('reservedQuantity', 'Quantité en commande client')
+            ->setFormTypeOption('disabled', true)
+            ->hideOnIndex(),
+
+            NumberField::new('inSupplierOrderQuantity', 'Quantité en commande fournisseur')
+            ->setFormTypeOption('disabled', true)
+            ->hideOnIndex(),
 
             TextField::new('name', 'Nom')
             ->setRequired(true),
             
             TextField::new('buyPrice', 'Prix d\'achat HT')
-            ->setRequired(false),
+            ->setRequired(false)
+            ->hideOnIndex(),
             
             TextField::new('sellingPrice', 'Prix de vente TTC')
-            ->setRequired(true),
+            ->setRequired(true)
+            ->hideOnIndex(),
             
             TextField::new('catalogPrice', 'Prix catalogue TTC')
-            ->setRequired(true),
+            ->setRequired(true)
+            ->hideOnIndex(),
 
-            TextField::new('tauxMarque', 'Marge %')
-            ->setFormTypeOption('disabled', true),
+            TextField::new('margeBrute', 'Marge brute %')
+            ->setFormTypeOption('disabled', true)
+            ->hideOnIndex(),
+
+            TextField::new('margeNette', 'Marge nette %')
+            ->setFormTypeOption('disabled', true)
+            ->hideOnIndex(),
             
+            IntegerField::new('coefficientMarge', 'Coefficient de marge')
+            ->setFormTypeOption('disabled', true),
+
             AssociationField::new('category', 'Catégorie')
             ->setRequired(false),
             

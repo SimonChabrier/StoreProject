@@ -17,6 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 
 class ProductCrudController extends AbstractCrudController
@@ -72,40 +73,58 @@ class ProductCrudController extends AbstractCrudController
             NumberField::new('id', 'ID')
             ->setFormTypeOption('disabled', true),
 
-            BooleanField::new('visibility', 'Visible')
-            ->setRequired(true),
+            ChoiceField::new('visibility', 'Visible')
+            ->setChoices([
+                'Oui' => true,
+                'Non' => false,
+            ])
+            ->setRequired(true)
+            ->hideOnIndex(),
 
-            BooleanField::new('isInStock', 'Disponible')
-            ->setRequired(true),
+            ChoiceField::new('inStock', 'Disponible')
+            ->setChoices([
+                'Oui' => true,
+                'Non' => false,
+            ])
+            ->setRequired(true)
+            ->hideOnIndex(),
             
             NumberField::new('inStockQuantity', 'Quantité en stock')
-            ->setRequired(true),
+            ->setRequired(true)
+            ->hideOnIndex(),
 
             NumberField::new('reservedQuantity', 'Quantité en commande client')
-            ->setFormTypeOption('disabled', true),
+            ->setFormTypeOption('disabled', true)
+            ->hideOnIndex(),
 
             NumberField::new('inSupplierOrderQuantity', 'Quantité en commande fournisseur')
-            ->setFormTypeOption('disabled', true),
+            ->setFormTypeOption('disabled', true)
+            ->hideOnIndex(),
 
             TextField::new('name', 'Nom')
             ->setRequired(true),
             
             TextField::new('buyPrice', 'Prix d\'achat HT')
-            ->setRequired(false),
+            ->setRequired(false)
+            ->hideOnIndex(),
             
             TextField::new('sellingPrice', 'Prix de vente TTC')
-            ->setRequired(true),
+            ->setRequired(true)
+            ->hideOnIndex(),
             
             TextField::new('catalogPrice', 'Prix catalogue TTC')
-            ->setRequired(true),
+            ->setRequired(true)
+            ->hideOnIndex(),
 
             TextField::new('margeBrute', 'Marge brute %')
-            ->setFormTypeOption('disabled', true),
+            ->setFormTypeOption('disabled', true)
+            ->hideOnIndex(),
 
             TextField::new('margeNette', 'Marge nette %')
-            ->setFormTypeOption('disabled', true),
+            ->setFormTypeOption('disabled', true)
+            ->hideOnIndex(),
             
-            IntegerField::new('coefficientMarge', 'Coef')
+            IntegerField::new('coefficientMarge', 'Coefficient de marge')
             ->setFormTypeOption('disabled', true),
 
             AssociationField::new('category', 'Catégorie')

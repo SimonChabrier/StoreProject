@@ -70,7 +70,6 @@ class Product
      */
     private $visibility = 1;
 
-
     /**
      * @ORM\ManyToOne(
      *      targetEntity=ProductType::class, 

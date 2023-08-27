@@ -11,10 +11,12 @@ use Doctrine\ORM\EntityManagerInterface;
 class StockManager
 {
     private $entityManager;
+    private $insufficientQuantityWarnings = [];
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, array $insufficientQuantityWarnings = [])
     {
         $this->entityManager = $entityManager;
+        $this->insufficientQuantityWarnings = $insufficientQuantityWarnings;
     }
 
 
@@ -56,21 +58,29 @@ class StockManager
         foreach ($order->getItems() as $item) {
             $product = $item->getProduct();
             $reservedQuantity = $item->getQuantity();
-
-            // Mettre à jour la quantité réservée pour le produit
-            $product->setReservedQuantity($product->getReservedQuantity() + $reservedQuantity);
-
-            //TODO tester si la quantité en stock est suffisante pour la commande
-            //TODO si la quantité en stock est insuffisante, on lève une exception
-
-            if($product->getInStockQuantity() < $reservedQuantity) {
-                throw new \Exception('La quantité en stock est insuffisante pour le produit ' . $product->getName());
+            $newReservedQuantity = $product->getReservedQuantity() + $reservedQuantity;
+            
+            // Vérifier si la quantité réservée est supérieure à la quantité en stock
+            if ($newReservedQuantity > $product->getInStockQuantity()) {
+                $this->insufficientQuantityWarnings[] = 'La quantité en stock est insuffisante pour la commande.';
+                // Ne pas sauvegarder la nouvelle quantité réservée si la quantité en stock est insuffisante
+                continue;
             }
 
+            $product->setReservedQuantity($newReservedQuantity);
             $this->entityManager->persist($product);
         }
-
+        
         $this->entityManager->flush();
+    }
+
+
+    /**
+     * Retourne les warnings de quantité insuffisante pour la commande dans un tableau
+     */
+    public function getInsufficientQuantityWarnings(): array
+    {
+        return $this->insufficientQuantityWarnings;
     }
 
     /** 

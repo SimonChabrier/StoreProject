@@ -76,20 +76,46 @@ class OrderManager
     /**
      * Saves an order in database and session.
      * @param Order $order
-     * @return void
      */
-    public function save(Order $order): void
+    public function save(Order $order)
     {
         if ($order->getItems()->isEmpty()) {
-            $this->removeOrder($order);
+            $this->deleteOrder($order);
             return;
         }
-        // on sauvegarde le panier en bdd
+
+        $insufficientQuantityMessages = [];
+
+        foreach ($order->getItems() as $item) {
+            if (!$this->stockManager->isProductInStock($item->getProduct())) {
+                $insufficientQuantityMessages[] = "Le produit '{$item->getProduct()->getName()}' n'est plus en stock.";
+            }
+        }
+
+        if (!empty($insufficientQuantityMessages)) {
+            // Retourner les messages d'erreur concernant les quantités insuffisantes
+            return $insufficientQuantityMessages;
+        }
+
+        // Réservation du stock
+        $reservedStock = $this->stockManager->reserveStock($order);
+
+        // Vérification des quantités réservées
+        $insufficientReservedQuantityMessages = $this->stockManager->getInsufficientQuantityWarnings();
+
+        if (!empty($insufficientReservedQuantityMessages)) {
+            // Retourner les messages d'erreur concernant les quantités réservées insuffisantes
+            return $insufficientReservedQuantityMessages;
+        }
+
+        // Enregistrement du panier en base de données
         $this->entityManager->persist($order);
         $this->entityManager->flush();
-        // on sauvegarde le panier en session pour maintenir l'état du panier à jour entre la bdd et la session
+
+        // Enregistrement du panier en session pour maintenir l'état cohérent entre la base de données et la session
         $this->orderSessionStorage->setOrder($order);
     }
+        
 
     /**
      * Removes an item from an order.
@@ -100,26 +126,45 @@ class OrderManager
     public function deleteItem(Order $order, OrderItem $item): void
     {
         if ($order->removeItem($item)) {
+            $product = $item->getProduct();
+            $reservedQuantity = $item->getQuantity();
+            
+            // Décrémente la quantité réservée pour le produit
+            $product->setReservedQuantity($product->getReservedQuantity() - $reservedQuantity);
+            
+            // Supprimer l'item de l'ordre
             $this->entityManager->remove($item);
             $this->entityManager->flush();
-            // on sauvegarde l'état du panier en bdd et en session.
+            
+            // Sauvegarder l'état du panier
             $this->save($order);
         }
     }
+
 
     /**
      * Removes an order.
      * @param Order $order
      * @return void
      */
-    private function removeOrder(Order $order): void
+    public function deleteOrder(Order $order): void
     {   
-        // on supprime le panier en bdd
+        foreach ($order->getItems() as $item) {
+            $product = $item->getProduct();
+            $reservedQuantity = $item->getQuantity();
+            
+            // Décrémente la quantité réservée pour le produit
+            $product->setReservedQuantity($product->getReservedQuantity() - $reservedQuantity);
+        }
+        
+        // Supprimer le panier en bdd
         $this->entityManager->remove($order);
         $this->entityManager->flush();
-        // on supprime le panier en session
+        
+        // Supprimer le panier en session
         $this->orderSessionStorage->removeCart();
     }
+
 
     ///////GESTION DU STOCK///////
 
@@ -134,8 +179,7 @@ class OrderManager
         foreach($order->getItems() as $item){
             $this->stockManager->isProductInStock($item->getProduct());
         }
-        // Mettre à jour le stock réservé
-        $this->stockManager->reserveStock($order);
+
         // on met à jour le statut de la commande
         $order->setStatus($orderStatus);
         // Enregistrer la commande

@@ -29,41 +29,40 @@ class OrderController extends AbstractController
     }
 
     /**
-     * Cette route permet d'afficher le panier et son formulaire de modification
-     * c'est le formulaire qui contient les produits du panier
-     *  "Mettre à jour le panier" permet de modifier la quantité des produits du panier avec le subesciber UpdateCartItemSubscriber
+     * Affiche le panier et son formulaire de modification.
+     *
      * @Route("/", name="app_order")
      */
     public function index(
-        OrderManager $orderManager, 
-        OrderSessionStorage $orderSessionStorage,
+        OrderManager $orderManager,
         Request $request
     ): Response
     {   
-        // sur cette page on utilise le panier de la session 
-        // si il existe getCurrentCart() le récupère sinon le crée.
+        // Récupérer le panier actuel
         $order = $orderManager->getCurrentCart();
-        dump($order);
-        $sessionOrder = $orderSessionStorage->getSession()->get('cart_id');
-        dump($sessionOrder);
-        // si on a bien un panier en session avec un id
-        if($order->getId()){
-            // on récupère le panier de la bdd pour être sur d'avoir les données à jour 
-            // et travailler sur le bon panier en cas de modification
-            // à partir de là je n'ai plus réellement besoin de la session pour travailler sur le panier...
-            // ça fait des requêtes en plus à la bdd (à voir si on peut optimiser ça).
-            // mais ça permet aussi de maintenir en permanance les stocks à jour dans la bdd. (il faudra choisir)
-            $order = $orderManager->getOrder($order->getId());
-        }
-
+    
+        // Créer le formulaire de modification du panier avec les produits du panier
         $form = $this->createForm(OrderType::class, $order);
+    
+        // Gérer les données soumises par le formulaire
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
-            $orderManager->save($order);
-            return $this->redirectToRoute('app_order');
+            // Sauvegarder le panier si des modifications ont été faites
+            $saveResult = $orderManager->save($order);
+    
+            if (is_array($saveResult)) {
+                // S'il y a des messages d'erreur, on les affiche en tant que messages flash d'erreur
+                foreach ($saveResult as $errorMessage) {
+                    $this->addFlash('error', $errorMessage);
+                }
+            } else {
+                // Rediriger vers la page du panier
+                return $this->redirectToRoute('app_order');
+            }
         }
-
+    
+        // Rendre la page du panier avec le formulaire de modification
         return $this->render('cart/index.html.twig', [
             'cart' => $order,
             'form' => $form->createView(),
@@ -71,35 +70,36 @@ class OrderController extends AbstractController
     }
 
     /**
+     * Traite le processus de validation de la commande.
+     *
      * @Route("/checkout/{id}", name="app_order_process")
      */
     public function checkOutOrder(
         Order $order,
-        OrderManager $orderManager,
-        AuthorizationCheckerInterface $authorizationChecker
+        OrderManager $orderManager
     ): Response
     {   
-        // on récupère le user connecté
+        // Récupérer l'utilisateur connecté en utilisant le service CheckUserService
+        // Vérifie si l'utilisateur est connecté et pleinement authentifié
         $user = $this->checkUserService->getUserIfAuthenticatedFully();
 
-        if(!$user) {
+        if (!$user) {
             $this->addFlash('warning', 'Vous devez être connecté pour passer une commande');
             return $this->redirectToRoute('app_login');
         }
-        // si on a un user et qu'il est pleinement authentifié
-        if($user && $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
-            // on récupère la commande en cours
-            $order = $orderManager->getOrder($order->getId());
-            
-            // on dirige vers la page de paiement Stripe
-            return $this->redirectToRoute('app_payment_stripe', [
-                'id' => $order->getId()
-            ]);
-        }
-    }
 
-    // paiment Stripe form 
+        // Récupérer la commande en cours
+        $order = $orderManager->getOrder($order->getId());
+        
+        // Rediriger vers la page de paiement Stripe
+        return $this->redirectToRoute('app_payment_stripe', [
+            'id' => $order->getId()
+        ]);
+}
+
     /**
+     * Traite le paiement via Stripe.
+     *
      * @Route("/stripe", name="app_payment_stripe")
      */
     public function stripe(
@@ -110,102 +110,133 @@ class OrderController extends AbstractController
         OrderSessionStorage $orderSessionStorage
     ): Response
     {   
-        // on récupère le user connecté
+        // Récupérer l'utilisateur connecté
         $user = $this->checkUserService->getUserIfAuthenticatedFully();
 
-        if(!$user) {
+        if (!$user) {
             $this->addFlash('warning', 'Vous devez être connecté pour payer une commande');
             return $this->redirectToRoute('app_login');
         }
 
-        // si on a un user et qu'il est pleinement authentifié
-        if($user && $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
-      
-            $order = $orderRepository->findOneBy([
-                'id' => $request->query->get('id'),
-                'user' => $user
-            ]);
-            
-            if(!$order) {
-                $this->addFlash('warning', 'Vous n\'avez pas de commande en cours');
-                return $this->redirectToRoute('app_order');
-            }
-
-            // on place la commande ça va réserver le stock et changer le statut du panier en "processing"
-            $orderManager->placeOrder($order, 'paid');
-            // on retire le panier de la session puisqu'il est payé.
-            $orderSessionStorage->removeCart();
-            
-            // on dirige vers la page de paiement Stripe
-            return $this->render('cart/stripe.html.twig', [
-                'order' => $order,
-                'stripe_key' => $_ENV["STRIPE_KEY"]
-            ]);
+        // Récupérer l'ID de la commande depuis la requête
+        $orderId = $request->query->get('id');
+        
+        // Trouver la commande en fonction de l'ID et de l'utilisateur
+        $order = $orderRepository->findOneBy([
+            'id' => $orderId,
+            'user' => $user
+        ]);
+        
+        if (!$order) {
+            $this->addFlash('warning', 'Vous n\'avez pas de commande en cours');
+            return $this->redirectToRoute('app_order');
         }
+
+        // TODO: Placer la commande (réserver le stock et changer le statut en "processing")
+        $orderManager->payOrder($order, 'paid');
+
+        // TODO: Retirer le panier de la session puisqu'il est payé et présent en BDD.
+        $orderSessionStorage->removeCart();
+        
+        // Rediriger vers la page de paiement Stripe
+        return $this->render('cart/stripe.html.twig', [
+            'order' => $order,
+            'stripe_key' => $_ENV["STRIPE_KEY"]
+        ]);
     }
+
     
     /**
- * @Route("/stripe/charge", name="app_stripe_charge", methods={"POST"})
- */
-public function createCharge(Request $request): Response
-{
-    try {
-        Stripe::setApiKey($_ENV["STRIPE_SECRET"]);
+     * Traite la création de la charge de paiement via Stripe.
+     *
+     * @Route("/stripe/charge", name="app_stripe_charge", methods={"POST"})
+     */
+    public function createCharge(Request $request, OrderRepository $orderRepository, OrderManager $orderManager): Response
+    {
+        try {
+            Stripe::setApiKey($_ENV["STRIPE_SECRET"]);
 
-        // Récupérer le token de la carte depuis le formulaire
-        $stripeToken = $request->request->get('stripeToken');
+            // Récupérer le token de la carte depuis le formulaire
+            $stripeToken = $request->request->get('stripeToken');
+            
+            // Récupérer l'ID de la commande depuis le formulaire
+            $orderId = $request->request->get('order_id');
 
-        // Créer la charge
-        $charge = Charge::create([
-            "amount" => 500, // Montant en centimes (par exemple, 500 centimes = 5€ )
-            "currency" => "eur",
-            "source" => $stripeToken,
-            "description" => "Paiement de commande"
-        ]);
+            // Trouver la commande en fonction de l'ID et de l'utilisateur
+            $order = $orderRepository->findOneBy([
+                'id' => $orderId,
+                'user' => $this->checkUserService->getUserIfAuthenticatedFully()
+            ]);
 
-        //TODO on décrémente le stock des produits de la commande payée si le paiement est réussi
-        
+            // Vérifier que le montant du paiement est correct et correspond au montant de la commande en cours 
+            $receivedAmount = $request->request->get('amount');
+            $expectedAmount = $order->getTotal();
 
-        $this->addFlash(
-            'success',
-            'Paiement réussi !'
-        );
+            if ($receivedAmount != $expectedAmount) {
+                throw new \Exception('Montant de paiement incorrect.');
+            }
 
-    } catch (\Stripe\Exception\CardException $e) {
-        $this->addFlash(
-            'error',
-            $e->getMessage()
-        );
+            // Créer la charge
+            $charge = Charge::create([
+                "amount" => $request->request->get('amount'), // Récupération du montant
+                "currency" => "eur",
+                "source" => $stripeToken,
+                "description" => "Paiement de commande"
+            ]);
 
-        return $this->redirectToRoute('app_payment_stripe', [], Response::HTTP_SEE_OTHER);
-    } catch (\Exception $e) {
-        $this->addFlash(
-            'error',
-            'Une erreur s\'est produite lors du paiement.'
-        );
+            // Vérifier si le paiement est réussi
+            if ($charge->status !== 'succeeded') {
+                throw new \Exception('Le paiement Stripe n\'a pas abouti');
+            }
+
+            // Payer la commande si le paiement est réussi
+            $orderManager->payOrder($order, "paid");
+
+            // TODO: Décrémenter le stock des produits de la commande payée si le paiement est réussi
+            
+            $this->addFlash(
+                'success',
+                'Paiement réussi !'
+            );
+
+        } catch (\Stripe\Exception\CardException $e) {
+            $this->addFlash(
+                'error',
+                $e->getMessage()
+            );
+
+            return $this->redirectToRoute('app_payment_stripe', [], Response::HTTP_SEE_OTHER);
+        } catch (\Exception $e) {
+            $this->addFlash(
+                'error',
+                'Une erreur s\'est produite lors du paiement.'
+            );
+
+            return $this->redirectToRoute('app_payment_stripe', [], Response::HTTP_SEE_OTHER);
+        }
 
         return $this->redirectToRoute('app_payment_stripe', [], Response::HTTP_SEE_OTHER);
     }
 
-    return $this->redirectToRoute('app_payment_stripe', [], Response::HTTP_SEE_OTHER);
-}
-
 
     /**
+     * Annule une commande.
+     *
      * @Route("/cancel/{id}", name="app_order_cancel")
      */
-    public function cancelOrder(Order $order, OrderManager $orderManager) : Response
+    public function cancelOrder(Order $order, OrderManager $orderManager): Response
     {   
         $user = $this->checkUserService->getUserIfAuthenticatedFully();
 
-        if(!$user) {
+        if (!$user) {
             $this->addFlash('warning', 'Vous devez être connecté pour annuler une commande');
             return $this->redirectToRoute('app_login');
         }
 
+        // Annuler la commande en utilisant le OrderManager
         $orderManager->cancelOrder($order);
 
-        // retour à la page du profil de l'utilisateur
+        // Rediriger vers la page du profil de l'utilisateur
         return $this->redirectToRoute('app_user_account');
     }
     

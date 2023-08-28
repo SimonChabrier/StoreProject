@@ -152,7 +152,7 @@ class OrderController extends AbstractController
 
             //* Payer la commande si le paiement est réussi 
             $orderManager->payOrder($order, "paid");
-            $this->addFlash('success','Paiement de : ' . $order->getTotal() . ' réussi !');
+            $this->addFlash('success','Paiement de : ' . $order->getTotal() . '€ validé. Merci pour votre commande');
             // on redirige vers la page du profil de l'utilisateur
             return $this->redirectToRoute('app_user_account', [], Response::HTTP_SEE_OTHER);
         

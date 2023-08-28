@@ -9,12 +9,11 @@ use App\Entity\Order;
 use App\Form\Order\OrderType;
 use App\Repository\OrderRepository;
 use App\Service\Order\OrderManager;
-use App\Service\Order\OrderSessionStorage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * @Route("/order")
@@ -120,7 +119,7 @@ class OrderController extends AbstractController
         OrderRepository $orderRepository, 
         OrderManager $orderManager
         ): Response
-    {
+    {   
         try {
             // Initialiser Stripe avec la clé secrète
             Stripe::setApiKey($_ENV["STRIPE_SECRET"]);

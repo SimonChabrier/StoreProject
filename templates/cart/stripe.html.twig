@@ -18,7 +18,10 @@
 <form id='checkout-form' method='post' action="{{ path('app_stripe_charge') }}">             
     <input type='hidden' name='stripeToken' id='stripe-token-id'>   
     <input type="hidden" name="amount" value="{{ order.getTotal['totalInCents'] }}">                                                    
-    <input type="hidden" name="order_id" value="{{ order.id }}">                                                    
+    <input type="hidden" name="order_id" value="{{ order.id }}">    
+    {# <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('paiement') }}"
+    >                                             #}
     <label for="card-element" class="mt-3 mb-1">Paiement</label>
     <div id="card-element" class="form-control"></div>
     <button 

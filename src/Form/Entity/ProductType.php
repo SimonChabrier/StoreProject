@@ -39,7 +39,7 @@ class ProductType extends AbstractType
                 ],
 
             ])    
-            ->add('buyPrice', TextType::class, [
+            ->add('buyPrice', NumberType::class, [
                 'label' => 'Prix achat',
                 'disabled' => false,
                 'required' => false,
@@ -48,7 +48,7 @@ class ProductType extends AbstractType
                     'placeholder' => 'Prix achat HT',
                 ],
             ])
-            ->add('sellingPrice', TextType::class, [
+            ->add('sellingPrice', NumberType::class, [
                 'label' => 'Prix de vente',
                 'disabled' => false,
                 'required' => true,
@@ -56,7 +56,7 @@ class ProductType extends AbstractType
                     'placeholder' => 'Prix de vente TTC',
                 ],
             ])
-            ->add('catalogPrice', TextType::class, [
+            ->add('catalogPrice', NumberType::class, [
                 'label' => 'Prix public',
                 'disabled' => false,
                 'required' => false,

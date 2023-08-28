@@ -54,11 +54,6 @@ let products = [];
 
 fetchProducts().then((data) => {
     data.forEach((product) => {
-        // TODO attention ici jusqu'à présent (28 Aout 2023) j'avais converti les prix en int pour comparer des int 
-        // TODO dans le filtre de recherche par prix...vérifier si pas d'erreur à partir du moment ou on compare des int avec des string 
-        // TODO je sui srevenu en arrière car cela posait problème pou rl'affichage des prix dans les cards produits...à voir
-        // product.sellingPrice = Number(product.sellingPrice);
-        // product.sellingPrice = Math.trunc(product.sellingPrice);
         products.push(product);
     });
 });
@@ -148,10 +143,10 @@ function filterProducts() {
             
             // comme min et max ne sont pas null par défaut, on les prend en compte directement pour qu'il n'écrase pas les autres critères de recherche parce qu'il ne sont jamais false
             if(searchState.minPrice){
-               minPriceFilter = product.sellingPrice >= minPrice;
+               minPriceFilter = Math.floor(Number(product.sellingPrice)) <= minPrice; // on arrondi le prix à l'entier inférieur pour éviter les problèmes de comparaison et de type
             }
             if(searchState.maxPrice){
-                maxPriceFilter = product.sellingPrice <= maxPrice;
+                maxPriceFilter = Math.floor(Number(product.sellingPrice)) >= maxPrice; // on arrondi le prix à l'entier inférieur pour éviter les problèmes de comparaison et de type
             }
             if(searchState.searchTerm){
                 searchTermFilter = product.name.toLowerCase().includes(searchTerm);

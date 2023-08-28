@@ -54,7 +54,7 @@ class OrderManager
      * Gets the current cart from session or creates a new one.
      * @return Order
      */
-    public function getCurrentCart() : Order
+    public function getCurrentCart(): Order
     {   
         $order = $this->orderSessionStorage->getOrder();
         // si le panier n'existe pas en session, on le crée
@@ -77,12 +77,13 @@ class OrderManager
     /**
      * Saves an order in database and session.
      * @param Order $order
+     * @return bool
      */
-    public function save(Order $order)
+    public function save(Order $order): bool
     {   
         if ($order->getItems()->isEmpty()) {
             $this->deleteOrder($order);
-            return;
+            return false;
         }
         // Enregistrement du panier en base de données
         $this->entityManager->persist($order);

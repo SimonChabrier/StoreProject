@@ -95,34 +95,26 @@ class ProductController extends AbstractController
         // On crée un formulaire imbriqué dans la page produit pour ajouter un produit au panier
         $form = $this->createForm(AddProductToOrderType::class);
         $form->handleRequest($request);
-    
+        
+        // on processe le formulaire d'ajout au panier.
         if ($form->isSubmitted() && $form->isValid()) {
             // On récupère les données du formulaire
             $item = $form->getData();
             // On donne à l'item (orderitem) le produit sélectionné
             $item->setProduct($product);
             // On récupère le panier en cours
-            $cart = $orderManager->getCurrentCart();
+            $order = $orderManager->getCurrentCart();
             // On ajoute l'item au panier en cours
-            $cart->addItem($item);
-    
+            $order->addItem($item);
             // On sauvegarde le panier avec vérification des quantités insuffisantes
-            $saveResult = $orderManager->save($cart);
-    
-            if (is_array($saveResult)) {
-                // S'il y a des messages d'erreur, affichez-les en tant que messages flash d'erreur
-                foreach ($saveResult as $errorMessage) {
-                    $this->addFlash('error', $errorMessage);
-                }
-            } else {
-                // Ajout au panier réussi, afficher un message flash de succès
+            if($orderManager->save($order)){
+                // On affiche un message flash de succès
                 $this->addFlash('success', 'Le produit a bien été ajouté au panier');
+                // on redirige vers la page du panier
+                return $this->redirectToRoute('app_order');
             }
-    
-            // On redirige vers la page produit pour éviter de renvoyer le formulaire en cas de rafraîchissement de la page
-            return $this->redirectToRoute('app_product_show', ['id' => $product->getId()]);
         }
-    
+        
         return $this->render('product/show.html.twig', [
             'product' => $product,
             'relatedProducts' => $productRepository->relatedProducts($product->getSubCategory()->getId()),

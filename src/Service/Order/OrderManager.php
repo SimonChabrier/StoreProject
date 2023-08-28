@@ -89,6 +89,8 @@ class OrderManager
         $this->entityManager->flush();
         // maintenant que le panier a un id, on peut le sauvegarder en session
         $this->orderSessionStorage->setOrder($order);
+
+        return true;   
     }
     
     /**

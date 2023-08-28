@@ -146,17 +146,27 @@ class Order
     /**
      * On calcule le total de la commande en additionnant le total de chaque item.
      *
-     * @return float
+     * @return array
      */
-    public function getTotal(): float
+    public function getTotal(): array
     {
         $total = 0;
-
         foreach ($this->getItems() as $item) {
             $total += $item->getTotal();
         }
-        // deux chiffres après la virgule
-        return $total;
+
+        $totalInCents = $total * 100; // Multiplication avant le formatage
+
+        $formatedTotal = number_format($total, 2 , ',', ' '); // Formatage avec 2 décimales, une virgule et un espace entre les milliers
+        $formatedTotalInCents = number_format($totalInCents, 0, '', ''); // Formatage sans décimales et sans séparateur de milliers
+
+        dump($formatedTotal);
+        dump($formatedTotalInCents);
+
+        return [
+            'total' => $formatedTotal,
+            'totalInCents' => $formatedTotalInCents
+        ];
     }
 
 

@@ -137,18 +137,17 @@ class OrderController extends AbstractController
                 throw new \Exception('Vous n\'avez pas de commande en cours.');
             }
             // Vérifier que le montant du paiement est correct et correspond au montant de la commande en cours
-            if ($request->request->get('amount') != $order->getTotal()) {
+            if ((int) $request->request->get('amount') != (int) $order->getTotal()['totalInCents']) {
                 throw new \Exception('Montant de paiement incorrect.');
             }
-            // Convertir le montant en centimes pour Stripe (Stripe travaille en centimes)
-            $amout = (int) $request->request->get('amount') * 100;
+            // le montant en centiems euros on converti la string en int;
+            $amountInCents = (int) $request->request->get('amount'); 
             // Créer la charge stripe
             $charge = Charge::create([
-                "amount" =>  $amout, // le montant en centimes
-                "currency" => "eur", // la devise
-                "source" => $stripeToken, // le token de la carte
-                "description" => 'Paiement de commande ' . $order->getId() // la description de la commande
-                // TODO ajouter les informations de l'utilisateur dans la description de la commande
+                "amount" => $amountInCents,
+                "currency" => "eur",
+                "source" => $stripeToken,
+                "description" => 'Paiement de commande ' . $order->getId()
             ]);
             // Vérifier si le paiement est réussi ou pas
             if ($charge->status !== 'succeeded') {
@@ -157,7 +156,7 @@ class OrderController extends AbstractController
 
             //* Payer la commande si le paiement est réussi 
             $orderManager->payOrder($order, "paid");
-            $this->addFlash('success','Paiement de : ' . $order->getTotal() . '€ validé. Merci pour votre commande');
+            $this->addFlash('success','Paiement de : ' . $order->getTotal()['total'] . '€ validé. Merci pour votre commande');
             // on redirige vers la page du profil de l'utilisateur
             return $this->redirectToRoute('app_user_account', [], Response::HTTP_SEE_OTHER);
         

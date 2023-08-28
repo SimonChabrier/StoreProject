@@ -47,7 +47,7 @@
                         <h3 class="card-title">Commande #{{ order.id }}</h3>
                         <ol>
                             <li class="card-text">Du: {{ order.createdAt|date('Y-m-d H:i:s') }}</li>
-                            <li class="card-text">Total: {{ order.getTotal|number_format(2, ',', ' ') }} €</li>
+                            <li class="card-text">Total: {{ order.getTotal['total'] }} €</li>
                             <li class="card-text">Statut de la commande: {{ paymentStatus }}</li>
                         </ol>
                         <h3 class="card-title">{{ order.items|length > 1 ? 'Produits' : 'Produit' }}</h3>

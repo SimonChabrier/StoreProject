@@ -68,7 +68,7 @@ class Product
     /**
      * @ORM\Column(type="boolean")
      */
-    private $visibility = 1;
+    private $visibility = true;
 
     /**
      * @ORM\ManyToOne(
@@ -275,14 +275,43 @@ class Product
         return $this;
     }
 
-    public function isVisibility(): ?bool
+    /**
+     * Get the value of visibility
+     */ 
+    public function getVisibility()
     {
         return $this->visibility;
     }
 
-    public function setVisibility(bool $visibility): self
+    /**
+     * Set the value of visibility
+     *
+     * @return  self
+     */ 
+    public function setVisibility($visibility)
     {
         $this->visibility = $visibility;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of isInStock
+     */ 
+    public function getIsInStock()
+    {
+        return $this->isInStock;
+    }
+
+    /**
+     * Set the value of isInStock
+     *
+     * @return  self
+     */ 
+    public function setIsInStock($isInStock)
+    {
+        $this->isInStock = $isInStock;
 
         return $this;
     }
@@ -355,26 +384,11 @@ class Product
         if ($this->buyPrice == 0 || $this->sellingPrice == 0) {
             return null;
         }
-
         $achatHt = $this->buyPrice;
         $venteHt = $this->sellingPrice * 0.8;
-
         // Calcul du coefficient de marge
         $coefficientMarge = $venteHt / $achatHt;
-
         return round($coefficientMarge, 2);
-    }
-
-    public function isInStock(): ?bool
-    {
-        return $this->isInStock;
-    }
-
-    public function setInStock(bool $isInStock): self
-    {
-        $this->isInStock = $isInStock;
-
-        return $this;
     }
 
     public function getInStockQuantity(): ?string
@@ -525,4 +539,5 @@ class Product
         }
         return $this;
     }
+
 }

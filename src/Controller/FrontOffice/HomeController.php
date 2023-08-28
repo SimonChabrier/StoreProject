@@ -131,8 +131,8 @@ class HomeController extends AbstractController
                 'subCategory' => $product->getSubCategory()->getName(),
                 'productType' => $product->getProductType()->getName(),
                 'brand' => $product->getBrand()->getName(),
-                'visibility' => $product->isVisibility(),
-                'isInStock' => $product->isInStock(),
+                'visibility' => $product->getVisibility(),
+                'isInStock' => $product->getIsInStock(),
             ];
             // récupèrer les images du produit
             foreach ($product->getPictures() as $picture) {

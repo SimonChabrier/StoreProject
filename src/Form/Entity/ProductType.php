@@ -64,12 +64,20 @@ class ProductType extends AbstractType
                     'placeholder' => 'Prix public TTC',
                 ],
             ])
+            // ->add('visibility', CheckboxType::class, [
+            //     'label' => 'Visible',
+            //     'required' => false,
+            // ])
+            // ->add('isInStock', CheckboxType::class, [
+            //     'label' => 'Disponible',
+            //     'required' => false,
+            // ])
             // visibility (afficher ou non le produit sur le site)
             ->add('visibility', ChoiceType::class, [
                 'label' => 'Visibilité',
                 'choices' => [
-                    'En ligne' => 1,
-                    'Hors ligne' => 0,
+                    'En ligne' => true,
+                    'Hors ligne' => false,
                 ],
                 'required' => true,
                 'placeholder' => 'Choisir une option', // Option de choix par défaut
@@ -86,14 +94,6 @@ class ProductType extends AbstractType
                 'placeholder' => 'Choisir une option', // Option de choix par défaut
                 'empty_data' => 1, // Valeur par défaut si aucun choix n'est fait
             ])
-            // ->add('visibility', CheckboxType::class, [
-            //     'label' => 'Visible',
-            //     'required' => false,
-            // ])
-            // ->add('isInStock', CheckboxType::class, [
-            //     'label' => 'Disponible',
-            //     'required' => false,
-            // ])
             // in stock quantity
             ->add('inStockQuantity', NumberType::class, [
                 'label' => 'Quantité en stock',

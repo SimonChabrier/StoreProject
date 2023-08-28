@@ -98,7 +98,7 @@
                         </tr>
                         <tr class="property-row">
                             <td class="property-label">Prix catalogue :</td>
-                            <td><del>{{ product.catalogPrice|round(0) }} €</del></td>
+                            <td><del>{{ product.catalogPrice|number_format(2, ',', ' ') }} €</del></td>
                         </tr>
                         <tr class="property-row">
                             <td class="property-label">Réduction :</td>
@@ -107,7 +107,7 @@
                         </tr>
                         <tr class="property-row">
                             <td class="property-label">Prix :</td>
-                            <td><span class="price">{{ product.sellingPrice|number_format(0, ',', ' ') }} €</span></td>
+                            <td><span class="price">{{ product.sellingPrice|number_format(2, ',', ' ') }} €</span></td>
                         </tr>
                         <tr class="property-row">
                             <td class="property-label">Marque :</td>

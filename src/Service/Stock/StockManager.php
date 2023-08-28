@@ -19,7 +19,6 @@ class StockManager
         $this->insufficientQuantityWarnings = $insufficientQuantityWarnings;
     }
 
-
 //////// UTILS ////////
     /**
      * Vérifie que le produit est bien en stock sur l'attribut isInStock
@@ -33,7 +32,6 @@ class StockManager
             }
     }
 
-    
     /**
      * Vérifie si le produit est en commande fournisseur sur l'attribut inSupplierOrder
     */
@@ -47,16 +45,6 @@ class StockManager
     }
 
 //////// GESTION DU STOCK DES PRODUITS POUR LES COMMANDES ////////
-
-
-    /**
-     * Retourne les warnings de quantité insuffisante pour la commande dans un tableau
-     */
-    public function getInsufficientQuantityWarnings(): array
-    {
-        return $this->insufficientQuantityWarnings;
-    }
-
     /** 
      * Libère la quantité de produits réservés si la commande est annulée
     */
@@ -109,9 +97,7 @@ class StockManager
         $this->entityManager->flush();
     }
 
-
 //////// GESTION DU STOCK REEL (ENTREPOT) ////////
-
     /**
      * Incrémente le stock des produits si des produits sont reçu au dépot
      */

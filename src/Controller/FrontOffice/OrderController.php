@@ -158,25 +158,25 @@ class OrderController extends AbstractController
 
             // Récupérer le token de la carte depuis le formulaire
             $stripeToken = $request->request->get('stripeToken');
-            
-            // Récupérer l'ID de la commande depuis le formulaire
+            // Récupérer l'ID de la commande depuis le formulaire (champ caché)
             $orderId = $request->request->get('order_id');
-
-            // Trouver la commande en fonction de l'ID et de l'utilisateur
+            // Trouver la commande en fonction de l'ID et de l'utilisateur connecté et de l'ID de la commande
             $order = $orderRepository->findOneBy([
                 'id' => $orderId,
                 'user' => $this->checkUserService->getUserIfAuthenticatedFully()
             ]);
 
             // Vérifier que le montant du paiement est correct et correspond au montant de la commande en cours 
+            // on utilise les champs cachés du formulaire pour récupérer le montant de la commande.
             $receivedAmount = $request->request->get('amount');
             $expectedAmount = $order->getTotal();
 
+            // Vérifier que le montant du paiement est correct et correspond au montant de la commande en cours
             if ($receivedAmount != $expectedAmount) {
                 throw new \Exception('Montant de paiement incorrect.');
             }
 
-            // Créer la charge
+            // Créer la charge stripe
             $charge = Charge::create([
                 "amount" => $request->request->get('amount'), // Récupération du montant
                 "currency" => "eur",
@@ -184,15 +184,13 @@ class OrderController extends AbstractController
                 "description" => "Paiement de commande"
             ]);
 
-            // Vérifier si le paiement est réussi
+            // Vérifier si le paiement est réussi ou pas
             if ($charge->status !== 'succeeded') {
                 throw new \Exception('Le paiement Stripe n\'a pas abouti');
             }
 
             //* Payer la commande si le paiement est réussi
             $orderManager->payOrder($order, "paid");
-
-            // TODO: Décrémenter le stock des produits de la commande payée si le paiement est réussi
             
             $this->addFlash(
                 'success',
@@ -206,6 +204,7 @@ class OrderController extends AbstractController
             );
 
             return $this->redirectToRoute('app_payment_stripe', [], Response::HTTP_SEE_OTHER);
+            
         } catch (\Exception $e) {
             $this->addFlash(
                 'error',

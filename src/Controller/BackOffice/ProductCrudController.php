@@ -113,14 +113,17 @@ class ProductCrudController extends AbstractCrudController
             
             NumberField::new('buyPrice', 'Prix d\'achat HT')
             ->setRequired(false)
+            ->setNumDecimals(2)
             ->hideOnIndex(),
             
             NumberField::new('sellingPrice', 'Prix de vente TTC')
+            ->setNumDecimals(2)
             ->setRequired(true)
             ->hideOnIndex(),
             
             NumberField::new('catalogPrice', 'Prix catalogue TTC')
             ->setRequired(false)
+            ->setNumDecimals(2)
             ->hideOnIndex(),
 
             TextField::new('margeBrute', 'Marge brute %')
@@ -132,6 +135,7 @@ class ProductCrudController extends AbstractCrudController
             ->hideOnIndex(),
             
             NumberField::new('coefficientMarge', 'Coefficient de marge')
+            ->setNumDecimals(2)
             ->setFormTypeOption('disabled', true),
 
             AssociationField::new('category', 'Catégorie')

@@ -148,6 +148,7 @@ class OrderController extends AbstractController
                 "currency" => "eur", // la devise
                 "source" => $stripeToken, // le token de la carte
                 "description" => 'Paiement de commande ' . $order->getId() // la description de la commande
+                // TODO ajouter les informations de l'utilisateur dans la description de la commande
             ]);
             // Vérifier si le paiement est réussi ou pas
             if ($charge->status !== 'succeeded') {

@@ -73,28 +73,25 @@ class ProductCrudController extends AbstractCrudController
             NumberField::new('id', 'ID')
             ->setFormTypeOption('disabled', true),
 
-            //TODO ajuster ça avec le listener pour pouvoir utiliser sur l'index
-            //BooleanField::new('visibility', 'Visible'),
-            // ->hideOnIndex(),
-            //TODO ajuster ça avec le listener pour pouvoir utiliser sur l'index
-            //BooleanField::new('isInStock', 'Disponible'),
-            // ->hideOnIndex(),
+            BooleanField::new('visibility', 'Visible'),
 
-            ChoiceField::new('visibility', 'Visible')
-            ->setChoices([
-                'En ligne' => 1,
-                'Hors ligne' => 0,
-            ])
-            ->setRequired(true)
-            ->setFormTypeOption('disabled', false),
+            BooleanField::new('isInStock', 'Disponible'),
 
-            ChoiceField::new('isInStock', 'Disponible')
-            ->setChoices([
-                'Disponible' => 1,
-                'Indisponible' => 0,
-            ])
-            ->setRequired(true)
-            ->setFormTypeOption('disabled', false),
+            // ChoiceField::new('visibility', 'Visible')
+            // ->setChoices([
+            //     'En ligne' => 1,
+            //     'Hors ligne' => 0,
+            // ])
+            // ->setRequired(true)
+            // ->setFormTypeOption('disabled', false),
+
+            // ChoiceField::new('isInStock', 'Disponible')
+            // ->setChoices([
+            //     'Disponible' => 1,
+            //     'Indisponible' => 0,
+            // ])
+            // ->setRequired(true)
+            // ->setFormTypeOption('disabled', false),
             
             NumberField::new('inStockQuantity', 'Quantité en stock')
             ->setRequired(true)

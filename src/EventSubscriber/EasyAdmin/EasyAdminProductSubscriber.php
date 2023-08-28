@@ -75,6 +75,15 @@ class EasyAdminProductSubscriber implements EventSubscriberInterface
         // Récupérer les données du formulaire imbriqué
         $current_request = $this->request->getCurrentRequest();
         $productData = $current_request->get('Product');
+
+        // si product data est vide parce que on est sur la page d'index des produits (la liste de tous les produits)
+        // on sort pour ne pas créer d'erreur avec les switch visibility et isInStock 
+        // qui sont directement dans le formulaire de l'index en plus du formulaire imbriqué.
+        // à cet endroit, le formulaire imbriqué n'existe pas donc productData est vide. 
+        if (empty($productData)) {
+            return;
+        }
+
         // si l'utilisateur n'a pas ajouté de nouvelles images, on ne fait rien.
         // il n'a pas affiché le formulaire imbriqué dans le DOM donc le form imbriqué ['pictures'] n'existe pas dans la requête.
         // le reste du produit sera quand même mis à jour (nom, prix, etc.)

@@ -128,19 +128,25 @@ class OrderController extends AbstractController
             $stripeToken = $request->request->get('stripeToken');
             // Récupérer l'ID de la commande depuis le formulaire (champ caché)
             $orderId = $request->request->get('order_id');
+            // récupèrer l'utilisateur connecté et pleinement authentifié
+            $user = $this->checkUserService->getUserIfAuthenticatedFully();
             // Trouver la commande en fonction de l'ID et de l'utilisateur connecté et de l'ID de la commande
-            $order = $orderRepository->findOneBy(['id' => $orderId,'user' => $this->checkUserService->getUserIfAuthenticatedFully()]);
+            $order = $orderRepository->findOneBy(['id' => $orderId, 'user' => $user]);
             // si je n'ai pas de commande 
             if (!$order) {
                 throw new \Exception('Vous n\'avez pas de commande en cours.');
             }
             // Vérifier que le montant du paiement est correct et correspond au montant de la commande en cours
-            if ($request->request->get('amount') != $order->getTotal()) {
+            if ($request->request->get('amount') != $order->getTotal() * 100) {
                 throw new \Exception('Montant de paiement incorrect.');
             }
+
+            $amout = (int) $request->request->get('amount');
+
             // Créer la charge stripe
             $charge = Charge::create([
-                "amount" => $request->request->get('amount'), // Récupération du montant
+                "amount" =>  $amout, // on est en centimes donc on multiplie par 100
+                // on est en centimes donc on multiplie par 100
                 "currency" => "eur",
                 "source" => $stripeToken,
                 "description" => "Paiement de commande"
@@ -161,8 +167,9 @@ class OrderController extends AbstractController
             $this->addFlash('error',$e->getMessage());
             return $this->redirectToRoute('app_payment_stripe', [], Response::HTTP_SEE_OTHER);
         // on récupère aussi les autres erreurs et on affiche un message d'erreur et on redirige vers la page de paiement Stripe à nouveau.
-        } catch (\Exception $e) {
-            $this->addFlash('error','Une erreur s\'est produite lors du paiement.');
+        } 
+        catch (\Exception $e) { // ici on récupère les messages d'erreur si ils ne sont pas liés à Stripe et ont été générés par nous avec throw new \Exception.
+            $this->addFlash('error','Erreur lors du paiement : ' . $e->getMessage());
             return $this->redirectToRoute('app_payment_stripe', [], Response::HTTP_SEE_OTHER);
         }
     }

@@ -155,7 +155,7 @@ class Order
         foreach ($this->getItems() as $item) {
             $total += $item->getTotal();
         }
-
+        // deux chiffres après la virgule
         return $total;
     }
 

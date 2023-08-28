@@ -222,7 +222,10 @@ class Product
     }
 
     public function getCatalogPrice(): ?string
-    {
+    {   
+        // on format le prix catalogue pour l'afficher avec un espace entre les milliers et 2 décimales avec une virgule
+        // $catalogPrice = number_format($this->catalogPrice, 2 , ',', ' ');
+        // return $catalogPrice;
         return $this->catalogPrice;
     }
 
@@ -234,7 +237,10 @@ class Product
     }
 
     public function getSellingPrice(): ?string
-    {
+    {   
+        // on format le prix de vente pour l'afficher avec un espace entre les milliers et 2 décimales avec une virgule
+        // $sellingPrice = number_format($this->sellingPrice, 2 , ',', ' ');
+        // return $sellingPrice;
         return $this->sellingPrice;
     }
 

@@ -26,7 +26,7 @@ class StockManager
     */
     public function isProductInStock(Product $product) : bool
     {
-        if($product->isInStock() === true) {
+        if($product->getIsInStock() === true) {
             return true;
         } else {
               return false; // le produit n'est pas en stock et pas en commande fournisseur

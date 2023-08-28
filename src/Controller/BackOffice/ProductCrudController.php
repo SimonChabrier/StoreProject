@@ -19,8 +19,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
-use PhpParser\Node\Expr\Cast\Bool_;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class ProductCrudController extends AbstractCrudController
 {   
@@ -76,9 +74,12 @@ class ProductCrudController extends AbstractCrudController
             ->setFormTypeOption('disabled', true),
 
             //TODO ajuster ça avec le listener pour pouvoir utiliser sur l'index
-            // BooleanField::new('visibility', 'Visible')
+            //BooleanField::new('visibility', 'Visible'),
             // ->hideOnIndex(),
-            
+            //TODO ajuster ça avec le listener pour pouvoir utiliser sur l'index
+            //BooleanField::new('isInStock', 'Disponible'),
+            // ->hideOnIndex(),
+
             ChoiceField::new('visibility', 'Visible')
             ->setChoices([
                 'En ligne' => 1,
@@ -86,10 +87,6 @@ class ProductCrudController extends AbstractCrudController
             ])
             ->setRequired(true)
             ->setFormTypeOption('disabled', false),
-            
-            //TODO ajuster ça avec le listener pour pouvoir utiliser sur l'index
-            // BooleanField::new('isInStock', 'Disponible')
-            // ->hideOnIndex(),
 
             ChoiceField::new('isInStock', 'Disponible')
             ->setChoices([
@@ -98,7 +95,6 @@ class ProductCrudController extends AbstractCrudController
             ])
             ->setRequired(true)
             ->setFormTypeOption('disabled', false),
-                    
             
             NumberField::new('inStockQuantity', 'Quantité en stock')
             ->setRequired(true)
@@ -135,7 +131,8 @@ class ProductCrudController extends AbstractCrudController
             ->setFormTypeOption('disabled', true)
             ->hideOnIndex(),
             
-            IntegerField::new('coefficientMarge', 'Coefficient de marge')
+            NumberField::new('coefficientMarge', 'Coefficient de marge')
+            ->setNumberFormat('0.00')
             ->setFormTypeOption('disabled', true),
 
             AssociationField::new('category', 'Catégorie')

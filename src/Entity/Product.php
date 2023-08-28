@@ -124,7 +124,7 @@ class Product
      * @ORM\Column(type="boolean")
      * @Groups({"product:read"})
      */
-    private $inStock = true;
+    private $isInStock = true;
     
     // la quantité réélle en stock 
     /**
@@ -143,7 +143,7 @@ class Product
     /**
      * @ORM\Column(type="integer")
      */
-    private $reservedQuantity = 0;
+    private $onOrderQuantity = 0;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -367,12 +367,12 @@ class Product
 
     public function isInStock(): ?bool
     {
-        return $this->inStock;
+        return $this->isInStock;
     }
 
-    public function setInStock(bool $inStock): self
+    public function setInStock(bool $isInStock): self
     {
-        $this->inStock = $inStock;
+        $this->isInStock = $isInStock;
 
         return $this;
     }
@@ -493,14 +493,14 @@ class Product
         return $this;
     }
 
-    public function getReservedQuantity(): ?int
+    public function getOnOrderQuantity(): ?int
     {
-        return $this->reservedQuantity;
+        return $this->onOrderQuantity;
     }
 
-    public function setReservedQuantity(int $reservedQuantity): self
+    public function setOnOrderQuantity(int $onOrderQuantity): self
     {
-        $this->reservedQuantity = $reservedQuantity;
+        $this->onOrderQuantity = $onOrderQuantity;
 
         return $this;
     }
@@ -514,6 +514,15 @@ class Product
     {
         $this->inSupplierOrderQuantity = $inSupplierOrderQuantity;
 
+        return $this;
+    }
+    
+    // méthode qui vérifie si le produit est en stock ou pas
+    public function checkIsInStock(): self
+    {
+        if ($this->inStockQuantity <= 0) {
+            $this->isInStock = false;
+        }
         return $this;
     }
 }

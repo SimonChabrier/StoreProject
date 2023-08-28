@@ -76,7 +76,7 @@ class ProductType extends AbstractType
                 'empty_data' => 1, // Valeur par défaut si aucun choix n'est fait
             ])
             // isInStock (est ce que le produit est disponible en stock)
-            ->add('inStock', ChoiceType::class, [
+            ->add('isInStock', ChoiceType::class, [
                 'label' => 'Dispobilité stock',
                 'choices' => [
                     'Disponible' => true,
@@ -90,7 +90,7 @@ class ProductType extends AbstractType
             //     'label' => 'Visible',
             //     'required' => false,
             // ])
-            // ->add('inStock', CheckboxType::class, [
+            // ->add('isInStock', CheckboxType::class, [
             //     'label' => 'Disponible',
             //     'required' => false,
             // ])
@@ -104,7 +104,7 @@ class ProductType extends AbstractType
                 ],
             ])
             // quantité réservé 
-            ->add('reservedQuantity', TextType::class, [
+            ->add('onOrderQuantity', TextType::class, [
                 'label' => 'Quantité en commande client',
                 'disabled' => true,
                 'required' => false,

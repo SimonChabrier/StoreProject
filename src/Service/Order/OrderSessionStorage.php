@@ -6,7 +6,8 @@ use App\Entity\Order;
 use App\Repository\OrderRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Core\Security;
+use App\Service\Security\CheckUserService;
+
 
 // Cette class gère la logique de stockage du panier en session.
 
@@ -23,9 +24,9 @@ class OrderSessionStorage
     private $orderRepository;
 
     /**
-     * @var Security
+     * @var CheckUserService
      */
-    private $security;
+    private $checkUserService;
 
     /**
      * The key used to store the cart id in session.
@@ -33,11 +34,11 @@ class OrderSessionStorage
      */
     public const CART_KEY_NAME = 'cart_id';
 
-    public function __construct(RequestStack $requestStack, OrderRepository $orderRepository, Security $security)
+    public function __construct(RequestStack $requestStack, OrderRepository $orderRepository, CheckUserService $checkUserService)
     {
         $this->requestStack = $requestStack;
         $this->orderRepository = $orderRepository;
-        $this->security = $security;
+        $this->checkUserService = $checkUserService;
     }
 
     /**
@@ -46,8 +47,9 @@ class OrderSessionStorage
      */
     public function getOrder() : ?Order
     {    
-        if ($this->security->getUser() && $this->security->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->getUserLastOrder($this->security->getUser());
+        $user = $this->checkUserService->getUserIfAuthenticatedFully();
+        if ($user) {
+            return $this->getUserLastOrder($user);
         } else {
             return $this->getAnanymeUserLastOrder();
         }
@@ -74,7 +76,8 @@ class OrderSessionStorage
     }
 
     public function getSession(): SessionInterface
-    {
+    {   
+dump($this->requestStack->getSession()->all());
         return $this->requestStack->getSession();
     }
 
@@ -87,7 +90,7 @@ class OrderSessionStorage
         $this->getSession()->remove(self::CART_KEY_NAME);
     }
 
-        /**
+    /**
      * Gets the last order for a logged in user.
      * If the user has an order in session, we return it.
      * @param User $user

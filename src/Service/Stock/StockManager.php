@@ -22,7 +22,7 @@ class StockManager
 
 //////// UTILS ////////
     /**
-     * Vérifie que le produit est bien en stock sur l'attribut inStock
+     * Vérifie que le produit est bien en stock sur l'attribut isInStock
     */
     public function isProductInStock(Product $product) : bool
     {
@@ -64,10 +64,10 @@ class StockManager
     {
         foreach ($order->getItems() as $item) {
             $product = $item->getProduct();
-            $reservedQuantity = $item->getQuantity();
+            $onOrderQuantity = $item->getQuantity();
 
             // Libérer la quantité réservée pour le produit
-            $product->setReservedQuantity($product->getReservedQuantity() - $reservedQuantity);
+            $product->setOnOrderQuantity($product->getOnOrderQuantity() - $onOrderQuantity);
             
             $this->entityManager->persist($product);
         }
@@ -101,7 +101,7 @@ class StockManager
             $product = $item->getProduct();
             $quantity = $item->getQuantity();
 
-            $product->setReservedQuantity($product->getReservedQuantity() + $quantity);
+            $product->setOnOrderQuantity($product->getOnOrderQuantity() + $quantity);
 
             $this->entityManager->persist($product);
         }
@@ -139,7 +139,7 @@ class StockManager
      */
     public function incrementWarehouseProductReservedStock(Product $product) : void
     {
-        $product->setReservedQuantity($product->getReservedQuantity() + 1);
+        $product->setOnOrderQuantity($product->getOnOrderQuantity() + 1);
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();
@@ -150,7 +150,7 @@ class StockManager
      */
     public function decrementWarehouseProductReservedStock(Product $product) : void
     {
-        $product->setReservedQuantity($product->getReservedQuantity() - 1);
+        $product->setOnOrderQuantity($product->getOnOrderQuantity() - 1);
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();

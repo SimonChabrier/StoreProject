@@ -88,10 +88,10 @@ class ProductCrudController extends AbstractCrudController
             ->setFormTypeOption('disabled', false),
             
             //TODO ajuster ça avec le listener pour pouvoir utiliser sur l'index
-            // BooleanField::new('inStock', 'Disponible')
+            // BooleanField::new('isInStock', 'Disponible')
             // ->hideOnIndex(),
 
-            ChoiceField::new('inStock', 'Disponible')
+            ChoiceField::new('isInStock', 'Disponible')
             ->setChoices([
                 'Disponible' => 1,
                 'Indisponible' => 0,
@@ -104,7 +104,7 @@ class ProductCrudController extends AbstractCrudController
             ->setRequired(true)
             ->hideOnIndex(),
 
-            NumberField::new('reservedQuantity', 'Quantité en commande client')
+            NumberField::new('onOrderQuantity', 'Quantité en commande client')
             ->setFormTypeOption('disabled', true)
             ->hideOnIndex(),
 

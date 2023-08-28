@@ -79,17 +79,15 @@ class OrderManager
      * @param Order $order
      */
     public function save(Order $order)
-    {
+    {   
         if ($order->getItems()->isEmpty()) {
             $this->deleteOrder($order);
             return;
         }
-    
         // Enregistrement du panier en base de données
         $this->entityManager->persist($order);
         $this->entityManager->flush();
-
-        // Enregistrement du panier en session
+        // maintenant que le panier a un id, on peut le sauvegarder en session
         $this->orderSessionStorage->setOrder($order);
     }
     
@@ -103,10 +101,10 @@ class OrderManager
     {
         if ($order->removeItem($item)) {
             $product = $item->getProduct();
-            $reservedQuantity = $item->getQuantity();
+            $onOrderQuantity = $item->getQuantity();
             
             // Décrémente la quantité réservée pour le produit
-            $product->setReservedQuantity($product->getReservedQuantity() - $reservedQuantity);
+            $product->setOnOrderQuantity($product->getOnOrderQuantity() - $onOrderQuantity);
             
             // Supprimer l'item de l'ordre
             $this->entityManager->remove($item);
@@ -125,12 +123,12 @@ class OrderManager
      */
     public function deleteOrder(Order $order): void
     {   
+        // on récupère les items de la commande et on décrémente la quantité réservée pour chaque produit
         foreach ($order->getItems() as $item) {
             $product = $item->getProduct();
-            $reservedQuantity = $item->getQuantity();
-            
+            $onOrderQuantity = $item->getQuantity();
             // Décrémente la quantité réservée pour le produit
-            $product->setReservedQuantity($product->getReservedQuantity() - $reservedQuantity);
+            $product->setOnOrderQuantity($product->getOnOrderQuantity() - $onOrderQuantity);
         }
         
         // Supprimer le panier en bdd

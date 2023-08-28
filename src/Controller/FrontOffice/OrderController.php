@@ -189,10 +189,8 @@ class OrderController extends AbstractController
                 throw new \Exception('Le paiement Stripe n\'a pas abouti');
             }
 
-            // Payer la commande si le paiement est réussi
+            //* Payer la commande si le paiement est réussi
             $orderManager->payOrder($order, "paid");
-            // Supprimer le panier de la session puisqu'il est payé et présent en BDD.
-            $orderSessionStorage->removeCart();
 
             // TODO: Décrémenter le stock des produits de la commande payée si le paiement est réussi
             

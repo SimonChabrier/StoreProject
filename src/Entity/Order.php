@@ -159,10 +159,7 @@ class Order
 
         $formatedTotal = number_format($total, 2 , ',', ' '); // Formatage avec 2 décimales, une virgule et un espace entre les milliers
         $formatedTotalInCents = number_format($totalInCents, 0, '', ''); // Formatage sans décimales et sans séparateur de milliers
-
-        dump($formatedTotal);
-        dump($formatedTotalInCents);
-
+        
         return [
             'total' => $formatedTotal,
             'totalInCents' => $formatedTotalInCents

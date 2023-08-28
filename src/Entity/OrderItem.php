@@ -97,6 +97,11 @@ class OrderItem
      */
     public function getTotal(): float
     {
-        return $this->getProduct()->getSellingPrice() * $this->getQuantity();
+        $sellingPrice = floatval($this->getProduct()->getSellingPrice()); // Convertir la chaîne en float
+        $quantity = $this->getQuantity(); // Pas besoin de conversion, c'est déjà un int
+        $total = $sellingPrice * $quantity;
+
+        return $total;
     }
+
 }

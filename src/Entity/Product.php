@@ -334,7 +334,8 @@ class Product
         $margeBrute = $venteTtc - $achatHt;
         $tauxDeMargeBrute = ($margeBrute / $venteTtc) * 100;
 
-        $result = round($tauxDeMargeBrute, 2);
+       // $result = round($tauxDeMargeBrute, 2);
+        $result = number_format($tauxDeMargeBrute, 2, ',', ' ');
     
         if ($result <= 25) {
             return '🔴 ' . $result . ' %';
@@ -367,7 +368,8 @@ class Product
 
         $tauxDeMargeNette = ($margeNette / $venteTtc) * 100;
 
-        $result = round($tauxDeMargeNette, 2);
+        //$result = round($tauxDeMargeNette, 2);
+        $result = number_format($tauxDeMargeNette, 2, ',', ' ');
         
         if ($result <= 25) {
             return '🔴 ' . $result . ' %';
@@ -389,6 +391,7 @@ class Product
         $venteHt = $this->sellingPrice * 0.8;
         // Calcul du coefficient de marge
         $coefficientMarge = $venteHt / $achatHt;
+        
         return round($coefficientMarge, 2);
     }
 

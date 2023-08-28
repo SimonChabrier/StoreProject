@@ -224,6 +224,7 @@ class Product
     public function getCatalogPrice(): ?string
     {   
         return $this->catalogPrice;
+        //return number_format($this->catalogPrice, 2, ',', ' ');
     }
 
     public function setCatalogPrice(string $catalogPrice): self

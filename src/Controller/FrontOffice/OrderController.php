@@ -137,19 +137,17 @@ class OrderController extends AbstractController
                 throw new \Exception('Vous n\'avez pas de commande en cours.');
             }
             // Vérifier que le montant du paiement est correct et correspond au montant de la commande en cours
-            if ($request->request->get('amount') != $order->getTotal() * 100) {
+            if ($request->request->get('amount') != $order->getTotal()) {
                 throw new \Exception('Montant de paiement incorrect.');
             }
-
-            $amout = (int) $request->request->get('amount');
-
+            // Convertir le montant en centimes pour Stripe (Stripe travaille en centimes)
+            $amout = (int) $request->request->get('amount') * 100;
             // Créer la charge stripe
             $charge = Charge::create([
-                "amount" =>  $amout, // on est en centimes donc on multiplie par 100
-                // on est en centimes donc on multiplie par 100
-                "currency" => "eur",
-                "source" => $stripeToken,
-                "description" => "Paiement de commande"
+                "amount" =>  $amout, // le montant en centimes
+                "currency" => "eur", // la devise
+                "source" => $stripeToken, // le token de la carte
+                "description" => 'Paiement de commande ' . $order->getId() // la description de la commande
             ]);
             // Vérifier si le paiement est réussi ou pas
             if ($charge->status !== 'succeeded') {

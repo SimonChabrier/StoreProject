@@ -54,6 +54,9 @@ let products = [];
 
 fetchProducts().then((data) => {
     data.forEach((product) => {
+        // TODO attention ici jusqu'à présent (28 Aout 2023) j'avais converti les prix en int pour comparer des int 
+        // TODO dans le filtre de recherche par prix...vérifier si pas d'erreur à partir du moment ou on compare des int avec des string 
+        // TODO je sui srevenu en arrière car cela posait problème pou rl'affichage des prix dans les cards produits...à voir
         products.push(product);
     });
 });

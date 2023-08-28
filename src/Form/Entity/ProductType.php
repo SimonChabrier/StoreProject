@@ -41,6 +41,7 @@ class ProductType extends AbstractType
             ])    
             ->add('buyPrice', NumberType::class, [
                 'label' => 'Prix achat',
+                'scale' => 2, // Nombre de décimales à conserver
                 'disabled' => false,
                 'required' => false,
                 // placeholder
@@ -50,6 +51,7 @@ class ProductType extends AbstractType
             ])
             ->add('sellingPrice', NumberType::class, [
                 'label' => 'Prix de vente',
+                'scale' => 2, // Nombre de décimales à conserver
                 'disabled' => false,
                 'required' => true,
                 'attr' => [
@@ -58,6 +60,7 @@ class ProductType extends AbstractType
             ])
             ->add('catalogPrice', NumberType::class, [
                 'label' => 'Prix public',
+                'scale' => 2, // Nombre de décimales à conserver
                 'disabled' => false,
                 'required' => false,
                 'attr' => [

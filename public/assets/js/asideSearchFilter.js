@@ -39,7 +39,6 @@ async function fetchProducts() {
     try {
         const response = await fetch(`${URI}/json/product.json`);
         const data = await response.json();
-        console.log(data);
         return data;
     } catch (error) {
         console.log(error);
@@ -49,16 +48,17 @@ async function fetchProducts() {
 
 
 // stock products in an array
+//TODO à revoir mais ça marche - on résout la promesse de fetchProducts() et on récupère les données de la promesse pour les mettre dans un tableau products
+
 let products = [];
 
-//TODO à revoir mais ça marche - on résout la promesse de fetchProducts() et on récupère les données de la promesse pour les mettre dans un tableau products
 fetchProducts().then((data) => {
     data.forEach((product) => {
-        product.sellingPrice = Number(product.sellingPrice);
-        product.sellingPrice = Math.trunc(product.sellingPrice);
         products.push(product);
     });
 });
+
+console.log(products);
 
 
 // plus lent que le fetch sur le json 
@@ -189,29 +189,21 @@ function createProductCard(product){
         let section = document.createElement('section')
         section.classList.add('result-card');
 
-
-        // Affiche la dernière image du produit qui est contenu dans le tableau pictures du produit
-        // C'est ce qu'on fait dans Twig avec le filtre last()
-        // let productMainPicture = '';
-        // if (product[i].pictures.length > 0) {
-        //     const lastPicture = product[i].pictures[product[i].pictures.length - 1];
-        //     console.log(lastPicture);
-        //     productMainPicture = `/uploads/files/pictures/${lastPicture.fileName}" alt=${lastPicture.alt} title=${lastPicture.name}`;
-        // } else {
-        //     productMainPicture = '/assets/pictures/defaultSneakersPicture.webp';
-        // }
-
         // Affiche la première image du produit qui est contenu dans le tableau pictures du produit
         // C'est ce qu'on fait dans Twig avec le filtre first()
         let productMainPicture = '';
         product[i].pictures[0]?.fileName != undefined ? productMainPicture = `/uploads/files/pictures/${product[i].pictures[0].fileName}" alt=${product[i].pictures[0].alt} title=${product[i].pictures[0].name}` : productMainPicture = '/assets/pictures/defaultSneakersPicture.webp';
+        
+        // formatage des prix avec 2 chiffres après la virgule et ajout d'un espace entre les milliers
+        let formatedCatalogPrice = parseFloat(product[i].catalogPrice).toLocaleString("fr-FR", { minimumFractionDigits: 2 });
+        let formatedSellingPrice = parseFloat(product[i].sellingPrice).toLocaleString("fr-FR", { minimumFractionDigits: 2 });
 
         // product[i].subCategory.categories[0].name ici je récupère le no de la categorie à la quelle appartient la sous categorie du produit
         section.innerHTML = `
             <h6>${product[i].name}</h6>
             <img class="last-five-picture" src="${productMainPicture}">
-            <span class="catalog-price"><del>${product[i].catalogPrice} €</del></span>
-            <span class="selling-price">${product[i].sellingPrice} €</span>
+             <span class="catalog-price"><del>${formatedCatalogPrice} €</del></span>
+            <span class="selling-price">${formatedSellingPrice} €</span>
             <div class="productInfo">
                 <span class="categorie">Categorie : ${product[i].category == null ? product[i].subCategory.categories[0].name : product[i].category.name}</span>
                 <span class="sous-categorie">Sous-categorie : ${product[i].subCategory.name == null ? 'Pas de sous categorie' : product[i].subCategory.name}</span>

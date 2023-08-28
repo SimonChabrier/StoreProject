@@ -11,24 +11,31 @@
     {% if status == 'new' %}
         {% set statusLabel = 'Nouvelle commande' %}
         {% set statusLabelPlural = 'Nouvelles commandes' %}
+        {% set paymentStatus = 'En attente de paiment' %}
     {% elseif status == 'pending' %}
         {% set statusLabel = 'Commande en attente de paiement' %}
         {% set statusLabelPlural = 'Commandes en attente de paiement' %}
+        {% set paymentStatus = 'En attente' %}
     {% elseif status == 'paid' %}
         {% set statusLabel = 'Commande payée' %}
         {% set statusLabelPlural = 'Commandes payées' %}
+        {% set paymentStatus = 'Payée' %}
     {% elseif status == 'preparing' %}
         {% set statusLabel = 'Commande en cours de préparation' %}
         {% set statusLabelPlural = 'Commandes en cours de préparation' %}
+        {% set paymentStatus = 'En cours de préparation' %}
     {% elseif status == 'shipped' %}
         {% set statusLabel = 'Commande expédiée' %}
         {% set statusLabelPlural = 'Commandes expédiées' %}
+        {% set paymentStatus = 'Expédiée' %}
     {% elseif status == 'completed' %}
         {% set statusLabel = 'Commande terminée' %}
         {% set statusLabelPlural = 'Commandes terminées' %}
+        {% set paymentStatus = 'Terminée' %}
     {% elseif status == 'cancelled' %}
         {% set statusLabel = 'Commande annulée' %}
         {% set statusLabelPlural = 'Commandes annulées' %}
+        {% set paymentStatus = 'Annulée' %}
     {% endif %}
 
     <h2 class="mb-3">{{ orders|length > 1 ? statusLabelPlural : statusLabel }}</h2>
@@ -41,7 +48,7 @@
                         <ol>
                             <li class="card-text">Du: {{ order.createdAt|date('Y-m-d H:i:s') }}</li>
                             <li class="card-text">Total: {{ order.getTotal|number_format(2, ',', ' ') }} €</li>
-                            <li class="card-text">Statut de la commande: {{ order.status }}</li>
+                            <li class="card-text">Statut de la commande: {{ paymentStatus }}</li>
                         </ol>
                         <h3 class="card-title">{{ order.items|length > 1 ? 'Produits' : 'Produit' }}</h3>
                         {% for item in order.items %}

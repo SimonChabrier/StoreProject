@@ -136,6 +136,8 @@ class UploadService
      * 1 - 150x150
      * 1 - 250x250
      * 1 - 400x400
+     * 1 - 800x800
+     * 1 - 1200x1200
      * 1 - 1280x720
      * @param UploadedFile $file
      * @param String $fileName (nom du fichier unique généré qui set setfileName() de l'objet Picture pour le stocker en BDD et l'utiliser pour construire l'affichage dans la vue)
@@ -269,6 +271,7 @@ class UploadService
             glob('../public/uploads/files/pictures_XS/*'),
             glob('../public/uploads/files/pictures_250/*'),
             glob('../public/uploads/files/pictures_400/*'),
+            glob('../public/uploads/files/pictures_800/*'),
             glob('../public/uploads/files/pictures_1200/*'),
             glob('../public/uploads/files/slider_1280/*'),
         ];

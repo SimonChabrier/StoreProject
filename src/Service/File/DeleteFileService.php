@@ -34,6 +34,7 @@ class DeleteFileService
             'pictures_XS',
             'pictures_250',
             'pictures_400',
+            'pictures_800',
             'pictures_1200',
             'slider_1280',
         ];

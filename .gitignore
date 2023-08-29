@@ -33,6 +33,7 @@
 /public/uploads/files/pictures_XS/*
 /public/uploads/files/pictures_250/*
 /public/uploads/files/pictures_400/*
+/public/uploads/files/pictures_800/*
 /public/uploads/files/pictures_1200/*
 /public/uploads/files/slider_1280/*
 
@@ -41,6 +42,7 @@
 !public/uploads/files/pictures_XS/.gitkeep
 !public/uploads/files/pictures_250/.gitkeep
 !public/uploads/files/pictures_400/.gitkeep
+!public/uploads/files/pictures_800/.gitkeep
 !public/uploads/files/pictures_1200/.gitkeep
 !public/uploads/files/slider_1280/.gitkeep
 

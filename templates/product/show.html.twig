@@ -9,7 +9,7 @@
     {% for picture in product.pictures %}
         {% if picture %}
             {% if loop.first %}
-                <meta property="og:image" content="/uploads/files/pictures_1200/{{ picture.getFilename }}">
+                <meta property="og:image" content="/uploads/files/pictures_800/{{ picture.getFilename }}">
             {% endif %}
         {% endif %}
         {% else %}

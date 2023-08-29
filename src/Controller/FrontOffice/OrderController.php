@@ -120,6 +120,11 @@ class OrderController extends AbstractController
         OrderManager $orderManager
         ): Response
     {   
+        // Vérifier le jeton CSRF du formulaire de paiement Stripe
+        if (!$this->isCsrfTokenValid('paiement', $request->request->get('_token'))) {
+            throw new \Exception('Jeton CSRF invalide');
+        }
+
         try {
             // Initialiser Stripe avec la clé secrète
             Stripe::setApiKey($_ENV["STRIPE_SECRET"]);

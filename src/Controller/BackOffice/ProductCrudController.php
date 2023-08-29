@@ -38,9 +38,7 @@ class ProductCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         $this->setPageValues($crud, 'Product');
-        return parent::configureCrud(
-            $crud->addFormTheme('@FOSCKEditor/Form/ckeditor_widget.html.twig')
-        );
+        return $crud;
     }
 
     /**
@@ -56,6 +54,7 @@ class ProductCrudController extends AbstractCrudController
             $crud->setPageTitle('detail', 'Détails du produit');
             // tri par défaut sur la colonne id en ordre décroissant
             $crud->setDefaultSort(['id' => 'DESC']);
+            $crud->addFormTheme('@FOSCKEditor/Form/ckeditor_widget.html.twig');
         }
     }
 
@@ -72,6 +71,31 @@ class ProductCrudController extends AbstractCrudController
 
             NumberField::new('id', 'ID')
             ->setFormTypeOption('disabled', true),
+
+            TextField::new('name', 'Nom')
+            ->setRequired(true),
+
+            AssociationField::new('category', 'Catégorie')
+            // set label for form
+            ->setFormTypeOption('label', 'Catégorie du produit (place le produit à la racine d\'une catégorie de premier niveau)')
+            ->setRequired(false),
+            
+            AssociationField::new('subCategory', 'Sous-Catégorie')
+            // set label for form
+            ->setFormTypeOption('label', 'Sous-Catégorie (Eg / Homme : Runnning = la sous catégorie "Running" est liée à la catégorie racine "Homme"')
+            // display only subcategory linked to the slectecd category
+            // set choice on getSubCategoryName method from SubCategory entity
+            ->setFormTypeOption('choice_label', 'getSubCategoryName')
+            // display only subcategory linked to the slectecd category
+            ->setRequired(true),
+
+            AssociationField::new('productType', 'Type')
+            ->setFormTypeOption('choice_label', 'name')
+            ->setRequired(true),
+
+            AssociationField::new('brand', 'Marque')
+            ->setFormTypeOption('choice_label', 'name')
+            ->setRequired(true),
 
             BooleanField::new('visibility', 'Visible'),
 
@@ -93,20 +117,16 @@ class ProductCrudController extends AbstractCrudController
             // ->setRequired(true)
             // ->setFormTypeOption('disabled', false),
             
-            NumberField::new('inStockQuantity', 'Quantité en stock')
+            NumberField::new('inStockQuantity', 'Qte en stock')
             ->setRequired(true),
-           // ->hideOnIndex(),
 
-            NumberField::new('onOrderQuantity', 'Quantité en commande client')
+            NumberField::new('onOrderQuantity', 'Qte en cmd client')
             ->setFormTypeOption('disabled', true)
             ->hideOnIndex(),
 
-            NumberField::new('inSupplierOrderQuantity', 'Quantité en commande fournisseur')
+            NumberField::new('inSupplierOrderQuantity', 'Qte en cmd fournisseur')
             ->setFormTypeOption('disabled', true)
             ->hideOnIndex(),
-
-            TextField::new('name', 'Nom')
-            ->setRequired(true),
             
             NumberField::new('buyPrice', 'Prix d\'achat HT')
             ->setRequired(false)
@@ -131,27 +151,9 @@ class ProductCrudController extends AbstractCrudController
             ->setFormTypeOption('disabled', true)
             ->hideOnIndex(),
             
-            NumberField::new('coefficientMarge', 'Coefficient de marge')
+            NumberField::new('coefficientMarge', 'Coeff de marge')
             ->setNumDecimals(2)
             ->setFormTypeOption('disabled', true),
-
-            AssociationField::new('category', 'Catégorie du produit (place le produit à la racine d\'une catégorie de premier niveau)')
-            ->setRequired(false),
-            
-            AssociationField::new('subCategory', 'Sous-Catégorie')
-            // display only subcategory linked to the slectecd category
-            // set choice on getSubCategoryName method from SubCategory entity
-            ->setFormTypeOption('choice_label', 'getSubCategoryName')
-            // display only subcategory linked to the slectecd category
-            ->setRequired(true),
-
-            AssociationField::new('productType', 'Type')
-            ->setFormTypeOption('choice_label', 'name')
-            ->setRequired(true),
-
-            AssociationField::new('brand', 'Marque')
-            ->setFormTypeOption('choice_label', 'name')
-            ->setRequired(true),
 
             // description textarea en utilisant le composant CKEditor
             TextareaField::new('description', 'Description')
@@ -165,25 +167,28 @@ class ProductCrudController extends AbstractCrudController
                     'rows' => 10,
                 ],
             ])
-            // on n'affiche pas la colonne description dans la liste des produits
             ->hideOnIndex(),
 
-            // use ProdctDataType to manage prodcut data (attributes)
+            // use ProdctDataType to manage product data (attributes)
             CollectionField::new('productData', 'Infos')
             ->setEntryType(ProductDataType::class, [])
             ->setCustomOption('allow_add', true)
             ->renderExpanded(false),
-
+            
             // use PicturesType to manage pictures
             CollectionField::new('pictures', 'Img')
             ->setEntryType(PictureType::class, [])
             ->setCustomOption('allow_add', true)
             ->renderExpanded(false)
-            // upload pictures addes in input file to the server
             ->setFormTypeOption('by_reference', false)
-            // ne pas autoriser le tri sur cette colonne pour le moment j'ai un bug
+            // ne pas autoriser le tri sur cette colonne pour le moment j'ai un bug à cause de la relation avec product
             // TODO à débugger plus tard
-            ->setSortable(false),
+            ->setSortable(false)
+            //  gérer le tri sur le relation avec product
+            // ->setCustomOption('sortable', function ($associatedEntity) {
+            //     return $associatedEntity->getProduct()->getId();
+            // })
+            // gèrer le tri sur la relation avec product            
         ];
     }
 

@@ -60,7 +60,7 @@ class ProductTypeCrudController extends AbstractCrudController
 
             TextField::new('name', 'Nom du type de produit'),
 
-            AssociationField::new('subCategories', 'Sous catégrories liées')
+            AssociationField::new('subCategories', 'Sous-catégories')
             ->setFormTypeOptions([
                 'by_reference' => false,
                 'multiple' => true,

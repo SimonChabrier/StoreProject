@@ -1,11 +1,10 @@
 {% extends 'base.html.twig' %}
-{% block content %}
 
+{% block content %}
 <div class="last-five searchResults">
     {# résultats de la recherche #}
     {% include '_fragments/_searchResults.html.twig' %}
 </div>
-
 
 {% if cache %}
 
@@ -59,9 +58,9 @@
 <div class="last-five swiper">
     {% for category in homeCats %}
         <a href="{{ path('app_category_show', {'id': category.id}) }}"><h2>{{ category.name|upper }}</h2></a>
-
             {% if category.products is not empty and category.name == 'Nouveautés' %}
             <div class="swiper-wrapper">
+            {# si je n'ai qu'un produit je le retourne seul  #}
                 {% set categoryProducts = category.products|slice(-4) %}
                 {% for product in categoryProducts %}
                     <section class="swiper-slide">

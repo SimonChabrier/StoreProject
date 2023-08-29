@@ -5,11 +5,11 @@
 {# on fait les metas pour la fiche product  #}
 {% block og_tags %}
     <meta property="og:title" content="{{ product.name|title }}">
-    <meta property="og:description" content="Description du Produit">
+    <meta property="og:description" content="{{ product.description|raw }}">
     {% for picture in product.pictures %}
         {% if picture %}
             {% if loop.first %}
-                <meta property="og:image" content="/uploads/files/pictures_400/{{ picture.getFilename }}">
+                <meta property="og:image" content="/uploads/files/pictures_1200/{{ picture.getFilename }}">
             {% endif %}
         {% endif %}
         {% else %}

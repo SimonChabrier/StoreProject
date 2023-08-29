@@ -135,7 +135,7 @@ class ProductCrudController extends AbstractCrudController
             ->setNumDecimals(2)
             ->setFormTypeOption('disabled', true),
 
-            AssociationField::new('category', 'Catégorie')
+            AssociationField::new('category', 'Catégorie du produit (place le produit à la racine d\'une catégorie de premier niveau)')
             ->setRequired(false),
             
             AssociationField::new('subCategory', 'Sous-Catégorie')

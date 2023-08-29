@@ -83,7 +83,7 @@ class OrderManager
     {   
         if ($order->getItems()->isEmpty()) {
             $this->deleteOrder($order);
-            return false;
+            return true;
         }
         // Enregistrement du panier en base de données
         $this->entityManager->persist($order);

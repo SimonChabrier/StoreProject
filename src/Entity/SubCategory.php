@@ -197,15 +197,21 @@ class SubCategory
     }
 
     // Retourne le nom de la sous catégorie et le nom de la catégorie associée pour l'affichage dans les formulaire
-    public function getSubCategoryName(): string
+    public function getSubCategoryName(): ?string
     {
-        $categoryName = $this->categories->first()->getName();
+        $categoryName = $this->getCategoryName();
+        if(!$categoryName){
+            return 'Pas de catégorie associé à la sous catégorie : ' . $this->name;
+        }
         return $categoryName . ' : ' . $this->name;
     }
 
     // retourner le nom de la catégorie associée à la sous catégorie
-    public function getCategoryName(): string
-    {
+    public function getCategoryName(): ?string
+    {   
+        if(!$this->categories->first()){
+            return null;
+        }
         return $this->categories->first()->getName();
     }
 

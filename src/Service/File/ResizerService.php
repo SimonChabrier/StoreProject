@@ -16,6 +16,7 @@ class ResizerService
     private $pictureXSDir;
     private $picture250Dir;
     private $picture400Dir;
+    private $picture800Dir;
     private $picture1200Dir;
     private $slider1280Dir;
 
@@ -23,12 +24,14 @@ class ResizerService
         string $pictureXSDir,
         string $picture250Dir,
         string $picture400Dir,
+        string $picture800Dir,
         string $picture1200Dir,
         string $slider1280Dir
     ) {
         $this->pictureXSDir =  $pictureXSDir;
         $this->picture250Dir =  $picture250Dir;
         $this->picture400Dir =  $picture400Dir;
+        $this->picture800Dir =  $picture800Dir;
         $this->picture1200Dir = $picture1200Dir;
         $this->slider1280Dir =  $slider1280Dir;
     }
@@ -44,6 +47,7 @@ class ResizerService
             $this->pictureXSDir,
             $this->picture250Dir,
             $this->picture400Dir,
+            $this->picture800Dir,
             $this->picture1200Dir,
             $this->slider1280Dir
         ];
@@ -211,6 +215,7 @@ class ResizerService
                 'pictureXSDir' => [150, 150],
                 'picture250Dir' => [250, 250],
                 'picture400Dir' => [400, 400],
+                'picture800Dir' => [800, 800],
                 'picture1200Dir' => [1200, 1200],
             ];
 

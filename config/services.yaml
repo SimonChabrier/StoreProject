@@ -11,6 +11,7 @@ parameters:
     pictureXSDir:  '%kernel.project_dir%/public/uploads/files/pictures_XS'
     picture250Dir:  '%kernel.project_dir%/public/uploads/files/pictures_250'
     picture400Dir:  '%kernel.project_dir%/public/uploads/files/pictures_400'
+    picture800Dir:  '%kernel.project_dir%/public/uploads/files/pictures_800'
     picture1200Dir: '%kernel.project_dir%/public/uploads/files/pictures_1200'
     slider1280Dir:  '%kernel.project_dir%/public/uploads/files/slider_1280'
 
@@ -32,6 +33,7 @@ services:
             $pictureXSDir:  '%pictureXSDir%'
             $picture250Dir:  '%picture250Dir%'
             $picture400Dir:  '%picture400Dir%'
+            $picture800Dir:  '%picture800Dir%'
             $picture1200Dir: '%picture1200Dir%'
             $slider1280Dir:  '%slider1280Dir%'
         

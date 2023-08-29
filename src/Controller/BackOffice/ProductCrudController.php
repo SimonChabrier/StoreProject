@@ -94,8 +94,8 @@ class ProductCrudController extends AbstractCrudController
             // ->setFormTypeOption('disabled', false),
             
             NumberField::new('inStockQuantity', 'Quantité en stock')
-            ->setRequired(true)
-            ->hideOnIndex(),
+            ->setRequired(true),
+           // ->hideOnIndex(),
 
             NumberField::new('onOrderQuantity', 'Quantité en commande client')
             ->setFormTypeOption('disabled', true)

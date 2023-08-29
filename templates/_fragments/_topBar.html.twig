@@ -12,6 +12,18 @@
 
 <div class="topicons">
 
+{# info cache ou pas cache pour l'admin uniquement si 'ROLE_ADMIn est présent dans le tableau des roles #}
+<section class="topicon">
+    {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
+        {% if cache %}
+            <p><b>cache activé</b></p>
+        {% else %}
+            <p><b>cache désactivé</b></p>
+        {% endif %}
+    {% endif %}
+</section>
+
+
 {# user login #}
 {% if app.user and is_granted('IS_AUTHENTICATED_FULLY') %}
 <section class="topicon">

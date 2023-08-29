@@ -77,7 +77,6 @@ class OrderSessionStorage
 
     public function getSession(): SessionInterface
     {   
-dump($this->requestStack->getSession()->all());
         return $this->requestStack->getSession();
     }
 

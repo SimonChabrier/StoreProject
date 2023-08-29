@@ -225,7 +225,7 @@ class ResizerService
                 imagewebp($newImg, $this->{$dir} . '/' . $fileName, $quality);
             }
             // si chaque image a bien été créée on retourne true
-            if (file_exists($this->pictureXSDir . '/' . $fileName) && file_exists($this->picture250Dir . '/' . $fileName) && file_exists($this->picture400Dir . '/' . $fileName) && file_exists($this->picture1200Dir . '/' . $fileName)) {
+            if (file_exists($this->pictureXSDir . '/' . $fileName) && file_exists($this->picture250Dir . '/' . $fileName) && file_exists($this->picture400Dir . '/' . $fileName) && file_exists($this->picture800Dir . '/' . $fileName) && file_exists($this->picture1200Dir . '/' . $fileName)) {
                 return true;
             } else {
                 throw new Exception('Toutes les images n\'ont pas été créées');

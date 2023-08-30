@@ -81,7 +81,7 @@
     <input type="hidden" name="amount" value="{{ order.getTotal['totalInCents'] }}">                                                    
     <input type="hidden" name="order_id" value="{{ order.id }}">    
     <input type="hidden" name="_token" value="{{ csrf_token('paiement') }}">                                    
-    <label for="card-element" class="mt-3 mb-1">Paiement</label>
+    <label for="card-element" class="mt-3 mb-3">Procéder au paiement :</label>
     <div id="card-element" class="form-control"></div>
     <button 
         id='pay-btn'

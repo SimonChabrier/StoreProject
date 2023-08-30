@@ -3,8 +3,9 @@
 {% block title %}Paiement{% endblock %}
 
 {% block content %}
-<h1>Formulaire de paiement stripe</h1> 
 <p>4242424242424242</p>
+<h1>Formulaire de paiement</h1> 
+{# 
 {% for message in app.flashes('success') %}
     <div 
         style="color: green;
@@ -13,7 +14,67 @@
             padding: 5px;margin-bottom: 10px;">
         {{ message }}
     </div>
-{% endfor %}
+{% endfor %} #}
+<div class="example-wrapper">
+  {% if order.status == 'new' %}
+        {% set statusLabel = 'Nouvelle commande' %}
+        {% set statusLabelPlural = 'Nouvelles commandes' %}
+        {% set paymentStatus = 'En attente de paiment' %}
+    {% elseif status == 'pending' %}
+        {% set statusLabel = 'Commande en attente de paiement' %}
+        {% set statusLabelPlural = 'Commandes en attente de paiement' %}
+        {% set paymentStatus = 'En attente' %}
+    {% elseif status == 'paid' %}
+        {% set statusLabel = 'Commande payée' %}
+        {% set statusLabelPlural = 'Commandes payées' %}
+        {% set paymentStatus = 'Payée' %}
+    {% elseif status == 'preparing' %}
+        {% set statusLabel = 'Commande en cours de préparation' %}
+        {% set statusLabelPlural = 'Commandes en cours de préparation' %}
+        {% set paymentStatus = 'En cours de préparation' %}
+    {% elseif status == 'shipped' %}
+        {% set statusLabel = 'Commande expédiée' %}
+        {% set statusLabelPlural = 'Commandes expédiées' %}
+        {% set paymentStatus = 'Expédiée' %}
+    {% elseif status == 'completed' %}
+        {% set statusLabel = 'Commande terminée' %}
+        {% set statusLabelPlural = 'Commandes terminées' %}
+        {% set paymentStatus = 'Terminée' %}
+    {% elseif status == 'cancelled' %}
+        {% set statusLabel = 'Commande annulée' %}
+        {% set statusLabelPlural = 'Commandes annulées' %}
+        {% set paymentStatus = 'Annulée' %}
+    {% endif %}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <h3 class="card-title">Commande #{{ order.id }}</h3>
+        <ol>
+            <li class="card-text">Du: {{ order.createdAt|date('Y-m-d H:i:s') }}</li>
+            <li class="card-text">Total: {{ order.getTotal['total'] }} €</li>
+            <li class="card-text">Statut de la commande: {{ paymentStatus }}</li>
+        </ol>
+        <h3 class="card-title">{{ order.items|length > 1 ? 'Produits' : 'Produit' }}</h3>
+        {% for item in order.items %}
+            <ol>
+                <li class="card-text">   
+                    {% for picture in item.product.pictures %}
+                        {% if picture %}
+                        {% if loop.last %}
+                            <img class="last-five-picture" src="/uploads/files/pictures_XS/{{ picture.getFilename }}" alt="{{ picture.alt }}" width="150">
+                        {% endif %}
+                    {% endif %}
+                    {% else %}
+                    <img class="last-five-picture" src="/assets/pictures/defaultSneakersPicture.webp" alt="" loading="lazy" width="150">
+                    {% endfor %} 
+                </li>
+                <li class="card-text">Produit: {{ item.product.name }}</li>
+                <li class="card-text">Quantité: {{ item.quantity }}</li>
+                <li class="card-text">Prix: {{ item.product.sellingPrice|number_format(2, ',', ' ') }} €</li>
+            </ol>
+        {% endfor %}
+    </div>
+</div>
 
 <form id='checkout-form' method='post' action="{{ path('app_stripe_charge') }}">             
     <input type='hidden' name='stripeToken' id='stripe-token-id'>   

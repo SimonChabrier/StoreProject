@@ -215,7 +215,7 @@ class ResizerService
                 'pictureXSDir' => [150, 150],
                 'picture250Dir' => [250, 250],
                 'picture400Dir' => [400, 400],
-                'picture800Dir' => [800, 800],
+                'picture800Dir' => [850, 850],
                 'picture1200Dir' => [1200, 1200],
             ];
 

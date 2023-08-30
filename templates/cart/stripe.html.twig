@@ -5,6 +5,25 @@
 {% block content %}
 <p>4242424242424242</p>
 <h1>Formulaire de paiement</h1> 
+<div class="card mt-3 mb-3">
+<div class="card-body">
+<form id='checkout-form' method='post' action="{{ path('app_stripe_charge') }}">             
+    <input type='hidden' name='stripeToken' id='stripe-token-id'>   
+    <input type="hidden" name="amount" value="{{ order.getTotal['totalInCents'] }}">                                                    
+    <input type="hidden" name="order_id" value="{{ order.id }}">    
+    <input type="hidden" name="_token" value="{{ csrf_token('paiement') }}">                                    
+    <label for="card-element" class="mt-3 mb-3">Procéder au paiement :</label>
+    <div id="card-element" class="form-control"></div>
+    <button 
+        id='pay-btn'
+        class="btn btn-success mt-3"
+        type="button"
+        style="margin-top: 20px; width: 100%;padding: 7px;"
+        onclick="createToken()"> Payer {{ order.getTotal['total'] }} €
+    </button>
+</form>
+</div>
+</div>
 {# 
 {% for message in app.flashes('success') %}
     <div 
@@ -76,25 +95,7 @@
     </div>
 </div>
 
-<div class="card">
-<div class="card-body">
-<form id='checkout-form' method='post' action="{{ path('app_stripe_charge') }}">             
-    <input type='hidden' name='stripeToken' id='stripe-token-id'>   
-    <input type="hidden" name="amount" value="{{ order.getTotal['totalInCents'] }}">                                                    
-    <input type="hidden" name="order_id" value="{{ order.id }}">    
-    <input type="hidden" name="_token" value="{{ csrf_token('paiement') }}">                                    
-    <label for="card-element" class="mt-3 mb-3">Procéder au paiement :</label>
-    <div id="card-element" class="form-control"></div>
-    <button 
-        id='pay-btn'
-        class="btn btn-success mt-3"
-        type="button"
-        style="margin-top: 20px; width: 100%;padding: 7px;"
-        onclick="createToken()"> Payer {{ order.getTotal['total'] }} €
-    </button>
-</form>
-</div>
-</div>
+
 
 <script src="https://js.stripe.com/v3/"></script>
 

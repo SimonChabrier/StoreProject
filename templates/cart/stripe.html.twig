@@ -91,6 +91,7 @@
                 <li class="card-text">Prix: {{ item.product.sellingPrice|number_format(2, ',', ' ') }} €</li>
             </ol>
         {% endfor %}
+        <h3 class="card-title">Total : {{ order.getTotal['total']}} €</h3>
     </div>
 </div>
 

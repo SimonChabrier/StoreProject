@@ -76,6 +76,8 @@
     </div>
 </div>
 
+<div class="card">
+<div class="card-body">
 <form id='checkout-form' method='post' action="{{ path('app_stripe_charge') }}">             
     <input type='hidden' name='stripeToken' id='stripe-token-id'>   
     <input type="hidden" name="amount" value="{{ order.getTotal['totalInCents'] }}">                                                    
@@ -91,6 +93,8 @@
         onclick="createToken()"> Payer {{ order.getTotal['total'] }} €
     </button>
 </form>
+</div>
+</div>
 
 <script src="https://js.stripe.com/v3/"></script>
 

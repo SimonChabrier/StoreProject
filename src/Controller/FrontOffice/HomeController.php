@@ -13,20 +13,24 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
     private $adminEmail;
-    private $cache;
+    private AdapterInterface $cache;
+    private $params;
     
     const CACHE_KEY = 'home_data';
-    const CACHE_DURATION = 3600;
+    //const CACHE_DURATION = 3600;
 
-    public function __construct($adminEmail, AdapterInterface $cache)
+    public function __construct($adminEmail, AdapterInterface $cache, ParameterBagInterface $params)
     {
         $this->adminEmail = $adminEmail;
         $this->cache = $cache;
+        $this->params = $params;
     }
 
     /**
@@ -88,7 +92,8 @@ class HomeController extends AbstractController
                 }
 
                 // Mettre les données en cache pendant une durée spécifique (par exemple, 1 heure)
-                $cacheItem->set($dataToCache)->expiresAfter(self::CACHE_DURATION);
+                //$cacheItem->set($dataToCache)->expiresAfter(self::CACHE_DURATION);
+                $cacheItem->set($dataToCache)->expiresAfter($this->params->get('cache_duration'));
                 // Enregistrer les données en cache
                 $this->cache->save($cacheItem);
                 // fin du else

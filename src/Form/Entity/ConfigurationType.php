@@ -15,7 +15,7 @@ class ConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('cacheTtl', NumberType::class, [
+            ->add('cacheDuration', NumberType::class, [
                 'label' => 'Durée du cache',
                 'attr' => [
                     'placeholder' => 'Durée du cache en secondes',

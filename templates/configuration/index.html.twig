@@ -17,7 +17,7 @@
         {% for configuration in configurations %}
             <tr>
                 <td>{{ configuration.id }}</td>
-                <td>{{ configuration.cacheTtl }}</td>
+                <td>{{ configuration.cacheDuration }}</td>
                 <td>
                     <a href="{{ path('app_configuration_show', {'id': configuration.id}) }}">voir</a>
                     <a href="{{ path('app_configuration_edit', {'id': configuration.id}) }}">modifier</a>

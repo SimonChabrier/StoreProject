@@ -10,14 +10,9 @@ class ConfigurationService
 {
     private $entityManager;
     
-    // TODO en attente
-    private $cache;
-    const CACHE_KEY = 'configuration';
-
-    public function __construct(EntityManagerInterface $entityManager, AdapterInterface $cache)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->cache = $cache;
     }
 
     /**

@@ -6,9 +6,12 @@ use App\Service\Notify\EmailService;
 use App\Service\Cache\SetProduct;
 use App\Service\File\DeleteFileService;
 use App\Service\Utils\ConfigurationService;
+
 use App\Repository\UserRepository;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
+
+
 use Symfony\Component\Process\Process;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -108,7 +111,7 @@ class HomeController extends AbstractController
                 }
 
                 // on stocke les données dans le cache
-                $cacheItem->set($dataToCache)->expiresAfter($this->configurationService->getConfiguration()->getCacheTtl());
+                $cacheItem->set($dataToCache)->expiresAfter($this->configurationService->getConfiguration()->getcacheDuration());
                 // On sauvegarde le cache
                 $this->cache->save($cacheItem);
                 // fin du else

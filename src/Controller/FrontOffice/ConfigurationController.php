@@ -3,7 +3,7 @@
 namespace App\Controller\FrontOffice;
 
 use App\Entity\Configuration;
-use App\Form\ConfigurationType;
+use App\Form\Entity\ConfigurationType;
 use App\Repository\ConfigurationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

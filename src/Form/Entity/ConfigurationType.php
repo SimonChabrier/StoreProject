@@ -3,10 +3,12 @@
 namespace App\Form\Entity;
 
 use App\Entity\Configuration;
-use Faker\Core\Number;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class ConfigurationType extends AbstractType
 {
@@ -24,6 +26,16 @@ class ConfigurationType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Email de l\'administrateur',
                 ],
+            ])
+            ->add('useCache', ChoiceType::class, [
+                'label' => 'Utiliser le cache',
+                'choices' => [
+                    'oui' => true,
+                    'non' => false,
+                ],
+                'required' => true,
+                'placeholder' => 'Choisir une option', // Option de choix par défaut
+                'empty_data' => 1, // Valeur par défaut si aucun choix n'est fait
             ])
         ;
     }

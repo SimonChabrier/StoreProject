@@ -3,13 +3,14 @@
 namespace App\Controller\Security;
 
 use App\Entity\User;
-use App\Service\Notify\EmailService;
+use App\Service\Utils\ConfigurationService;
 use App\Security\EmailVerifier;
-use App\Form\Security\RegistrationFormType;
 use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
+use App\Service\Notify\EmailService;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Form\Security\RegistrationFormType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,12 +25,13 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
-    private $adminEmail;
+    private ConfigurationService $configuration;
 
-    public function __construct(EmailVerifier $emailVerifier, string $adminEmail)
+    public function __construct(EmailVerifier $emailVerifier, ConfigurationService $configuration)
     {
         $this->emailVerifier = $emailVerifier;
-        $this->adminEmail = $adminEmail;
+        $this->configuration = $configuration;
+
     }
 
     /**
@@ -56,7 +58,7 @@ class RegistrationController extends AbstractController
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
-                    ->from(new Address($this->adminEmail, 'Sneakers Shop'))
+                    ->from(new Address($this->configuration->getConfiguration()->getAdminMail(), 'Sneakers Shop'))
                     ->to($user->getEmail())
                     ->subject('Merci de confirmer votre Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')

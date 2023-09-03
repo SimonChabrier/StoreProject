@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Editer la catégorie {{ category.name }}{% endblock %}
+{% block title %}Modifierer la catégorie {{ category.name }}{% endblock %}
 
 {% block content %}
-    <h1>Editer la catégorie {{ category.name }}</h1>
+    <h1>Modifierer la catégorie {{ category.name }}</h1>
 
     {{ include('category/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 

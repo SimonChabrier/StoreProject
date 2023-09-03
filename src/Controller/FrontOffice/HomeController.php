@@ -4,6 +4,7 @@ namespace App\Controller\FrontOffice;
 
 use App\Service\Notify\EmailService;
 use App\Service\File\DeleteFileService;
+use App\Service\Utils\ConfigurationService;
 use App\Repository\UserRepository;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
@@ -22,15 +23,17 @@ class HomeController extends AbstractController
     private $adminEmail;
     private AdapterInterface $cache;
     private $params;
+    private ConfigurationService $configurationService;
     
     const CACHE_KEY = 'home_data';
     //const CACHE_DURATION = 3600;
 
-    public function __construct($adminEmail, AdapterInterface $cache, ParameterBagInterface $params)
+    public function __construct($adminEmail, AdapterInterface $cache, ParameterBagInterface $params, ConfigurationService $configurationService)
     {
         $this->adminEmail = $adminEmail;
         $this->cache = $cache;
         $this->params = $params;
+        $this->configurationService = $configurationService;
     }
 
     /**
@@ -93,7 +96,8 @@ class HomeController extends AbstractController
 
                 // Mettre les données en cache pendant une durée spécifique (par exemple, 1 heure)
                 //$cacheItem->set($dataToCache)->expiresAfter(self::CACHE_DURATION);
-                $cacheItem->set($dataToCache)->expiresAfter($this->params->get('cache_duration'));
+                //$cacheItem->set($dataToCache)->expiresAfter($this->params->get('cache_duration'));
+                $cacheItem->set($dataToCache)->expiresAfter($this->configurationService->getConfiguration()->getCacheTtl());
                 // Enregistrer les données en cache
                 $this->cache->save($cacheItem);
                 // fin du else
@@ -263,10 +267,6 @@ class HomeController extends AbstractController
             $message = 'Une erreur s\'est produite lors de la mise à jour de Composer : ';
             $type = 'error';
         }
-
-        //dump($process->getOutput());
-        //dump($process->getErrorOutput());
-        //dump($message);
 
         // Définition du message flash final
         $this->addFlash($type, $message);

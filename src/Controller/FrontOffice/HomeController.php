@@ -21,7 +21,7 @@ class HomeController extends AbstractController
     private $cache;
     
     const CACHE_KEY = 'home_data';
-    const CACHE_DURATION = 0;
+    const CACHE_DURATION = 3600;
 
     public function __construct($adminEmail, AdapterInterface $cache)
     {
@@ -100,8 +100,6 @@ class HomeController extends AbstractController
             // si les données sont en cache, on affiche le template adapté aux tableaux, sinon on affiche le template adpaté aux objets.
             //$template = $isCacheHit ? self::TEMPLATE_CACHE : self::TEMPLATE_OBJECTS;
             $cache = $isCacheHit ? true : false;
-
-            dump($cache);
             
             return $this->render('home/index.html.twig', [
                 'homeCats' => $viewData,

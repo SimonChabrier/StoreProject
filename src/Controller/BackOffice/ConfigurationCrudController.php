@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class ConfigurationCrudController extends AbstractCrudController
@@ -58,6 +59,7 @@ class ConfigurationCrudController extends AbstractCrudController
 
             NumberField::new('id', 'ID')// get the id of the product
             ->setFormTypeOption('disabled', true),// disable the field in the form
+            BooleanField::new('useCache', 'Utiliser le cache'),
             NumberField::new('cache_ttl', 'Durée du cache en secondes') ,
             EmailField::new('admin_mail', 'Email de l\'administrateur') ,
         ];

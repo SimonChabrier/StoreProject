@@ -15,9 +15,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploadService
 {   
-    // certaines propriétés sont ajoutés ici parce que comme elles sont bindées dans services.yaml
-    // il faut les ajouter dans au moins un service pour générer d'erreur de Symfony.
-    private $adminEmail;
     private $picDir;
     private $docDir;
     private $manager;
@@ -26,7 +23,6 @@ class UploadService
 
 
     public function __construct(
-            $adminEmail,
             string $picDir, 
             string $docDir, 
             ResizerService $resizerService,
@@ -34,7 +30,6 @@ class UploadService
             Registry $workflows
         )
     {
-        $this->adminEmail =     $adminEmail;
         $this->picDir =         $picDir;
         $this->docDir =         $docDir;
         $this->resizerService = $resizerService;

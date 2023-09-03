@@ -3,6 +3,7 @@
 namespace App\Controller\FrontOffice;
 
 use App\Service\Notify\EmailService;
+use App\Service\Cache\SetProduct;
 use App\Service\File\DeleteFileService;
 use App\Service\Utils\ConfigurationService;
 use App\Repository\UserRepository;
@@ -20,20 +21,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
-    private $adminEmail;
-    private AdapterInterface $cache;
     private $params;
+    private AdapterInterface $cache;
     private ConfigurationService $configurationService;
+    private SetProduct $setProduct;
     
     const CACHE_KEY = 'home_data';
     //const CACHE_DURATION = 3600;
 
-    public function __construct($adminEmail, AdapterInterface $cache, ParameterBagInterface $params, ConfigurationService $configurationService)
-    {
-        $this->adminEmail = $adminEmail;
+    public function __construct(AdapterInterface $cache, ParameterBagInterface $params, ConfigurationService $configurationService, SetProduct $setProduct)
+    {   
         $this->cache = $cache;
         $this->params = $params;
         $this->configurationService = $configurationService;
+        $this->setProduct = $setProduct;
     }
 
     /**
@@ -44,12 +45,24 @@ class HomeController extends AbstractController
         ProductRepository $productRepository
         ): Response
     {   
-
         // Récupérer le cache
         $cacheItem = $this->cache->getItem(self::CACHE_KEY);
         $isCacheHit = $cacheItem->isHit();
+        $isCacheActive = $this->configurationService->getConfiguration()->isUseCache();
 
-        // Si les données sont en cache, les retourner directement
+        if(!$isCacheActive) {
+            // on vide le cache qu peut déjà exister (non impératif mais plus propre pour maintenir le cache à jour en cas de changement de paramètres)
+            $this->cache->deleteItem(self::CACHE_KEY);
+            // on récupère les données de la BDD
+            $viewData = $categoryRepository->findBy(['showOnHome' => true], ['listOrder' => 'ASC']);
+            // on les retourne directement et on sort
+            return $this->render('home/index.html.twig', [
+                'homeCats' => $viewData,
+                'cache' => $isCacheActive,
+            ]);
+        }
+
+        // Si les données sont en cache on les retourner directement
         if ($cacheItem->isHit()) {
             $viewData = $cacheItem->get();
         // sinon on contruit les données à mettre en cache et on les met en cache
@@ -71,7 +84,7 @@ class HomeController extends AbstractController
                     $categoryProducts = $category->getProducts();
                     if($categoryProducts) {
                         // on stocke le tableau des produits retourné par la méthode setProductData dans la variable $categoryData['products']
-                        $categoryData['products'] = $this->setProductData($categoryProducts);
+                        $categoryData['products'] = $this->setProduct->setProductData($categoryProducts);
                     }
                     // on récupère les sous-catégories de chaque catégorie
                     foreach ($category->getSubCategories() as $subCategory) {
@@ -85,7 +98,7 @@ class HomeController extends AbstractController
                         // si la sous catégorie à des produits
                         if($subCategoryProducts){
                             // on stocke le tableau des produits retourné par la méthode setProductData dans la variable $subCategoryData['products']
-                            $subCategoryData['products'] = $this->setProductData($subCategoryProducts);
+                            $subCategoryData['products'] = $this->setProduct->setProductData($subCategoryProducts);
                         }
                         // on stocke les sous-catégories dans le tableau : 'subCategories' => [], de la catégorie
                         $categoryData['subCategories'][] = $subCategoryData;
@@ -94,11 +107,9 @@ class HomeController extends AbstractController
                     $dataToCache[] = $categoryData;
                 }
 
-                // Mettre les données en cache pendant une durée spécifique (par exemple, 1 heure)
-                //$cacheItem->set($dataToCache)->expiresAfter(self::CACHE_DURATION);
-                //$cacheItem->set($dataToCache)->expiresAfter($this->params->get('cache_duration'));
+                // on stocke les données dans le cache
                 $cacheItem->set($dataToCache)->expiresAfter($this->configurationService->getConfiguration()->getCacheTtl());
-                // Enregistrer les données en cache
+                // On sauvegarde le cache
                 $this->cache->save($cacheItem);
                 // fin du else
             }
@@ -107,53 +118,12 @@ class HomeController extends AbstractController
             $viewData = $isCacheHit ? $viewData : $categoryRepository->findBy(['showOnHome' => true], ['listOrder' => 'ASC']);
 
             // si les données sont en cache, on affiche le template adapté aux tableaux, sinon on affiche le template adpaté aux objets.
-            //$template = $isCacheHit ? self::TEMPLATE_CACHE : self::TEMPLATE_OBJECTS;
             $cache = $isCacheHit ? true : false;
             
             return $this->render('home/index.html.twig', [
                 'homeCats' => $viewData,
                 'cache' => $cache,
             ]);
-    }
-    /**
-     * Pour chaque produit, on récupère les données dont on a besoin et on les stocke dans un tableau
-     * le cache ne peut pas stocker les objets Doctrine, il faut donc les transformer en tableau
-     * sinon on a une erreur de type : "Object of class App\Entity\Product could not be converted to string"
-     * Si on ajoute à la récumèration des données une serialization pour les mettre en cache et une deserialization pour les afficher
-     * on va consommer plus de ressources serveur pour rien, donc on ne le fait pas.
-     */
-    public function setProductData($products): array
-    {    
-        $productsData = [];
-
-        foreach ($products as $product) {
-
-            $productData = [
-                'id' => $product->getId(),
-                'name' => $product->getName(),
-                'category' => $product->getCategory() ? $product->getCategory()->getName() : null,
-                'pictures' => [], // on ne récupère que la première image du tableau : $product->getPictures()[0
-                'catalogPrice' => $product->getCatalogPrice(),
-                'sellingPrice' => $product->getSellingPrice(),
-                'subCategory' => $product->getSubCategory()->getName(),
-                'productType' => $product->getProductType()->getName(),
-                'brand' => $product->getBrand()->getName(),
-                'visibility' => $product->getVisibility(),
-                'isInStock' => $product->getIsInStock(),
-            ];
-            // récupèrer les images du produit
-            foreach ($product->getPictures() as $picture) {
-                // on a besoin du nom du alt et du fileName
-                $productData['pictures'][] = [
-                    'id' => $picture->getId(),
-                    'alt' => $picture->getAlt(),
-                    'fileName' => $picture->getFileName(),
-                ];
-            }
-            // on stocke les produits dans le tableau : 'products' => [], de la catégorie
-            $productsData[] = $productData;
-        }
-        return $productsData;
     }
 
     /**
@@ -220,7 +190,7 @@ class HomeController extends AbstractController
 
             try {
                 $emailService->sendTemplateEmailNotification(
-                    $this->adminEmail,
+                    $this->configurationService->getConfiguration()->getAdminMail(),
                     $user->getEmail(),
                     'Nouvelle notification de Sneaker-Shop',
                     'email/base_email.html.twig',

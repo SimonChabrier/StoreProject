@@ -23,10 +23,16 @@ class Configuration
     private $cacheTtl = 3600;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $useCache = false;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $adminMail;
 
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -40,6 +46,18 @@ class Configuration
     public function setCacheTtl(int $cacheTtl): self
     {
         $this->cacheTtl = $cacheTtl;
+
+        return $this;
+    }
+
+    public function isUseCache(): ?bool
+    {
+        return $this->useCache;
+    }
+
+    public function setUseCache(bool $useCache): self
+    {
+        $this->useCache = $useCache;
 
         return $this;
     }

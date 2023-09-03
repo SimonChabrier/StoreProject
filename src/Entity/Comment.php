@@ -7,8 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+
+
+
+// trier les commentaires par date de création
 /**
- * @ORM\Entity(repositoryClass=CommentRepository::class)
+ * @ORM\Entity(repositoryClass=CommentRepository::class) 
  */
 class Comment
 {

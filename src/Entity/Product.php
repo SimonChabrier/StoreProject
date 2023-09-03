@@ -87,6 +87,7 @@ class Product
      *      cascade={"remove"}
      *  )
      * @Groups({"product:read"})
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $comments;
 

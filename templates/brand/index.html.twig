@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Brand index{% endblock %}
+{% block title %}Administration des marques{% endblock %}
 
 {% block content %}
     <h1>Brand index</h1>
@@ -8,11 +8,11 @@
     <table class="table mt-3">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
+                <th>Identifiant</th>
+                <th>Nom</th>
+                {# <th>CreatedAt</th>
+                <th>UpdatedAt</th> #}
+                <th>Admin</th>
             </tr>
         </thead>
         <tbody>
@@ -20,8 +20,8 @@
             <tr>
                 <td>{{ brand.id }}</td>
                 <td>{{ brand.name }}</td>
-                <td>{{ brand.createdAt ? brand.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ brand.updatedAt ? brand.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                {# <td>{{ brand.createdAt ? brand.createdAt|date('Y-m-d H:i:s') : '' }}</td> #}
+                {# <td>{{ brand.updatedAt ? brand.updatedAt|date('Y-m-d H:i:s') : '' }}</td> #}
                 <td>
                     <a href="{{ path('app_brand_show', {'id': brand.id}) }}">show</a>
                     <a href="{{ path('app_brand_edit', {'id': brand.id}) }}">edit</a>
@@ -29,11 +29,11 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5">Aucune donnée</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_brand_new') }}">Create new</a>
+    <a href="{{ path('app_brand_new') }}">Créer</a>
 {% endblock %}

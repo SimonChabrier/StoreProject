@@ -1,24 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Configuration{% endblock %}
+{% block title %}Configuration générale{% endblock %}
 
-{% block body %}
-    <h1>Configuration</h1>
+{% block content %}
+    <h1>Configuration générale</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>Identifiant</th>
                 <td>{{ configuration.id }}</td>
             </tr>
             <tr>
-                <th>CacheTtl</th>
+                <th>Durée de vie du cache</th>
                 <td>{{ configuration.cacheTtl }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_configuration_index') }}">back to list</a>
+    <a href="{{ path('app_configuration_index') }}">Retour à la liste</a>
 
     <a href="{{ path('app_configuration_edit', {'id': configuration.id}) }}">edit</a>
 

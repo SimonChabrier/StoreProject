@@ -15,7 +15,7 @@ parameters:
     picture1200Dir: '%kernel.project_dir%/public/uploads/files/pictures_1200'
     slider1280Dir:  '%kernel.project_dir%/public/uploads/files/slider_1280'
     cache_ttl: 3600
-    
+
 
 services:
     # default configuration for services in *this* file

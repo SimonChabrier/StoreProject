@@ -726,7 +726,7 @@ class AppFixtures extends Fixture
 
         $admin = new User();
         $admin->setEmail('admin@admin.fr');
-        $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setRoles(['ROLE_ADMIN', 'ROLE_SUPER_ADMIN']);
         $plaintextPassword = 'password';
         $admin->setPassword($this->passwordHasher->hashPassword(
             $admin,

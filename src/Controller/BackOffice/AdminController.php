@@ -10,6 +10,7 @@ use App\Entity\Comment;
 use App\Entity\Product;
 use App\Entity\Category;
 use App\Entity\ProductType;
+use App\Entity\Configuration;
 
 use App\Entity\SubCategory;
 use Symfony\Component\HttpFoundation\Response;
@@ -88,8 +89,10 @@ class AdminController extends AbstractDashboardController
         yield MenuItem::section('Admin Commentaires');
         yield MenuItem::linkToCrud('Commentaires', 'fa fa-comment', Comment::class);
 
-
+        yield MenuItem::section('Admin Configuration');
+        yield MenuItem::linkToCrud('Configuration', 'fa fa-cog', Configuration::class);
     }
+
 
     /**
      * Personalize Admin Css

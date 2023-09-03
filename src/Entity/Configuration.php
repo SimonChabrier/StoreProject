@@ -20,7 +20,7 @@ class Configuration
     /**
      * @ORM\Column(type="integer")
      */
-    private $cacheTtl = 3600;
+    private $cacheDuration = 3600;
 
     /**
      * @ORM\Column(type="boolean")
@@ -38,14 +38,14 @@ class Configuration
         return $this->id;
     }
 
-    public function getCacheTtl(): ?int
+    public function getcacheDuration(): ?int
     {
-        return $this->cacheTtl;
+        return $this->cacheDuration;
     }
 
-    public function setCacheTtl(int $cacheTtl): self
+    public function setcacheDuration(int $cacheDuration): self
     {
-        $this->cacheTtl = $cacheTtl;
+        $this->cacheDuration = $cacheDuration;
 
         return $this;
     }

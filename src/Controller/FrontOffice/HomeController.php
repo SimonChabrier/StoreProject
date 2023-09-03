@@ -21,7 +21,7 @@ class HomeController extends AbstractController
     private $cache;
     
     const CACHE_KEY = 'home_data';
-    const CACHE_DURATION = 3600;
+    const CACHE_DURATION = 0;
 
     public function __construct($adminEmail, AdapterInterface $cache)
     {
@@ -101,6 +101,8 @@ class HomeController extends AbstractController
             //$template = $isCacheHit ? self::TEMPLATE_CACHE : self::TEMPLATE_OBJECTS;
             $cache = $isCacheHit ? true : false;
 
+            dump($cache);
+            
             return $this->render('home/index.html.twig', [
                 'homeCats' => $viewData,
                 'cache' => $cache,

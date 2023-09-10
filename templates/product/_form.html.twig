@@ -31,13 +31,15 @@
             <div><p>Aucune spécificité renseigné pour ce produit</p></div>
         {% endif %}
     </section>
-    
-    <button type="button" class="add_item_link btn btn-primary" data-product-attributes="add">
-        Ajouter
-    </button>
-    <button type="button" class="remove_item_link btn btn-danger" data-product-attribute="del">
-        Supprimer
-    </button>
+
+    <div class="buttonContainer">
+        <button type="button" class="add_item_link btn btn-primary" data-product-attributes="add">
+            Ajouter
+        </button>
+        <button type="button" class="remove_item_link btn btn-danger" data-product-attribute="del">
+            Supprimer
+        </button>
+    </div>
 
     <div data-product-attributes="productData"
     data-index="{{ form.productData|length > 0 ? form.productData|last.vars.name + 1 : 0 }}"
@@ -62,10 +64,12 @@
     {% endif %}
     </div>
 
-    <button type="button" class="add_picture_link btn btn-primary" data-image="add">
-        Ajouter</button>
-    <button type="button" class="remove_picture_link btn btn-danger" data-image="del">
-        Supprimer</button>
+        <div class="buttonContainer">
+            <button type="button" class="add_picture_link btn btn-primary" data-image="add">
+                Ajouter</button>
+            <button type="button" class="remove_picture_link btn btn-danger" data-image="del">
+                Supprimer</button>
+        </div>
 
     <div data-image="pictures" 
     data-index="{{ form.pictures|length > 0 ? form.pictures|last.vars.fileName + 1 : 0 }}"
@@ -112,5 +116,31 @@ $('button[data-image="add"]').on('click', function() {
 // au clic sur le bouton supprimer on supprime le dernier input file du formulaire
 $('button[data-image="del"]').on('click', function() {
     $('div[data-image="pictures"]').children().last().remove();
+});
+
+// si le formulaire est vide on cache les boutons supprimer et on les affiche au clic sur le bouton ajouter 
+if ($('div[data-product-attributes="productData"]').children().length == 0) {
+    $('button[data-product-attribute="del"]').hide();
+    $('button[data-product-attributes="add"]').on('click', function() {
+        $('button[data-product-attribute="del"]').show();
+    });
+}
+// si on clique sur supprimer et qu'il n'y a plus qu'un seul input on cache le bouton supprimer à nouveau
+$('button[data-product-attribute="del"]').on('click', function() {
+    if ($('div[data-product-attributes="productData"]').children().length == 1) {
+        $('button[data-product-attribute="del"]').hide();
+    }
+});
+// la même chose pour les images
+if ($('div[data-image="pictures"]').children().length == 0) {
+    $('button[data-image="del"]').hide();
+    $('button[data-image="add"]').on('click', function() {
+        $('button[data-image="del"]').show();
+    });
+}
+$('button[data-image="del"]').on('click', function() {
+    if ($('div[data-image="pictures"]').children().length == 1) {
+        $('button[data-image="del"]').hide();
+    }
 });
 </script>

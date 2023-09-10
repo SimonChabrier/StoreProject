@@ -125,6 +125,7 @@ class ProductType extends AbstractType
                 ],
             ])
             ->add('brand', EntityType::class, [
+                'label' => 'Marque associée',
                 'class' => Brand::class,
                 'choice_label' => 'name',
                 'multiple' => false,
@@ -132,6 +133,7 @@ class ProductType extends AbstractType
                 'placeholder' => 'Choisir une marque',
             ])
             ->add('category', EntityType::class, [
+                'label' => 'Catégorie associée',
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'multiple' => false,
@@ -142,6 +144,7 @@ class ProductType extends AbstractType
                 'placeholder' => 'Choisir une catégorie',
             ])
             ->add('subCategory', EntityType::class, [
+                'label' => 'Sous-catégorie associée',
                 'class' => SubCategory::class,
                 'choice_label' => 'getSubCategoryName',
                 'multiple' => false,
@@ -163,6 +166,7 @@ class ProductType extends AbstractType
             //     'by_reference' => false,
             // ])
             ->add('productType', EntityType::class, [
+                'label' => 'Type de produit associé',
                 'class' => ProductTypeEntity::class,
                 'choice_label' => 'name',
                 'multiple' => false,
@@ -178,6 +182,7 @@ class ProductType extends AbstractType
                 // ],
             ])
             ->add('productData', CollectionType::class, [
+                    'label' => 'Caractéristiques du produit',
                     'entry_type' => ProductDataType::class,
                     'allow_add' => true,
                     'allow_delete' => true,

@@ -9,7 +9,7 @@
     <table class="table mt-3">
         <tbody>
             <tr>
-                <th><th>Identifiant</th> de la catégorie</th>
+                <th>Identifiant de la catégorie</th>
                 <td>{{ category.id }}</td>
             </tr>
             <tr>
@@ -18,12 +18,13 @@
             </tr>
         </tbody>
     </table>
-    <a href="{{ path('app_category_index') }}" class="btn">Retour à la liste</a>
-    <a href="{{ path('app_category_edit', {'id': category.id}) }}" class="btn">Modifier</a>
-    {{ include('category/_delete_form.html.twig') }}
+    <div class="buttonContainer">
+        <a href="{{ path('app_category_index') }}" class="btn">Retour à la liste</a>
+        <a href="{{ path('app_category_edit', {'id': category.id}) }}" class="btn">Modifier</a>
+        {{ include('category/_delete_form.html.twig') }}
+    </div>
 {% endif %}  
 
-<hr>
 {% if category.products is not empty %}
     <div class="last-five swiper">
         <div class="last-five-products">
@@ -60,7 +61,5 @@
         <p>Il n'y a pas de produits dans cette catégorie</p>
     </div>
 {% endif %}
-
-
 
 {% endblock %}

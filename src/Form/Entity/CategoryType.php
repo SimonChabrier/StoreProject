@@ -19,14 +19,15 @@ class CategoryType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Category name',
+                'label' => 'Nom de la catégorie',
                 'disabled' => false,
             ])
             ->add('listOrder', NumberType::class, [
-                'label' => 'Order in the category list',
+                'label' => 'Ordre d\'affichage',
                 'disabled' => false,
             ])
             ->add('subCategories', EntityType::class, [
+                'label' => 'Sous-catégories associées',
                 'class' => SubCategory::class,
                 'choice_label' => 'name',
                 'multiple' => true,

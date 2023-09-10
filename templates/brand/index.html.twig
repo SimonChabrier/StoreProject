@@ -3,15 +3,13 @@
 {% block title %}Administration des marques{% endblock %}
 
 {% block content %}
-    <h1>Brand index</h1>
+    <h1>Administration des marques</h1>
 
     <table class="table mt-3">
         <thead>
             <tr>
                 <th>Identifiant</th>
                 <th>Nom</th>
-                {# <th>CreatedAt</th>
-                <th>UpdatedAt</th> #}
                 <th>Admin</th>
             </tr>
         </thead>
@@ -20,20 +18,18 @@
             <tr>
                 <td>{{ brand.id }}</td>
                 <td>{{ brand.name }}</td>
-                {# <td>{{ brand.createdAt ? brand.createdAt|date('Y-m-d H:i:s') : '' }}</td> #}
-                {# <td>{{ brand.updatedAt ? brand.updatedAt|date('Y-m-d H:i:s') : '' }}</td> #}
                 <td>
-                    <a href="{{ path('app_brand_show', {'id': brand.id}) }}">show</a>
-                    <a href="{{ path('app_brand_edit', {'id': brand.id}) }}">edit</a>
+                    <a href="{{ path('app_brand_show', {'id': brand.id}) }}">Voir</a>
+                    <a href="{{ path('app_brand_edit', {'id': brand.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">Aucune donnée</td>
+                <td colspan="5">Aucune données enregistrée pour le moment...</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_brand_new') }}">Créer</a>
+    <a href="{{ path('app_brand_new') }}">Ajouter une marque</a>
 {% endblock %}

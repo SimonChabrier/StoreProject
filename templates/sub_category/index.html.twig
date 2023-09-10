@@ -8,9 +8,9 @@
     <table class="table mt-3">
         <thead>
             <tr>
+                <th>Identifiant</th>
                 <th>Catégorie parente</th>
                 <th>Sous-catégorie</th>
-                <th><th>Identifiant</th></th>
                 <th>Ordre d'affichage</th>
                 <th>Admin</th>
             </tr>
@@ -18,9 +18,9 @@
         <tbody>
         {% for sub_category in sub_categories %}
             <tr>
+                <td>{{ sub_category.id }}</td>
                 <td>{{ sub_category.getCategoryName }}</td>
                 <td>{{ sub_category.name }}</td>
-                <td>{{ sub_category.id }}</td>
                 <td>{{ sub_category.listOrder }}</td>
                 <td>
                     <a href="{{ path('app_sub_category_show', {'id': sub_category.id}) }}">Voir</a>

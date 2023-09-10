@@ -15,12 +15,13 @@ class TypeProductType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Type de produit',
+                'label' => 'Nom du type de produit',
                 'attr' => [
                     'placeholder' => 'Eg: chaussure, vêtement, accessoire, etc.',
                     'class' => 'form-control',
                 ],
             ])
+            // TODO en attente à traiter comme la collection d'images dans ProductType...
             // ->add('typeData', CollectionType::class, [
             //     'entry_type' => ProductDataType::class,
             //     'entry_options' => ['label' => false],

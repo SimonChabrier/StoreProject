@@ -3,7 +3,7 @@
 {% block title %}Comment{% endblock %}
 
 {% block content %}
-    <h1>Comment</h1>
+    <h1>Commentaire de {{ comment.author }}</h1>
 
     <table class="table mt-3">
         <tbody>
@@ -12,23 +12,29 @@
                 <td>{{ comment.id }}</td>
             </tr>
             <tr>
-                <th>Author</th>
-                <td>{{ comment.author }}</td>
+                <th>Produit</th>
+                <td><a href="{{ path('app_product_show', {'id': comment.product.id}) }}">{{ comment.product.name }}</a></td>
             </tr>
             <tr>
-                <th>Text</th>
+                <th>Commentaire</th>
                 <td>{{ comment.text }}</td>
+            </tr>
+            <tr>
+                <th>Auteur</th>
+                <td>{{ comment.author }}</td>
             </tr>
             <tr>
                 <th>Email</th>
                 <td>{{ comment.email }}</td>
             </tr>
+
         </tbody>
     </table>
 
-    <a href="{{ path('app_comment_index') }}">Retour à la liste</a>
-
-    <a href="{{ path('app_comment_edit', {'id': comment.id}) }}">Modifier</a>
-
+<div class="buttonContainer">
+    <a href="{{ path('app_comment_index') }}" class="btn">Retour à la liste</a>
+    <a href="{{ path('app_comment_edit', {'id': comment.id}) }}" class="btn">Modifier</a>
     {{ include('comment/_delete_form.html.twig') }}
+</div>
+
 {% endblock %}

@@ -118,7 +118,7 @@ input.brandCheckbox {
     text-transform: uppercase;
     transition: all 0.2s ease-in;
     border: none !important;
-    width: auto !important;
+    width: 100% !important;
 }
 
 button#reset_submit {
@@ -207,11 +207,6 @@ button#reset_submit {
   background-color: #ffffff !important;
 }
 
-
-button {
-  margin: 10px 0 !important;
-  width: 100%!important;
-}
 
 .btn-primary {
   color: #fff;
@@ -489,6 +484,13 @@ aside {
 .block-content {
     width: 100%;
     margin: 0 auto;
+    overflow: auto;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .last-five {

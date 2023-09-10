@@ -3,12 +3,12 @@
 {% block title %}{{ sub_category.getCategoryName }} - {{ sub_category.name }}{% endblock %}
 
 {% block content %}
-    <h1>Produits de la sous-categorie {{ sub_category.name }}</h1>
+    <h1>Produits de la sous-categorie {{ sub_category.name }} de la categorie {{ sub_category.getCategoryName }}</h1>
 {% if app.user and is_granted('ROLE_ADMIN') %}
     <table class="table mt-3">
         <tbody>
             <tr>
-                <th><th>Identifiant</th> de le sous catérorie</th>
+                <th>Identifiant</th>
                 <td>{{ sub_category.id }}</td>
             </tr>
             <tr>
@@ -21,9 +21,12 @@
             </tr>
         </tbody>
     </table>
-    <a href="{{ path('app_sub_category_index') }}" class="btn">Liste des sous-categories</a>
-    <a href="{{ path('app_sub_category_edit', {'id': sub_category.id}) }}" class="btn">Modifier {{ sub_category.name }} </a>
-    {{ include('sub_category/_delete_form.html.twig') }}
+    <div class="buttonContainer">
+        <a href="{{ path('app_sub_category_index') }}" class="btn">Liste des sous-categories</a>
+        <a href="{{ path('app_sub_category_edit', {'id': sub_category.id}) }}" class="btn">Modifier {{ sub_category.name }} </a>
+        {{ include('sub_category/_delete_form.html.twig') }}
+    </div>
+
 {% endif %}  
     <hr>
     <h3>De la catégorie : {{ sub_category.getCategoryName }}</h3>

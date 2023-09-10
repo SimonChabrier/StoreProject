@@ -1,3 +1,4 @@
+<hr>
 <form method="post" action="{{ path('app_comment_delete', {'id': comment.id}) }}" onsubmit="return confirm('Supression définitive ! Etes vous sur ? ');">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
     <button class="btn">Supprimer</button>

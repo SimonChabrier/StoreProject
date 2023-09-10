@@ -19,31 +19,29 @@
 
 {% block content %}
 
-<h1 class="mb-2">{{ product.name|title }}</h1>
+<h1>{{ product.name|title }}</h1>
 
-<div class="product_header">
-    
-    <div class="col-md-7 gallery">
-    {% for picture in product.pictures %}
-        {% if picture %}
-            {# get just last picture #}
-            {% if loop.first %}
-                <img class="last-five-picture" src="/uploads/files/pictures_1200/{{ picture.getFilename }}" alt="{{ picture.alt }}" title="{{ picture.name }}" >
+<div class="product_header mt-4">
+        <div class="col-md-7 gallery">
+        {% for picture in product.pictures %}
+            {% if picture %}
+                {# get just last picture #}
+                {% if loop.first %}
+                    <img class="last-five-picture" src="/uploads/files/pictures_1200/{{ picture.getFilename }}" alt="{{ picture.alt }}" title="{{ picture.name }}" loading="lazy">
+                {% endif %}
             {% endif %}
-        {% endif %}
-        {% else %}
-        <img class="last-five-picture" src="/assets/pictures/defaultSneakersPicture.webp" alt="image de chaussure" loading="lazy">
-    {% endfor %}
+            {% else %}
+            <img class="last-five-picture" src="/assets/pictures/defaultSneakersPicture.webp" alt="image de chaussure" loading="lazy">
+        {% endfor %}
 
-    <div class="gallery_small">
-    {% for picture in product.pictures %}
-        {% if picture %}
-            <img class="picture_XS" src="/uploads/files/pictures_XS/{{ picture.getFilename }}" alt="{{ picture.alt }}" id="{{ picture.id }}" title="{{ picture.name }}" >
-        {% endif %}
-    {% endfor %}
+        <div class="gallery_small">
+        {% for picture in product.pictures %}
+            {% if picture %}
+                <img class="picture_XS" src="/uploads/files/pictures_XS/{{ picture.getFilename }}" alt="{{ picture.alt }}" id="{{ picture.id }}" title="{{ picture.name }}" loading="lazy" >
+            {% endif %}
+        {% endfor %}
+        </div>
     </div>
-    </div>
-
 
     <div class="product_info col-md-4">
     
@@ -58,20 +56,21 @@
     {% endfor %}
 
     {% if product.subCategory %}
-    <h6><a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}">Sous-Categorie : {{ product.subCategory|capitalize }}</a></h6>
-    <hr>
+        <h6><a href="{{ path('app_sub_category_show', { 'id': product.subCategory.id }) }}">Sous-Categorie : {{ product.subCategory|capitalize }}</a></h6>
+        <hr>
     {% else %}
-    <h6> Aucune sous-categorie renseigné pour ce produit </h6>
-    <hr>
+        <h6> Aucune sous-categorie renseigné pour ce produit </h6>
+        <hr>
     {% endif %}
 
     {% if product.productType.name %}
-    <a href="{{ path('app_product_type_show', { 'id': product.productType.id }) }}">Type de produit :  {{ product.productType.name|capitalize }}</a>
-    <hr>
+        <a href="{{ path('app_product_type_show', { 'id': product.productType.id }) }}">Type de produit :  {{ product.productType.name|capitalize }}</a>
+        <hr>
     {% else %}
-    <h6> Aucun type de produit renseigné pour ce produit </h6>
-    <hr>
+        <h6> Aucun type de produit renseigné pour ce produit </h6>
+        <hr>
     {% endif %}
+
     <h3 class="section-title">Propriétés du produit</h3>
     
     <div class="last-five product-properties">
@@ -123,7 +122,7 @@
     <div class="last-five">
     <h3> Ajouter au panier </h3>
 
-        {{ form_start(form, {'attr': {'class': 'mt-4 p-4 bg-light'}}) }}
+        {{ form_start(form, {'attr': {'class': 'mt-3 bg-light'}}) }}
         <div class="form-group">
             {{ form_label(form.quantity) }}
             {{ form_widget(form.quantity, {
@@ -188,7 +187,7 @@
     </div>
 
     {% if app.user and is_granted('ROLE_ADMIN') %}
-        <div class="admin-Admin">
+        <div class="buttonContainer">
             <a href="{{ path('app_product_index') }}" class="btn">Retour à la liste</a>
             <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn">Modifier</a>
             {{ include('product/_delete_form.html.twig') }}
@@ -196,8 +195,8 @@
     {% endif %}
 </div>
 
-{# produits liés #}
 
+{# produits liés #}
 <div class="last-five swiper">
     <h3>Produits similaires à {{ product.name }} dans {{ product.subCategory.name }}</h3>
     <div class="last-five-products-related swiper-wrapper">
@@ -206,7 +205,7 @@
                 <h6>{{ product.name|upper }}</h6>
                 {% for picture in product.pictures %}
                     {% if picture and loop.last %}
-                        <img class="last-five-picture" src="/uploads/files/pictures_400/{{ picture.getFilename }}" alt="{{ picture.alt }}" >
+                        <img class="last-five-picture" src="/uploads/files/pictures_400/{{ picture.getFilename }}" alt="{{ picture.alt }}" loading="lazy">
                     {% endif %}
                 {% else %}
                     <img class="last-five-picture" src="/assets/pictures/defaultSneakersPicture.webp" alt="" loading="lazy">

@@ -4,7 +4,7 @@
 
 {% block content %}
     <h1>Administration des produits</h1>
-
+    <a href="{{ path('app_product_new') }}" class="btn mt-3">Ajouter un produit</a>
     <table class="table mt-3">
         <thead>
             <tr>
@@ -53,6 +53,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_product_new') }}">Nouveau</a>
 {% endblock %}

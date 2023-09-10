@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New ProductType{% endblock %}
+{% block title %}Nouveau type de produit{% endblock %}
 
 {% block content %}
-    <h1>Nouveau ProductType</h1>
+    <h1>Nouveau type de produit</h1>
 
+<div class="buttonContainer"> 
     {{ include('product_type/_form.html.twig') }}
-
     <a href="{{ path('app_product_type_index') }}">Retour à la liste</a>
+</div>
 {% endblock %}

@@ -146,6 +146,10 @@ button#reset_submit {
   box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
 }
 
+.form-group {
+  margin-bottom: 10px !important;
+}
+
 .username {
   color: #c7c721;
   margin-bottom: 0;

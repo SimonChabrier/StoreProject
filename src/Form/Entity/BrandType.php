@@ -14,10 +14,10 @@ class BrandType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'test',
+                'label' => 'Nom de la marque',
                 'attr' => [
-                    'placeholder' => 'Nom de la marque'
-                ]
+                    'placeholder' => 'Nike'
+                ],
             ])
         ;
     }

@@ -21,11 +21,11 @@ class SubCategoryType extends AbstractType
                 'disabled' => false,
             ])
             ->add('listOrder', NumberType::class, [
-                'label' => 'Ordre dans la liste des sous-catégories',
+                'label' => 'Ordre d\'affichage dans la liste des sous-catégories',
                 'disabled' => false,
             ])
             ->add('categories', EntityType::class, [
-                'label' => 'Category lié à la sous-catégorie',
+                'label' => 'Lier à une ou plusieurs catégories',
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'multiple' => true,

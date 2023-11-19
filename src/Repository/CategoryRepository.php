@@ -178,24 +178,29 @@ class CategoryRepository extends ServiceEntityRepository
      * @param integer $max
      * @return array
      */
-    public function findProdIdProdNameProdPriceFromCatAndSubCat(int $min, int $max) : array
-    {   
-    
-        $conn = $this->getEntityManager()->getConnection(); 
+    public function findProdIdProdNameProdPriceFromCatAndSubCat(int $min, int $max): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
 
-        $sql ="SELECT c.name as category_name, c.id as category_id, sc.name as subcategory_name, sc.id as subcategory_id, p.name as product_name, p.id as product_id, p.selling_price
-        FROM category c
-        LEFT JOIN sub_category_category scc ON c.id = scc.category_id
-        LEFT JOIN sub_category sc ON scc.sub_category_id = sc.id
-        LEFT JOIN product p ON (c.id = p.category_id OR sc.id = p.sub_category_id)
-        WHERE p.visibility = 1 AND p.selling_price BETWEEN $min AND $max 
-        ORDER BY c.list_order + 0 ASC, sc.list_order + 0 ASC
-        ";
-    
+        $sql = "SELECT c.name as category_name, 
+                    c.id as category_id, 
+                    sc.name as subcategory_name, 
+                    sc.id as subcategory_id, 
+                    p.name as product_name, 
+                    p.id as product_id, 
+                    p.selling_price
+                FROM category c
+                LEFT JOIN sub_category_category scc ON c.id = scc.category_id
+                LEFT JOIN sub_category sc ON scc.sub_category_id = sc.id
+                LEFT JOIN product p ON (c.id = p.category_id OR sc.id = p.sub_category_id)
+                WHERE p.visibility = 1 AND p.selling_price BETWEEN :min AND :max
+                ORDER BY c.list_order + 0 ASC, sc.list_order + 0 ASC";
+
         $stmt = $conn->prepare($sql);
+        $stmt->bindValue('min', $min);
+        $stmt->bindValue('max', $max);
         $resultSet = $stmt->executeQuery();
 
-        // returns an array of arrays (i.e. a raw data set)
         return $resultSet->fetchAllAssociative();
     }
 
@@ -212,32 +217,41 @@ class CategoryRepository extends ServiceEntityRepository
      *   "selling_price" => "715"
      *  ]
      * 
+     * Return id name and price of products from category and subcategory if product is visible and price is between $min and $max
      * @param integer $min
      * @param integer $max
      * @return array
      */
-    public function findOnlyProdIdProdNameProdPriceFromCatAndSubCat(int $min, int $max): array
-    {   
-        $conn = $this->getEntityManager()->getConnection(); 
+    public function test1(int $min, int $max): array
+    {
+        $entityManager = $this->getEntityManager();
 
-        $sql = " SELECT c.name, c.id, sc.name, sc.id, cp.name, cp.id, scp.name, scp.id, scp.selling_price 
-        FROM category c 
-        LEFT JOIN sub_category_category scc 
-        ON c.id = scc.category_id 
-        LEFT JOIN sub_category sc 
-        ON scc.sub_category_id = sc.id 
-        LEFT JOIN product cp ON c.id = cp.category_id 
-        LEFT JOIN product scp ON sc.id = scp.sub_category_id 
-        WHERE cp.visibility = 1 AND cp.selling_price BETWEEN $min AND $max
-        AND scp.visibility = 1 AND scp.selling_price BETWEEN $min AND $max 
-        ORDER BY c.list_order + 0 ASC, sc.list_order + 0 ASC ";
-    
-        $stmt = $conn->prepare($sql);
-        $resultSet = $stmt->executeQuery();
-
-        // returns an array of arrays (i.e. a raw data set)
-        return $resultSet->fetchAllAssociative();
+        $sql = "SELECT c.name as category_name, 
+                    c.id as category_id, 
+                    sc.name as subcategory_name, 
+                    sc.id as subcategory_id, 
+                    cp.name as product_name, 
+                    cp.id as product_id, 
+                    scp.name as subproduct_name, 
+                    scp.id as subproduct_id, 
+                    scp.selling_price 
+                FROM category c
+                LEFT JOIN sub_category_category scc 
+                ON c.id = scc.category_id
+                LEFT JOIN sub_category sc 
+                ON scc.sub_category_id = sc.id
+                LEFT JOIN product cp ON c.id = cp.category_id
+                LEFT JOIN product scp ON sc.id = scp.sub_category_id
+                WHERE cp.visibility = 1 AND cp.selling_price BETWEEN :min AND :max
+                AND scp.visibility = 1 AND scp.selling_price BETWEEN :min AND :max
+                ORDER BY c.list_order + 0 ASC, sc.list_order + 0 ASC";
+        
+        $query = $entityManager->getConnection()->prepare($sql);
+        $results = $query->execute(['min' => $min, 'max' => $max]);
+        
+        return $results->fetchAll();
     }
+
 
 
     /**
@@ -270,9 +284,13 @@ class CategoryRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()->getConnection(); 
         
-        $sql = " SELECT c.name as category_name, c.id as category_id, 
-                sc.name as subcategory_name, sc.id as subcategory_id, 
-                p.name as product_name, p.id as product_id, p.selling_price
+        $sql = " SELECT c.name as category_name, 
+                    c.id as category_id, 
+                    sc.name as subcategory_name, 
+                    sc.id as subcategory_id, 
+                    p.name as product_name, 
+                    p.id as product_id, 
+                    p.selling_price
         FROM (
         SELECT id, name, list_order FROM category 
         ) c
@@ -290,8 +308,8 @@ class CategoryRepository extends ServiceEntityRepository
         ";
 
         $stmt = $conn->prepare($sql);
-        // $stmt->bindValue(':min', $min);
-        // $stmt->bindValue(':max', $max);
+        $stmt->bindValue(':min', $min);
+        $stmt->bindValue(':max', $max);
         $resultSet = $stmt->executeQuery(['min' => $min, 'max' => $max]);
 
         // returns an array of arrays (i.e. a raw data set)
@@ -559,14 +577,19 @@ class CategoryRepository extends ServiceEntityRepository
     }
 
                 
-    // Get all product from subcategory 
-    public function getSubCatProducts($subCatId)
+    /**
+     * Return products of a subcategory
+     *
+     * @param [int] $subCatId
+     * @return array
+     */
+    public function getSubCatProducts($subCatId) : array
     {
         $query = $this->createQueryBuilder('p')
             ->select('p.id', 'p.name', 'p.sellingPrice')
             ->join('p.subCategory', 's')
             ->where('s.id = :subCatId')
-            ->setParameter('subCatId', $subCatId)
+            ->setParameter('subCatId' , $subCatId)
             ->getQuery();
         return $query->getResult();
     }

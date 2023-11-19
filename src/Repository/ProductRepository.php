@@ -117,6 +117,71 @@ class ProductRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();    
     }
 
+        /**
+         * Return products data array
+         * filtered by price range
+         * 
+         * @param [int] $min
+         * @param [int] $max
+         * @return array
+         */
+        public function filterByPriceRange($min, $max): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $sql = '
+            SELECT 
+                p.name AS product_name,
+                p.id AS product_id,
+                p.selling_price,
+                c.name AS category_name,
+                c.id AS category_id,
+                sc.name AS subcategory_name,
+                sc.id AS subcategory_id
+            FROM 
+                product p
+            LEFT JOIN 
+                category c ON p.category_id = c.id
+            LEFT JOIN 
+                sub_category sc ON p.sub_category_id = sc.id
+            WHERE 
+                CAST(REPLACE(p.selling_price, " ", "") AS DECIMAL) BETWEEN :min AND :max
+            ORDER BY 
+                c.list_order + 0 ASC, sc.list_order + 0 ASC
+        ';
+
+        $query = $entityManager->getConnection()->prepare($sql);
+        $results = $query->execute(['min' => $min, 'max' => $max]);
+        
+        return $results->fetchAll();
+    }
+
+    /**
+     * Return products data array
+     * filtered by price range
+     * 
+     * @param [int] $min
+     * @param [int] $max
+     * @return array
+     */
+    public function findByPriceRange($min, $max): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.name AS product_name', 'p.id AS product_id', 
+                    'p.sellingPrice', 'c.name AS category_name', 
+                    'c.id AS category_id', 'sc.name AS subcategory_name', 
+                    'sc.id AS subcategory_id')
+            ->leftJoin('p.category', 'c')
+            ->leftJoin('p.subCategory', 'sc')
+            ->where('p.sellingPrice BETWEEN :min AND :max')
+            ->setParameter('min', $min)
+            ->setParameter('max', $max)
+            ->orderBy('c.listOrder + 0', 'ASC')
+            ->addOrderBy('sc.listOrder + 0', 'ASC')
+            ->getQuery()
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+    }
+
     /**
      * Retourne les produits 
      * en fonction du terme de recherche

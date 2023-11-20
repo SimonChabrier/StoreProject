@@ -188,8 +188,8 @@ console.log(products);
 function filterProducts() {
 
     // Récupération des valeurs saisies dans le formulaire
-    let minPrice = Number(minPriceInput.value);
-    let maxPrice = Number(maxPriceInput.value);
+    let minPrice = Number(minPriceInput.value); // on converti en nombre pour éviter les problèmes de comparaison et de type
+    let maxPrice = Number(maxPriceInput.value); 
     const searchTerm = searchInput.value.toLowerCase();
     const selectedBrands = Array.from(brandCheckBoxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
     let selectedCategories = Array.from(categoryCheckBoxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
@@ -240,7 +240,7 @@ function filterProducts() {
             let selectedCategoriesFilter = true;
                     
             if(searchState.minPrice){
-                minPriceFilter = Number(product.sellingPrice) >= minPrice;
+                minPriceFilter = Number(product.sellingPrice) >= minPrice; // on converti product.sellingPrice en nombre pour éviter les problèmes de comparaison et de type
             }
             if(searchState.maxPrice){
                 maxPriceFilter = Number(product.sellingPrice) <= maxPrice;

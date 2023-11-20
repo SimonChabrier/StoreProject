@@ -189,9 +189,7 @@ function filterProducts() {
 
     // Récupération des valeurs saisies dans le formulaire
     let minPrice = Number(minPriceInput.value);
-    console.log(typeof(minPrice));
     let maxPrice = Number(maxPriceInput.value);
-    console.log(maxPrice);
     const searchTerm = searchInput.value.toLowerCase();
     const selectedBrands = Array.from(brandCheckBoxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
     let selectedCategories = Array.from(categoryCheckBoxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);

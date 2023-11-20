@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Product;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use InvalidArgumentException;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Product>
@@ -40,32 +41,15 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne les produits visibles
-     *
-     * @return array
-     */
-    public function findAllVisibleProdcts(): array
-    {
-        $qb = $this->createQueryBuilder('p');
-
-        $qb->select('p')   
-            ->andWhere('p.visibility = 1')
-            ->orderBy('p.id', 'asc');
-            
-        return $qb->getQuery()->getResult();
-    }
-    
-    /**
-     * Retourne 8 produits liées à la catégorie du produit courant
-     * dont la visibilité est true et la quentité en stock est supérieure à 0
-     * @return array
+     * Return 8 products from the same subcategory
+     * @return Product[] Returns an array of Product objects
      */
     public function relatedProducts($subCatId): array
     {
         $qb = $this->createQueryBuilder('p');
 
         $qb->select('p')
-            ->andWhere('p.visibility = 1 AND p.inStockQuantity > 0')
+            ->where('p.visibility = 1 AND p.inStockQuantity > 0')
             ->andWhere('p.subCategory = :subCategory')
             ->setParameter('subCategory', $subCatId)
             ->setMaxResults(8)
@@ -74,58 +58,15 @@ class ProductRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    // find all products category and subcategory products where visibility = 1
-    public function test(): array
-    {
-        $qb = $this->createQueryBuilder('p');
-        $qb->select('p, c, sc')
-        ->join('p.category', 'c')
-        ->join('c.subCategories', 'sc') 
-        ->where('p.visibility = 1')
-        ->orderBy('c.listOrder + 0', 'ASC')
-        ->addOrderBy('sc.listOrder + 0', 'ASC');
-
-        return $qb->getQuery()->getResult();    
-    }
-
-    // find all products category and subcategory products where visibility = 1 and product.sellingPrice in between $min and $max
-
     /**
-     * Retourne les produits en fonction du prix min et max
-     *
-     * @param [type] $min
-     * @param [type] $max
+     * Return products data array
+     * filtered by price range
+     * 
+     * @param [int] $min
+     * @param [int] $max
      * @return array
      */
-    public function findProductsByPriceMinMax($min, $max): array
-    {
-        $qb = $this->createQueryBuilder('p');
-        $qb->select('p, c, sc')
-
-        ->join('p.category', 'c')
-        ->join('c.subCategories', 'sc') 
-
-        ->where('p.visibility = 1')
-        ->andWhere('p.sellingPrice BETWEEN :min AND :max')
-
-        ->setParameter('min', $min)
-        ->setParameter('max', $max)
-
-        ->orderBy('c.listOrder + 0', 'ASC')
-        ->addOrderBy('sc.listOrder + 0', 'ASC');
-
-        return $qb->getQuery()->getResult();    
-    }
-
-        /**
-         * Return products data array
-         * filtered by price range
-         * 
-         * @param [int] $min
-         * @param [int] $max
-         * @return array
-         */
-        public function filterByPriceRange($min, $max): array
+    public function filterByPriceRange($min, $max): array
     {
         $entityManager = $this->getEntityManager();
 
@@ -162,15 +103,16 @@ class ProductRepository extends ServiceEntityRepository
      * 
      * @param [int] $min
      * @param [int] $max
-     * @return array
+     * @return Product[] Returns an array of Product objects
      */
     public function findByPriceRange($min, $max): array
     {
-        return $this->createQueryBuilder('p')
-            ->select('p.name AS product_name', 'p.id AS product_id', 
-                    'p.sellingPrice', 'c.name AS category_name', 
-                    'c.id AS category_id', 'sc.name AS subcategory_name', 
-                    'sc.id AS subcategory_id')
+        $query = $this->createQueryBuilder('p')
+            ->select('p')
+            ->addSelect('p.name AS product_name', 'p.id AS product_id', 
+            'p.sellingPrice', 'c.name AS category_name', 
+            'c.id AS category_id', 'sc.name AS subcategory_name', 
+            'sc.id AS subcategory_id')
             ->leftJoin('p.category', 'c')
             ->leftJoin('p.subCategory', 'sc')
             ->where('p.sellingPrice BETWEEN :min AND :max')
@@ -178,26 +120,24 @@ class ProductRepository extends ServiceEntityRepository
             ->setParameter('max', $max)
             ->orderBy('c.listOrder + 0', 'ASC')
             ->addOrderBy('sc.listOrder + 0', 'ASC')
-            ->getQuery()
-            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            ->getQuery();
+
+            return $query->getResult();
     }
 
     /**
-     * Retourne les produits 
-     * en fonction du terme de recherche
+     * Return products by search term
      *
      * @param [string] $term
-     * @return void
+     * @return Product[] Returns an array of Product objects
      */
     public function search(string $term): array
     {
-        return $this->createQueryBuilder('p')
+        $query = $this->createQueryBuilder('p')
             ->andWhere('p.name LIKE :searchTerm')
-            //->leftJoin('p.category', 'pc')
             ->setParameter('searchTerm', '%'.$term.'%')
-            ->getQuery()
-            ->execute();
-
+            ->getQuery();
+            return $query->getResult();
             // note sytaxe pour plus tard :
             // ->andWhere('p.name LIKE :searchTerm
             //     OR p.property1 LIKE :searchTerm
@@ -205,37 +145,42 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retroune l'id pour l'ensemble des produits
-     * @return []
+     * Retrun all products id
+     * @return Product[] Returns an array of Product objects
      */
     public function findAllProductsId(): array
     {
         $query = $this->createQueryBuilder('p')
-            ->select('p.id')
+            ->select('p, p.id as product_id')
             ->getQuery();
-        
             return $query->getResult();
     }
 
     /**
-     * Retroune l'id et le name pour le nombre de produit
-     * demandé 
+     * Return products data array to paginate products list
+     * offset start at 0 and perpage is the number of products to display
      * @var perpage int 
      * @var offset int
-     * @return []
+     * @return Product[] Returns an array of Product objects
      */
     public function findPaginateProducts(int $perPage, int $offset): array
-    {
+    {   
+
         $query = $this->createQueryBuilder('p')
             ->select('p.id, p.name')
             ->setFirstResult($offset)
             ->setMaxResults($perPage)
             ->orderBy('p.id', 'ASC')
             ->getQuery();
-
-            return $query->getResult();
+    
+        return $query->getResult();
     }
 
+    /**
+     * Return a product list by $count number
+     * @var count int
+     * @return Product[] Returns an array of Product objects
+     */
     public function findLastProduct(int $count): array
     {
         $query = $this->createQueryBuilder('p')
@@ -248,29 +193,35 @@ class ProductRepository extends ServiceEntityRepository
             return $query->getResult();
     }
 
+    // find all products category and subcategory products where visibility = 1
+    public function test(): array
+    {
+        $qb = $this->createQueryBuilder('p');
+        
+        $qb->select('p, c, sc')
+        ->join('p.category', 'c')
+        ->join('c.subCategories', 'sc') 
+        ->where('p.visibility = 1')
+        ->orderBy('c.listOrder + 0', 'ASC')
+        ->addOrderBy('sc.listOrder + 0', 'ASC');
 
-//    /**
-//     * @return Product[] Returns an array of Product objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+        return $qb->getQuery()->getResult();    
+    }
 
-//    public function findOneBySomeField($value): ?Product
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * Return all visible products
+     *
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findAllVisibleProdcts(): array
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->select('p')   
+            ->andWhere('p.visibility = 1')
+            ->orderBy('p.id', 'asc');
+            
+        return $qb->getQuery()->getResult();
+    }  
+
 }

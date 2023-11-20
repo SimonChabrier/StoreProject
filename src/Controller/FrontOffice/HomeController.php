@@ -48,6 +48,7 @@ class HomeController extends AbstractController
         ProductRepository $productRepository
         ): Response
     {   
+        dd($productRepository->findAllVisibleProdcts());
         // Récupérer le cache
         $cacheItem = $this->cache->getItem(self::CACHE_KEY);
         $isCacheHit = $cacheItem->isHit();

@@ -87,11 +87,111 @@ console.log(products);
 
 
 // filter products with the search criteria
+// function filterProducts() {
+
+//     // Récupération des valeurs saisies dans le formulaire
+//     let minPrice = Number(minPriceInput.value);
+//     console.log(minPrice);
+//     minPrice = parseInt(minPrice);
+//     console.log(minPrice);
+//     let maxPrice = Number(maxPriceInput.value);
+//     console.log(maxPrice);
+//     maxPrice = parseInt(maxPrice);
+//     const searchTerm = searchInput.value.toLowerCase();
+//     const selectedBrands = Array.from(brandCheckBoxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
+//     let selectedCategories = Array.from(categoryCheckBoxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
+    
+//     console.log(selectedCategories);
+//     // console.log(selectedSubCategories);
+//     // Filtrage des produits en fonction des critères on va toggle true ou false pour chaque critère de recherche et on va utiliser ces valeurs pour évaluer si on utilise ou non chaque critère de recherche dans le filtre
+//     let searchState = {
+//         minPrice: false,
+//         maxPrice: false,
+//         searchTerm: false,
+//         brandIsSelected: false,
+//         categoryIsSelected: false
+//     }
+//     // on met à jour les valeurs de searchState en fonction des critères de recherche utilisés
+//     if(minPriceInput.value > 0){
+//         searchState.minPrice = true;
+//     }
+//     if(maxPriceInput.value > 0){
+//         searchState.maxPrice = true;
+//     }
+//     if(searchInput.value != '' && searchInput.value.length >= 3){
+//         searchState.searchTerm = true;
+//     }
+//     if(selectedBrands.length > 0){
+//         searchState.brandIsSelected = true;
+//     }
+//     if(selectedCategories.length > 0){
+//         searchState.categoryIsSelected = true;
+//     }
+
+//     //console.log(searchState);
+
+//     // si aucun critère de recherche n'est utilisé on affiche tous les produits
+//     if(!searchState.minPrice && !searchState.maxPrice && !searchState.searchTerm && !searchState.brandIsSelected && !searchState.categoryIsSelected){
+//         resetDivResults();
+//         return;
+//     }
+//     // si j'ai au moins un critère de recherche alors je filtre les produits par rapport à ce critère
+//     if(searchState.minPrice || searchState.maxPrice || searchState.searchTerm || searchState.brandIsSelected || searchState.categoryIsSelected){
+        
+//         let filteredProducts = products.filter(function(product){
+            
+//             let minPriceFilter = true;
+//             let maxPriceFilter = true;
+//             let searchTermFilter = true;
+//             let selectedBrandsFilter = true;
+//             let selectedCategoriesFilter = true;
+            
+//             // comme min et max ne sont pas null par défaut, on les prend en compte directement pour qu'il n'écrase pas les autres critères de recherche parce qu'il ne sont jamais false
+//             if(searchState.minPrice){
+//                minPriceFilter = Math.floor(Number(product.sellingPrice)) <= minPrice; // on arrondi le prix à l'entier inférieur pour éviter les problèmes de comparaison et de type
+//                console.log(minPriceFilter);
+//             }
+//             if(searchState.maxPrice){
+//                 maxPriceFilter = Math.floor(Number(product.sellingPrice)) >= maxPrice; // on arrondi le prix à l'entier inférieur pour éviter les problèmes de comparaison et de type
+//                 console.log(maxPriceFilter);
+//             }
+//             if(searchState.searchTerm){
+//                 searchTermFilter = product.name.toLowerCase().includes(searchTerm);
+//             }
+//             if(searchState.brandIsSelected){
+//                 selectedBrandsFilter = selectedBrands.includes(product.brand.name);
+//             }
+//             if(searchState.categoryIsSelected){
+//                 // on concatene le nom de la catégorie et du sous-catégorie retournée par chaque checkbox et on le compare avec la valeur concatenée de la sous categorie et de la categorie de la sous categorie du produit pour savoir si le produit est dans la catégorie sélectionnée
+//                 // ['Enfant Ville'] donne ['enfantville'] donc pas de double comparaison si on a par ex ['Enfant Ville', 'Femme Ville'] ! Ville ne sera pas évalué deux fois.
+//                 // on reçoit ça de twig ici value="{{ cat.catName }} {{ subCat.subCatName  }}" j'aurais pu coller {{ cat.catName }} et {{ subCat.subCatName  }} mais c'est plus propre comme ça 
+//                 // si l'espace est supprimé dans twig ou augmenté pour donner ce format ['Enfant      Ville'] dans le futur ça ne plantera pas l'espace blanc sera toujours supprimé ci-dessous
+//                 selectedCategories = selectedCategories.map(category => category.replace(/\s/g, '').toLowerCase());
+//                 // ensuite on compare la valeur de chaque checkbox avec la valeur de la sous categorie et de la categorie concaténées
+//                 selectedCategoriesFilter = selectedCategories.includes(product.subCategory.categories[0].name.replace(/\s/g, '').toLowerCase() + product.subCategory.name.replace(/\s/g, '').toLowerCase());
+//             }
+
+//             return minPriceFilter && maxPriceFilter && searchTermFilter && selectedBrandsFilter && selectedCategoriesFilter;
+//         });
+    
+//     console.log(filteredProducts);
+
+//     // sort the filtered products by product.selligPrice
+//     filteredProducts.sort(function(a, b){
+//         return a.sellingPrice - b.sellingPrice;
+//     });
+//         createProductCard(filteredProducts);
+//         countResults(filteredProducts.length);  
+//     }
+// }
+
 function filterProducts() {
 
     // Récupération des valeurs saisies dans le formulaire
     let minPrice = Number(minPriceInput.value);
+    console.log(typeof(minPrice));
     let maxPrice = Number(maxPriceInput.value);
+    console.log(maxPrice);
     const searchTerm = searchInput.value.toLowerCase();
     const selectedBrands = Array.from(brandCheckBoxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
     let selectedCategories = Array.from(categoryCheckBoxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
@@ -140,13 +240,12 @@ function filterProducts() {
             let searchTermFilter = true;
             let selectedBrandsFilter = true;
             let selectedCategoriesFilter = true;
-            
-            // comme min et max ne sont pas null par défaut, on les prend en compte directement pour qu'il n'écrase pas les autres critères de recherche parce qu'il ne sont jamais false
+                    
             if(searchState.minPrice){
-               minPriceFilter = Math.floor(Number(product.sellingPrice)) <= minPrice; // on arrondi le prix à l'entier inférieur pour éviter les problèmes de comparaison et de type
+                minPriceFilter = Number(product.sellingPrice) >= minPrice;
             }
             if(searchState.maxPrice){
-                maxPriceFilter = Math.floor(Number(product.sellingPrice)) >= maxPrice; // on arrondi le prix à l'entier inférieur pour éviter les problèmes de comparaison et de type
+                maxPriceFilter = Number(product.sellingPrice) <= maxPrice;
             }
             if(searchState.searchTerm){
                 searchTermFilter = product.name.toLowerCase().includes(searchTerm);
@@ -155,15 +254,10 @@ function filterProducts() {
                 selectedBrandsFilter = selectedBrands.includes(product.brand.name);
             }
             if(searchState.categoryIsSelected){
-                // on concatene le nom de la catégorie et du sous-catégorie retournée par chaque checkbox et on le compare avec la valeur concatenée de la sous categorie et de la categorie de la sous categorie du produit pour savoir si le produit est dans la catégorie sélectionnée
-                // ['Enfant Ville'] donne ['enfantville'] donc pas de double comparaison si on a par ex ['Enfant Ville', 'Femme Ville'] ! Ville ne sera pas évalué deux fois.
-                // on reçoit ça de twig ici value="{{ cat.catName }} {{ subCat.subCatName  }}" j'aurais pu coller {{ cat.catName }} et {{ subCat.subCatName  }} mais c'est plus propre comme ça 
-                // si l'espace est supprimé dans twig ou augmenté pour donner ce format ['Enfant      Ville'] dans le futur ça ne plantera pas l'espace blanc sera toujours supprimé ci-dessous
                 selectedCategories = selectedCategories.map(category => category.replace(/\s/g, '').toLowerCase());
-                // ensuite on compare la valeur de chaque checkbox avec la valeur de la sous categorie et de la categorie concaténées
                 selectedCategoriesFilter = selectedCategories.includes(product.subCategory.categories[0].name.replace(/\s/g, '').toLowerCase() + product.subCategory.name.replace(/\s/g, '').toLowerCase());
             }
-
+        
             return minPriceFilter && maxPriceFilter && searchTermFilter && selectedBrandsFilter && selectedCategoriesFilter;
         });
     

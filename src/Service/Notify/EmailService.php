@@ -25,7 +25,7 @@ class EmailService
     public function sendTemplateEmailNotification($from, $to, $subject, $template, $context)
     {   
         $message = new EmailNotification($from, $to, $subject, $template, $context);
-        $this->bus->dispatch($message);
+        return $this->bus->dispatch($message);
     }
 
 }

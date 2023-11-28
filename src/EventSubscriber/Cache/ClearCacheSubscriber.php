@@ -27,7 +27,10 @@ class ClearCacheSubscriber implements DoctrineEventSubscriber
         $this->clearCacheService = $clearCacheService;
     }
 
-    public function getSubscribedEvents()
+    /**
+     * @return array
+     */
+    public function getSubscribedEvents() :array
     {
         return [
             Events::postFlush,

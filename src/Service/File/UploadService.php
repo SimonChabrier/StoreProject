@@ -274,6 +274,7 @@ class UploadService
         // Parcourir chaque tableau de fichiers dans $allPictures
         foreach ($allPictures as $folderFiles) {
             // Parcourir chaque fichier dans le tableau courant
+            $i = 0;
             foreach ($folderFiles as $file) {
                 // Obtenir les informations sur le fichier (nom, extension, etc.)
                 $fileInfo = pathinfo($file);
@@ -281,7 +282,9 @@ class UploadService
                 if ($fileInfo['basename'] === $fileName) {
                     // Si les noms de fichiers correspondent, supprimer le fichier
                     unlink($file);
+                    $i++;
                 }
+                return $i;
             }
         };
     }

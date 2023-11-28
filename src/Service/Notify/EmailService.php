@@ -21,6 +21,7 @@ class EmailService
         $message = new AdminNotification($subject, $email, $status);
 
         $this->bus->dispatch($message);
+
     }
 
     public function sendTemplateEmailNotification($from, $to, $subject, $template, $context)
@@ -28,4 +29,5 @@ class EmailService
         $message = new EmailNotification($from, $to, $subject, $template, $context);
         $this->bus->dispatch($message);
     }
+
 }

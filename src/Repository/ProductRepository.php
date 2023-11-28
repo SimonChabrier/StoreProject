@@ -108,8 +108,7 @@ class ProductRepository extends ServiceEntityRepository
     public function findByPriceRange($min, $max): array
     {
         $query = $this->createQueryBuilder('p')
-            ->select('p')
-            ->addSelect('p.name AS product_name', 'p.id AS product_id', 
+            ->select('p.name AS product_name', 'p.id AS product_id', 
             'p.sellingPrice', 'c.name AS category_name', 
             'c.id AS category_id', 'sc.name AS subcategory_name', 
             'sc.id AS subcategory_id')

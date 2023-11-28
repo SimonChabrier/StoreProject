@@ -3,89 +3,57 @@
 namespace App\Tests;
 
 use Faker\Factory as Faker;
-use App\Service\MailingService;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
+use App\Service\Notify\EmailService;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-// assert for mailer
 
-
-// penser à passer public: true  à public: false dans services.yaml quand les test sont faits
-
-class MailSendTest extends  KernelTestCase
-{   
-
-    // make a mail adress provider
-    public function emailAdressesProvider()
-    {   
-        $adresses = [];
-
+class MailSendTest extends KernelTestCase
+{
+    /**
+     * @return array
+     */
+    public function emailAddressesProvider(): array
+    {
+        $addresses = [];
         $faker = Faker::create('fr_FR');
-        for ($i=0; $i < 100; $i++) { 
-            $adresse = $faker->email();
-            array_push($adresses, $adresse);
+
+        for ($i = 0; $i < 20; $i++) {
+            $address = $faker->email();
+            $addresses[] = [$address];
         }
-        return $adresses;
-    }
-    
-    // Message type
-    public function email()
-    {   
-        //$mailer = $this->createMock(MailerInterface::class);
-        
 
-        $notificationEmail = (new Email())
-                ->from('me@example.com')
-                ->to('notification@example.com')
-                ->subject('Notification d\'envoi d\'email')
-                ->text('L\'email a été envoyé avec succès.');
-        //$mailer->send($notificationEmail);
-        return $notificationEmail;
+        return $addresses;
     }
 
-    public function testSendUniqueMail(): void
+    /**
+     * Teste le service EmailService avec un mock de MessageBusInterface
+     * pour envoyer une notification admin avec un email
+     * @dataProvider emailAddressesProvider
+     * @param string $email
+     */
+    public function testMailIsSent(string $email): void
     {
-        self::bootKernel();
-        $serviceContainer = static::getContainer();
+        $subject = 'test';
+        $status = 'test';
 
-        $mailService = $serviceContainer->get(MailingService::class);
-        $mailService->sendEmail('test@test.fr', 'test', 'test');
+        // je crée un mock de MessageBusInterface 
+        $bus = $this->createMock(MessageBusInterface::class);
+        // je crée un objet Envelope 
+        $envelope = new \Symfony\Component\Messenger\Envelope(new \stdClass());
 
-        // TEST SYNCHRONE
-        // désactiver le transport de mail asynchrone dans messenger.yaml pour les tests qui sont en mode synchrone
-        // $this->assertEmailCount(2);
+        // l'attendu est que la méthode dispatch soit appelée une fois avec le bon argument
+        $bus->expects($this->once())
+            ->method('dispatch')
+            ->with(new \App\Message\AdminNotification($subject, $email, $status))
+            ->willReturn($envelope);
+
+        // Créer une instance réelle de EmailService avec le mock de MessageBusInterface
+        $emailService = new EmailService($bus);
+
+        // Appeler la méthode pour envoyer la notification admin
+        $emailService->sendAdminNotification($subject, $email, $status);
         
-        // TEST ASYNCHRONE
-        // is in the queue
-        $this->assertEmailIsQueued($this->getMailerEvent());
-        // 0 mail envoyé directement parce que le transport est en mode asynchrone
-        $this->assertEmailCount(0);
-        // il y a 2 mails dans la file d'attente de messenger 1 pour le destinataire et 1 pour la notification
-        $this->assertQueuedEmailCount(2);
-
-        $email = $this->email();
-        // test subject
-        $this->assertEmailHeaderSame($email, 'Subject', 'Notification d\'envoi d\'email');
-        $this->assertEmailTextBodyContains($email, 'L\'email a été envoyé avec succès.');
-        // test sender
-        $this->assertEmailHeaderSame($email, 'From', 'me@example.com');
-        // test recipient
-        $this->assertEmailHeaderSame($email, 'To', 'notification@example.com');
-
-
-    }
-
-    public function testSendMultipleMail(): void
-    {
-        self::bootKernel();
-        $serviceContainer = static::getContainer();
-
-        $mailService = $serviceContainer->get(MailingService::class);
-        $adresses = $this->emailAdressesProvider();
-        $mailService->sendEmailToRecipients($adresses, 'test', 'test');
-        // assert envoie de mail à 3 destinataires + 1 pour la notification
-        $this->assertEmailIsQueued($this->getMailerEvent());
-        $this->assertEmailCount(0);
-        $this->assertQueuedEmailCount(101);
+        // Si la méthode dispatch n'est pas appelée, le test échoue
+        
     }
 }

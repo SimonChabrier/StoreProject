@@ -37,23 +37,27 @@ class MailSendTest extends KernelTestCase
         self::bootKernel();
         $this->userRepository = self::$container->get(UserRepository::class);
         $this->adminEmail = self::$container->getParameter('admin_email');
-       
+        $this->manager = self::$container->get('doctrine')->getManager();
         $this->picDir = self::$container->getParameter('picDir');
         $this->docDir = self::$container->getParameter('docDir');
-        $this->manager = self::$container->get('doctrine')->getManager();
-        $this->resizer = new ResizerService(
-            self::$container->getParameter('pictureXSDir'),
-            self::$container->getParameter('picture250Dir'),
-            self::$container->getParameter('picture400Dir'),
-            self::$container->getParameter('picture800Dir'),
-            self::$container->getParameter('picture1200Dir'),
-            self::$container->getParameter('slider1280Dir')
-        );
+
+        $dirs = $this->getDirs();
+        for($i = 0; $i < count($dirs); $i++) {
+            $this->resizer = new ResizerService($dirs[1], $dirs[2],$dirs[3], $dirs[4],$dirs[5],$dirs[6]
+            );
+            
+        }
+        // $this->resizer = new ResizerService(
+        // self::$container->getParameter('pictureXSDir'),
+        // self::$container->getParameter('picture250Dir'),
+        // self::$container->getParameter('picture400Dir'),
+        // self::$container->getParameter('picture800Dir'),
+        // self::$container->getParameter('picture1200Dir'),
+        // self::$container->getParameter('slider1280Dir')
+        // );
         
         $this->workflow = self::$container->get('state_machine.picture_publishing');
-        // récupèrer le workflow registery de workflow.yaml
         $this->registry = self::$container->get(Registry::class);
-
         $projectDir = self::$kernel->getProjectDir();
         $relativePath = 'public/assets/pictures/';
         $this->absolutePath = $projectDir . '/' . $relativePath;
@@ -127,36 +131,73 @@ class MailSendTest extends KernelTestCase
     }
 
     // teste l'upload d'une image son redimensionnement et sa création dans la base de données
-    public function testImageUpload(): void
-    {   
+        public function testImageUpload(): void
+        {
         //tester les droits en écriture d'une image sur le dossier $this->picDir
-        $uploadService = new UploadService(
-            $this->picDir,
-            $this->docDir,
-            $this->resizer,
-            $this->manager,
-            $this->registry
-        );
+        $uploadService = $this->initUploadService();
         // récupèrer une image de test
         $file = $this->absolutePath . 'defaultSneakersPicture.webp';
         // donner un nom de fichier
         $orignalFileName = 'test';
         // retourne le nom du fichier créé
         $createdFileName = $uploadService->saveOriginalPictureFile(file_get_contents($file), $orignalFileName);
-        $this->assertFileExists($this->picDir.'/'.$createdFileName);
+        $this->assertFileExists($this->picDir . '/' . $createdFileName);
         // vérifier que le nom du fichier créé est bien différent du nom du fichier d'origine
         $this->assertNotEquals($orignalFileName, $createdFileName);
-        // vérifier le type mime attendu webp
-        $this->assertEquals('image/webp', mime_content_type($this->picDir.'/'.$createdFileName));
-        // supprimer le fichier créé
-        //unlink($this->picDir.'/'.$createdFileName);
+        echo "le nom du fichier d\'origine est $orignalFileName \n";
+        echo "le nom du fichier créé est $createdFileName \n";
 
+        // vérifier le type mime attendu webp
+        $mime = $this->assertEquals('image/webp', mime_content_type($this->picDir . '/' . $createdFileName));
+        echo "le type mime du fichier créé est " . mime_content_type($this->picDir . '/' . $createdFileName) . "\n";
+        
         // récupèrer un produit existant pour tester la création d'une image produit
         $product = $this->manager->getRepository(Product::class)->findOneBy(['name' => 'test']);
-
-        // tester a création d'une image produit 
+        $productId = $product->getId();
+        echo "l'id produit récupéré est $productId \n";
+        // tester a création d'une image produit
         $uploadService->createProductPicture($orignalFileName, 'test', $createdFileName, $product);
+        
+        // vérifier l'état du workflow du produit pour la collection pictures du produit
+        for($i = 0; $i < count($product->getPictures()); $i++) {
+            $state = [];
+            $state[] = $product->getPictures()[$i]->getState();
+        }
+        echo "le workflow de l'image $i est $state[0] \n";
+ 
+        // vérifier que l'image produit a bien été créée dans chaque dossier de taille
+        $dirs = $this->getDirs();
+        foreach ($dirs as $dir) {
+            $this->assertFileExists($dir . '/' . $createdFileName);
+        }
+        // supprimer le fichier créé
+        $i = 0;
+        foreach ($dirs as $dir) {
+            unlink($dir . '/' . $createdFileName);
+            $dir = substr($dir, strrpos($dir, '/') + 1);
+            echo "suppression de l'image $i du repertoire $dir \n";
+            $i++;
+        }
 
+        echo "nombre de répertoires traités $i \n";
+        $this->assertEquals(7, $i);
+        
+        for($i = 0; $i < count($product->getPictures()); $i++) {
+            foreach($product->getPictures() as $picture) {
+                $this->manager->remove($picture);
+                $this->manager->flush();
+            }
+        }
+        $finalProuctId = $product->getId();
+        echo "suppression de $i image produit de la bdd - produit id : $finalProuctId \n";
+
+        $this->assertEquals($productId, $finalProuctId);
+        echo "le produit id de départ $productId - product id de fin $finalProuctId \n";
+
+    }
+
+    public function getDirs()
+    {
         $dirs = [
             self::$container->getParameter('picDir'),
             self::$container->getParameter('pictureXSDir'),
@@ -166,22 +207,18 @@ class MailSendTest extends KernelTestCase
             self::$container->getParameter('picture1200Dir'),
             self::$container->getParameter('slider1280Dir')
         ];
-        
-        // vérifier que l'image produit a bien été créée dans chaque dossier de taille
-        foreach ($dirs as $dir) {
-            $this->assertFileExists($dir . '/' . $createdFileName);
-        }
-        // supprimer le fichier créé
-        $i = 0;
-        foreach ($dirs as $dir) {
-            unlink($dir . '/' . $createdFileName);
-            $i++;
-        }
-        // confirmer qu'on a bien supprimé 6 fichiers
-        $this->assertEquals(7, $i);
-        
+        return $dirs;
     }
 
+    public function initUploadService(){
+        return new UploadService(
+            $this->picDir,
+            $this->docDir,
+            $this->resizer,
+            $this->manager,
+            $this->registry
+        );
+    }
    
 }
 

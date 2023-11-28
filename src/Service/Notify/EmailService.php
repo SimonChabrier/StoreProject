@@ -19,9 +19,7 @@ class EmailService
     public function sendAdminNotification($subject, $email, $status)
     {
         $message = new AdminNotification($subject, $email, $status);
-
-        $this->bus->dispatch($message);
-
+        return $this->bus->dispatch($message);
     }
 
     public function sendTemplateEmailNotification($from, $to, $subject, $template, $context)

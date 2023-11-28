@@ -6,54 +6,71 @@ use Faker\Factory as Faker;
 use App\Service\Notify\EmailService;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Repository\UserRepository;
 
-class MailSendTest extends KernelTestCase
+
+class TestMessage
 {
-    /**
-     * @return array
-     */
-    public function emailAddressesProvider(): array
+    private $subject;
+
+    public function __construct($subject)
     {
-        $addresses = [];
-        $faker = Faker::create('fr_FR');
-
-        for ($i = 0; $i < 20; $i++) {
-            $address = $faker->email();
-            $addresses[] = [$address];
-        }
-
-        return $addresses;
+        $this->subject = $subject;
     }
 
-    /**
-     * Teste le service EmailService avec un mock de MessageBusInterface
-     * pour envoyer une notification admin avec un email
-     * @dataProvider emailAddressesProvider
-     * @param string $email
-     */
-    public function testMailIsSent(string $email): void
+    public function getSubject()
     {
-        $subject = 'test';
-        $status = 'test';
-
-        // je crée un mock de MessageBusInterface 
-        $bus = $this->createMock(MessageBusInterface::class);
-        // je crée un objet Envelope 
-        $envelope = new \Symfony\Component\Messenger\Envelope(new \stdClass());
-
-        // l'attendu est que la méthode dispatch soit appelée une fois avec le bon argument
-        $bus->expects($this->once())
-            ->method('dispatch')
-            ->with(new \App\Message\AdminNotification($subject, $email, $status))
-            ->willReturn($envelope);
-
-        // Créer une instance réelle de EmailService avec le mock de MessageBusInterface
-        $emailService = new EmailService($bus);
-
-        // Appeler la méthode pour envoyer la notification admin
-        $emailService->sendAdminNotification($subject, $email, $status);
-        
-        // Si la méthode dispatch n'est pas appelée, le test échoue
-        
+        return $this->subject;
     }
 }
+
+class MailSendTest extends KernelTestCase
+{   
+
+    protected function setUp(): void
+    {
+        self::bootKernel();
+        // je récupère le UserRepository depuis le conteneur de services
+        $this->userRepository = self::$container->get(UserRepository::class);
+    }
+
+    /**
+     * Teste l'envoi d'un mail à chaque adresse email de la liste
+     */
+    public function testBatchMailSending(): void
+    {
+        $faker = Faker::create('fr_FR');
+
+        $subject = $faker->sentence();
+        $status = $faker->sentence();
+
+        // Récupérer la liste des utilisateurs depuis le UserRepository
+        $users = $this->userRepository->findAll();
+        // Je crée un mock du MessageBusInterface
+        $bus = $this->createMock(MessageBusInterface::class);
+        // L'attendu est que dispatch soit appelé exactement avec le nombre d'utilisateurs dans la liste
+        $bus->expects($this->exactly(count($users)))
+            ->method('dispatch')
+            ->with($this->anything())
+            ->willReturn(new \Symfony\Component\Messenger\Envelope(new TestMessage($subject)));
+        // Je crée une instance de EmailService en lui passant le mock du MessageBusInterface
+        $emailService = new EmailService($bus);
+        // je prépare un tableau pour stocker les résultats
+        $results = [];
+        // Pour chaque utilisateur dans la liste, j'appelle la méthode sendAdminNotification de EmailService
+        foreach ($users as $user) {
+            $results[] = $emailService->sendAdminNotification($subject, $user->getEmail(), $status);
+        }
+        // Je vérifie que chaque résultat est une instance de Envelope (la classe de base des messages envoyés par Messenger)
+        $this->assertContainsOnlyInstancesOf(\Symfony\Component\Messenger\Envelope::class, $results);
+        // Je vérifie que chaque message envoyé contient bien le sujet du mail
+        foreach ($results as $result) {
+            $this->assertEquals($subject, $result->getMessage()->getSubject());
+        }
+        // je vérifie que le nombre de résultats est bien égal au nombre d'utilisateurs dans la liste
+        $this->assertEquals(count($users), count($results));
+    }
+
+   
+}
+

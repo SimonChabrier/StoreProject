@@ -3,6 +3,7 @@
 namespace App\Tests;
 
 use App\Entity\User;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class WebTestCaseTest extends WebTestCase
@@ -66,4 +67,5 @@ class WebTestCaseTest extends WebTestCase
         // attendu : que le token d'authentification soit null et que la déconnexion soit effective
         $this->assertNull($tokenStorage->getToken());
     }
+
 }

@@ -40,15 +40,13 @@ class MailSendTest extends KernelTestCase
         $this->manager = self::$container->get('doctrine')->getManager();
         $this->picDir = self::$container->getParameter('picDir');
         $this->docDir = self::$container->getParameter('docDir');
-        $dirs = $this->getDirs();
-        // unset le premier élément du tableau qui est le répertoire des images originales
-        unset($dirs[0]);
-        $this->resizer = new ResizerService(...$dirs);
+        $this->resizer = new ResizerService(...$this->getResizedDirs());
         $this->workflow = self::$container->get('state_machine.picture_publishing');
         $this->registry = self::$container->get(Registry::class);
         $projectDir = self::$kernel->getProjectDir();
         $relativePath = 'public/assets/pictures/';
         $this->absolutePath = $projectDir . '/' . $relativePath;
+        $this->uploadService = $this->initUploadService();
     }
 
     /**
@@ -155,22 +153,24 @@ class MailSendTest extends KernelTestCase
         // tester a création d'une image produit
         $uploadService->createProductPicture($orignalFileName, 'test', $createdFileName, $product);
         
-        // vérifier que le workflow des images produit est bien à l'état 'done'
+        // vérifier que le workflow de toutes les images du produit est bien à l'état 'done'
         for($i = 0; $i < count($product->getPictures()); $i++) {
             $state = [];
             $state[] = $product->getPictures()[$i]->getState();
         }
-        echo "le workflow de l'image $i est $state[0] \n";
- 
-        // vérifier que l'image produit a bien été créée dans chaque dossier de taille
+        $this->assertEquals('done', ...$state);
+        echo "tous les états des images produits sont bien à l'état 'done' \n";
+        
+        // vérifier que le fichier créé existe bien dans tous les dossiers de redimensionnement
         $j = 0;
-        $dirs = $this->getDirs();
+        $dirs = $this->getAllPicturesDirs();
         foreach ($dirs as $dir) {
             $this->assertFileExists($dir . '/' . $createdFileName);
             $dir = substr($dir, strrpos($dir, '/') + 1);
             echo "le fichier $createdFileName a bien été créé dans le dossier $dir \n";
             $j++;
         }
+        // vérifier que le nombre de répertoires traités est bien égal au nombre de répertoires de redimensionnement
         $this->assertEquals(7, $j);
         echo "nombre de répertoires traités $j lors de l\'ajout de fichier \n";
 
@@ -183,10 +183,24 @@ class MailSendTest extends KernelTestCase
             $i++;
         }
 
+        $pictures = $product->getPictures();
+        // vérrifier qu'il y a bien 1 seule image produit qui a été créée
+        $this->assertEquals(1, count($pictures));
+        echo "nombre d'images produits créées : " . count($pictures) . "\n";
+        
+        // vérifier que le fichier créé n'existe plus dans tous les dossiers de redimensionnement
+        $i = 0;
+        foreach ($dirs as $dir) {
+            $this->assertFileDoesNotExist($dir . '/' . $createdFileName);
+            $dir = substr($dir, strrpos($dir, '/') + 1);
+            echo "le fichier $createdFileName a bien été supprimé du dossier $dir \n";
+            $i++;
+        }
+        // vérifier que le fichier créé n'existe plus dans tous les dossiers de redimensionnement
         $this->assertEquals(7, $i);
         echo "nombre de répertoires traités $i lors de la supression de fichier \n";
 
-        
+        // supprimer l'image produit créée dans la base de données
         for($i = 0; $i < count($product->getPictures()); $i++) {
             foreach($product->getPictures() as $picture) {
                 $this->manager->remove($picture);
@@ -194,18 +208,37 @@ class MailSendTest extends KernelTestCase
             }
         }
 
-        $finalProuctId = $product->getId();
-        echo "suppression de $i image produit de la bdd sur le produit id : $finalProuctId \n";
+        // vérifier que le produit n'a plus d'image associé en base de données
+        $this->assertEquals(0, count($product->getPictures()));
+        echo "nombre d'images produits après suppression : " . count($product->getPictures()) . "\n";
 
-        $this->assertEquals($productId, $finalProuctId);
-        echo "le produit id de départ $productId - product id de fin $finalProuctId \n";
+        // récupèrer l'id du produit à la fin du test
+        $finalProductId = $product->getId();
+        echo "suppression de $i image produit de la bdd sur le produit id : $finalProductId \n";
+        
+        // vérifier qu'on traite bien toutjours le même produit que celui récupéré au début du test
+        $this->assertEquals($productId, $finalProductId);
+        echo "le produit id de départ $productId - product id de fin $finalProductId \n";
 
     }
 
-    public function getDirs()
+    public function getAllPicturesDirs()
     {
         $dirs = [
             self::$container->getParameter('picDir'),
+            self::$container->getParameter('pictureXSDir'),
+            self::$container->getParameter('picture250Dir'),
+            self::$container->getParameter('picture400Dir'),
+            self::$container->getParameter('picture800Dir'),
+            self::$container->getParameter('picture1200Dir'),
+            self::$container->getParameter('slider1280Dir')
+        ];
+        return $dirs;
+    }
+
+    public function getResizedDirs()
+    {
+        $dirs = [
             self::$container->getParameter('pictureXSDir'),
             self::$container->getParameter('picture250Dir'),
             self::$container->getParameter('picture400Dir'),

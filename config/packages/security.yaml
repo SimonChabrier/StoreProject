@@ -23,7 +23,7 @@ security:
                 # don't invalidate the session when logging out for flash messages
                 invalidate_session: false
                 # where to redirect after logout
-                # target: app_any_route
+                target: app_home
             login_throttling:
                 max_attempts: 5
                 interval: '15 minutes'

@@ -35,18 +35,23 @@ class MailSendTest extends KernelTestCase
     protected function setUp(): void
     {
         self::bootKernel();
+
         $this->userRepository = self::$container->get(UserRepository::class);
         $this->adminEmail = self::$container->getParameter('admin_email');
         $this->manager = self::$container->get('doctrine')->getManager();
+        
         $this->picDir = self::$container->getParameter('picDir');
         $this->docDir = self::$container->getParameter('docDir');
+        
         $this->resizer = new ResizerService(...$this->getResizedDirs());
         $this->workflow = self::$container->get('state_machine.picture_publishing');
         $this->registry = self::$container->get(Registry::class);
-        $projectDir = self::$kernel->getProjectDir();
-        $relativePath = 'public/assets/pictures/';
-        $this->absolutePath = $projectDir . '/' . $relativePath;
+        
         $this->uploadService = $this->initUploadService();
+        $this->dirs = $this->getAllPicturesDirs();
+
+        $this->testPictureFilePath = self::$kernel->getProjectDir() . '/public/assets/pictures/defaultSneakersPicture.webp';  
+
     }
 
     /**
@@ -124,20 +129,18 @@ class MailSendTest extends KernelTestCase
     }
 
     // teste l'upload d'une image son redimensionnement et sa création dans la base de données
-        public function testImageUpload(): void
-        {
+    public function testImageUpload(): void
+    {
         //tester les droits en écriture d'une image sur le dossier $this->picDir
         $uploadService = $this->initUploadService();
-        // récupèrer une image de test
-        $file = $this->absolutePath . 'defaultSneakersPicture.webp';
         // donner un nom de fichier
         $orignalFileName = 'test';
         // retourne le nom du fichier créé
-        $createdFileName = $uploadService->saveOriginalPictureFile(file_get_contents($file), $orignalFileName);
+        $createdFileName = $uploadService->saveOriginalPictureFile(file_get_contents($this->testPictureFilePath), $orignalFileName);
         $this->assertFileExists($this->picDir . '/' . $createdFileName);
         // vérifier que le nom du fichier créé est bien différent du nom du fichier d'origine
         $this->assertNotEquals($orignalFileName, $createdFileName);
-       
+        
         echo "le nom du fichier d\'origine est $orignalFileName \n";
         echo "le nom du fichier créé est $createdFileName \n";
 
@@ -161,11 +164,9 @@ class MailSendTest extends KernelTestCase
         $this->assertEquals('done', ...$state);
         echo "tous les états des images produits sont bien à l'état 'done' \n";
         
-        $dirs = $this->getAllPicturesDirs();
-
         // vérifier que le fichier créé existe bien dans tous les dossiers de redimensionnement
         $j = 0;
-        foreach ($dirs as $dir) {
+        foreach ($this->dirs as $dir) {
             $this->assertFileExists($dir . '/' . $createdFileName);
             $dir = substr($dir, strrpos($dir, '/') + 1);
             echo "le fichier $createdFileName a bien été créé dans le dossier $dir \n";
@@ -185,11 +186,11 @@ class MailSendTest extends KernelTestCase
         echo "nombre d'images produits créées : " . count($product->getPictures()) . "\n";
         
         // vérifier que deleteAllPictures supprime bien le fichier créé dans tous les dossiers de redimensionnement
-        $uploadService->deleteAllpictures($dirs, $createdFileName);
-    
+        $uploadService->deleteAllpictures($this->dirs, $createdFileName);
+
         // attendu que tous les fichiers créés soient supprimés dans tous les dossiers de redimensionnement
         $i = 0;
-        foreach ($dirs as $dir) {
+        foreach ($this->dirs as $dir) {
             $this->assertFileDoesNotExist($dir . '/' . $createdFileName);
             $dir = substr($dir, strrpos($dir, '/') + 1);
             echo "le fichier $createdFileName a bien été supprimé du dossier $dir \n";

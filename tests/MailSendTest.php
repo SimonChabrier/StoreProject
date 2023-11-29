@@ -133,18 +133,17 @@ class MailSendTest extends KernelTestCase
     {
         //tester les droits en écriture d'une image sur le dossier $this->picDir
         $uploadService = $this->initUploadService();
-        // donner un nom de fichier
-        $orignalFileName = 'test';
+        // donner un nom de fichier d'origine (ce qui serait récupére sur name dans le formulaire)
+        $originalFileName = 'test';
         // retourne le nom du fichier créé
-        $createdFileName = $uploadService->saveOriginalPictureFile(file_get_contents($this->testPictureFilePath), $orignalFileName);
+        $createdFileName = $uploadService->saveOriginalPictureFile(file_get_contents($this->testPictureFilePath), $originalFileName);
+        // vérifier que le fichier créé existe bien dans le dossier $this->picDir le dossier de base
         $this->assertFileExists($this->picDir . '/' . $createdFileName);
-        // vérifier que le nom du fichier créé est bien différent du nom du fichier d'origine
-        $this->assertNotEquals($orignalFileName, $createdFileName);
-        
-        echo "le nom du fichier d\'origine est $orignalFileName \n";
-        echo "le nom du fichier créé est $createdFileName \n";
-
-        // vérifier le type mime attendu webp
+        echo "le fichier $createdFileName existe bien dans le dossier $this->picDir \n";
+        // attendu que le nom du fichier créé soit différent du nom du fichier d'origine
+        $this->assertNotEquals($originalFileName, $createdFileName);
+        echo "le nom du fichier d\'origine est $originalFileName et le nom du fichier crée est $createdFileName \n";
+        // attendu que le fichier créé soit bien un fichier webp
         $mime = $this->assertEquals('image/webp', mime_content_type($this->picDir . '/' . $createdFileName));
         echo "le type mime du fichier créé est " . mime_content_type($this->picDir . '/' . $createdFileName) . "\n";
         
@@ -152,19 +151,14 @@ class MailSendTest extends KernelTestCase
         $product = $this->manager->getRepository(Product::class)->findOneBy(['name' => 'test']);
         $productId = $product->getId();
         echo "l'id produit récupéré est $productId \n";
+    
+        // attendu ajout de l'image produit dans la base de données et redimensionnement dans tous les dossiers de redimensionnement
+        $uploadService->createProductPicture($originalFileName, 'contenu de la balise alt', $createdFileName, $product);
+        // attendu que le workflow soit bien passé à l'état 'done' pour l'image produit créée
+        $this->assertEquals('done', $product->getPictures()[0]->getState());
+        echo "l'état de l'image produit créée est " . $product->getPictures()[0]->getState() . "\n";
         
-        // tester a création d'une image produit
-        $uploadService->createProductPicture($orignalFileName, 'test', $createdFileName, $product);
-        
-        // vérifier que le workflow de toutes les images du produit est bien à l'état 'done'
-        for($i = 0; $i < count($product->getPictures()); $i++) {
-            $state = [];
-            $state[] = $product->getPictures()[$i]->getState();
-        }
-        $this->assertEquals('done', ...$state);
-        echo "tous les états des images produits sont bien à l'état 'done' \n";
-        
-        // vérifier que le fichier créé existe bien dans tous les dossiers de redimensionnement
+        // attendu que le fichier créé existe bien dans tous les dossiers de redimensionnement
         $j = 0;
         foreach ($this->dirs as $dir) {
             $this->assertFileExists($dir . '/' . $createdFileName);
@@ -172,23 +166,21 @@ class MailSendTest extends KernelTestCase
             echo "le fichier $createdFileName a bien été créé dans le dossier $dir \n";
             $j++;
         }
-        // vérifier que le nombre de répertoires traités est bien égal au nombre de répertoires de redimensionnement
+        // attandu que l'on traite bien tous les dossiers de redimensionnement
         $this->assertEquals(7, $j);
-        echo "nombre de répertoires traités $j lors de l\'ajout de fichier \n";
+        echo "$j répertoires traités \n";
 
+        // attendu que le fichier créé existe bien dans le dossier de base en plus des dossiers de redimensionnement
         $picture = $this->picDir . '/' . $createdFileName;
         $this->assertFileExists($picture);
         echo "le fichier $createdFileName existe bien dans le dossier $this->picDir \n";
-        // get path
 
-        // vérrifier qu'il y a bien 1 seule image produit qui a été créée
+        // attendu que le produit ait bien une seule image associée en base de données
         $this->assertEquals(1, count($product->getPictures()));
         echo "nombre d'images produits créées : " . count($product->getPictures()) . "\n";
         
-        // vérifier que deleteAllPictures supprime bien le fichier créé dans tous les dossiers de redimensionnement
+        // attendu que le méthode deleteAllpictures supprime bien tous les fichiers créés dans tous les dossiers de redimensionnement
         $uploadService->deleteAllpictures($this->dirs, $createdFileName);
-
-        // attendu que tous les fichiers créés soient supprimés dans tous les dossiers de redimensionnement
         $i = 0;
         foreach ($this->dirs as $dir) {
             $this->assertFileDoesNotExist($dir . '/' . $createdFileName);
@@ -196,26 +188,18 @@ class MailSendTest extends KernelTestCase
             echo "le fichier $createdFileName a bien été supprimé du dossier $dir \n";
             $i++;
         }
-        // vérifier que le fichier créé n'existe plus dans tous les dossiers de redimensionnement
+        // attendu que l'on traite bien tous les dossiers de redimensionnement lors de la supression de fichier
         $this->assertEquals(7, $i);
         echo "nombre de répertoires traités $i lors de la supression de fichier \n";
 
-        // supprimer l'image produit créée dans la base de données
-        for($i = 0; $i < count($product->getPictures()); $i++) {
-            foreach($product->getPictures() as $picture) {
-                $this->manager->remove($picture);
-                $this->manager->flush();
-            }
-        }
-        // vérifier que le produit n'a plus d'image associé en base de données
+        // attendu que le fichier soit bien supprimé de la base de données
+        $this->manager->remove($product->getPictures()[0]);
+        $this->manager->flush();
         $this->assertEquals(0, count($product->getPictures()));
         echo "nombre d'images produits après suppression : " . count($product->getPictures()) . "\n";
 
-        // récupèrer l'id du produit à la fin du test
+        // attendu vérifier qu'on traite bien toutjours le même produit que celui récupéré au début du test
         $finalProductId = $product->getId();
-        echo "suppression de $i image produit de la bdd sur le produit id : $finalProductId \n";
-        
-        // vérifier qu'on traite bien toutjours le même produit que celui récupéré au début du test
         $this->assertEquals($productId, $finalProductId);
         echo "le produit id de départ $productId - product id de fin $finalProductId \n";
 

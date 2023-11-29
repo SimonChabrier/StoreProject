@@ -40,22 +40,10 @@ class MailSendTest extends KernelTestCase
         $this->manager = self::$container->get('doctrine')->getManager();
         $this->picDir = self::$container->getParameter('picDir');
         $this->docDir = self::$container->getParameter('docDir');
-
         $dirs = $this->getDirs();
-        for($i = 0; $i < count($dirs); $i++) {
-            $this->resizer = new ResizerService($dirs[1], $dirs[2],$dirs[3], $dirs[4],$dirs[5],$dirs[6]
-            );
-            
-        }
-        // $this->resizer = new ResizerService(
-        // self::$container->getParameter('pictureXSDir'),
-        // self::$container->getParameter('picture250Dir'),
-        // self::$container->getParameter('picture400Dir'),
-        // self::$container->getParameter('picture800Dir'),
-        // self::$container->getParameter('picture1200Dir'),
-        // self::$container->getParameter('slider1280Dir')
-        // );
-        
+        // unset le premier élément du tableau qui est le répertoire des images originales
+        unset($dirs[0]);
+        $this->resizer = new ResizerService(...$dirs);
         $this->workflow = self::$container->get('state_machine.picture_publishing');
         $this->registry = self::$container->get(Registry::class);
         $projectDir = self::$kernel->getProjectDir();

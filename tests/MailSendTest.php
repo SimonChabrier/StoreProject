@@ -161,9 +161,10 @@ class MailSendTest extends KernelTestCase
         $this->assertEquals('done', ...$state);
         echo "tous les états des images produits sont bien à l'état 'done' \n";
         
+        $dirs = $this->getAllPicturesDirs();
+
         // vérifier que le fichier créé existe bien dans tous les dossiers de redimensionnement
         $j = 0;
-        $dirs = $this->getAllPicturesDirs();
         foreach ($dirs as $dir) {
             $this->assertFileExists($dir . '/' . $createdFileName);
             $dir = substr($dir, strrpos($dir, '/') + 1);
@@ -174,21 +175,19 @@ class MailSendTest extends KernelTestCase
         $this->assertEquals(7, $j);
         echo "nombre de répertoires traités $j lors de l\'ajout de fichier \n";
 
-        // supprimer le fichier créé
-        $i = 0;
-        foreach ($dirs as $dir) {
-            unlink($dir . '/' . $createdFileName);
-            $dir = substr($dir, strrpos($dir, '/') + 1);
-            echo "suppression de l'image $i du repertoire $dir \n";
-            $i++;
-        }
+        $picture = $this->picDir . '/' . $createdFileName;
+        $this->assertFileExists($picture);
+        echo "le fichier $createdFileName existe bien dans le dossier $this->picDir \n";
+        // get path
 
-        $pictures = $product->getPictures();
         // vérrifier qu'il y a bien 1 seule image produit qui a été créée
-        $this->assertEquals(1, count($pictures));
-        echo "nombre d'images produits créées : " . count($pictures) . "\n";
+        $this->assertEquals(1, count($product->getPictures()));
+        echo "nombre d'images produits créées : " . count($product->getPictures()) . "\n";
         
-        // vérifier que le fichier créé n'existe plus dans tous les dossiers de redimensionnement
+        // vérifier que deleteAllPictures supprime bien le fichier créé dans tous les dossiers de redimensionnement
+        $uploadService->deleteAllpictures($dirs, $createdFileName);
+    
+        // attendu que tous les fichiers créés soient supprimés dans tous les dossiers de redimensionnement
         $i = 0;
         foreach ($dirs as $dir) {
             $this->assertFileDoesNotExist($dir . '/' . $createdFileName);
@@ -207,7 +206,6 @@ class MailSendTest extends KernelTestCase
                 $this->manager->flush();
             }
         }
-
         // vérifier que le produit n'a plus d'image associé en base de données
         $this->assertEquals(0, count($product->getPictures()));
         echo "nombre d'images produits après suppression : " . count($product->getPictures()) . "\n";

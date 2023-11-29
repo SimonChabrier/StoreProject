@@ -289,6 +289,15 @@ class UploadService
         };
     }
 
+    public function deleteAllpictures($paths, $fileName)
+    {
+        // Parcourir chaque tableau de fichiers dans $allPictures
+        foreach ($paths as $path) {
+            // Parcourir chaque fichier dans le tableau courant
+            unlink($path . '/' . $fileName);
+        }
+    }
+
     
 
 }

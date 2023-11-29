@@ -48,8 +48,8 @@ class HomeController extends AbstractController
         ProductRepository $productRepository
         ): Response
     {   
-        dump($productRepository->filterByPriceRange(100,800));
-        dump($productRepository->findByPriceRange(100,800));
+        // dump($productRepository->filterByPriceRange(100,800));
+        // dump($productRepository->findByPriceRange(100,800));
         // Récupérer le cache
         $cacheItem = $this->cache->getItem(self::CACHE_KEY);
         $isCacheHit = $cacheItem->isHit();

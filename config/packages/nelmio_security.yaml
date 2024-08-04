@@ -2,7 +2,7 @@ nelmio_security:
     # prevents framing of the entire site
     clickjacking:
         paths:
-            '^/.*': DENY
+            '^/.*': ALLOW
 
     # disables content type sniffing for script resources
     content_type:
@@ -11,7 +11,7 @@ nelmio_security:
     # forces Microsoft's XSS-Protection with
     # its block mode
     xss_protection:
-        enabled: true
+        enabled: false
         mode_block: true
 
     # Send a full URL in the `Referer` header when performing a same-origin request,
@@ -20,7 +20,7 @@ nelmio_security:
     # If `strict-origin-when-cross-origin` is not supported, use `no-referrer` policy,
     # no referrer information is sent along with requests.
     referrer_policy:
-        enabled: true
+        enabled: false
         policies:
             - 'no-referrer'
             - 'strict-origin-when-cross-origin'

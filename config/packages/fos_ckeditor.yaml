@@ -3,7 +3,6 @@
 twig:
     form_themes:
         - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
-
 # Customisation de la toolbar
 fos_ck_editor:
     configs:

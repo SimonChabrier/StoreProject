@@ -2,10 +2,22 @@
 
 ## Description
 
-Pour tester et répondre à différents problèmes comme le paiment, la gestion des stocks, la gesiton du panier, TDD, CI/CD, Cache de données, COnfiguration Serveur, CSP, Filtre de recherche multi-critères cumulables, Convertion, optimisation et redimensionnement d'images, tâches asynchrones etc ...
+Pour tester et répondre à différents problèmes comme :
 
-- Ce projet n'est pas destiné à être mis en production mais j'ai dedans pas mal de fonctionnalités et de configurations qui pourraient être utiles pour un projet réel.
+- le paiment, 
+- Gesiton du panier,
+- Gestion des stocks,
+- TDD, 
+- CI/CD, 
+- Cache de données, 
+- Configuration Serveur,
+- CSP, 
+- Filtre de recherche multi-critères cumulables, 
+- Convertion, optimisation et redimensionnement d'images, 
+- Tâches asynchrones 
+- etc ...
 
+***Ce projet n'est pas destiné à être mis en production mais j'ai dedans pas mal de fonctionnalités et de configurations intéressantes dans lesquelles piocher.***
 
 ## Auto Hébergé sur mon home serveur
 

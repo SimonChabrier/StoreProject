@@ -4,16 +4,22 @@
 
 Pour tester et répondre à différents problèmes comme :
 
-- le paiment, 
-- Gesiton du panier,
-- Gestion des stocks,
-- TDD, 
-- CI/CD, 
-- Cache de données, 
-- Configuration Serveur,
-- CSP, 
-- Filtre de recherche multi-critères cumulables, 
-- Convertion, optimisation et redimensionnement d'images, 
+- Paiment Stripe
+- Panier d'achat
+- Stocks
+- Commandes
+- Utilisateurs
+- Produits
+- Catégorisation avancée
+- Gestion des images
+- Gestion des commentaires
+- TDD 
+- CI/CD avec Github Actions
+- Cache des requêtes et données
+- Configuration Serveur
+- CSP et autres headers de sécurité
+- Filtre de recherche multi-critères cumulables en JS
+- Convertion webp, optimisation et redimensionnement d'images
 - Tâches asynchrones 
 - etc ...
 

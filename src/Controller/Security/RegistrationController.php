@@ -43,7 +43,7 @@ class RegistrationController extends AbstractController
         // On empêche l'accès à cette page parce que c'est un site de démo
 
         $this->addFlash('warning', 'Inscription désactivée sur le site de démonstration.');
-        return $this->redirectToRoute('app_login');
+        return $this->redirectToRoute('app_home');
 
 
         $user = new User();

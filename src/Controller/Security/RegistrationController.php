@@ -41,10 +41,10 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, LoginFormAuthenticator $authenticator, EntityManagerInterface $entityManager, EmailService $emailService): Response
     {
         // On empêche l'accès à cette page parce que c'est un site de démo
-        if ($this->configuration->getConfiguration()['isDemoSite'] === true) {
-            $this->addFlash('warning', 'Inscription désactivée sur le site de démonstration.');
-            return $this->redirectToRoute('app_login');
-        }
+
+        $this->addFlash('warning', 'Inscription désactivée sur le site de démonstration.');
+        return $this->redirectToRoute('app_login');
+
 
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);

@@ -34,8 +34,6 @@ class ConfigurationService
             return $configuration;
         }
 
-        $configuration['isDemoSite'] = true;
-
         return $configuration;
     }
 }

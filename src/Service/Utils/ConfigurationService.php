@@ -9,7 +9,7 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 class ConfigurationService
 {
     private $entityManager;
-    
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -23,7 +23,7 @@ class ConfigurationService
      * @return Configuration
      */
     public function getConfiguration(): Configuration
-    {   
+    {
 
         $configuration = $this->entityManager->getRepository(Configuration::class)->find(1);
 
@@ -34,7 +34,8 @@ class ConfigurationService
             return $configuration;
         }
 
+        $configuration['isDemoSite'] = true;
+
         return $configuration;
     }
-
 }
